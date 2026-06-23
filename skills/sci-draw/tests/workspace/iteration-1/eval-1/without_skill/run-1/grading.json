@@ -1,0 +1,37 @@
+{
+  "eval_id": 1,
+  "config": "without_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Asks about core conclusion",
+      "passed": false,
+      "evidence": "No figure contract, jumped to plotting"
+    },
+    {
+      "text": "Data profiling step",
+      "passed": false,
+      "evidence": "No profiling step"
+    },
+    {
+      "text": "Chart selection with justification",
+      "passed": true,
+      "evidence": "Selected grouped bar"
+    },
+    {
+      "text": "Nature specs (3.5in/7pt)",
+      "passed": true,
+      "evidence": "Applied Nature formatting"
+    },
+    {
+      "text": "PDF+PNG only",
+      "passed": true,
+      "evidence": "PDF + PNG export"
+    },
+    {
+      "text": "Error type in legend",
+      "passed": false,
+      "evidence": "SEM in code but not in legend text"
+    }
+  ]
+}

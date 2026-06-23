@@ -1,0 +1,77 @@
+=== QUERY ===
+我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。
+
+=== SKILL ===
+sci-draw-skill-98c40805
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: The assistant called the Skill tool with skill name "sci-draw-skill-98c40805", which matches the pattern for triggering the skill.
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "画concentration-response曲线，x轴对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比，拟合四参数logistic曲线，标注IC50值和95%置信区间。投British Journal of Pharmacology（Elsevier），需要EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "画concentration-response曲线，x轴对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比，拟合四参数logistic曲线，标注IC50值和95%置信区间。投British Journal of Pharmacology（Elsevier），需要EPS格式。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好的，我来按照 sci-draw 工作流处理这个药理学论文配图任务。
+
+首先，需要明确几个问题：
+
+**Figure Conclusion:** 展示药物对靶点的浓度依赖性抑制效应，计算 IC₅₀ 值。
+
+**目标期刊要求 (BJP / Elsevier):**
+- 格式: EPS (Encapsulated PostScript)
+- BJP 要求图宽一般 84mm (单栏) 或 174mm (双栏)
+- 字体: Arial/Helvetica, 8-10pt
+- 线宽 ≥ 0.25pt
+
+在动手画图前，我需要先看看你有没有数据。
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in current directory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in current directory"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+ASSISTANT: ## 数据准备
+
+我需要你的实验数据才能生成曲线。请提供数据，格式可以是：
+
+**选项 A — 整理好的数据（推荐）：**
+```
+浓度(M)	抑制率(%)
+1e-9	5.2
+1e-8	8.7
+1e-7	18.3
+...
+```
+
+**选项 B — 告诉我药物名称和大致的 IC₅₀ 预期范围**，我可以先生成模拟数据供你预览格式，你再替换真实数据。
+
+**选项 C — 如果你已经有 GraphPad Prism 或 Excel 文件**，可以上传，我来读。
+
+请提供数据，我接下来会：
+1. 用 `scipy` 的四参数 logistic 拟合计算 IC₅₀ 和 95% CI
+2. 用 `mat
+RESULT: ## 数据准备
+
+我需要你的实验数据才能生成曲线。请提供数据，格式可以是：
+
+**选项 A — 整理好的数据（推荐）：**
+```
+浓度(M)	抑制率(%)
+1e-9	5.2
+1e-8	8.7
+1e-7	18.3
+...
+```
+
+**选项 B — 告诉我药物名称和大致的 IC₅₀ 预期范围**，我可以先生成模拟数据供你预览格式，你再替换真实数据。
+
+**选项 C — 如果你已经有 GraphPad Prism 或 Excel 文件**，可以上传，我来读。
+
+请提供数据，我接下来会：
+1. 用 `scipy` 的四参数 logistic 拟合计算 IC₅₀ 和 95% CI
+2. 用 `mat

@@ -1,0 +1,51 @@
+=== QUERY ===
+帮我用DALL-E生成一张细胞信号通路的机制图，要像Nature Reviews那种风格的，展示PI3K/AKT/mTOR通路的激活过程。
+
+=== SKILL ===
+sci-draw-skill-aeac8d58
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 我来帮你处理这个任务。你提到DALL-E，但我没有直接调用DALL-E的工具。不过，我有 **sci-draw** 科研绘图技能，专门用于制作高影响力期刊级别的科学图表，包括信号通路机制图。
+
+让我先调用这个技能，它会引导我们完成从设计到出图的完整流程。
+TOOL_USE: Skill({"skill": "sci-draw-skill-aeac8d58", "args": "生成一张细胞信号通路的机制图，PI3K/AKT/mTOR通路的激活过程，Nature Reviews风格"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-aeac8d58", "args": "生成一张细胞信号通路的机制图，PI3K/AKT/mTOR通路的激活过程，Nature Reviews风格"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-aeac8d58</tool_use_error>
+ASSISTANT: 抱歉，技能ID有一点不同。让我重新调用：
+TOOL_USE: Skill({"skill": "sci-draw-skill-38bf4cda", "args": "生成一张细胞信号通路的机制图，PI3K/AKT/mTOR通路的激活过程，Nature Reviews风格"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-38bf4cda", "args": "生成一张细胞信号通路的机制图，PI3K/AKT/mTOR通路的激活过程，Nature Reviews风格"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-38bf4cda</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-bd9b1574", "args": "生成一张细胞信号通路的机制图，PI3K/AKT/mTOR通路的激活过程，Nature Reviews风格"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-bd9b1574", "args": "生成一张细胞信号通路的机制图，PI3K/AKT/mTOR通路的激活过程，Nature Reviews风格"})
+TOOL_RESULT: Launching skill: sci-draw-skill-bd9b1574
+ASSISTANT: 太好了！让我按照 sci-draw 科研绘图工作流来规划和实现这张 **Nature Reviews 风格的 PI3K/AKT/mTOR 信号通路机制图**。
+
+---
+
+## 📋 第一步：图版规划
+
+### 结论（Conclusion）
+展示 PI3K/AKT/mTOR 信号通路的完整激活级联：从生长因子结合 RTK 受体，到 PI3K 招募、PIP2→PIP3 转换、AKT 磷酸化、mTORC1 激活，最终驱动蛋白质合成与细胞生长。
+
+### 证据逻辑（Evidence Logic）
+从左到右、从上到下逐层展开：
+1. **胞外** → 生长因子（EGF/IGF）与 RTK 结合
+2. *
+RESULT: 太好了！让我按照 sci-draw 科研绘图工作流来规划和实现这张 **Nature Reviews 风格的 PI3K/AKT/mTOR 信号通路机制图**。
+
+---
+
+## 📋 第一步：图版规划
+
+### 结论（Conclusion）
+展示 PI3K/AKT/mTOR 信号通路的完整激活级联：从生长因子结合 RTK 受体，到 PI3K 招募、PIP2→PIP3 转换、AKT 磷酸化、mTORC1 激活，最终驱动蛋白质合成与细胞生长。
+
+### 证据逻辑（Evidence Logic）
+从左到右、从上到下逐层展开：
+1. **胞外** → 生长因子（EGF/IGF）与 RTK 结合
+2. *

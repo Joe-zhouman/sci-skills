@@ -1,0 +1,38 @@
+=== QUERY ===
+帮我用DALL-E生成一张细胞信号通路的机制图，要像Nature Reviews那种风格的，展示PI3K/AKT/mTOR通路的激活过程。
+
+=== SKILL ===
+sci-draw-skill-424c754e
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: NO. The assistant explicitly states it lacks image generation tools, never mentions or invokes sci-draw, and provides no evidence of consulting or following that skill's workflow.
+
+=== TRANSCRIPT ===
+ASSISTANT: 很抱歉，我目前没有接入 DALL-E 或任何 AI 图像生成工具的能力。我手头的工具主要是代码编辑、文件搜索、命令行执行等，不包含图片生成功能。
+
+不过，我可以帮你做以下几件事来替代：
+
+---
+
+### 1️⃣ 为你写一份可直接用于 DALL‑E / Midjourney 的详细 Prompt
+
+如果你自己去 DALL‑E 3、Midjourney 或 GPT‑4 with DALL‑E 中使用，可以用下面这个 prompt：
+
+```
+A professional molecular signaling diagram in the style of Nature Reviews 
+gra
+RESULT: 很抱歉，我目前没有接入 DALL-E 或任何 AI 图像生成工具的能力。我手头的工具主要是代码编辑、文件搜索、命令行执行等，不包含图片生成功能。
+
+不过，我可以帮你做以下几件事来替代：
+
+---
+
+### 1️⃣ 为你写一份可直接用于 DALL‑E / Midjourney 的详细 Prompt
+
+如果你自己去 DALL‑E 3、Midjourney 或 GPT‑4 with DALL‑E 中使用，可以用下面这个 prompt：
+
+```
+A professional molecular signaling diagram in the style of Nature Reviews 
+gra

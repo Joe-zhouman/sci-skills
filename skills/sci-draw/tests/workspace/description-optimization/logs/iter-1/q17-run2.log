@@ -1,0 +1,32 @@
+=== QUERY ===
+帮我把这张扫描的实验记录本图片里的文字OCR出来，里面有表格数据和手写批注。输出成结构化的CSV格式。
+
+=== SKILL ===
+sci-draw-skill-1cc23263
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: The transcript only contains assistant text and no tool calls, skill launches, or file reads related to 'sci-draw-skill-*'.
+
+=== TRANSCRIPT ===
+ASSISTANT: 我准备好帮你做这件事了，不过我**没有看到你上传的图片**。
+
+请把实验记录本的扫描图片发给我，我会：
+
+1. **OCR 识别**图片中的所有文字（包括印刷体和手写体）
+2. **结构化提取**表格数据（行列对应关系）
+3. **捕捉手写批注**（旁注、修改、高亮等）
+4. **输出 CSV 格式**，表头清晰，手写批注单独标注
+
+请上传图片后我立即处理。如果有多张图片，也请一并上传。
+RESULT: 我准备好帮你做这件事了，不过我**没有看到你上传的图片**。
+
+请把实验记录本的扫描图片发给我，我会：
+
+1. **OCR 识别**图片中的所有文字（包括印刷体和手写体）
+2. **结构化提取**表格数据（行列对应关系）
+3. **捕捉手写批注**（旁注、修改、高亮等）
+4. **输出 CSV 格式**，表头清晰，手写批注单独标注
+
+请上传图片后我立即处理。如果有多张图片，也请一并上传。

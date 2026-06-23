@@ -1,0 +1,24 @@
+=== QUERY ===
+I want to design a conference poster for our lab — A0 size, three column layout with text boxes, images, QR codes, and some charts embedded. Can you help me with the overall design and typography in Figma or Canva?
+
+=== SKILL ===
+sci-draw-skill-5ca695f9
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: NO. The transcript shows no mention of sci-draw, no skill invocation, and no consultation or workflow influence from that skill.
+
+=== TRANSCRIPT ===
+ASSISTANT: Great question! While I don't have a dedicated Figma/Canva skill, I can absolutely help you plan the poster's design and typography, and even draft a design spec you can work from.
+
+Let me clarify what I *can* and *can't* do here:
+
+**What I can help with:**
+- Poster layout structure & column grid gu
+RESULT: Great question! While I don't have a dedicated Figma/Canva skill, I can absolutely help you plan the poster's design and typography, and even draft a design spec you can work from.
+
+Let me clarify what I *can* and *can't* do here:
+
+**What I can help with:**
+- Poster layout structure & column grid gu

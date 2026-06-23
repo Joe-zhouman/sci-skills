@@ -1,0 +1,53 @@
+=== QUERY ===
+审稿人给了我一堆意见：error bar没标明是SD还是SEM，字体太小看不到，图例遮住了数据点，而且颜色在灰度打印下分不清。figs/figure3_v2.pdf。我需要按Nature的要求改，能帮我系统地修一遍吗？
+
+=== SKILL ===
+sci-draw-skill-5b08c3c5
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "审稿意见：1) error bar没标明是SD还是SEM；2) 字体太小看不到；3) 图例遮住了数据点；4) 颜色在灰度打印下分不清。需要按Nature要求修改 figs/figure3_v2.pdf"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "审稿意见：1) error bar没标明是SD还是SEM；2) 字体太小看不到；3) 图例遮住了数据点；4) 颜色在灰度打印下分不清。需要按Nature要求修改 figs/figure3_v2.pdf"})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好的，审稿意见很典型，我来系统处理。先看一下 figure 的原始数据和绘图代码，然后逐一攻克这四个问题。
+TOOL_USE: Bash({"command": "ls -la figs/figure3_v2.pdf 2>/dev/null; ls figs/ 2>/dev/null", "description": "List figure files"})
+TOOL_USE: Bash({"command": "ls -la figs/figure3_v2.pdf 2>/dev/null; ls figs/ 2>/dev/null", "description": "List figure files"})
+TOOL_USE: Glob({"pattern": "**/*figure3*"})
+TOOL_USE: Glob({"pattern": "**/*figure3*"})
+TOOL_RESULT: No files found
+TOOL_RESULT: Exit code 2
+TOOL_USE: Glob({"pattern": "**/*.py"})
+TOOL_USE: Glob({"pattern": "**/*.py"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_comparison.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_ablation.py
+sci-draw/assets/figures4papers/figure_Cflows/diffusion_swiss_roll.py
+sci-draw/assets/figures4papers/figure_Dispersion/plot_idea
+TOOL_USE: Bash({"command": "find /home/joe -maxdepth 5 -name \"figure3*\" -o -name \"fig3*\" 2>/dev/null | head -30", "description": "Search for figure3 files everywhere"})
+TOOL_USE: Bash({"command": "find /home/joe -maxdepth 5 -name \"figure3*\" -o -name \"fig3*\" 2>/dev/null | head -30", "description": "Search for figure3 files everywhere"})
+TOOL_RESULT: This Bash command contains multiple operations. The following part requires approval: find /home/joe -maxdepth 5 -name "figure3*" -o -name "fig3*"
+TOOL_USE: Bash({"command": "find /home/joe/Documents -maxdepth 4 -name \"figs\" -type d -o -name \"figures\" -type d 2>/dev/null | head -20", "description": "Find figures directories"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents -maxdepth 4 -name \"figs\" -type d -o -name \"figures\" -type d 2>/dev/null | head -20", "description": "Find figures directories"})
+TOOL_RESULT: This Bash command contains multiple operations. The following part requires approval: find /home/joe/Documents -maxdepth 4 -name "figs" -type d -o -name "figures" -type d
+TOOL_USE: Bash({"command": "ls -la ~/Documents/repo/skill/sci-draw/figs/ 2>/dev/null || echo \"figs dir not found\"; ls -la figs/ 2>/dev/null || echo \"figs/ in cwd not found\"", "description": "Check if figs directory exists"})
+TOOL_USE: Bash({"command": "ls -la ~/Documents/repo/skill/sci-draw/figs/ 2>/dev/null || echo \"figs dir not found\"; ls -la figs/ 2>/dev/null || echo \"figs/ in cwd not found\"", "description": "Check if figs directory exists"})
+TOOL_RESULT: figs dir not found
+figs/ in cwd not found
+ASSISTANT: 好的，我看到 `figs/` 目录和 `figure3_v2.pdf` 在这个仓库里还不存在。为了系统地按照 Nature 要求修改，我需要先了解你的数据和原始绘图代码。
+
+请提供以下信息中的**任意一种**，我就能开始工作：
+
+**A) 原始绘图代码** — 生成 figure3 的 Python/R/Matlab 脚本
+**B) 原始数据文件** — CSV/Excel/TSV 格式的数据（告诉我每个 panel 用什么列、什么统计量）
+**C) 截图或描述** — 如果 A/B 都不在手边，描述一下图里有哪些 panel（bar chart? scatter? boxplot? heat
+RESULT: 好的，我看到 `figs/` 目录和 `figure3_v2.pdf` 在这个仓库里还不存在。为了系统地按照 Nature 要求修改，我需要先了解你的数据和原始绘图代码。
+
+请提供以下信息中的**任意一种**，我就能开始工作：
+
+**A) 原始绘图代码** — 生成 figure3 的 Python/R/Matlab 脚本
+**B) 原始数据文件** — CSV/Excel/TSV 格式的数据（告诉我每个 panel 用什么列、什么统计量）
+**C) 截图或描述** — 如果 A/B 都不在手边，描述一下图里有哪些 panel（bar chart? scatter? boxplot? heat

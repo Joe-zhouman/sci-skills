@@ -1,0 +1,46 @@
+=== QUERY ===
+我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。
+
+=== SKILL ===
+sci-draw-skill-58b2daf6
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+ASSISTANT: I'll help you create a publication-ready gene expression heatmap. Let me first examine the data, then build the figure.
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-3f3ff3d0
+ASSISTANT: Let me first examine the data file to understand its structure.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Glob({"pattern": "**/*expression_matrix*"})
+TOOL_USE: Glob({"pattern": "**/*expression_matrix*"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "**/*.tsv"})
+TOOL_USE: Glob({"pattern": "**/*.tsv"})
+TOOL_RESULT: No files found
+ASSISTANT: 找不到 `expression_matrix.tsv` 文件。请确认数据文件的位置，或者我可以用模拟数据帮你生成一个示例热图？比如：
+
+1. **告诉我数据文件的路径** — 我直接读取并绘图
+2. **或者我先生成模拟数据** — 先出图看样式，你再替换真实数据跑一遍
+
+另外，关于分组信息，请告诉我：
+
+- **样本分组**：12个样本分别属于哪几个处理组？（例如：Control 4个、Treatment A 4个、Treatment B 4个）
+- **样本名称**：列名是什么样的？（或直接用 `Sample_1` … `Sample_12`）
+- **基因聚类**：50个基因分几个 cl
+RESULT: 找不到 `expression_matrix.tsv` 文件。请确认数据文件的位置，或者我可以用模拟数据帮你生成一个示例热图？比如：
+
+1. **告诉我数据文件的路径** — 我直接读取并绘图
+2. **或者我先生成模拟数据** — 先出图看样式，你再替换真实数据跑一遍
+
+另外，关于分组信息，请告诉我：
+
+- **样本分组**：12个样本分别属于哪几个处理组？（例如：Control 4个、Treatment A 4个、Treatment B 4个）
+- **样本名称**：列名是什么样的？（或直接用 `Sample_1` … `Sample_12`）
+- **基因聚类**：50个基因分几个 cl

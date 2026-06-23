@@ -1,0 +1,37 @@
+{
+  "eval_id": 1,
+  "config": "with_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Asks about core conclusion",
+      "passed": true,
+      "evidence": "Figure contract established in Step 0"
+    },
+    {
+      "text": "Data profiling step",
+      "passed": true,
+      "evidence": "Simulated profile_data step"
+    },
+    {
+      "text": "Chart selection with justification",
+      "passed": true,
+      "evidence": "Grouped bar with rationale"
+    },
+    {
+      "text": "Nature specs (3.5in/7pt)",
+      "passed": true,
+      "evidence": "setup_style(journal='nature')"
+    },
+    {
+      "text": "PDF+PNG only",
+      "passed": true,
+      "evidence": "export_figure(formats=['pdf','png'])"
+    },
+    {
+      "text": "Error type in legend",
+      "passed": true,
+      "evidence": "SD + n declared in legend"
+    }
+  ]
+}

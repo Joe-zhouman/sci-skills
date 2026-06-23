@@ -1,0 +1,56 @@
+=== QUERY ===
+我有一组实验数据在 results.csv 里，三组不同处理的细胞存活率，每组8个样本。我投的是Nature，需要画一个publication-ready的figure。帮我选个合适的图型，考虑到样本量不大，然后画出来。输出要PDF+PNG，300DPI，单栏宽度。
+
+=== SKILL ===
+sci-draw-skill-3046ba58
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/results.csv"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/results.csv"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Glob({"pattern": "**/results.csv"})
+TOOL_USE: Glob({"pattern": "**/results.csv"})
+TOOL_RESULT: No files found
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in working directory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in working directory"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Bash({"command": "find /home/joe -name \"results.csv\" 2>/dev/null | head -10", "description": "Search for results.csv anywhere in home"})
+TOOL_USE: Bash({"command": "find /home/joe -name \"results.csv\" 2>/dev/null | head -10", "description": "Search for results.csv anywhere in home"})
+TOOL_RESULT: This Bash command contains multiple operations. The following part requires approval: find /home/joe -name "results.csv"
+ASSISTANT: 没能在当前目录找到 `results.csv`。能直接把数据贴给我，或者告诉我文件在哪吗？
+
+我需要的数据格式大概是：
+
+| Group | Viability |
+|-------|-----------|
+| Control | 95.2 |
+| Control | 93.8 |
+| ... | ... |
+| Treatment1 | ... |
+| ... | ... |
+
+三组（Control, Treatment A, Treatment B），每组 n=8。把数据发给我我就开始画。
+RESULT: 没能在当前目录找到 `results.csv`。能直接把数据贴给我，或者告诉我文件在哪吗？
+
+我需要的数据格式大概是：
+
+| Group | Viability |
+|-------|-----------|
+| Control | 95.2 |
+| Control | 93.8 |
+| ... | ... |
+| Treatment1 | ... |
+| ... | ... |
+
+三组（Control, Treatment A, Treatment B），每组 n=8。把数据发给我我就开始画。

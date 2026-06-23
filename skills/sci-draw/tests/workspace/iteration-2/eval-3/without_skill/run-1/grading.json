@@ -1,0 +1,32 @@
+{
+  "eval_id": 3,
+  "config": "without_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Plans 4 figures with distinct conclusions",
+      "passed": true,
+      "evidence": "4 figures described"
+    },
+    {
+      "text": "Visual vocabulary in Fig 1 reused",
+      "passed": false,
+      "evidence": "No visual vocabulary concept"
+    },
+    {
+      "text": "Panel ordering follows narrative",
+      "passed": false,
+      "evidence": "No explicit narrative logic"
+    },
+    {
+      "text": "Shared elements across figures",
+      "passed": false,
+      "evidence": "No cross-figure consistency planning"
+    },
+    {
+      "text": "Each figure has archetype + panel map",
+      "passed": false,
+      "evidence": "No archetype or evidence hierarchy"
+    }
+  ]
+}

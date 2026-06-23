@@ -1,0 +1,69 @@
+=== QUERY ===
+Can you make an interactive web visualization of our single-cell RNA-seq data? I want a UMAP with hover tooltips showing cell type annotations, gene expression levels, and sample metadata. Should be deployable as a standalone HTML file. Maybe using Bokeh or Plotly.
+
+=== SKILL ===
+sci-draw-skill-1e383fc7
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: Let me start by exploring the repository to understand what data is available for visualization.
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -maxdepth 3 -type f | head -80", "description": "List files in the repo to understand structure"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -maxdepth 3 -type f | head -80", "description": "List files in the repo to understand structure"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/README.md
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude.json
+/home/joe/Documents/repo/skill/sci-draw/.claude/settings.local.json
+/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-draw-skill-eb5c8e4b.md
+/home/joe/Document
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -maxdepth 3 -type d | sort", "description": "List directories in the repo"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -maxdepth 3 -type d | sort", "description": "List directories in the repo"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw
+/home/joe/Documents/repo/skill/sci-draw/.claude
+/home/joe/Documents/repo/skill/sci-draw/.claude/commands
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.cache
+/home/joe/Docu
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f \\( -name \"*.h5ad\" -o -name \"*.csv\" -o -name \"*.tsv\" -o -name \"*.csv.gz\" -o -name \"*.tsv.gz\" -o -name \"*.h5\" -o -name \"*.loom\" -o -name \"*.rds\" -o -name \"*.hdf5\" -o -name \"*.zarr\" -o -name \"*.parquet\" -o -name \"*.fcs\" -o -name \"*.mtx\" -o -name \"*.json\" \\) | head -40", "description": "Find data files for scRNA-seq"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f \\( -name \"*.h5ad\" -o -name \"*.csv\" -o -name \"*.tsv\" -o -name \"*.csv.gz\" -o -name \"*.tsv.gz\" -o -name \"*.h5\" -o -name \"*.loom\" -o -name \"*.rds\" -o -name \"*.hdf5\" -o -name \"*.zarr\" -o -name \"*.parquet\" -o -name \"*.fcs\" -o -name \"*.mtx\" -o -name \"*.json\" \\) | head -40", "description": "Find data files for scRNA-seq"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude.json
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/13d7bcc8-3aa4-49fe-be58-60ebe730941b/subagents/agent-a33f0f5de7685da13.meta.json
+/home/joe/Docum
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-draw
+2	
+3	Submission-grade scientific figure workflow for high-impact journals.
+4	
+5	## Design Decisions
+6	
+7	### QA Strategy: Draft-First, User-Driven Iteration
+8	
+9	The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, m
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/sci-draw/assets -type f | sort", "description": "Look for data files in assets"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/sci-draw/assets -type f | sort", "description": "Look for data files in assets"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/", "description": "Check sensor_dashboard dir"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/", "description": "Check sensor_dashboard dir"})
+TOOL_RESULT: total 16
+drwxrwxr-x 4 joe joe 4096 6月  23 14:50 .
+drwxrwxr-x 7 joe joe 4096 6月  23 14:57 ..
+drwxrwxr-x 2 joe joe 4096 6月  23 14:50 assets
+drwxrwxr-x 2 joe joe 4096 6月  23 14:50 sql
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/chart-atlas/atlas-01-bar-charts.png
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/chart-atlas/atlas-02-line-trends.png
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/chart-atlas/atlas-03-heatmaps.png
+/home/joe/Documents/repo/
+ASSISTANT: I don't see any scRNA-seq data files in this repo. Before I build the visualization, I need to understand what data you're working with.
+TOOL_USE: AskUserQuestion({"questions": [{"question": "Where is your single-cell RNA-seq data? Do you have an AnnData (.h5ad) file, a CSV/TSV with UMAP coordinates + metadata, or another format?", "header": "Data source", "options": [{"label": "I'll provide a path", "description": "The data is on this machine at a specific path I'll share"}, {"label": "AnnData (.h5ad)", "description": "I have an h5ad file from ScanPy processing pipeline"}, {"label": "CSV with coordinates", "description": "I have a CSV/TSV with pre-computed UMAP coordinates, cell types, and gene expression"}, {"label": "Synthetic/demo data", "description": "No real data — generate a realistic synthetic scRNA-seq dataset for demo purposes"}]}, {"question": "Which Python visualization library would you prefer for the standalone HTML output?", "header": "Library choice", "options": [{"label": "Plotly (Recommended)", "description": "Rich hover tooltips, built-in HTML export, well-supported marker coloring and sizing"}, {"label": "Bokeh", "description": "Faster for large datasets, built-in server support, good HTML export"}], "multiSelect": false}, {"question": "About how many cells (data points) are in your dataset? This affects rendering strategy.", "header": "Dataset size", "options": [{"label": "Small (< 5k cells)", "description": "Direct rendering, no downsampling needed"}, {"label": "Medium (5k-50k cells)", "description": "May benefit from WebGL acceleration or decimation"}, {"label": "Large (50k-500k cells)", "description": "Requires downsampling or chunked rendering"}, {"label": "Not sure yet", "description": "Generate with a moderate default size"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "Where is your single-cell RNA-seq data? Do you have an AnnData (.h5ad) file, a CSV/TSV with UMAP coordinates + metadata, or another format?", "header": "Data source", "options": [{"label": "I'll provide a path", "description": "The data is on this machine at a specific path I'll share"}, {"label": "AnnData (.h5ad)", "description": "I have an h5ad file from ScanPy processing pipeline"}, {"label": "CSV with coordinates", "description": "I have a CSV/TSV with pre-computed UMAP coordinates, cell types, and gene expression"}, {"label": "Synthetic/demo data", "description": "No real data — generate a realistic synthetic scRNA-seq dataset for demo purposes"}]}, {"question": "Which Python visualization library would you prefer for the standalone HTML output?", "header": "Library choice", "options": [{"label": "Plotly (Recommended)", "description": "Rich hover tooltips, built-in HTML export, well-supported marker coloring and sizing"}, {"label": "Bokeh", "description": "Faster for large datasets, built-in server support, good HTML export"}], "multiSelect": false}, {"question": "About how many cells (data points) are in your dataset? This affects rendering strategy.", "header": "Dataset size", "options": [{"label": "Small (< 5k cells)", "description": "Direct rendering, no downsampling needed"}, {"label": "Medium (5k-50k cells)", "description": "May benefit from WebGL acceleration or decimation"}, {"label": "Large (50k-500k cells)", "description": "Requires downsampling or chunked rendering"}, {"label": "Not sure yet", "description": "Generate with a moderate default size"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: I've asked a few questions to tailor the visualization to your needs:
+
+1. **Where is your data?** — I don't see scRNA-seq data files in this repo. If you have an h5ad file, CSV with coordinates, or need me to generate a realistic synthetic dataset for demo purposes.
+2. **Plotly vs Bokeh** — Plotly g
+RESULT: I've asked a few questions to tailor the visualization to your needs:
+
+1. **Where is your data?** — I don't see scRNA-seq data files in this repo. If you have an h5ad file, CSV with coordinates, or need me to generate a realistic synthetic dataset for demo purposes.
+2. **Plotly vs Bokeh** — Plotly g

@@ -1,0 +1,41 @@
+=== QUERY ===
+我在准备一篇综述论文，需要画一个方法比较的图：四种不同的算法在六个benchmark数据集上的表现。每个数据集一个subpanel，用grouped bar chart，error bar是标准差。需要统一y轴范围，加显著性标记。投的是Nature Reviews Methods Primers。
+
+=== SKILL ===
+sci-draw-skill-020d09c8
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-020d09c8", "args": "投稿 Nature Reviews Methods Primers，需要画一个方法比较图：四种不同算法在六个benchmark数据集上的表现对比。每个数据集一个subpanel，用grouped bar chart展示，error bar是标准差，需要统一y轴范围，加显著性标记。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-020d09c8", "args": "投稿 Nature Reviews Methods Primers，需要画一个方法比较图：四种不同算法在六个benchmark数据集上的表现对比。每个数据集一个subpanel，用grouped bar chart展示，error bar是标准差，需要统一y轴范围，加显著性标记。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-020d09c8
+ASSISTANT: 好的！这是一个典型的 **方法性能对比图（Method Benchmark Comparison）**，也是 Nature Reviews Methods Primers 这类期刊中方法学综述的核心配图。我先按照 sci-draw 的工作流来 clarify requirements，然后出图。
+
+---
+
+## 第一步：明确 Figure 的设计需求
+
+### 📊 基本信息确认
+
+在开始绘图之前，我需要您提供以下信息：
+
+| 项目 | 需要您确认 |
+|------|-----------|
+| **四种算法名称** | 如：RandomForest, SVM, CNN, Transform
+RESULT: 好的！这是一个典型的 **方法性能对比图（Method Benchmark Comparison）**，也是 Nature Reviews Methods Primers 这类期刊中方法学综述的核心配图。我先按照 sci-draw 的工作流来 clarify requirements，然后出图。
+
+---
+
+## 第一步：明确 Figure 的设计需求
+
+### 📊 基本信息确认
+
+在开始绘图之前，我需要您提供以下信息：
+
+| 项目 | 需要您确认 |
+|------|-----------|
+| **四种算法名称** | 如：RandomForest, SVM, CNN, Transform

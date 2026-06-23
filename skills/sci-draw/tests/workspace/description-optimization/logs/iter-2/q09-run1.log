@@ -1,0 +1,161 @@
+=== QUERY ===
+我在准备一篇综述论文，需要画一个方法比较的图：四种不同的算法在六个benchmark数据集上的表现。每个数据集一个subpanel，用grouped bar chart，error bar是标准差。需要统一y轴范围，加显著性标记。投的是Nature Reviews Methods Primers。
+
+=== SKILL ===
+sci-draw-skill-30882ef7
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-30882ef7", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers. Let's plan this figure."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-30882ef7", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers. Let's plan this figure."})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-30882ef7</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-3e1cf191", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3e1cf191", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers."})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-3e1cf191</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-7cfed199", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-7cfed199", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers."})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-7cfed199</tool_use_error>
+TOOL_USE: Skill({"args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers.", "skill": "sci-draw-skill-b41adb90"})
+TOOL_USE: Skill({"args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers.", "skill": "sci-draw-skill-b41adb90"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-b41adb90</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers."})
+TOOL_USE: Skill({"skill": "sci-draw", "args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers."})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw</tool_use_error>
+TOOL_USE: Skill({"args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers.", "skill": "sci-draw-skill-1cdedb3f"})
+TOOL_USE: Skill({"args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers.", "skill": "sci-draw-skill-1cdedb3f"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-1cdedb3f</tool_use_error>
+TOOL_USE: Skill({"args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers.", "skill": "sci-draw-skill-8c39feae"})
+TOOL_USE: Skill({"args": "I need to create a figure for a review paper for Nature Reviews Methods Primers. It needs to compare four different algorithms across six benchmark datasets. Each dataset should be a subpanel with grouped bar charts, error bars showing standard deviation, unified Y-axis range, and significance markers.", "skill": "sci-draw-skill-8c39feae"})
+TOOL_RESULT: Launching skill: sci-draw-skill-8c39feae
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/references/nature-2026-observations.md
+sci-draw/references/publicat
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/requirements.txt
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/referenc
+ASSISTANT: Let me start by understanding the skill's structure and the Nature journal requirements.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/figure-contract.md"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/figure-contract.md"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_RESULT: 1	# 期刊图表规范
+2	
+3	主流期刊对投稿图表的硬性要求汇总。**画图前先查目标期刊**，把栏宽、字号、DPI、推荐字体、矢量格式偏好记下来再开 matplotlib。
+4	
+5	## 目录
+6	
+7	- [Nature 系列](#nature-系列)
+8	- [Science](#science)
+9	- [IEEE](#ieee)
+10	- [Elsevier 系列](#elsevier-系列)
+11	- [PNAS](#pnas)
+12	- [中文核心期刊](#中文核心期刊通用要求)
+13	- [跨期刊速查表](#跨期刊速查表)
+14	- [中文字体安装指南](#中文字体安装指南)
+
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/figure-contract.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/figure-contract.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_RESULT: 1	# Figure Contract
+2	
+3	Use this reference before writing plotting code. The goal is to make the figure
+4	serve the paper's scientific logic.
+5	
+6	## Privacy rule
+7	
+8	Keep the figure contract user-facing, but keep the working trail private. Do not mention
+9	private paths, source filenames, interna
+TOOL_RESULT: 1	# 七类图配方
+2	
+3	每一节给一份**可直接运行的 Python 代码**——直接复制改数据就能出图。所有代码假设已经调过 `setup_style()`。
+4	
+5	## 目录
+6	
+7	- [通用前置](#通用前置)
+8	- [1. 折线图（含误差阴影）](#1-折线图含误差阴影)
+9	- [2. 柱状图（分组 + 误差棒）](#2-柱状图分组--误差棒)
+10	- [3. 散点图（多语义映射 + 回归线）](#3-散点图多语义映射--回归线)
+11	- [4. 箱线图 / 小提琴图（叠 stripplot）](#4-箱线图--小提琴图叠-stripplot)
+12	- [5. 热
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-draw-skill-e9375a5e.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-draw-skill-e9375a5e.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/common-patterns.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/common-patterns.md"})
+TOOL_RESULT: 1	# Common Patterns — Nature Figure Making
+2	
+3	Reusable layout and encoding patterns used across publication-grade scripts.
+4	
+5	## Table of Contents
+6	
+7	- Pattern 1: Ultra-wide multi-metric bar panel
+8	- Pattern 2: Dedicated legend panel
+9	- Pattern 3: Categorical bars without x-tick labels
+10	- 
+TOOL_RESULT: 1	---
+2	description: |
+3	  Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, a
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/api.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/api.md"})
+TOOL_RESULT: 1	# API Reference — sci-draw
+2	
+3	Conventions, constants, and reusable code blocks. Implement in your script or adapt as needed.
+4	
+5	## Table of Contents
+6	
+7	- Constants (PALETTE, DEFAULT_COLORS, PALETTE_NMI_PASTEL, modality palettes)
+8	- MANDATORY font + PDF rules
+9	- apply_publication_style()
+10
+ASSISTANT: 好的，技能已加载。我来梳理一下需求，先跟你确认几个关键点，再做图。
+
+---
+
+## 📋 当前理解
+
+| 项目 | 内容 |
+|---|---|
+| **图类型** | 多面板 grouped bar chart，4种算法 × 6个benchmark数据集 |
+| **每个子图** | 一个数据集，4根柱（算法），带误差棒（SD），显著性标记 |
+| **统一Y轴** | 6个子图共享 ylim |
+| **投稿期刊** | **Nature Reviews Methods Primers**（Nature 系列） |
+| **版式** | 双栏宽 183mm (7.2 inch)，Helve
+RESULT: 好的，技能已加载。我来梳理一下需求，先跟你确认几个关键点，再做图。
+
+---
+
+## 📋 当前理解
+
+| 项目 | 内容 |
+|---|---|
+| **图类型** | 多面板 grouped bar chart，4种算法 × 6个benchmark数据集 |
+| **每个子图** | 一个数据集，4根柱（算法），带误差棒（SD），显著性标记 |
+| **统一Y轴** | 6个子图共享 ylim |
+| **投稿期刊** | **Nature Reviews Methods Primers**（Nature 系列） |
+| **版式** | 双栏宽 183mm (7.2 inch)，Helve

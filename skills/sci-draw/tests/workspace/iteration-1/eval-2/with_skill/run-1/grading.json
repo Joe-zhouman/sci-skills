@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "config": "with_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Intercepts P1 mean bar",
+      "passed": true,
+      "evidence": "P1 interception triggered"
+    },
+    {
+      "text": "Suggests boxplot+stripplot",
+      "passed": true,
+      "evidence": "Recommended box+stripplot"
+    },
+    {
+      "text": "Interception dialogue",
+      "passed": true,
+      "evidence": "Reviewer-perspective explanation"
+    },
+    {
+      "text": "Stripplot if insist",
+      "passed": true,
+      "evidence": "Minimum enforcement stripplot overlay"
+    }
+  ]
+}

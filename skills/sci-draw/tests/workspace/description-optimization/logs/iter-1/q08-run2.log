@@ -1,0 +1,48 @@
+=== QUERY ===
+帮我把这组生存分析数据画成Kaplan-Meier曲线。有三个治疗组，需要显示中位生存时间、censoring marks、log-rank检验的p值。figure要符合Nature Medicine的要求，censoring用竖线标记，risk table放在下方。
+
+=== SKILL ===
+sci-draw-skill-d5acf15c
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: No Skill tool_use or launch of 'sci-draw-skill-*' appears in the transcript.
+
+=== TRANSCRIPT ===
+TOOL_USE: Glob({"pattern": "**/*"})
+TOOL_USE: Glob({"pattern": "**/*"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/requirements.txt
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/referenc
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/journal_specs.md"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+ASSISTANT: 好的！我需要先请你提供生存分析数据才能绘制KM曲线。请把数据贴给我，格式为 **CSV** 或 **表格文本**，需要包含以下三列：
+
+| 列名 | 说明 | 示例 |
+|------|------|------|
+| `time` | 生存时间/随访时间 | 0, 3, 6, 12, ... (月/天/年) |
+| `status` | 事件状态 | 1 = 发生事件（死亡/复发）, 0 = 删失（censored） |
+| `group` | 治疗组别 | e.g. "Control", "Drug A", "Drug B" |
+
+**例如：**
+```
+time,status,group
+RESULT: 好的！我需要先请你提供生存分析数据才能绘制KM曲线。请把数据贴给我，格式为 **CSV** 或 **表格文本**，需要包含以下三列：
+
+| 列名 | 说明 | 示例 |
+|------|------|------|
+| `time` | 生存时间/随访时间 | 0, 3, 6, 12, ... (月/天/年) |
+| `status` | 事件状态 | 1 = 发生事件（死亡/复发）, 0 = 删失（censored） |
+| `group` | 治疗组别 | e.g. "Control", "Drug A", "Drug B" |
+
+**例如：**
+```
+time,status,group

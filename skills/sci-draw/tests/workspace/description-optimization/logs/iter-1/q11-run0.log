@@ -1,0 +1,35 @@
+=== QUERY ===
+I need to create a flowchart showing our clinical trial workflow — from patient recruitment through randomization, treatment phases, follow-up visits, to final analysis. Something clean and professional for the Methods section of our NEJM paper.
+
+=== SKILL ===
+sci-draw-skill-bd9b1574
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-bd9b1574", "args": "Create a clean, professional clinical trial flowchart for the Methods section of an NEJM paper. The flowchart should show: patient recruitment → screening/enrollment → randomization → treatment phases (with intervention and control arms) → follow-up visits → final analysis."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-bd9b1574", "args": "Create a clean, professional clinical trial flowchart for the Methods section of an NEJM paper. The flowchart should show: patient recruitment → screening/enrollment → randomization → treatment phases (with intervention and control arms) → follow-up visits → final analysis."})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-bd9b1574</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-ac7dcb66", "args": "Create a clean, professional clinical trial flowchart for the Methods section of an NEJM paper. The flowchart should show: patient recruitment → screening/enrollment → randomization → treatment phases (with intervention and control arms) → follow-up visits → final analysis."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-ac7dcb66", "args": "Create a clean, professional clinical trial flowchart for the Methods section of an NEJM paper. The flowchart should show: patient recruitment → screening/enrollment → randomization → treatment phases (with intervention and control arms) → follow-up visits → final analysis."})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-ac7dcb66</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-096c0603", "args": "Create a clean, professional clinical trial flowchart for the Methods section of an NEJM paper. The flowchart should show: patient recruitment → screening/enrollment → randomization → treatment phases (with intervention and control arms) → follow-up visits → final analysis."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-096c0603", "args": "Create a clean, professional clinical trial flowchart for the Methods section of an NEJM paper. The flowchart should show: patient recruitment → screening/enrollment → randomization → treatment phases (with intervention and control arms) → follow-up visits → final analysis."})
+TOOL_RESULT: Launching skill: sci-draw-skill-096c0603
+ASSISTANT: Great, let me follow the sci-draw workflow and scope this out before we write any code. I need to understand the specifics of your trial to produce a submission-grade figure.
+
+**First — let me define the figure's purpose and constraints:**
+
+---
+
+**Figure conclusion** — What one takeaway should a rea
+RESULT: Great, let me follow the sci-draw workflow and scope this out before we write any code. I need to understand the specifics of your trial to produce a submission-grade figure.
+
+**First — let me define the figure's purpose and constraints:**
+
+---
+
+**Figure conclusion** — What one takeaway should a rea

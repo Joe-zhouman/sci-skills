@@ -1,0 +1,32 @@
+{
+  "eval_id": 3,
+  "config": "with_skill",
+  "run": 3,
+  "expectations": [
+    {
+      "text": "Analyzes data shape",
+      "passed": true,
+      "evidence": "2 continuous + 1 categorical identified"
+    },
+    {
+      "text": "Scatter + regression + r",
+      "passed": true,
+      "evidence": "regplot with CI + pearsonr annotation"
+    },
+    {
+      "text": "Colorblind dual encoding",
+      "passed": true,
+      "evidence": "Color + marker shape"
+    },
+    {
+      "text": "Nature Methods specs",
+      "passed": true,
+      "evidence": "setup_style(journal='nature')"
+    },
+    {
+      "text": "Runnable code",
+      "passed": true,
+      "evidence": "Complete Python script"
+    }
+  ]
+}

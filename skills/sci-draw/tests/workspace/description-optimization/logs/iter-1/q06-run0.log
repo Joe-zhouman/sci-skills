@@ -1,0 +1,46 @@
+=== QUERY ===
+我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。
+
+=== SKILL ===
+sci-draw-skill-a90cb09d
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 我来帮你绘制药理学论文中的concentration-response曲线。先调用sci-draw技能来规划并生成符合BJP要求的图表。
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "Concentration-response curve for pharmacology paper. X-axis: log drug concentration (10^-9 to 10^-3 M). Y-axis: inhibition rate (%). 4-parameter logistic fit. IC50 with 95% CI annotation. Target: British Journal of Pharmacology (Elsevier). Export: EPS."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "Concentration-response curve for pharmacology paper. X-axis: log drug concentration (10^-9 to 10^-3 M). Y-axis: inhibition rate (%). 4-parameter logistic fit. IC50 with 95% CI annotation. Target: British Journal of Pharmacology (Elsevier). Export: EPS."})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好的，我来帮你绘制这篇投向**British Journal of Pharmacology (BJP)** 的concentration-response曲线。在出图之前，需要确认几个关键信息。
+
+---
+
+## 📋 需求确认
+
+先请你提供以下信息：
+
+### 1. 📊 **数据**
+请把你的实验数据贴过来。格式可以是：
+
+| 浓度 (M) | 抑制率 (%) | 或 | 浓度 (M) | 抑制率1 | 抑制率2 | 抑制率3 |
+|----------|-----------|   |----------|---------|---------|---------|
+
+直接粘贴Excel/
+RESULT: 好的，我来帮你绘制这篇投向**British Journal of Pharmacology (BJP)** 的concentration-response曲线。在出图之前，需要确认几个关键信息。
+
+---
+
+## 📋 需求确认
+
+先请你提供以下信息：
+
+### 1. 📊 **数据**
+请把你的实验数据贴过来。格式可以是：
+
+| 浓度 (M) | 抑制率 (%) | 或 | 浓度 (M) | 抑制率1 | 抑制率2 | 抑制率3 |
+|----------|-----------|   |----------|---------|---------|---------|
+
+直接粘贴Excel/

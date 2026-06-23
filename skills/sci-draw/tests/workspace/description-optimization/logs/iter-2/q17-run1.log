@@ -1,0 +1,26 @@
+=== QUERY ===
+帮我把这张扫描的实验记录本图片里的文字OCR出来，里面有表格数据和手写批注。输出成结构化的CSV格式。
+
+=== SKILL ===
+sci-draw-skill-74bffa10
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: The assistant's response is about OCR of lab notebook images, with no mention or indication of the 'sci-draw' skill or its workflow.
+
+=== TRANSCRIPT ===
+ASSISTANT: 看起来你想让我OCR一张实验记录本的扫描图片，但我没有看到你附上了图片。
+
+请把图片发给我，我会帮你：
+1. 提取表格数据和手写批注
+2. 整理成结构化的CSV格式
+
+你可以直接拖拽或粘贴图片到对话框里发送给我。
+RESULT: 看起来你想让我OCR一张实验记录本的扫描图片，但我没有看到你附上了图片。
+
+请把图片发给我，我会帮你：
+1. 提取表格数据和手写批注
+2. 整理成结构化的CSV格式
+
+你可以直接拖拽或粘贴图片到对话框里发送给我。

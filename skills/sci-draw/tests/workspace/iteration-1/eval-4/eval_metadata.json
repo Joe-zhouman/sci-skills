@@ -1,0 +1,6 @@
+{
+  "eval_id": 4,
+  "eval_name": "I need a Figure 1 with 4 panels for my Nature paper: (a) PCA",
+  "prompt": "I need a Figure 1 with 4 panels for my Nature paper: (a) PCA plot showing sample clustering by treatment group, (b) training loss curves for 3 models over 100 epochs, (c) heatmap of top 20 differentially expressed genes (rows) x 6 samples (columns), (d) bar chart comparing accuracy of 4 methods. Each panel has inline simulated data.",
+  "expectations": []
+}

@@ -1,0 +1,60 @@
+=== QUERY ===
+I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction).
+
+=== SKILL ===
+sci-draw-skill-dfd40f8d
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction)."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction)."})
+TOOL_RESULT: Launching skill: sci-draw-skill-3f3ff3d0
+ASSISTANT: Let me build you a publication-quality visualization that avoids the bar-chart pitfalls. For small-n neuroscience data (n=6/group), the field standard is now **individual data points + box plot** — it shows every value while still conveying distribution.
+
+Let me check what's available in the repo an
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f | head -40", "description": "List repo files"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f | head -40", "description": "List repo files"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/README.md
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude.json
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/backups/.claude.json.backup.1782196121148
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval
+TOOL_USE: Bash({"command": "python3 -c \"import matplotlib; print(matplotlib.__version__); import seaborn; print(seaborn.__version__); import scipy; print(scipy.__version__)\"", "description": "Check available Python libraries"})
+TOOL_USE: Bash({"command": "python3 -c \"import matplotlib; print(matplotlib.__version__); import seaborn; print(seaborn.__version__); import scipy; print(scipy.__version__)\"", "description": "Check available Python libraries"})
+TOOL_RESULT: /opt/local/anaconda3/lib/python3.9/site-packages/scipy/__init__.py:155: UserWarning: A NumPy version >=1.18.5 and <1.25.0 is required for this version of SciPy (detected version 1.26.4
+  warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+3.5.2
+0.11.2
+1.9.1
+ASSISTANT: Good news — all libraries are available (matplotlib 3.5.2, seaborn 0.11.2, scipy 1.9.1). 
+
+Before I generate the figure, I need a couple of things from you:
+TOOL_USE: AskUserQuestion({"questions": [{"question": "Do you have your actual data ready to paste? If so, please share the numeric values for each of your 5 groups (n=6 each). If not, I can generate representative test data so you can see the figure format and replace values later.", "header": "Data source", "options": [{"label": "I have data", "description": "I'll paste my actual group values now"}, {"label": "Use test data", "description": "Generate a template with placeholder data I can edit later"}]}, {"question": "Which comparison structure do you need for significance annotations? With 5 groups, annotating all 10 pairwise comparisons is too crowded.", "header": "Comparisons", "options": [{"label": "All vs Control", "description": "Compare every group to a single control/reference group (4 comparisons)"}, {"label": "Selected pairs", "description": "I'll specify which specific group pairs to annotate"}, {"label": "All pairwise", "description": "Annotate all comparisons (10 pairs) — may be crowded, but we can work with bracket placement"}]}, {"question": "What measurement did you record? This determines the Y-axis label.", "header": "Y-axis label", "options": [{"label": "Neural firing rate", "description": "e.g. spikes/s, Hz"}, {"label": "Signal amplitude", "description": "e.g. mV, µV, % change"}, {"label": "Behavioral score", "description": "e.g. latency (s), performance (%)"}, {"label": "Biochemical assay", "description": "e.g. concentration, fold change, density"}, {"label": "Other / custom", "description": "I'll specify the exact label"}]}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_big",
+    "maximum": 4,
+    "inclusive": true,
+    "path": [
+      "questions",
+      2,
+      "options"
+    ],
+    "message": "Too big: expected array to have <=4 items"
+  }
+]</tool_use_error>
+TOOL_USE: AskUserQuestion({"questions": [{"question": "Do you have your actual data ready to paste? If so, please share the numeric values for each of your 5 groups (n=6 each). If not, I can generate representative test data so you can see the figure format and replace values later.", "header": "Data source", "options": [{"label": "I have data", "description": "I'll paste my actual group values now"}, {"label": "Use test data", "description": "Generate a template with placeholder data I can edit later"}]}, {"question": "Which comparison structure do you need for significance annotations? With 5 groups, annotating all 10 pairwise comparisons is too crowded.", "header": "Comparisons", "options": [{"label": "All vs Control", "description": "Compare every group to a single control/reference group (4 comparisons)"}, {"label": "Selected pairs", "description": "I'll specify which specific group pairs to annotate"}, {"label": "All pairwise", "description": "Annotate all comparisons (10 pairs) — may be crowded, but we can work with bracket placement"}]}, {"question": "What measurement did you record? This determines the Y-axis label.", "header": "Y-axis label", "options": [{"label": "Neural firing rate", "description": "e.g. spikes/s, Hz"}, {"label": "Signal amplitude", "description": "e.g. mV, µV, % change"}, {"label": "Behavioral score", "description": "e.g. latency (s), performance (%)"}, {"label": "Biochemical assay", "description": "e.g. concentration, fold change, density"}, {"label": "Other / custom", "description": "I'll specify the exact label"}]}]})
+ASSISTANT: Let me ask these step by step.
+
+**First — do you have your actual data?** If so, please paste the numeric values for each of your 5 groups (n=6 each). If not, I'll create a template with representative test data you can swap out later.
+
+**Second — what's your Y-axis measurement?** (e.g. "Firing rate
+RESULT: Let me ask these step by step.
+
+**First — do you have your actual data?** If so, please paste the numeric values for each of your 5 groups (n=6 each). If not, I'll create a template with representative test data you can swap out later.
+
+**Second — what's your Y-axis measurement?** (e.g. "Firing rate

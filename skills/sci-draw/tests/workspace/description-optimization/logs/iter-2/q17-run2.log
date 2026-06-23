@@ -1,0 +1,30 @@
+=== QUERY ===
+帮我把这张扫描的实验记录本图片里的文字OCR出来，里面有表格数据和手写批注。输出成结构化的CSV格式。
+
+=== SKILL ===
+sci-draw-skill-2420f792
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 这张图片没有出现在对话中，我没法直接看到它。
+
+你可以通过以下方式把图片给我：
+
+1. **拖拽上传** — 直接把图片文件拖到对话框里
+2. **提供文件路径** — 如果图片已经在本地，告诉我路径，比如 `/home/joe/.../scan.jpg`
+3. **粘贴截图** — 有些环境下支持粘贴剪贴板图片
+
+收到图片后，我可以帮你把表格数据和手写批注提取成结构化的 CSV 格式。
+RESULT: 这张图片没有出现在对话中，我没法直接看到它。
+
+你可以通过以下方式把图片给我：
+
+1. **拖拽上传** — 直接把图片文件拖到对话框里
+2. **提供文件路径** — 如果图片已经在本地，告诉我路径，比如 `/home/joe/.../scan.jpg`
+3. **粘贴截图** — 有些环境下支持粘贴剪贴板图片
+
+收到图片后，我可以帮你把表格数据和手写批注提取成结构化的 CSV 格式。

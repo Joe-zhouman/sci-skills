@@ -1,0 +1,53 @@
+=== QUERY ===
+我有一组单细胞RNA-seq数据，想画一个stacked bar chart展示不同cluster在control和treatment组中的细胞比例差异。同时还需要一个volcano plot显示差异表达基因。两张图需要统一配色风格，一起作为Figure 2的ab两个panel。投Cell。
+
+=== SKILL ===
+sci-draw-skill-b4699ebf
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES, the skill was successfully launched with skill name 'sci-draw-skill-38bf4cda'.
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-c3110711", "args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-c3110711", "args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-c3110711</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-6567c02b", "args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-6567c02b", "args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-6567c02b</tool_use_error>
+TOOL_USE: Skill({"args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿", "skill": "sci-draw-skill-a8f645ee"})
+TOOL_USE: Skill({"args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿", "skill": "sci-draw-skill-a8f645ee"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-a8f645ee</tool_use_error>
+TOOL_USE: Skill({"args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿", "skill": "sci-draw-skill-aeac8d58"})
+TOOL_USE: Skill({"args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿", "skill": "sci-draw-skill-aeac8d58"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-aeac8d58</tool_use_error>
+TOOL_USE: Skill({"args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿", "skill": "sci-draw-skill-38bf4cda"})
+TOOL_USE: Skill({"args": "Cell 期刊级 Figure 2，含两个panel：\nPanel a: stacked bar chart，展示scRNA-seq不同cluster在control和treatment两组中的细胞比例差异\nPanel b: volcano plot，展示差异表达基因（DEGs）\n\n要求：\n- 统一配色风格，符合Cell期刊标准\n- 两组对比：control vs treatment\n- stacked bar需要展示每个cluster在两组中的占比变化\n- volcano需要标出显著上调/下调基因\n- 格式：多panel组合图，适合投稿", "skill": "sci-draw-skill-38bf4cda"})
+TOOL_RESULT: Launching skill: sci-draw-skill-38bf4cda
+ASSISTANT: 好的，已启动 **sci-draw** 科学绘图工作流！
+
+在开始画图之前，我需要先收集一些关键信息来确保最终的 Figure 2 达到 Cell 期刊的投稿标准。请回答以下几个问题：
+
+---
+
+### 🔬 数据方面
+
+**1. 你的数据在哪里？**
+- 你有现成的 scRNA-seq 分析结果（如 Seurat 或 Scanpy 输出的 CSV/TSV）吗？
+  - Stacked bar 所需：每个 cluster 在 control/treatment 中的细胞计数
+  - Volcano 所需：所有基因的 `log2FC` 和 `adjusted p-value`
+- 还是需要我用模
+RESULT: 好的，已启动 **sci-draw** 科学绘图工作流！
+
+在开始画图之前，我需要先收集一些关键信息来确保最终的 Figure 2 达到 Cell 期刊的投稿标准。请回答以下几个问题：
+
+---
+
+### 🔬 数据方面
+
+**1. 你的数据在哪里？**
+- 你有现成的 scRNA-seq 分析结果（如 Seurat 或 Scanpy 输出的 CSV/TSV）吗？
+  - Stacked bar 所需：每个 cluster 在 control/treatment 中的细胞计数
+  - Volcano 所需：所有基因的 `log2FC` 和 `adjusted p-value`
+- 还是需要我用模

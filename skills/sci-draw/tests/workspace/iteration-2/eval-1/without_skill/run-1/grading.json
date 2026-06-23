@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "config": "without_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Establishes figure contract (core conclusion, archetype)",
+      "passed": false,
+      "evidence": "No formal contract, just layout suggestion"
+    },
+    {
+      "text": "Plans panel layout with evidence hierarchy",
+      "passed": true,
+      "evidence": "Suggests panel layout"
+    },
+    {
+      "text": "Maps each panel to a unique claim",
+      "passed": false,
+      "evidence": "Panels listed but not mapped to claims"
+    },
+    {
+      "text": "Nature Materials journal specs",
+      "passed": true,
+      "evidence": "Mentions Nature Materials formatting"
+    },
+    {
+      "text": "Generates figure description file",
+      "passed": false,
+      "evidence": "No description file concept"
+    }
+  ]
+}

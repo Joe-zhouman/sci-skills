@@ -1,0 +1,15 @@
+=== QUERY ===
+能不能帮我画一个神经网络架构图？输入层是256维的embedding，经过三个LSTM隐藏层（128, 64, 32维），最后接一个softmax输出层。每层之间要有skip connection，还要标出dropout rate。
+
+=== SKILL ===
+sci-draw-skill-35556b8d
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-096c0603", "args": "神经网络架构图 | 输入层256维 embedding → 三个LSTM隐藏层(128,64,32) → softmax输出层 | 每层间有skip connection | 标出dropout rate"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-096c0603", "args": "神经网络架构图 | 输入层256维 embedding → 三个LSTM隐藏层(128,64,32) → softmax输出层 | 每层间有skip connection | 标出dropout rate"})
+TOOL_RESULT: Launching skill: sci-draw-skill-096c0603

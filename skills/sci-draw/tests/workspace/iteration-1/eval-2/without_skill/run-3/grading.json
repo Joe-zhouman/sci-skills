@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "config": "without_skill",
+  "run": 3,
+  "expectations": [
+    {
+      "text": "Intercepts P1 mean bar",
+      "passed": false,
+      "evidence": "Just made mean bar chart"
+    },
+    {
+      "text": "Suggests boxplot+stripplot",
+      "passed": false,
+      "evidence": "No alternative suggested"
+    },
+    {
+      "text": "Interception dialogue",
+      "passed": false,
+      "evidence": "No interception"
+    },
+    {
+      "text": "Stripplot if insist",
+      "passed": false,
+      "evidence": "No stripplot overlay"
+    }
+  ]
+}

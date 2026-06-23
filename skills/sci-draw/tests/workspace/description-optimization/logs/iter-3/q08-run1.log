@@ -1,0 +1,43 @@
+=== QUERY ===
+帮我把这组生存分析数据画成Kaplan-Meier曲线。有三个治疗组，需要显示中位生存时间、censoring marks、log-rank检验的p值。figure要符合Nature Medicine的要求，censoring用竖线标记，risk table放在下方。
+
+=== SKILL ===
+sci-draw-skill-adae0b4d
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw"})
+TOOL_USE: Skill({"skill": "sci-draw"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-190c49f8"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-190c49f8"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-190c49f8</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-49cee384"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-49cee384"})
+TOOL_RESULT: Launching skill: sci-draw-skill-49cee384
+ASSISTANT: 好的！我需要先看看你的生存数据才能画图。请提供生存数据文件（CSV、Excel等格式），应该包含以下列：
+
+| 列名 | 说明 |
+|------|------|
+| `time` | 生存时间（天/月等） |
+| `status` | 删失状态（1=事件发生，0=删失） |
+| `group` | 治疗组别（3组） |
+
+你可以直接把数据贴出来（表格格式），或者告诉我数据文件的路径，我来读取。
+
+如果有额外的要求（配色方案、字体大小、图片尺寸等），也一并告诉我。
+RESULT: 好的！我需要先看看你的生存数据才能画图。请提供生存数据文件（CSV、Excel等格式），应该包含以下列：
+
+| 列名 | 说明 |
+|------|------|
+| `time` | 生存时间（天/月等） |
+| `status` | 删失状态（1=事件发生，0=删失） |
+| `group` | 治疗组别（3组） |
+
+你可以直接把数据贴出来（表格格式），或者告诉我数据文件的路径，我来读取。
+
+如果有额外的要求（配色方案、字体大小、图片尺寸等），也一并告诉我。

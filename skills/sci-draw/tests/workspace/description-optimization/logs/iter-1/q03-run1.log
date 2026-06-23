@@ -1,0 +1,131 @@
+=== QUERY ===
+审稿人给了我一堆意见：error bar没标明是SD还是SEM，字体太小看不到，图例遮住了数据点，而且颜色在灰度打印下分不清。figs/figure3_v2.pdf。我需要按Nature的要求改，能帮我系统地修一遍吗？
+
+=== SKILL ===
+sci-draw-skill-bd0b4986
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "Revise figures/figure3_v2.pdf per reviewer comments. Issues: (1) error bars not labeled as SD or SEM, (2) font too small to read, (3) legend obscures data points, (4) colors indistinguishable in grayscale. Must meet Nature journal formatting requirements. The PDF is at figs/figure3_v2.pdf."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "Revise figures/figure3_v2.pdf per reviewer comments. Issues: (1) error bars not labeled as SD or SEM, (2) font too small to read, (3) legend obscures data points, (4) colors indistinguishable in grayscale. Must meet Nature journal formatting requirements. The PDF is at figs/figure3_v2.pdf."})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/figs/ 2>/dev/null; echo \"---\"; ls /home/joe/Documents/repo/skill/sci-draw/ 2>/dev/null", "description": "List figs dir and repo root"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/figs/ 2>/dev/null; echo \"---\"; ls /home/joe/Documents/repo/skill/sci-draw/ 2>/dev/null", "description": "List figs dir and repo root"})
+TOOL_RESULT: ---
+eval-report.md
+neural_network_diagram.pdf
+neural_network_diagram.png
+nn_architecture.png
+README.md
+sci-draw
+sensor_venv
+TOOL_USE: Glob({"pattern": "**/*.py", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.py", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_comparison.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_ablation.py
+sci-draw/assets/figures4papers/figure_Cflows/diffusion_swiss_roll.py
+sci-draw/assets/figures4papers/figure_Dispersion/plot_idea
+TOOL_USE: Glob({"pattern": "**/*.R", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.R", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "**/*.{rmd,Rmd}", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.{rmd,Rmd}", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+ASSISTANT: Let me explore the project structure and find the figure source.
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw", "pattern": "**/*figure3*"})
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw", "pattern": "**/*figure3*"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw", "pattern": "**/figs/**"})
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw", "pattern": "**/figs/**"})
+TOOL_RESULT: sci-draw/tests/workspace/iteration-2/eval-2/with_skill/run-1/outputs/figs/_preview.png
+sci-draw/tests/workspace/iteration-2/eval-2/with_skill/run-1/outputs/figs/fig1_tumor_volume.pdf
+sci-draw/tests/workspace/iteration-2/eval-2/with_skill/run-1/outputs/figs/fig1_tumor_volume.png
+sci-draw/tests/worksp
+TOOL_USE: Grep({"pattern": "figure3", "path": "/home/joe/Documents/repo/skill/sci-draw", "glob": "*.{py,r,Rmd,md,json,yaml,yml}", "output_mode": "files_with_matches"})
+TOOL_USE: Grep({"pattern": "figure3", "path": "/home/joe/Documents/repo/skill/sci-draw", "glob": "*.{py,r,Rmd,md,json,yaml,yml}", "output_mode": "files_with_matches"})
+TOOL_RESULT: Found 1 file
+sci-draw/tests/workspace/description-optimization/trigger-eval.json
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/figs/ 2>&1; echo \"---\"; find /home/joe/Documents/repo/skill/sci-draw -name \"*.pdf\" -not -path \"*/sensor_venv/*\" 2>/dev/null", "description": "Check figs directory and find PDFs"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/figs/ 2>&1; echo \"---\"; find /home/joe/Documents/repo/skill/sci-draw -name \"*.pdf\" -not -path \"*/sensor_venv/*\" 2>/dev/null", "description": "Check figs directory and find PDFs"})
+TOOL_RESULT: ls: cannot access '/home/joe/Documents/repo/skill/sci-draw/figs/': No such file or directory
+---
+/home/joe/Documents/repo/skill/sci-draw/neural_network_diagram.pdf
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/figures4papers/figure_Cflows/figures/fig2_comparison_GeneRegulatory.pdf
+/home/jo
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-draw
+2	
+3	Submission-grade scientific figure workflow for high-impact journals.
+4	
+5	## Design Decisions
+6	
+7	### QA Strategy: Draft-First, User-Driven Iteration
+8	
+9	The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, m
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-draw
+3	description: >-
+4	  Submission-grade scientific figure workflow for high-impact journals.
+5	  Use whenever the user asks to create, revise, audit, or polish manuscript
+6	  figures, multi-panel scientific plots, or publication-ready charts.
+7	  Before plotting, define the fig
+ASSISTANT: I've looked at the project but `figs/figure3_v2.pdf` doesn't exist yet, and I couldn't find source code for it. Before I can start revising, I need to understand what we're working with.
+
+Let me check the Nature specs reference and then ask a few key questions.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_RESULT: 1	# 期刊图表规范
+2	
+3	主流期刊对投稿图表的硬性要求汇总。**画图前先查目标期刊**，把栏宽、字号、DPI、推荐字体、矢量格式偏好记下来再开 matplotlib。
+4	
+5	## 目录
+6	
+7	- [Nature 系列](#nature-系列)
+8	- [Science](#science)
+9	- [IEEE](#ieee)
+10	- [Elsevier 系列](#elsevier-系列)
+11	- [PNAS](#pnas)
+12	- [中文核心期刊](#中文核心期刊通用要求)
+13	- [跨期刊速查表](#跨期刊速查表)
+14	- [中文字体安装指南](#中文字体安装指南)
+
+ASSISTANT: 好的，我按 sci-draw 工作流走，但现在卡在第一步——我没在 `figs/` 下找到 `figure3_v2.pdf`，也没找到生成它的源码或数据。
+
+要系统地帮你修图，我需要先搞清楚几个事情：
+
+---
+
+**1️⃣ 这个 Figure 3 讲的是什么结论？**
+- 是什么类型的图？bar chart / scatter / boxplot / 多 panel 组合？
+- 要说服读者什么核心观点？
+
+**2️⃣ 数据源在哪？**
+- 生成图用的 CSV / Excel 文件能给我吗？
+- 或者有没有生成这张图的 Python/R 脚本？
+
+**3️⃣ 统计细节**
+- error ba
+RESULT: 好的，我按 sci-draw 工作流走，但现在卡在第一步——我没在 `figs/` 下找到 `figure3_v2.pdf`，也没找到生成它的源码或数据。
+
+要系统地帮你修图，我需要先搞清楚几个事情：
+
+---
+
+**1️⃣ 这个 Figure 3 讲的是什么结论？**
+- 是什么类型的图？bar chart / scatter / boxplot / 多 panel 组合？
+- 要说服读者什么核心观点？
+
+**2️⃣ 数据源在哪？**
+- 生成图用的 CSV / Excel 文件能给我吗？
+- 或者有没有生成这张图的 Python/R 脚本？
+
+**3️⃣ 统计细节**
+- error ba

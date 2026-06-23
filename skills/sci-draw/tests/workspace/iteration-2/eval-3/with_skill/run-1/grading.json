@@ -1,0 +1,32 @@
+{
+  "eval_id": 3,
+  "config": "with_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Plans 4 figures with distinct conclusions",
+      "passed": true,
+      "evidence": "Each figure has unique core conclusion"
+    },
+    {
+      "text": "Visual vocabulary in Fig 1 reused",
+      "passed": true,
+      "evidence": "Colors/symbols defined in Fig 1, reused across"
+    },
+    {
+      "text": "Panel ordering follows narrative",
+      "passed": true,
+      "evidence": "System \u2192 effect \u2192 mechanism \u2192 robustness"
+    },
+    {
+      "text": "Shared elements across figures",
+      "passed": true,
+      "evidence": "Shared color mapping, legend conventions"
+    },
+    {
+      "text": "Each figure has archetype + panel map",
+      "passed": true,
+      "evidence": "All 4 figures fully specified"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+venv/
+sensor_venv/
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code local config
+.claude/
+/*.pdf
+/*.png
+/*.tiff
+/draw_nn_arch.py
+/sensor_dashboard/
+/eval-report.md
+

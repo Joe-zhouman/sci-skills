@@ -1,0 +1,26 @@
+=== QUERY ===
+帮我把这张扫描的实验记录本图片里的文字OCR出来，里面有表格数据和手写批注。输出成结构化的CSV格式。
+
+=== SKILL ===
+sci-draw-skill-9a2c4ff8
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: The transcript contains no tool calls, skill launches, or file reads matching 'sci-draw-skill-*'.
+
+=== TRANSCRIPT ===
+ASSISTANT: 我准备好OCR了，不过我没有看到你提到的图片文件。请把图片发给我：
+
+1. **直接上传图片文件**到对话中
+2. 或者告诉我图片的**本地文件路径**
+3. 如果图片已经在某个URL上，可以发链接给我
+
+收到后我会把图片里的实验记录本内容（包括表格数据和手写批注）OCR并输出成结构化的CSV格式。
+RESULT: 我准备好OCR了，不过我没有看到你提到的图片文件。请把图片发给我：
+
+1. **直接上传图片文件**到对话中
+2. 或者告诉我图片的**本地文件路径**
+3. 如果图片已经在某个URL上，可以发链接给我
+
+收到后我会把图片里的实验记录本内容（包括表格数据和手写批注）OCR并输出成结构化的CSV格式。

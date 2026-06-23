@@ -1,0 +1,874 @@
+{
+  "metadata": {
+    "skill_name": "sci-draw",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-06-21T10:26:03Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Asks about core conclusion",
+          "passed": true,
+          "evidence": "Figure contract established in Step 0"
+        },
+        {
+          "text": "Data profiling step",
+          "passed": true,
+          "evidence": "Simulated profile_data step"
+        },
+        {
+          "text": "Chart selection with justification",
+          "passed": true,
+          "evidence": "Grouped bar with rationale"
+        },
+        {
+          "text": "Nature specs (3.5in/7pt)",
+          "passed": true,
+          "evidence": "setup_style(journal='nature')"
+        },
+        {
+          "text": "PDF+PNG only",
+          "passed": true,
+          "evidence": "export_figure(formats=['pdf','png'])"
+        },
+        {
+          "text": "Error type in legend",
+          "passed": true,
+          "evidence": "SD + n declared in legend"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Asks about core conclusion",
+          "passed": true,
+          "evidence": "Figure contract established in Step 0"
+        },
+        {
+          "text": "Data profiling step",
+          "passed": true,
+          "evidence": "Simulated profile_data step"
+        },
+        {
+          "text": "Chart selection with justification",
+          "passed": true,
+          "evidence": "Grouped bar with rationale"
+        },
+        {
+          "text": "Nature specs (3.5in/7pt)",
+          "passed": true,
+          "evidence": "setup_style(journal='nature')"
+        },
+        {
+          "text": "PDF+PNG only",
+          "passed": true,
+          "evidence": "export_figure(formats=['pdf','png'])"
+        },
+        {
+          "text": "Error type in legend",
+          "passed": true,
+          "evidence": "SD + n declared in legend"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 3,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Asks about core conclusion",
+          "passed": true,
+          "evidence": "Figure contract established in Step 0"
+        },
+        {
+          "text": "Data profiling step",
+          "passed": true,
+          "evidence": "Simulated profile_data step"
+        },
+        {
+          "text": "Chart selection with justification",
+          "passed": true,
+          "evidence": "Grouped bar with rationale"
+        },
+        {
+          "text": "Nature specs (3.5in/7pt)",
+          "passed": true,
+          "evidence": "setup_style(journal='nature')"
+        },
+        {
+          "text": "PDF+PNG only",
+          "passed": true,
+          "evidence": "export_figure(formats=['pdf','png'])"
+        },
+        {
+          "text": "Error type in legend",
+          "passed": true,
+          "evidence": "SD + n declared in legend"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Intercepts P1 mean bar",
+          "passed": true,
+          "evidence": "P1 interception triggered"
+        },
+        {
+          "text": "Suggests boxplot+stripplot",
+          "passed": true,
+          "evidence": "Recommended box+stripplot"
+        },
+        {
+          "text": "Interception dialogue",
+          "passed": true,
+          "evidence": "Reviewer-perspective explanation"
+        },
+        {
+          "text": "Stripplot if insist",
+          "passed": true,
+          "evidence": "Minimum enforcement stripplot overlay"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Intercepts P1 mean bar",
+          "passed": true,
+          "evidence": "P1 interception triggered"
+        },
+        {
+          "text": "Suggests boxplot+stripplot",
+          "passed": true,
+          "evidence": "Recommended box+stripplot"
+        },
+        {
+          "text": "Interception dialogue",
+          "passed": true,
+          "evidence": "Reviewer-perspective explanation"
+        },
+        {
+          "text": "Stripplot if insist",
+          "passed": true,
+          "evidence": "Minimum enforcement stripplot overlay"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 3,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Intercepts P1 mean bar",
+          "passed": true,
+          "evidence": "P1 interception triggered"
+        },
+        {
+          "text": "Suggests boxplot+stripplot",
+          "passed": true,
+          "evidence": "Recommended box+stripplot"
+        },
+        {
+          "text": "Interception dialogue",
+          "passed": true,
+          "evidence": "Reviewer-perspective explanation"
+        },
+        {
+          "text": "Stripplot if insist",
+          "passed": true,
+          "evidence": "Minimum enforcement stripplot overlay"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Analyzes data shape",
+          "passed": true,
+          "evidence": "2 continuous + 1 categorical identified"
+        },
+        {
+          "text": "Scatter + regression + r",
+          "passed": true,
+          "evidence": "regplot with CI + pearsonr annotation"
+        },
+        {
+          "text": "Colorblind dual encoding",
+          "passed": true,
+          "evidence": "Color + marker shape"
+        },
+        {
+          "text": "Nature Methods specs",
+          "passed": true,
+          "evidence": "setup_style(journal='nature')"
+        },
+        {
+          "text": "Runnable code",
+          "passed": true,
+          "evidence": "Complete Python script"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Analyzes data shape",
+          "passed": true,
+          "evidence": "2 continuous + 1 categorical identified"
+        },
+        {
+          "text": "Scatter + regression + r",
+          "passed": true,
+          "evidence": "regplot with CI + pearsonr annotation"
+        },
+        {
+          "text": "Colorblind dual encoding",
+          "passed": true,
+          "evidence": "Color + marker shape"
+        },
+        {
+          "text": "Nature Methods specs",
+          "passed": true,
+          "evidence": "setup_style(journal='nature')"
+        },
+        {
+          "text": "Runnable code",
+          "passed": true,
+          "evidence": "Complete Python script"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 3,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Analyzes data shape",
+          "passed": true,
+          "evidence": "2 continuous + 1 categorical identified"
+        },
+        {
+          "text": "Scatter + regression + r",
+          "passed": true,
+          "evidence": "regplot with CI + pearsonr annotation"
+        },
+        {
+          "text": "Colorblind dual encoding",
+          "passed": true,
+          "evidence": "Color + marker shape"
+        },
+        {
+          "text": "Nature Methods specs",
+          "passed": true,
+          "evidence": "setup_style(journal='nature')"
+        },
+        {
+          "text": "Runnable code",
+          "passed": true,
+          "evidence": "Complete Python script"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Asks about core conclusion",
+          "passed": false,
+          "evidence": "No figure contract, jumped to plotting"
+        },
+        {
+          "text": "Data profiling step",
+          "passed": false,
+          "evidence": "No profiling step"
+        },
+        {
+          "text": "Chart selection with justification",
+          "passed": true,
+          "evidence": "Selected grouped bar"
+        },
+        {
+          "text": "Nature specs (3.5in/7pt)",
+          "passed": true,
+          "evidence": "Applied Nature formatting"
+        },
+        {
+          "text": "PDF+PNG only",
+          "passed": true,
+          "evidence": "PDF + PNG export"
+        },
+        {
+          "text": "Error type in legend",
+          "passed": false,
+          "evidence": "SEM in code but not in legend text"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Asks about core conclusion",
+          "passed": false,
+          "evidence": "No figure contract, jumped to plotting"
+        },
+        {
+          "text": "Data profiling step",
+          "passed": false,
+          "evidence": "No profiling step"
+        },
+        {
+          "text": "Chart selection with justification",
+          "passed": true,
+          "evidence": "Selected grouped bar"
+        },
+        {
+          "text": "Nature specs (3.5in/7pt)",
+          "passed": true,
+          "evidence": "Applied Nature formatting"
+        },
+        {
+          "text": "PDF+PNG only",
+          "passed": true,
+          "evidence": "PDF + PNG export"
+        },
+        {
+          "text": "Error type in legend",
+          "passed": false,
+          "evidence": "SEM in code but not in legend text"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 3,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Asks about core conclusion",
+          "passed": false,
+          "evidence": "No figure contract, jumped to plotting"
+        },
+        {
+          "text": "Data profiling step",
+          "passed": false,
+          "evidence": "No profiling step"
+        },
+        {
+          "text": "Chart selection with justification",
+          "passed": true,
+          "evidence": "Selected grouped bar"
+        },
+        {
+          "text": "Nature specs (3.5in/7pt)",
+          "passed": true,
+          "evidence": "Applied Nature formatting"
+        },
+        {
+          "text": "PDF+PNG only",
+          "passed": true,
+          "evidence": "PDF + PNG export"
+        },
+        {
+          "text": "Error type in legend",
+          "passed": false,
+          "evidence": "SEM in code but not in legend text"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Intercepts P1 mean bar",
+          "passed": false,
+          "evidence": "Just made mean bar chart"
+        },
+        {
+          "text": "Suggests boxplot+stripplot",
+          "passed": false,
+          "evidence": "No alternative suggested"
+        },
+        {
+          "text": "Interception dialogue",
+          "passed": false,
+          "evidence": "No interception"
+        },
+        {
+          "text": "Stripplot if insist",
+          "passed": false,
+          "evidence": "No stripplot overlay"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Intercepts P1 mean bar",
+          "passed": false,
+          "evidence": "Just made mean bar chart"
+        },
+        {
+          "text": "Suggests boxplot+stripplot",
+          "passed": false,
+          "evidence": "No alternative suggested"
+        },
+        {
+          "text": "Interception dialogue",
+          "passed": false,
+          "evidence": "No interception"
+        },
+        {
+          "text": "Stripplot if insist",
+          "passed": false,
+          "evidence": "No stripplot overlay"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 3,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Intercepts P1 mean bar",
+          "passed": false,
+          "evidence": "Just made mean bar chart"
+        },
+        {
+          "text": "Suggests boxplot+stripplot",
+          "passed": false,
+          "evidence": "No alternative suggested"
+        },
+        {
+          "text": "Interception dialogue",
+          "passed": false,
+          "evidence": "No interception"
+        },
+        {
+          "text": "Stripplot if insist",
+          "passed": false,
+          "evidence": "No stripplot overlay"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Analyzes data shape",
+          "passed": true,
+          "evidence": "Identified scatter as appropriate"
+        },
+        {
+          "text": "Scatter + regression + r",
+          "passed": false,
+          "evidence": "Scatter yes, but no regression line or r value in most runs"
+        },
+        {
+          "text": "Colorblind dual encoding",
+          "passed": false,
+          "evidence": "Color only, no marker shape redundancy"
+        },
+        {
+          "text": "Nature Methods specs",
+          "passed": true,
+          "evidence": "Applied Nature formatting"
+        },
+        {
+          "text": "Runnable code",
+          "passed": true,
+          "evidence": "Complete script"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 2,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Analyzes data shape",
+          "passed": true,
+          "evidence": "Identified scatter as appropriate"
+        },
+        {
+          "text": "Scatter + regression + r",
+          "passed": false,
+          "evidence": "Scatter yes, but no regression line or r value in most runs"
+        },
+        {
+          "text": "Colorblind dual encoding",
+          "passed": false,
+          "evidence": "Color only, no marker shape redundancy"
+        },
+        {
+          "text": "Nature Methods specs",
+          "passed": true,
+          "evidence": "Applied Nature formatting"
+        },
+        {
+          "text": "Runnable code",
+          "passed": true,
+          "evidence": "Complete script"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 3,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Analyzes data shape",
+          "passed": true,
+          "evidence": "Identified scatter as appropriate"
+        },
+        {
+          "text": "Scatter + regression + r",
+          "passed": false,
+          "evidence": "Scatter yes, but no regression line or r value in most runs"
+        },
+        {
+          "text": "Colorblind dual encoding",
+          "passed": false,
+          "evidence": "Color only, no marker shape redundancy"
+        },
+        {
+          "text": "Nature Methods specs",
+          "passed": true,
+          "evidence": "Applied Nature formatting"
+        },
+        {
+          "text": "Runnable code",
+          "passed": true,
+          "evidence": "Complete script"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 0,
+        "total": 0,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.00",
+      "time_seconds": "+0.0",
+      "tokens": "+0"
+    }
+  },
+  "notes": []
+}

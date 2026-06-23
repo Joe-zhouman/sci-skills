@@ -1,0 +1,18 @@
+=== QUERY ===
+I want to design a conference poster for our lab — A0 size, three column layout with text boxes, images, QR codes, and some charts embedded. Can you help me with the overall design and typography in Figma or Canva?
+
+=== SKILL ===
+sci-draw-skill-7fe956dc
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: The transcript only mentions sci-draw in text, with no actual tool call, skill launch, or read of a command file matching 'sci-draw-skill-*'.
+
+=== TRANSCRIPT ===
+ASSISTANT: Great idea! A well-designed conference poster can make a huge difference. While I can't directly operate Figma or Canva, I can definitely help you design the layout, typography system, and visual hierarchy — and use **sci-draw** to generate any charts/figures you need for it.
+
+Let's start with a few
+RESULT: Great idea! A well-designed conference poster can make a huge difference. While I can't directly operate Figma or Canva, I can definitely help you design the layout, typography system, and visual hierarchy — and use **sci-draw** to generate any charts/figures you need for it.
+
+Let's start with a few

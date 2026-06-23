@@ -1,0 +1,68 @@
+=== QUERY ===
+帮我做一个可交互的dashboard来展示我们实验室的实时传感器数据，用Plotly或者Dash，需要能筛选时间和设备类型，数据来自PostgreSQL数据库。
+
+=== SKILL ===
+sci-draw-skill-8c39feae
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo contents"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo contents"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Glob({"pattern": "**/*.{py,yml,yaml,json,toml,cfg,ini,env,sql,md}", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.{py,yml,yaml,json,toml,cfg,ini,env,sql,md}", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/references/nature-2026-observation
+ASSISTANT: Let我先规划一下这个项目，然后创建一个独立的仪表盘应用。
+TOOL_USE: EnterPlanMode({})
+TOOL_USE: EnterPlanMode({})
+TOOL_RESULT: Entered plan mode. You should now focus on exploring the codebase and designing an implementation approach.
+
+In plan mode, you should:
+1. Thoroughly explore the codebase to understand existing patterns
+2. Identify similar features and architectural approaches
+3. Consider multiple approaches and thei
+TOOL_USE: Bash({"command": "/home/joe/Documents/repo/skill/sci-draw/sensor_venv/bin/python --version 2>/dev/null; /home/joe/Documents/repo/skill/sci-draw/sensor_venv/bin/pip list 2>/dev/null | head -30", "description": "Check sensor_venv Python and packages"})
+TOOL_USE: Bash({"command": "/home/joe/Documents/repo/skill/sci-draw/sensor_venv/bin/python --version 2>/dev/null; /home/joe/Documents/repo/skill/sci-draw/sensor_venv/bin/pip list 2>/dev/null | head -30", "description": "Check sensor_venv Python and packages"})
+TOOL_USE: Bash({"command": "which psql 2>/dev/null; psql --version 2>/dev/null; pg_isready 2>/dev/null", "description": "Check PostgreSQL availability"})
+TOOL_USE: Bash({"command": "which psql 2>/dev/null; psql --version 2>/dev/null; pg_isready 2>/dev/null", "description": "Check PostgreSQL availability"})
+TOOL_RESULT: Python 3.9.13
+Package    Version
+---------- -------
+pip        22.0.4
+setuptools 58.1.0
+TOOL_RESULT: Exit code 127
+ASSISTANT: 有几个关键问题需要确认，我先问清楚再做方案。
+TOOL_USE: AskUserQuestion({"questions": [{"question": "PostgreSQL 在本机上未安装。你是希望我直接连已有的远程数据库，还是我先用 SQLite 做一个 mock 数据库来演示，方便后续切换到 PostgreSQL？", "header": "数据库", "options": [{"label": "SQLite mock", "description": "创建一个 SQLite mock 数据库，代码中通过 SQLAlchemy 抽象，后续只需改连接串即可切换到 PostgreSQL"}, {"label": "远程 PostgreSQL", "description": "你提供远程 PostgreSQL 的连接信息（host、port、db名、用户名、密码），我直接对接真实数据库"}]}, {"question": "传感器数据类型是什么？比如温度、湿度、压力、电压等？传感器数据表的大致结构是怎样的？", "header": "传感器类型", "options": [{"label": "通用模板", "description": "设计一个通用 schema（sensor_id, device_type, timestamp, value, unit），适配大多数实验室场景"}, {"label": "环境类", "description": "温度 (Temperature)、湿度 (Humidity)、气压 (Pressure)、CO2 等环境参数"}, {"label": "我来告诉你", "description": "在 Other 中描述你的具体传感器类型和表结构"}]}, {"question": "你更倾向于哪种技术方案？", "header": "技术选择", "options": [{"label": "Dash (推荐)", "description": "基于 Plotly Dash 构建完整 Web 应用，原生支持交互组件（日期选择器、下拉框等）+ Plotly 图表，适合实验室团队共享使用"}, {"label": "Plotly + Streamlit", "description": "更轻量，适合快速原型，交互组件用 Streamlit 自带控件"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "PostgreSQL 在本机上未安装。你是希望我直接连已有的远程数据库，还是我先用 SQLite 做一个 mock 数据库来演示，方便后续切换到 PostgreSQL？", "header": "数据库", "options": [{"label": "SQLite mock", "description": "创建一个 SQLite mock 数据库，代码中通过 SQLAlchemy 抽象，后续只需改连接串即可切换到 PostgreSQL"}, {"label": "远程 PostgreSQL", "description": "你提供远程 PostgreSQL 的连接信息（host、port、db名、用户名、密码），我直接对接真实数据库"}]}, {"question": "传感器数据类型是什么？比如温度、湿度、压力、电压等？传感器数据表的大致结构是怎样的？", "header": "传感器类型", "options": [{"label": "通用模板", "description": "设计一个通用 schema（sensor_id, device_type, timestamp, value, unit），适配大多数实验室场景"}, {"label": "环境类", "description": "温度 (Temperature)、湿度 (Humidity)、气压 (Pressure)、CO2 等环境参数"}, {"label": "我来告诉你", "description": "在 Other 中描述你的具体传感器类型和表结构"}]}, {"question": "你更倾向于哪种技术方案？", "header": "技术选择", "options": [{"label": "Dash (推荐)", "description": "基于 Plotly Dash 构建完整 Web 应用，原生支持交互组件（日期选择器、下拉框等）+ Plotly 图表，适合实验室团队共享使用"}, {"label": "Plotly + Streamlit", "description": "更轻量，适合快速原型，交互组件用 Streamlit 自带控件"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 我正在等待你对这几个问题的回答，这些信息会直接影响方案设计：
+
+1. **数据库** — 用 SQLite mock 先演示，还是直接连你的远程 PostgreSQL？
+2. **传感器类型** — 通用模板、环境类（温湿度气压）、还是你有特定的表结构？
+3. **技术栈** — Dash（功能完整的 Web 应用）还是 Plotly + Streamlit（更轻量）？
+
+请选择上述选项，我就可以立即出方案和代码。
+RESULT: 我正在等待你对这几个问题的回答，这些信息会直接影响方案设计：
+
+1. **数据库** — 用 SQLite mock 先演示，还是直接连你的远程 PostgreSQL？
+2. **传感器类型** — 通用模板、环境类（温湿度气压）、还是你有特定的表结构？
+3. **技术栈** — Dash（功能完整的 Web 应用）还是 Plotly + Streamlit（更轻量）？
+
+请选择上述选项，我就可以立即出方案和代码。

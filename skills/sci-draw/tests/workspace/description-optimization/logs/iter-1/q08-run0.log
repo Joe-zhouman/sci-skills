@@ -1,0 +1,121 @@
+=== QUERY ===
+帮我把这组生存分析数据画成Kaplan-Meier曲线。有三个治疗组，需要显示中位生存时间、censoring marks、log-rank检验的p值。figure要符合Nature Medicine的要求，censoring用竖线标记，risk table放在下方。
+
+=== SKILL ===
+sci-draw-skill-c3110711
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES, because a Skill tool call with skill name 'sci-draw-skill-6567c02b' was used.
+
+=== TRANSCRIPT ===
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in current directory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in current directory"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Skill({"skill": "sci-draw-skill-6567c02b", "args": "Kaplan-Meier曲线 生存分析 三个治疗组 Nature Medicine"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-6567c02b", "args": "Kaplan-Meier曲线 生存分析 三个治疗组 Nature Medicine"})
+TOOL_RESULT: Launching skill: sci-draw-skill-6567c02b
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-draw
+2	
+3	Submission-grade scientific figure workflow for high-impact journals.
+4	
+5	## Design Decisions
+6	
+7	### QA Strategy: Draft-First, User-Driven Iteration
+8	
+9	The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, m
+ASSISTANT: Thanks! Let me follow the sci-draw workflow for this **Kaplan-Meier survival curve** figure. First, I need to understand your data and requirements.
+
+Let me check the available references to ensure I match Nature Medicine's specs.
+TOOL_USE: Glob({"pattern": "**/references/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/references/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw"})
+TOOL_RESULT: sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/references/nature-2026-observations.md
+sci-draw/references/publicat
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_RESULT: 1	# 期刊图表规范
+2	
+3	主流期刊对投稿图表的硬性要求汇总。**画图前先查目标期刊**，把栏宽、字号、DPI、推荐字体、矢量格式偏好记下来再开 matplotlib。
+4	
+5	## 目录
+6	
+7	- [Nature 系列](#nature-系列)
+8	- [Science](#science)
+9	- [IEEE](#ieee)
+10	- [Elsevier 系列](#elsevier-系列)
+11	- [PNAS](#pnas)
+12	- [中文核心期刊](#中文核心期刊通用要求)
+13	- [跨期刊速查表](#跨期刊速查表)
+14	- [中文字体安装指南](#中文字体安装指南)
+
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_RESULT: 1	# 七类图配方
+2	
+3	每一节给一份**可直接运行的 Python 代码**——直接复制改数据就能出图。所有代码假设已经调过 `setup_style()`。
+4	
+5	## 目录
+6	
+7	- [通用前置](#通用前置)
+8	- [1. 折线图（含误差阴影）](#1-折线图含误差阴影)
+9	- [2. 柱状图（分组 + 误差棒）](#2-柱状图分组--误差棒)
+10	- [3. 散点图（多语义映射 + 回归线）](#3-散点图多语义映射--回归线)
+11	- [4. 箱线图 / 小提琴图（叠 stripplot）](#4-箱线图--小提琴图叠-stripplot)
+12	- [5. 热
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/figure-contract.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/figure-contract.md"})
+TOOL_RESULT: 1	# Figure Contract
+2	
+3	Use this reference before writing plotting code. The goal is to make the figure
+4	serve the paper's scientific logic.
+5	
+6	## Privacy rule
+7	
+8	Keep the figure contract user-facing, but keep the working trail private. Do not mention
+9	private paths, source filenames, interna
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/publication_checklist.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/publication_checklist.md"})
+TOOL_RESULT: 1	# 投稿前合规自检清单
+2	
+3	每张图投稿前**逐条勾选**。任何 FAIL 必须重新出图——`scripts/check_figure.py --strict` 是机器版的这份清单。
+4	
+5	> 这份清单只查**形式合规**（尺寸、DPI、字号、误差是否写明）。**语义层面**的避坑（均值柱掩盖分布、双 Y 轴误导、饼图等）在 [`viz_pitfalls.md`](viz_pitfalls.md) — 提交前两份清单都要过。
+6	
+7	## 目录
+8	
+9	- [尺寸 & 分辨率](#尺寸--分辨率)
+10	- [文件格式](#文件格式)
+11	- [字体 & 字号](#字体--字
+ASSISTANT: 好的！按照 **sci-draw** 工作流，我先定义 **Figure Contract**，然后出图。
+
+不过在开始之前——**你的数据在哪里？** 我没有看到你上传数据文件。请把生存分析数据发给我，格式可以是：
+
+| 方案 | 格式要求 |
+|------|----------|
+| **CSV/Excel** | 至少包含三列: `time` (生存时间), `event` (1=发生事件/死亡, 0=删失), `group` (治疗组名) |
+| **直接粘贴** | 在这里贴几行数据样本也可以 |
+| **没有现成数据** | 我也可以生成一份 demo 数据先跑通流程，你再替换真
+RESULT: 好的！按照 **sci-draw** 工作流，我先定义 **Figure Contract**，然后出图。
+
+不过在开始之前——**你的数据在哪里？** 我没有看到你上传数据文件。请把生存分析数据发给我，格式可以是：
+
+| 方案 | 格式要求 |
+|------|----------|
+| **CSV/Excel** | 至少包含三列: `time` (生存时间), `event` (1=发生事件/死亡, 0=删失), `group` (治疗组名) |
+| **直接粘贴** | 在这里贴几行数据样本也可以 |
+| **没有现成数据** | 我也可以生成一份 demo 数据先跑通流程，你再替换真

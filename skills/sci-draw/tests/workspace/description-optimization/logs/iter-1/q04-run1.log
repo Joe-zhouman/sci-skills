@@ -1,0 +1,40 @@
+=== QUERY ===
+I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction).
+
+=== SKILL ===
+sci-draw-skill-e8a15d9d
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: The assistant made Skill tool calls with the skill name starting with "sci-draw-skill-", and the tool result confirmed launching that skill.
+
+=== TRANSCRIPT ===
+ASSISTANT: Great, this is a perfect use case for the **sci-draw-skill** — let me fire it up to design a submission-grade figure with you.
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "I need a scientific figure for a Neuroscience paper (IEEE format, single column). I have 5 groups with n=6 each. My PI insists on mean bar charts but I know that's problematic with small samples. I need a better alternative that shows the actual data distribution — something like a beeswarm/strip plot with overlaid box or violin elements. I also need significance annotations between groups using Mann-Whitney U tests with Bonferroni correction."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "I need a scientific figure for a Neuroscience paper (IEEE format, single column). I have 5 groups with n=6 each. My PI insists on mean bar charts but I know that's problematic with small samples. I need a better alternative that shows the actual data distribution — something like a beeswarm/strip plot with overlaid box or violin elements. I also need significance annotations between groups using Mann-Whitney U tests with Bonferroni correction."})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+TOOL_USE: TaskCreate({"subject": "Clarify figure requirements for Neuroscience beeswarm plot", "description": "Understand the data structure, group labels, comparisons needed, and specific design preferences", "activeForm": "Clarifying figure requirements"})
+TOOL_USE: TaskCreate({"subject": "Clarify figure requirements for Neuroscience beeswarm plot", "description": "Understand the data structure, group labels, comparisons needed, and specific design preferences", "activeForm": "Clarifying figure requirements"})
+TOOL_RESULT: Task #1 created successfully: Clarify figure requirements for Neuroscience beeswarm plot
+TOOL_USE: TaskUpdate({"taskId": "1", "status": "in_progress"})
+TOOL_USE: TaskUpdate({"taskId": "1", "status": "in_progress"})
+TOOL_RESULT: Updated task #1 status
+ASSISTANT: Great, let's design this figure properly before writing any code. The sci-draw workflow starts by defining the figure **conclusion**, **evidence logic**, and **export specs**.
+
+You've already given me a strong start — here's where I need your input to lock things in:
+
+---
+
+### 📐 Figure Definition
+
+*
+RESULT: Great, let's design this figure properly before writing any code. The sci-draw workflow starts by defining the figure **conclusion**, **evidence logic**, and **export specs**.
+
+You've already given me a strong start — here's where I need your input to lock things in:
+
+---
+
+### 📐 Figure Definition
+
+*

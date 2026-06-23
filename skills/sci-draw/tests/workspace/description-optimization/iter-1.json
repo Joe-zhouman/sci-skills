@@ -1,0 +1,172 @@
+{
+  "iteration": 1,
+  "skill_name": "sci-draw",
+  "description": "Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.",
+  "summary": {
+    "total": 20,
+    "passed": 14,
+    "failed": 6
+  },
+  "results": [
+    {
+      "query": "我有一组实验数据在 results.csv 里，三组不同处理的细胞存活率，每组8个样本。我投的是Nature，需要画一个publication-ready的figure。帮我选个合适的图型，考虑到样本量不大，然后画出来。输出要PDF+PNG，300DPI，单栏宽度。",
+      "should_trigger": true,
+      "trigger_rate": 0.3333333333333333,
+      "triggers": 1,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "审稿人给了我一堆意见：error bar没标明是SD还是SEM，字体太小看不到，图例遮住了数据点，而且颜色在灰度打印下分不清。figs/figure3_v2.pdf。我需要按Nature的要求改，能帮我系统地修一遍吗？",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction).",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "here's my data file at ~/experiment/fig2_data.xlsx — columns are group, time_point, expression_level. I need a publication-ready figure for a Cell submission. The groups are control, treatment_A, treatment_B and n=8 per group. I'm not sure if I should use a line plot or boxplot — the time points are 0, 7, 14, 21, 28 days. Also need to make sure the colors work for colorblind reviewers.",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "帮我把这组生存分析数据画成Kaplan-Meier曲线。有三个治疗组，需要显示中位生存时间、censoring marks、log-rank检验的p值。figure要符合Nature Medicine的要求，censoring用竖线标记，risk table放在下方。",
+      "should_trigger": true,
+      "trigger_rate": 0.6666666666666666,
+      "triggers": 2,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "我在准备一篇综述论文，需要画一个方法比较的图：四种不同的算法在六个benchmark数据集上的表现。每个数据集一个subpanel，用grouped bar chart，error bar是标准差。需要统一y轴范围，加显著性标记。投的是Nature Reviews Methods Primers。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "我论文Figure 1需要四个panel：(a) PCA图显示三组样本的分离，(b) 不同处理组随时间变化的肿瘤体积曲线，(c) 第28天各组的箱线图比较，(d) 火山图显示差异表达基因。目标期刊是Science，双栏宽度。帮我规划一下布局，统一配色，然后逐个画出来。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "我有一组单细胞RNA-seq数据，想画一个stacked bar chart展示不同cluster在control和treatment组中的细胞比例差异。同时还需要一个volcano plot显示差异表达基因。两张图需要统一配色风格，一起作为Figure 2的ab两个panel。投Cell。",
+      "should_trigger": true,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "帮我用DALL-E生成一张细胞信号通路的机制图，要像Nature Reviews那种风格的，展示PI3K/AKT/mTOR通路的激活过程。",
+      "should_trigger": false,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "I need to create a flowchart showing our clinical trial workflow — from patient recruitment through randomization, treatment phases, follow-up visits, to final analysis. Something clean and professional for the Methods section of our NEJM paper.",
+      "should_trigger": false,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "帮我用Stable Diffusion生成一张论文封面的科幻风格图片，主题是量子计算和拓扑量子比特，要有蓝紫色调和几何线条。",
+      "should_trigger": false,
+      "trigger_rate": 0.6666666666666666,
+      "triggers": 2,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "能不能帮我画一个神经网络架构图？输入层是256维的embedding，经过三个LSTM隐藏层（128, 64, 32维），最后接一个softmax输出层。每层之间要有skip connection，还要标出dropout rate。",
+      "should_trigger": false,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "Can you make an interactive web visualization of our single-cell RNA-seq data? I want a UMAP with hover tooltips showing cell type annotations, gene expression levels, and sample metadata. Should be deployable as a standalone HTML file. Maybe using Bokeh or Plotly.",
+      "should_trigger": false,
+      "trigger_rate": 0.3333333333333333,
+      "triggers": 1,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "帮我做一个可交互的dashboard来展示我们实验室的实时传感器数据，用Plotly或者Dash，需要能筛选时间和设备类型，数据来自PostgreSQL数据库。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "帮我把这张扫描的实验记录本图片里的文字OCR出来，里面有表格数据和手写批注。输出成结构化的CSV格式。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "I want to design a conference poster for our lab — A0 size, three column layout with text boxes, images, QR codes, and some charts embedded. Can you help me with the overall design and typography in Figma or Canva?",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    },
+    {
+      "query": "我想做一个Graphical Abstract，是一个概念性的示意图展示我们的纳米药物如何通过EPR效应靶向肿瘤细胞，然后在酸性微环境中释放药物。不需要数据，就是示意图，要有箭头和标注。",
+      "should_trigger": false,
+      "trigger_rate": 1.0,
+      "triggers": 3,
+      "runs": 3,
+      "pass": false
+    },
+    {
+      "query": "帮我写一个Python脚本，读取多个CSV文件做数据清洗：处理缺失值、标准化数值列、one-hot编码分类变量、合并成一个大的特征矩阵。不需要画图，纯数据预处理pipeline。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true
+    }
+  ]
+}

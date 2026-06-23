@@ -1,0 +1,32 @@
+{
+  "eval_id": 3,
+  "config": "without_skill",
+  "run": 3,
+  "expectations": [
+    {
+      "text": "Analyzes data shape",
+      "passed": true,
+      "evidence": "Identified scatter as appropriate"
+    },
+    {
+      "text": "Scatter + regression + r",
+      "passed": false,
+      "evidence": "Scatter yes, but no regression line or r value in most runs"
+    },
+    {
+      "text": "Colorblind dual encoding",
+      "passed": false,
+      "evidence": "Color only, no marker shape redundancy"
+    },
+    {
+      "text": "Nature Methods specs",
+      "passed": true,
+      "evidence": "Applied Nature formatting"
+    },
+    {
+      "text": "Runnable code",
+      "passed": true,
+      "evidence": "Complete script"
+    }
+  ]
+}

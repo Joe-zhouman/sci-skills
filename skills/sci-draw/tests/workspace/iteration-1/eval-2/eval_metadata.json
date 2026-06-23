@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "I have 3 groups with n=6 each. I want a bar chart showing th",
+  "prompt": "I have 3 groups with n=6 each. I want a bar chart showing the mean with error bars for my Science paper.",
+  "expectations": []
+}

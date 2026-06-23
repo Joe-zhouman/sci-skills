@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "I'm preparing a manuscript on CRISPR gene editing efficiency",
+  "prompt": "I'm preparing a manuscript on CRISPR gene editing efficiency. I need 4 figures: Figure 1 is the experimental design schematic + validation, Figure 2 is editing efficiency comparison across 5 guide RNAs, Figure 3 is off-target analysis, Figure 4 is functional outcomes. Plan all four figures for Science.",
+  "expectations": []
+}

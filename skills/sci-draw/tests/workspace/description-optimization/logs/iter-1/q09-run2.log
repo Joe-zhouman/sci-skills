@@ -1,0 +1,45 @@
+=== QUERY ===
+我在准备一篇综述论文，需要画一个方法比较的图：四种不同的算法在六个benchmark数据集上的表现。每个数据集一个subpanel，用grouped bar chart，error bar是标准差。需要统一y轴范围，加显著性标记。投的是Nature Reviews Methods Primers。
+
+=== SKILL ===
+sci-draw-skill-a8f645ee
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-a8f645ee", "args": "Nature Reviews Methods Primers 综述论文方法比较图：四种算法在六个benchmark数据集上的表现对比，grouped bar chart + error bar（标准差），统一y轴范围，加显著性标记。请先做完整的figure定义和设计规划。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-a8f645ee", "args": "Nature Reviews Methods Primers 综述论文方法比较图：四种算法在六个benchmark数据集上的表现对比，grouped bar chart + error bar（标准差），统一y轴范围，加显著性标记。请先做完整的figure定义和设计规划。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-a8f645ee
+ASSISTANT: ## 🧪 方法比较图 — Figure Definition Phase
+
+在开始画图之前，我需要按 sci-draw 流程完成 **Figure Definition**。请提供以下信息：
+
+---
+
+### 1️⃣ 数据信息
+
+| 项目 | 说明 |
+|------|------|
+| **比较指标** | 用什么 metric？(Accuracy / F1-score / AUC / RMSE / 其他) |
+| **四种算法** | 分别叫什么名字？ |
+| **六个数据集** | 分别是哪些？ |
+| **数据值** | 每个算法 × 每个数据集的 **均值 ± 标准差** |
+| 
+RESULT: ## 🧪 方法比较图 — Figure Definition Phase
+
+在开始画图之前，我需要按 sci-draw 流程完成 **Figure Definition**。请提供以下信息：
+
+---
+
+### 1️⃣ 数据信息
+
+| 项目 | 说明 |
+|------|------|
+| **比较指标** | 用什么 metric？(Accuracy / F1-score / AUC / RMSE / 其他) |
+| **四种算法** | 分别叫什么名字？ |
+| **六个数据集** | 分别是哪些？ |
+| **数据值** | 每个算法 × 每个数据集的 **均值 ± 标准差** |
+| 

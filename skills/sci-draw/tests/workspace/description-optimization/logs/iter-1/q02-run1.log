@@ -1,0 +1,46 @@
+=== QUERY ===
+我论文Figure 1需要四个panel：(a) PCA图显示三组样本的分离，(b) 不同处理组随时间变化的肿瘤体积曲线，(c) 第28天各组的箱线图比较，(d) 火山图显示差异表达基因。目标期刊是Science，双栏宽度。帮我规划一下布局，统一配色，然后逐个画出来。
+
+=== SKILL ===
+sci-draw-skill-676d92ba
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 这个任务非常适合用 `sci-draw` skill 来处理。让我先加载它。
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805"})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好的！这是一个很标准的 Figure 1 结构。我先按 sci-draw 工作流来确认一下需求细节，然后再出图。
+
+## Step 1: 需求确认
+
+在开始画之前，我需要先问你几个关键问题：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你有实际的实验数据吗？如果有，请提供每个panel对应的数据文件（告诉我路径或直接粘贴）。如果没有，我可以生成高质量的合成数据来展示效果。", "header": "数据来源", "options": [{"label": "生成合成数据", "description": "你没有现成数据，我生成合理的合成数据来展示Figure 1的效果，说明代码框架你需要自己替换数据"}, {"label": "我有数据文件", "description": "你有实际数据文件，告诉我路径，我直接读取并绘图"}], "multiSelect": false}, {"question": "你倾向哪种layout？", "header": "面板布局", "options": [{"label": "2×2网格", "description": "经典四象限布局：(a)左上PCA / (b)右上肿瘤体积 / (c)左下箱线图 / (d)右下火山图。每panel约2.5×2.5英寸"}, {"label": "加宽顶部", "description": "(a)PCA横跨顶部，(b)(c)(d)在下面一行。适合PCA作为整体概览的情况"}], "multiSelect": false}, {"question": "三个分组分别是什么？以及你想用什么配色方案？", "header": "分组与配色", "options": [{"label": "Sham / Model / Treatment", "description": "Sham=假手术/对照(灰色或蓝色), Model=模型组(红色/橙色), Treatment=治疗组(绿色/青色)"}, {"label": "WT / KO / Rescue", "description": "WT=野生型, KO=基因敲除, Rescue=回救组"}, {"label": "Control / DrugA / DrugB", "description": "Control=对照组, DrugA=药物A组, DrugB=药物B组"}]}, {"question": "Science双栏宽度，你需要最终输出的格式是什么？", "header": "输出格式", "options": [{"label": "PDF (推荐)", "description": "矢量格式，最适合投稿。可直接在Illustrator中编辑标签"}, {"label": "PNG 600 DPI", "description": "位图格式，适合预览和快速分享"}, {"label": "两种都要", "description": "同时输出PDF和PNG"}], "multiSelect": false}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你有实际的实验数据吗？如果有，请提供每个panel对应的数据文件（告诉我路径或直接粘贴）。如果没有，我可以生成高质量的合成数据来展示效果。", "header": "数据来源", "options": [{"label": "生成合成数据", "description": "你没有现成数据，我生成合理的合成数据来展示Figure 1的效果，说明代码框架你需要自己替换数据"}, {"label": "我有数据文件", "description": "你有实际数据文件，告诉我路径，我直接读取并绘图"}], "multiSelect": false}, {"question": "你倾向哪种layout？", "header": "面板布局", "options": [{"label": "2×2网格", "description": "经典四象限布局：(a)左上PCA / (b)右上肿瘤体积 / (c)左下箱线图 / (d)右下火山图。每panel约2.5×2.5英寸"}, {"label": "加宽顶部", "description": "(a)PCA横跨顶部，(b)(c)(d)在下面一行。适合PCA作为整体概览的情况"}], "multiSelect": false}, {"question": "三个分组分别是什么？以及你想用什么配色方案？", "header": "分组与配色", "options": [{"label": "Sham / Model / Treatment", "description": "Sham=假手术/对照(灰色或蓝色), Model=模型组(红色/橙色), Treatment=治疗组(绿色/青色)"}, {"label": "WT / KO / Rescue", "description": "WT=野生型, KO=基因敲除, Rescue=回救组"}, {"label": "Control / DrugA / DrugB", "description": "Control=对照组, DrugA=药物A组, DrugB=药物B组"}]}, {"question": "Science双栏宽度，你需要最终输出的格式是什么？", "header": "输出格式", "options": [{"label": "PDF (推荐)", "description": "矢量格式，最适合投稿。可直接在Illustrator中编辑标签"}, {"label": "PNG 600 DPI", "description": "位图格式，适合预览和快速分享"}, {"label": "两种都要", "description": "同时输出PDF和PNG"}], "multiSelect": false}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 好的，问题已发出。在我等待你确认的同时，我先直接以合理的默认值开始布局规划——如果你有不同意见随时打断我。
+
+## 我规划的方案
+
+### 整体布局 (2×2网格 @ Science双栏宽度)
+
+```
++-----------------------------+-----------------------------+
+|  (a) PCA — 3组PC1/PC2散点   |  (b) 肿瘤体积曲线           |
+|  95%置信椭圆 + 样本点       |  Day 0→28, Mean±SEM        |
+|                            
+RESULT: 好的，问题已发出。在我等待你确认的同时，我先直接以合理的默认值开始布局规划——如果你有不同意见随时打断我。
+
+## 我规划的方案
+
+### 整体布局 (2×2网格 @ Science双栏宽度)
+
+```
++-----------------------------+-----------------------------+
+|  (a) PCA — 3组PC1/PC2散点   |  (b) 肿瘤体积曲线           |
+|  95%置信椭圆 + 样本点       |  Day 0→28, Mean±SEM        |
+|                            

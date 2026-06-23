@@ -1,0 +1,51 @@
+=== QUERY ===
+帮我把这组生存分析数据画成Kaplan-Meier曲线。有三个治疗组，需要显示中位生存时间、censoring marks、log-rank检验的p值。figure要符合Nature Medicine的要求，censoring用竖线标记，risk table放在下方。
+
+=== SKILL ===
+sci-draw-skill-c0ababff
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in the working directory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in the working directory"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/*.csv /home/joe/Documents/repo/skill/sci-draw/*.txt /home/joe/Documents/repo/skill/sci-draw/*.tsv /home/joe/Documents/repo/skill/sci-draw/*.xlsx 2>/dev/null || echo \"No data files found\"", "description": "Check for data files"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/*.csv /home/joe/Documents/repo/skill/sci-draw/*.txt /home/joe/Documents/repo/skill/sci-draw/*.tsv /home/joe/Documents/repo/skill/sci-draw/*.xlsx 2>/dev/null || echo \"No data files found\"", "description": "Check for data files"})
+TOOL_RESULT: No data files found
+TOOL_USE: Skill({"skill": "sci-draw-skill-80483b49", "args": "绘制Kaplan-Meier生存分析曲线"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-80483b49", "args": "绘制Kaplan-Meier生存分析曲线"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-80483b49</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-49cee384", "args": "绘制Kaplan-Meier生存分析曲线"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-49cee384", "args": "绘制Kaplan-Meier生存分析曲线"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-49cee384</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-e2518772", "args": "绘制Kaplan-Meier生存分析曲线"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-e2518772", "args": "绘制Kaplan-Meier生存分析曲线"})
+TOOL_RESULT: Launching skill: sci-draw-skill-e2518772
+ASSISTANT: 好的！在动手画图之前，我需要先拿到数据。请把你的生存分析数据发给我，需要的格式是 CSV 或 Excel 文件，至少包含以下三列：
+
+| 列名 | 说明 | 示例 |
+|------|------|------|
+| `time` | 生存时间（天/月/年） | 12, 24, 36... |
+| `status` | 事件状态（1=发生事件/death, 0=删失/censored） | 1, 0 |
+| `group` | 治疗分组（三个组） | "Control", "Drug A", "Drug B" |
+
+你可以直接粘贴数据表格内容，或者上传文件。拿到数据后我会用 Python 直接
+RESULT: 好的！在动手画图之前，我需要先拿到数据。请把你的生存分析数据发给我，需要的格式是 CSV 或 Excel 文件，至少包含以下三列：
+
+| 列名 | 说明 | 示例 |
+|------|------|------|
+| `time` | 生存时间（天/月/年） | 12, 24, 36... |
+| `status` | 事件状态（1=发生事件/death, 0=删失/censored） | 1, 0 |
+| `group` | 治疗分组（三个组） | "Control", "Drug A", "Drug B" |
+
+你可以直接粘贴数据表格内容，或者上传文件。拿到数据后我会用 Python 直接

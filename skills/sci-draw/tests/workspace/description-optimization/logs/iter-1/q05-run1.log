@@ -1,0 +1,56 @@
+=== QUERY ===
+我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。
+
+=== SKILL ===
+sci-draw-skill-e08649ef
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好的，我们先按照 sci-draw 的工作流来走：先查看数据，然后进行前期讨论与设计规划。
+
+先看看数据长什么样：
+TOOL_USE: Bash({"command": "ls -la expression_matrix.tsv 2>/dev/null || find . -name \"expression_matrix.tsv\" -type f 2>/dev/null", "description": "Locate expression_matrix.tsv"})
+TOOL_USE: Bash({"command": "cd /home/joe/Documents/repo/skill/sci-draw && ls -la expression_matrix.tsv 2>/dev/null || find . -name \"expression_matrix.tsv\" -type f 2>/dev/null", "description": "Locate expression_matrix.tsv"})
+TOOL_RESULT: (Bash completed with no output)
+TOOL_USE: Glob({"pattern": "**/*expression_matrix*"})
+TOOL_USE: Glob({"pattern": "**/*expression_matrix*"})
+TOOL_RESULT: No files found
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f -name \"*.tsv\" -o -name \"*.csv\" -o -name \"*.txt\" 2>/dev/null | head -20", "description": "Search for any data files in repo"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f -name \"*.tsv\" -o -name \"*.csv\" -o -name \"*.txt\" 2>/dev/null | head -20", "description": "Search for any data files in repo"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/c7a986e0-019e-4ef2-b73f-d05d12a2dd78/tool-results/bl1sg37jj.txt
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-ski
+ASSISTANT: 我没有在当前目录找到 `expression_matrix.tsv` 文件。这个文件在你的工作目录里吗？还是你需要我先用示例数据生成一个？
+
+如果数据在你机器上其他地方，请把它复制到当前目录，或者直接上传给我。
+
+---
+
+同时，按照 sci-draw 的流程，开始绘制前我们先对齐一下设计：
+
+### 前期设计讨论
+
+| 问题 | 建议/选项 |
+|---|---|
+| **数据概况** | 50基因 × 12样本的表达矩阵。列名是样本名，行名是基因名？表达值是 log2(FPKM) / log2(TPM) / Z-score / raw count？ |
+| **行排序** | 你说按 cl
+RESULT: 我没有在当前目录找到 `expression_matrix.tsv` 文件。这个文件在你的工作目录里吗？还是你需要我先用示例数据生成一个？
+
+如果数据在你机器上其他地方，请把它复制到当前目录，或者直接上传给我。
+
+---
+
+同时，按照 sci-draw 的流程，开始绘制前我们先对齐一下设计：
+
+### 前期设计讨论
+
+| 问题 | 建议/选项 |
+|---|---|
+| **数据概况** | 50基因 × 12样本的表达矩阵。列名是样本名，行名是基因名？表达值是 log2(FPKM) / log2(TPM) / Z-score / raw count？ |
+| **行排序** | 你说按 cl

@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "I have a CSV file with columns: method (5 methods), metric1,",
+  "prompt": "I have a CSV file with columns: method (5 methods), metric1, metric2, metric3, each with mean and std. I need a Nature-style grouped bar chart with error bars for my paper. The file is at data/results.csv.",
+  "expectations": []
+}

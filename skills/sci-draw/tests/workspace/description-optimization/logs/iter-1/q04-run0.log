@@ -1,0 +1,32 @@
+=== QUERY ===
+I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction).
+
+=== SKILL ===
+sci-draw-skill-8549b0b2
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: The assistant used `Skill({"skill": "sci-draw-skill-98c40805"})` twice and received a corresponding launch result.
+
+=== TRANSCRIPT ===
+ASSISTANT: This is a great fit for the scientific figure workflow. Let me invoke the skill to help you create a publication-ready figure that shows individual data points rather than just mean bars.
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "I need a single-column IEEE-format Neuroscience figure showing 5 groups (n=6 each). Instead of mean bar charts, I want a better visualization that shows the actual data distribution — thinking something like stripcharts/beeswarm plots with overlaid summary stats. Also need significance annotations from Mann-Whitney U tests with Bonferroni correction. The figure should be submission-grade for a Neuroscience journal (IEEE format, single column)."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "I need a single-column IEEE-format Neuroscience figure showing 5 groups (n=6 each). Instead of mean bar charts, I want a better visualization that shows the actual data distribution — thinking something like stripcharts/beeswarm plots with overlaid summary stats. Also need significance annotations from Mann-Whitney U tests with Bonferroni correction. The figure should be submission-grade for a Neuroscience journal (IEEE format, single column)."})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: Great — let me work through the **sci-draw** workflow for this figure. First, I need to define the figure's purpose and gather your data before plotting.
+
+## Figure Definition Phase
+
+Let me clarify a few things before I write any code:
+
+**1. Data — do you have actual numbers?**
+You said 5 groups × n
+RESULT: Great — let me work through the **sci-draw** workflow for this figure. First, I need to define the figure's purpose and gather your data before plotting.
+
+## Figure Definition Phase
+
+Let me clarify a few things before I write any code:
+
+**1. Data — do you have actual numbers?**
+You said 5 groups × n

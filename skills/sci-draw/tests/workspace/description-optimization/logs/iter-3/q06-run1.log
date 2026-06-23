@@ -1,0 +1,112 @@
+=== QUERY ===
+我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。
+
+=== SKILL ===
+sci-draw-skill-3f3ff3d0
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-3f3ff3d0
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in sci-draw directory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List files in sci-draw directory"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/requirements.txt
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/referenc
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_RESULT: 1	# 期刊图表规范
+2	
+3	主流期刊对投稿图表的硬性要求汇总。**画图前先查目标期刊**，把栏宽、字号、DPI、推荐字体、矢量格式偏好记下来再开 matplotlib。
+4	
+5	## 目录
+6	
+7	- [Nature 系列](#nature-系列)
+8	- [Science](#science)
+9	- [IEEE](#ieee)
+10	- [Elsevier 系列](#elsevier-系列)
+11	- [PNAS](#pnas)
+12	- [中文核心期刊](#中文核心期刊通用要求)
+13	- [跨期刊速查表](#跨期刊速查表)
+14	- [中文字体安装指南](#中文字体安装指南)
+
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_RESULT: 1	# 七类图配方
+2	
+3	每一节给一份**可直接运行的 Python 代码**——直接复制改数据就能出图。所有代码假设已经调过 `setup_style()`。
+4	
+5	## 目录
+6	
+7	- [通用前置](#通用前置)
+8	- [1. 折线图（含误差阴影）](#1-折线图含误差阴影)
+9	- [2. 柱状图（分组 + 误差棒）](#2-柱状图分组--误差棒)
+10	- [3. 散点图（多语义映射 + 回归线）](#3-散点图多语义映射--回归线)
+11	- [4. 箱线图 / 小提琴图（叠 stripplot）](#4-箱线图--小提琴图叠-stripplot)
+12	- [5. 热
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/common-patterns.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/common-patterns.md"})
+TOOL_RESULT: 1	# Common Patterns — Nature Figure Making
+2	
+3	Reusable layout and encoding patterns used across publication-grade scripts.
+4	
+5	## Table of Contents
+6	
+7	- Pattern 1: Ultra-wide multi-metric bar panel
+8	- Pattern 2: Dedicated legend panel
+9	- Pattern 3: Categorical bars without x-tick labels
+10	- 
+ASSISTANT: 您好！我来帮您绘制British Journal of Pharmacology (BJP) 投稿用的concentration-response曲线。
+
+在开始之前，我需要先确认您的实验数据。请提供以下信息：
+
+### 1️⃣ 实验数据
+请提供您的浓度和抑制率数据，格式例如（用逗号或制表符分隔均可）：
+
+| 浓度 (M) | 抑制率 (%) |
+|-----------|-----------|
+| 1×10⁻⁹ | 5 |
+| 1×10⁻⁸ | 12 |
+| 1×10⁻⁷ | 28 |
+| ... | ... |
+
+或者直接贴一个CSV/txt格式的原始数据。
+
+### 2️⃣ 确认以下设
+RESULT: 您好！我来帮您绘制British Journal of Pharmacology (BJP) 投稿用的concentration-response曲线。
+
+在开始之前，我需要先确认您的实验数据。请提供以下信息：
+
+### 1️⃣ 实验数据
+请提供您的浓度和抑制率数据，格式例如（用逗号或制表符分隔均可）：
+
+| 浓度 (M) | 抑制率 (%) |
+|-----------|-----------|
+| 1×10⁻⁹ | 5 |
+| 1×10⁻⁸ | 12 |
+| 1×10⁻⁷ | 28 |
+| ... | ... |
+
+或者直接贴一个CSV/txt格式的原始数据。
+
+### 2️⃣ 确认以下设

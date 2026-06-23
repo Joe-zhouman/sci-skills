@@ -1,0 +1,86 @@
+=== QUERY ===
+我想做一个Graphical Abstract，是一个概念性的示意图展示我们的纳米药物如何通过EPR效应靶向肿瘤细胞，然后在酸性微环境中释放药物。不需要数据，就是示意图，要有箭头和标注。
+
+=== SKILL ===
+sci-draw-skill-d1f1eaa8
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: The assistant made two Skill tool calls with `"sci-draw-skill-d1f1eaa8"` and received a `Launching skill: sci-draw-skill-d1f1eaa8` result.
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-d1f1eaa8", "args": "Graphical Abstract: 概念性示意图展示纳米药物通过EPR效应靶向肿瘤细胞，在酸性微环境中释放药物。需要箭头和标注。不需要数据，纯示意图。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-d1f1eaa8", "args": "Graphical Abstract: 概念性示意图展示纳米药物通过EPR效应靶向肿瘤细胞，在酸性微环境中释放药物。需要箭头和标注。不需要数据，纯示意图。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-d1f1eaa8
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/CLAUDE.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/CLAUDE.md"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Glob({"pattern": "**/*.py", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.py", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_comparison.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_ablation.py
+sci-draw/assets/figures4papers/figure_Cflows/diffusion_swiss_roll.py
+sci-draw/assets/figures4papers/figure_Dispersion/plot_idea
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/setup_style.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/setup_style.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: setup_style.py
+3	=======================================
+4	Publication-grade matplotlib / seaborn style configuration.
+5	
+6	应用出版级样式预设。支持 nature / ieee / science / general 四种期刊预设，
+7	支持中英文（lang='zh'/'en'），中文模式按优先级自动查找
+8	Noto Sans CJK SC > Source Han Sans SC > SimHei > Microsoft YaH
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/layout_tools.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/layout_tools.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: layout_tools.py
+3	========================================
+4	排版安全网 + 多面板子图编号对齐。
+5	
+6	解决两类高频成图问题：
+7	
+8	1. **子图 a/b/c 编号乱放、横竖不对齐** —— `add_panel_labels()`
+9	   把每个标签锚定在各子图的 ``axes fraction (0,1)``（左上角），再统一施加
+10	   **同一个 points 偏移**。由于同一列子图的左边缘 figure-x 相同、同一行子图
+11	   的上边缘 figure-y 
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/export_figure.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/export_figure.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: export_figure.py
+3	=============================
+4	Unified figure export — PDF (vector) + PNG (raster) at exact final size.
+5	
+6	- PDF: vector, lossless, editable text (TrueType fonttype 42). Primary format.
+7	- PNG: raster at user-specified DPI (default 300). For manuscripts tha
+ASSISTANT: Let me also look at the existing illustration example to understand the style patterns:
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/figures4papers/figure_Dispersion/plot_illustration.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/figures4papers/figure_Dispersion/plot_illustration.py"})
+TOOL_RESULT: 1	import os
+2	import numpy as np
+3	import matplotlib.pyplot as plt
+4	from matplotlib.lines import Line2D
+5	from matplotlib.patches import FancyArrowPatch
+6	from mpl_toolkits.mplot3d import proj3d
+7	import matplotlib.cm as cm
+8	
+9	
+10	EPSILON = 1e-6
+11	
+12	def pairwise_sqdist(X: np.ndarray) -> np.nda
+ASSISTANT: Now let me look at the visual QA helper to understand the review process:
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/visual_qa.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/visual_qa.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: visual_qa.py
+3	=====================================
+4	出图后的「程序自检」+「渲染预览」——自检闭环的机器那一层。
+5	
+6	设计分工：
+7	- **程序（本脚本）** 抓**确定性**问题：缺字乱码、文字越界裁切、刻度标签重叠。
+8	- **AI 读图**（见 references/visual_review.md）抓**感知性**问题：图例压数据、
+9	  子图标签是否对齐、配色灰度可分、整体观感。
+10	
+11	两层串起来才是完整的「出图 → 渲 PNG → 程序自检 + AI 读图 → 回改

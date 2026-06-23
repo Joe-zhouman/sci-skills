@@ -1,0 +1,65 @@
+=== QUERY ===
+我在准备一篇综述论文，需要画一个方法比较的图：四种不同的算法在六个benchmark数据集上的表现。每个数据集一个subpanel，用grouped bar chart，error bar是标准差。需要统一y轴范围，加显著性标记。投的是Nature Reviews Methods Primers。
+
+=== SKILL ===
+sci-draw-skill-d2d567b1
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-d2d567b1", "args": "绘制方法比较图：四种算法在六个benchmark数据集上的表现对比。使用grouped bar chart，每个数据集一个子图(subpanel)，需要error bar（标准差），统一y轴范围，加显著性标记。目标期刊：Nature Reviews Methods Primers。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-d2d567b1", "args": "绘制方法比较图：四种算法在六个benchmark数据集上的表现对比。使用grouped bar chart，每个数据集一个子图(subpanel)，需要error bar（标准差），统一y轴范围，加显著性标记。目标期刊：Nature Reviews Methods Primers。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-d2d567b1</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-1a1b1030", "args": "绘制方法比较图：四种算法在六个benchmark数据集上的表现对比。使用grouped bar chart，每个数据集一个子图(subpanel)，需要error bar（标准差），统一y轴范围，加显著性标记。目标期刊：Nature Reviews Methods Primers。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-1a1b1030", "args": "绘制方法比较图：四种算法在六个benchmark数据集上的表现对比。使用grouped bar chart，每个数据集一个子图(subpanel)，需要error bar（标准差），统一y轴范围，加显著性标记。目标期刊：Nature Reviews Methods Primers。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-1a1b1030
+ASSISTANT: 好的！我来帮你绘制这篇 Nature Reviews Methods Primers 投稿用的方法比较图。
+
+在开始之前，我需要了解一些关键信息。先看看当前项目目录的情况：
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/ 2>/dev/null | head -30", "description": "Check project directory contents"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/ 2>/dev/null | head -30", "description": "Check project directory contents"})
+TOOL_USE: Glob({"pattern": "*.py", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "*.py", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_comparison.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_ablation.py
+sci-draw/assets/figures4papers/figure_Cflows/diffusion_swiss_roll.py
+sci-draw/assets/figures4papers/figure_Dispersion/plot_idea
+TOOL_RESULT: eval-report.md
+neural_network_diagram.pdf
+neural_network_diagram.png
+nn_architecture.png
+README.md
+sci-draw
+sensor_venv
+ASSISTANT: 好的，我已经看到项目中有不少期刊级别的绘图脚本可以参考。我先查阅一下 Nature Reviews Methods Primers 的绘图规范，以及项目中已有的高质量对比图脚本，确保风格一致。
+
+在开始生成代码之前，我需要先问你几个关键问题来收集数据和规格：
+
+---
+
+**关于数据**：你的四种算法和六个数据集的具体名称是什么？以及对应的性能指标（均值±标准差）是多少？
+
+比如我可以先做一个**模拟数据版**让你看看效果，你再替换成真实数据。但在那之前，请告诉我：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你的四种算法名称是什么？例如: Method-A, Method-B, Method-C, Method-D (或者真实名称)", "header": "算法名称", "multiSelect": false, "options": [{"label": "我先用占位名", "description": "算法A / 算法B / 算法C / 算法D，后续你替换为真实名称"}, {"label": "直接告诉我真名", "description": "我直接提供四个算法的真实名称"}]}, {"question": "你的六个benchmark数据集名称是什么？", "header": "数据集", "multiSelect": false, "options": [{"label": "我先用占位名", "description": "Dataset-1 ~ Dataset-6，后续替换"}, {"label": "提供真实名称", "description": "直接提供六个数据集名称"}]}, {"question": "你更倾向于哪种数据输入方式？", "header": "数据输入", "multiSelect": false, "options": [{"label": "CSV文件", "description": "我准备一个CSV文件，程序自动读取"}, {"label": "代码内嵌", "description": "直接在Python脚本中以字典/数组形式定义数据"}, {"label": "先用模拟数据", "description": "你先用随机生成的数据生成图，我后面替换真实数值"}]}, {"question": "性能指标是什么（y轴）？", "header": "评价指标", "multiSelect": false, "options": [{"label": "Accuracy", "description": "分类准确率（%）"}, {"label": "F1-Score", "description": "F1分数"}, {"label": "AUROC", "description": "AUC-ROC"}, {"label": "其他/自定义", "description": "其他指标，我会在后面指定"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你的四种算法名称是什么？例如: Method-A, Method-B, Method-C, Method-D (或者真实名称)", "header": "算法名称", "multiSelect": false, "options": [{"label": "我先用占位名", "description": "算法A / 算法B / 算法C / 算法D，后续你替换为真实名称"}, {"label": "直接告诉我真名", "description": "我直接提供四个算法的真实名称"}]}, {"question": "你的六个benchmark数据集名称是什么？", "header": "数据集", "multiSelect": false, "options": [{"label": "我先用占位名", "description": "Dataset-1 ~ Dataset-6，后续替换"}, {"label": "提供真实名称", "description": "直接提供六个数据集名称"}]}, {"question": "你更倾向于哪种数据输入方式？", "header": "数据输入", "multiSelect": false, "options": [{"label": "CSV文件", "description": "我准备一个CSV文件，程序自动读取"}, {"label": "代码内嵌", "description": "直接在Python脚本中以字典/数组形式定义数据"}, {"label": "先用模拟数据", "description": "你先用随机生成的数据生成图，我后面替换真实数值"}]}, {"question": "性能指标是什么（y轴）？", "header": "评价指标", "multiSelect": false, "options": [{"label": "Accuracy", "description": "分类准确率（%）"}, {"label": "F1-Score", "description": "F1分数"}, {"label": "AUROC", "description": "AUC-ROC"}, {"label": "其他/自定义", "description": "其他指标，我会在后面指定"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 请看看上面的问题，回答后我就可以开始生成符合 Nature Reviews Methods Primers 风格的高质量对比图了！你的答案会帮我确定：
+
+- **图表布局**：6个子图（2行×3列 或 3行×2列）
+- **配色方案**：Nature Reviews 偏好的色盲友好调色板
+- **数据格式**：CSV 或内嵌数据字典
+- **统计分析**：显著性标记（星号体系 \*p<0.05, \*\*p<0.01, \*\*\*p<0.001）
+
+告诉我你的选择，我立即开始！
+RESULT: 请看看上面的问题，回答后我就可以开始生成符合 Nature Reviews Methods Primers 风格的高质量对比图了！你的答案会帮我确定：
+
+- **图表布局**：6个子图（2行×3列 或 3行×2列）
+- **配色方案**：Nature Reviews 偏好的色盲友好调色板
+- **数据格式**：CSV 或内嵌数据字典
+- **统计分析**：显著性标记（星号体系 \*p<0.05, \*\*p<0.01, \*\*\*p<0.001）
+
+告诉我你的选择，我立即开始！

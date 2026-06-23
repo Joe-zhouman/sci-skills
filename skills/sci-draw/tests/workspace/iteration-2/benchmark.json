@@ -1,0 +1,323 @@
+{
+  "metadata": {
+    "skill_name": "sci-draw",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-06-21T11:40:45Z",
+    "evals_run": [
+      1,
+      2,
+      3
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Establishes figure contract (core conclusion, archetype)",
+          "passed": true,
+          "evidence": "Contract with core conclusion + archetype in output"
+        },
+        {
+          "text": "Plans panel layout with evidence hierarchy",
+          "passed": true,
+          "evidence": "Hero panel (nanoparticle char) + supporting panels (release, viability)"
+        },
+        {
+          "text": "Maps each panel to a unique claim",
+          "passed": true,
+          "evidence": "Each panel answers distinct question"
+        },
+        {
+          "text": "Nature Materials journal specs",
+          "passed": true,
+          "evidence": "3.5in single-col, Helvetica, 7pt"
+        },
+        {
+          "text": "Generates figure description file",
+          "passed": true,
+          "evidence": "fig_description.md with core conclusion, data, stats, findings"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Profiles data to check n per group",
+          "passed": true,
+          "evidence": "n=8 noted as acceptable"
+        },
+        {
+          "text": "Selects line + error band for time series",
+          "passed": true,
+          "evidence": "Line + fill_between with CI"
+        },
+        {
+          "text": "Does NOT intercept (n=8 acceptable)",
+          "passed": true,
+          "evidence": "No interception triggered"
+        },
+        {
+          "text": "Exports PDF + PNG with Nature specs",
+          "passed": true,
+          "evidence": "export_figure(formats=['pdf','png'])"
+        },
+        {
+          "text": "Generates fig_description.md",
+          "passed": true,
+          "evidence": "Description with core conclusion, stats, findings"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Plans 4 figures with distinct conclusions",
+          "passed": true,
+          "evidence": "Each figure has unique core conclusion"
+        },
+        {
+          "text": "Visual vocabulary in Fig 1 reused",
+          "passed": true,
+          "evidence": "Colors/symbols defined in Fig 1, reused across"
+        },
+        {
+          "text": "Panel ordering follows narrative",
+          "passed": true,
+          "evidence": "System \u2192 effect \u2192 mechanism \u2192 robustness"
+        },
+        {
+          "text": "Shared elements across figures",
+          "passed": true,
+          "evidence": "Shared color mapping, legend conventions"
+        },
+        {
+          "text": "Each figure has archetype + panel map",
+          "passed": true,
+          "evidence": "All 4 figures fully specified"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.4,
+        "passed": 2,
+        "failed": 3,
+        "total": 5,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Establishes figure contract (core conclusion, archetype)",
+          "passed": false,
+          "evidence": "No formal contract, just layout suggestion"
+        },
+        {
+          "text": "Plans panel layout with evidence hierarchy",
+          "passed": true,
+          "evidence": "Suggests panel layout"
+        },
+        {
+          "text": "Maps each panel to a unique claim",
+          "passed": false,
+          "evidence": "Panels listed but not mapped to claims"
+        },
+        {
+          "text": "Nature Materials journal specs",
+          "passed": true,
+          "evidence": "Mentions Nature Materials formatting"
+        },
+        {
+          "text": "Generates figure description file",
+          "passed": false,
+          "evidence": "No description file concept"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6,
+        "passed": 3,
+        "failed": 2,
+        "total": 5,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Profiles data to check n per group",
+          "passed": false,
+          "evidence": "No profiling step"
+        },
+        {
+          "text": "Selects line + error band for time series",
+          "passed": true,
+          "evidence": "Line plot with error"
+        },
+        {
+          "text": "Does NOT intercept (n=8 acceptable)",
+          "passed": true,
+          "evidence": "No interception (correct, n=8 is fine)"
+        },
+        {
+          "text": "Exports PDF + PNG with Nature specs",
+          "passed": true,
+          "evidence": "PDF + PNG export"
+        },
+        {
+          "text": "Generates fig_description.md",
+          "passed": false,
+          "evidence": "No description file"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.2,
+        "passed": 1,
+        "failed": 4,
+        "total": 5,
+        "time_seconds": null,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Plans 4 figures with distinct conclusions",
+          "passed": true,
+          "evidence": "4 figures described"
+        },
+        {
+          "text": "Visual vocabulary in Fig 1 reused",
+          "passed": false,
+          "evidence": "No visual vocabulary concept"
+        },
+        {
+          "text": "Panel ordering follows narrative",
+          "passed": false,
+          "evidence": "No explicit narrative logic"
+        },
+        {
+          "text": "Shared elements across figures",
+          "passed": false,
+          "evidence": "No cross-figure consistency planning"
+        },
+        {
+          "text": "Each figure has archetype + panel map",
+          "passed": false,
+          "evidence": "No archetype or evidence hierarchy"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.4,
+        "stddev": 0.2,
+        "min": 0.2,
+        "max": 0.6
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.60",
+      "time_seconds": "+0.0",
+      "tokens": "+0"
+    }
+  },
+  "notes": []
+}

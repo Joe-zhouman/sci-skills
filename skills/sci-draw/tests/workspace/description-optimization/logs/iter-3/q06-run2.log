@@ -1,0 +1,57 @@
+=== QUERY ===
+我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。
+
+=== SKILL ===
+sci-draw-skill-fc72a5fc
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-fc72a5fc", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-fc72a5fc", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-fc72a5fc</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-1fd3068d", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-1fd3068d", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-1fd3068d</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-780bef69", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-780bef69", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-780bef69</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-adae0b4d", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-adae0b4d", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-adae0b4d</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-80483b49", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-80483b49", "args": "画concentration-response曲线，x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-80483b49
+ASSISTANT: 好的！我来帮您画这张BJP投稿用的concentration-response曲线。不过在开始之前，我需要先确认一些信息：
+
+**请提供您的实验数据**，理想格式如下（CSV或直接粘贴均可）：
+
+| Concentration (M) | Inhibition (%) | [可选: SD/SEM, n] |
+|---|---|---|
+| 1e-9 | 5.2 | ± 2.1 |
+| 1e-8 | 8.7 | ± 3.0 |
+| 1e-7 | 18.3 | ± 4.2 |
+| ... | ... | ... |
+| 1e-3 | 92.5 | ± 3.8 |
+
+另外还有几个问题：
+
+1. **
+RESULT: 好的！我来帮您画这张BJP投稿用的concentration-response曲线。不过在开始之前，我需要先确认一些信息：
+
+**请提供您的实验数据**，理想格式如下（CSV或直接粘贴均可）：
+
+| Concentration (M) | Inhibition (%) | [可选: SD/SEM, n] |
+|---|---|---|
+| 1e-9 | 5.2 | ± 2.1 |
+| 1e-8 | 8.7 | ± 3.0 |
+| 1e-7 | 18.3 | ± 4.2 |
+| ... | ... | ... |
+| 1e-3 | 92.5 | ± 3.8 |
+
+另外还有几个问题：
+
+1. **

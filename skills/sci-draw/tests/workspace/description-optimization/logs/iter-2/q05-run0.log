@@ -1,0 +1,40 @@
+=== QUERY ===
+我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。
+
+=== SKILL ===
+sci-draw-skill-ad9be47f
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: Let me first look at the data to understand its structure.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Glob({"pattern": "**/*expression*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*expression*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/tests/workspace/iteration-1/eval-3/with_skill/run-2/outputs/scatter_gene_expression.py
+sci-draw/tests/workspace/iteration-1/eval-3/with_skill/run-2/outputs/scatter_gene_expression.pdf
+sci-draw/tests/workspace/iteration-1/eval-3/with_skill/run-2/outputs/scatter_gene_expression.png
+sci-draw/t
+TOOL_USE: Glob({"pattern": "**/*.tsv", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.tsv", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "**/*.csv", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.csv", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/tests/workspace/iteration-2/eval-2/with_skill/run-1/outputs/tumor_data.csv
+ASSISTANT: 数据文件 `expression_matrix.tsv` 在当前仓库中不存在。不过我可以用 sci-draw 技能来帮你创建这个热图。有两个选择：
+
+1. **你提供数据** — 把 `expression_matrix.tsv` 文件放到当前目录下，我直接处理
+2. **我生成示例数据** — 按你描述的 50 基因 × 12 样本规格，生成一组有 Biology 可读性的模拟表达数据来画图
+
+你倾向哪个？或者数据文件在别的位置？
+RESULT: 数据文件 `expression_matrix.tsv` 在当前仓库中不存在。不过我可以用 sci-draw 技能来帮你创建这个热图。有两个选择：
+
+1. **你提供数据** — 把 `expression_matrix.tsv` 文件放到当前目录下，我直接处理
+2. **我生成示例数据** — 按你描述的 50 基因 × 12 样本规格，生成一组有 Biology 可读性的模拟表达数据来画图
+
+你倾向哪个？或者数据文件在别的位置？

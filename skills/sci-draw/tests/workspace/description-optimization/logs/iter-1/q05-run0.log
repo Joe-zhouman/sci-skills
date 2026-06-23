@@ -1,0 +1,81 @@
+=== QUERY ===
+我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。
+
+=== SKILL ===
+sci-draw-skill-c17904ba
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: The assistant made two Skill tool_use calls with the skill name "sci-draw-skill-98c40805", which matches the trigger pattern.
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "基因表达热图 50基因 12样本 PNAS colorblind-safe colormap cluster排序 列按处理组分组 annotation bar PDF矢量图"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "基因表达热图 50基因 12样本 PNAS colorblind-safe colormap cluster排序 列按处理组分组 annotation bar PDF矢量图"})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好，我来按 sci-draw 工作流处理这个 PNAS 级别的热图。先读数据，再规划，后出图。
+
+---
+
+## 第一步：数据探索
+
+先看一下 expression_matrix.tsv 的结构。
+TOOL_USE: Bash({"command": "head -20 /home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv | cat -A", "description": "Inspect TSV structure with special chars visible"})
+TOOL_USE: Bash({"command": "head -20 /home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv | cat -A", "description": "Inspect TSV structure with special chars visible"})
+TOOL_RESULT: head: cannot open '/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv' for reading: No such file or directory
+TOOL_USE: Bash({"command": "wc -l /home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv", "description": "Count lines in TSV"})
+TOOL_USE: Bash({"command": "wc -l /home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv", "description": "Count lines in TSV"})
+TOOL_RESULT: Exit code 1
+wc: /home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv: No such file or directory
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f -name \"expression_matrix*\" 2>/dev/null", "description": "Find expression_matrix files in repo"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f -name \"expression_matrix*\" 2>/dev/null", "description": "Find expression_matrix files in repo"})
+TOOL_RESULT: (Bash completed with no output)
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f \\( -name \"*.tsv\" -o -name \"*.csv\" -o -name \"*.txt\" -o -name \"*.xlsx\" \\) 2>/dev/null | head -30", "description": "Find all data files in repo"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f \\( -name \"*.tsv\" -o -name \"*.csv\" -o -name \"*.txt\" -o -name \"*.xlsx\" \\) 2>/dev/null | head -30", "description": "Find all data files in repo"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/c7a986e0-019e-4ef2-b73f-d05d12a2dd78/tool-results/bl1sg37jj.txt
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-ski
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo root contents"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo root contents"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/sci-draw/", "description": "List sci-draw subdirectory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/sci-draw/", "description": "List sci-draw subdirectory"})
+TOOL_RESULT: total 48
+drwxrwxr-x 6 joe joe  4096 6月  23 12:53 .
+drwxrwxr-x 5 joe joe  4096 6月  23 13:42 ..
+drwxrwxr-x 5 joe joe  4096 6月  21 16:06 assets
+drwxrwxr-x 2 joe joe  4096 6月  21 18:34 references
+-rw-rw-r-- 1 joe joe   244 6月  21 16:06 requirements.txt
+drwxrwxr-x 3 joe joe  4096 6月  22 21:50 scripts
+-rw
+ASSISTANT: 数据文件 `expression_matrix.tsv` 在当前仓库中不存在。我需要您帮忙：
+
+**请提供数据** — 您能上传或粘贴 `expression_matrix.tsv` 的内容吗？它需要是 50 行（基因）× 12 列（样本）的矩阵格式，第一列是基因名，第一行是样本名。
+
+**或者**，如果您允许，我可以用合理的模拟表达数据创建一个示例 TSV 文件，然后出完整的热图代码和 PDF。这样您可以验证流程，之后再替换真实数据。
+
+另外，按照 sci-draw 工作流，作图前需要确认几个设计决策：
+
+### 📋 作图前确认清单
+
+| 项目 | 需要你确认 |
+|---|---|
+| *
+RESULT: 数据文件 `expression_matrix.tsv` 在当前仓库中不存在。我需要您帮忙：
+
+**请提供数据** — 您能上传或粘贴 `expression_matrix.tsv` 的内容吗？它需要是 50 行（基因）× 12 列（样本）的矩阵格式，第一列是基因名，第一行是样本名。
+
+**或者**，如果您允许，我可以用合理的模拟表达数据创建一个示例 TSV 文件，然后出完整的热图代码和 PDF。这样您可以验证流程，之后再替换真实数据。
+
+另外，按照 sci-draw 工作流，作图前需要确认几个设计决策：
+
+### 📋 作图前确认清单
+
+| 项目 | 需要你确认 |
+|---|---|
+| *

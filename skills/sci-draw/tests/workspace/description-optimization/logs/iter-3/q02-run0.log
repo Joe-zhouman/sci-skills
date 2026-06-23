@@ -1,0 +1,40 @@
+=== QUERY ===
+我论文Figure 1需要四个panel：(a) PCA图显示三组样本的分离，(b) 不同处理组随时间变化的肿瘤体积曲线，(c) 第28天各组的箱线图比较，(d) 火山图显示差异表达基因。目标期刊是Science，双栏宽度。帮我规划一下布局，统一配色，然后逐个画出来。
+
+=== SKILL ===
+sci-draw-skill-f8e95a59
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+ASSISTANT: This is a perfect task for the scientific visualization skill. Let me first get a clear picture of your data before designing the layout.
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "Help me create Figure 1 for my Science paper with four panels: (a) PCA, (b) tumor growth curves, (c) day 28 boxplot, (d) volcano plot. Need layout planning, unified color scheme, and panel-by-panel rendering."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "Help me create Figure 1 for my Science paper with four panels: (a) PCA, (b) tumor growth curves, (c) day 28 boxplot, (d) volcano plot. Need layout planning, unified color scheme, and panel-by-panel rendering."})
+TOOL_RESULT: Launching skill: sci-draw-skill-3f3ff3d0
+ASSISTANT: 欢迎！我来帮你搞定这篇**Science**论文的Figure 1。
+
+在开始画图之前，我需要先了解你的数据。你能提供或描述一下以下内容吗？
+
+## 1. 数据现状
+
+| Panel | 需要的数据 |
+|-------|-----------|
+| **(a) PCA 图** | 基因表达矩阵（行=基因/特征，列=样本），带样本分组信息 |
+| **(b) 肿瘤生长曲线** | 每个时间点每只小鼠的肿瘤体积，带分组标签 |
+| **(c) 第28天箱线图** | 第28天各组的肿瘤体积数据 |
+| **(d) 火山图** | 差异表达分析结果（gene, log2FC, p-value/pa
+RESULT: 欢迎！我来帮你搞定这篇**Science**论文的Figure 1。
+
+在开始画图之前，我需要先了解你的数据。你能提供或描述一下以下内容吗？
+
+## 1. 数据现状
+
+| Panel | 需要的数据 |
+|-------|-----------|
+| **(a) PCA 图** | 基因表达矩阵（行=基因/特征，列=样本），带样本分组信息 |
+| **(b) 肿瘤生长曲线** | 每个时间点每只小鼠的肿瘤体积，带分组标签 |
+| **(c) 第28天箱线图** | 第28天各组的肿瘤体积数据 |
+| **(d) 火山图** | 差异表达分析结果（gene, log2FC, p-value/pa

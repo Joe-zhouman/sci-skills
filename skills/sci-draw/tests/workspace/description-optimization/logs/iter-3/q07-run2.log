@@ -1,0 +1,183 @@
+=== QUERY ===
+我有一组单细胞RNA-seq数据，想画一个stacked bar chart展示不同cluster在control和treatment组中的细胞比例差异。同时还需要一个volcano plot显示差异表达基因。两张图需要统一配色风格，一起作为Figure 2的ab两个panel。投Cell。
+
+=== SKILL ===
+sci-draw-skill-780bef69
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-780bef69", "args": "我需要为一篇Cell期刊投稿制作Figure 2的两个panel。具体来说：\n\n1. **Panel a**: Stacked bar chart — 展示单细胞RNA-seq数据中不同cluster在control组和treatment组之间的细胞比例差异\n2. **Panel b**: Volcano plot — 展示差异表达基因（DEGs）\n\n要求：\n- 两组图需要统一的配色风格（Cell期刊风格，colorblind-safe配色）\n- 格式要求：Cell期刊标准（宽度、字体、分辨率等）\n- 数据我会提供，需要先帮我设计好完整的代码框架，我填入数据即可运行\n- 我需要模拟数据来预览效果\n\n请帮我用R（ggplot2）或Python（matplotlib/seaborn）实现都可以。推荐用R，因为ComplexHeatmap等包更适合生物信息学作图。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-780bef69", "args": "我需要为一篇Cell期刊投稿制作Figure 2的两个panel。具体来说：\n\n1. **Panel a**: Stacked bar chart — 展示单细胞RNA-seq数据中不同cluster在control组和treatment组之间的细胞比例差异\n2. **Panel b**: Volcano plot — 展示差异表达基因（DEGs）\n\n要求：\n- 两组图需要统一的配色风格（Cell期刊风格，colorblind-safe配色）\n- 格式要求：Cell期刊标准（宽度、字体、分辨率等）\n- 数据我会提供，需要先帮我设计好完整的代码框架，我填入数据即可运行\n- 我需要模拟数据来预览效果\n\n请帮我用R（ggplot2）或Python（matplotlib/seaborn）实现都可以。推荐用R，因为ComplexHeatmap等包更适合生物信息学作图。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-780bef69</tool_use_error>
+ASSISTANT: 明白了，我直接为你构建完整的 R 脚本。推荐用 **R (ggplot2 + patchwork)** 实现，兼容Cell期刊标准。我会生成：
+
+1. 一套完整的模拟数据，可直接运行出图
+2. 统一配色（colorblind-safe + Cell风格）
+3. 拼接为 Figure 2 a/b
+
+先看一下项目目录结构：
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/", "description": "List project directory"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/", "description": "List project directory"})
+TOOL_RESULT: eval-report.md
+neural_network_diagram.pdf
+neural_network_diagram.png
+nn_architecture.png
+README.md
+sci-draw
+sensor_venv
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-draw
+2	
+3	Submission-grade scientific figure workflow for high-impact journals.
+4	
+5	## Design Decisions
+6	
+7	### QA Strategy: Draft-First, User-Driven Iteration
+8	
+9	The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, m
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/sci-draw/", "description": "List sci-draw subdirectory"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/sci-draw/", "description": "List sci-draw subdirectory"})
+TOOL_RESULT: assets
+references
+requirements.txt
+scripts
+sensor_dashboard
+SKILL.md
+tests
+TOOL_USE: Skill({"skill": "sci-draw-skill-49cee384", "args": "I need to create Figure 2 (panels a and b) for a Cell journal submission with single-cell RNA-seq data.\n\n**Panel a**: Stacked bar chart showing cell cluster proportions in control vs treatment groups\n**Panel b**: Volcano plot showing differentially expressed genes (DEGs)\n\nRequirements:\n- Unified color scheme (Cell journal style, colorblind-safe)\n- Cell journal formatting standards (width, fonts, resolution)\n- Two panels arranged side by side as Figure 2\n- R (ggplot2) implementation preferred\n- Need mock/demo data to preview before using real data\n- Figure export at 300+ DPI, suitable for Cell submission"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-49cee384", "args": "I need to create Figure 2 (panels a and b) for a Cell journal submission with single-cell RNA-seq data.\n\n**Panel a**: Stacked bar chart showing cell cluster proportions in control vs treatment groups\n**Panel b**: Volcano plot showing differentially expressed genes (DEGs)\n\nRequirements:\n- Unified color scheme (Cell journal style, colorblind-safe)\n- Cell journal formatting standards (width, fonts, resolution)\n- Two panels arranged side by side as Figure 2\n- R (ggplot2) implementation preferred\n- Need mock/demo data to preview before using real data\n- Figure export at 300+ DPI, suitable for Cell submission"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-49cee384</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-e2518772", "args": "I need to create Figure 2 (panels a and b) for a Cell journal submission with single-cell RNA-seq data.\n\n**Panel a**: Stacked bar chart showing cell cluster proportions in control vs treatment groups\n**Panel b**: Volcano plot showing differentially expressed genes (DEGs)\n\nRequirements:\n- Unified color scheme (Cell journal style, colorblind-safe)\n- Cell journal formatting standards (width, fonts, resolution)\n- Two panels arranged side by side as Figure 2\n- R (ggplot2) implementation preferred\n- Need mock/demo data to preview before using real data\n- Figure export at 300+ DPI, suitable for Cell submission"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-e2518772", "args": "I need to create Figure 2 (panels a and b) for a Cell journal submission with single-cell RNA-seq data.\n\n**Panel a**: Stacked bar chart showing cell cluster proportions in control vs treatment groups\n**Panel b**: Volcano plot showing differentially expressed genes (DEGs)\n\nRequirements:\n- Unified color scheme (Cell journal style, colorblind-safe)\n- Cell journal formatting standards (width, fonts, resolution)\n- Two panels arranged side by side as Figure 2\n- R (ggplot2) implementation preferred\n- Need mock/demo data to preview before using real data\n- Figure export at 300+ DPI, suitable for Cell submission"})
+TOOL_RESULT: Launching skill: sci-draw-skill-e2518772
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-draw
+3	description: >-
+4	  Scientific data visualization for creating publication-quality plots from
+5	  experimental data. Use when the user asks to create, revise, or audit
+6	  data-driven figures: statistical plots, bar/box/scatter charts, heatmaps,
+7	  dose-response curves, sur
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references"})
+TOOL_USE: Glob({"pattern": "**/*.py", "path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts"})
+TOOL_USE: Glob({"pattern": "**/*.py", "path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts"})
+TOOL_RESULT: sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/references/nature-2026-observations.md
+sci-draw/references/publicat
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/scripts/export_figure.py
+sci-draw/scripts/profile_data.py
+sci-draw/scripts/check_figure.py
+sci-draw/scripts/setup_style.py
+sci-draw/scripts/visual_qa.py
+ASSISTANT: 好的，根据 sci-draw 工作流，我先进行 **Step 0: Figure contract** 和查阅相关参考，再写代码。让我先看看期刊规范和图表食谱。
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md"})
+TOOL_RESULT: 1	# 期刊图表规范
+2	
+3	主流期刊对投稿图表的硬性要求汇总。**画图前先查目标期刊**，把栏宽、字号、DPI、推荐字体、矢量格式偏好记下来再开 matplotlib。
+4	
+5	## 目录
+6	
+7	- [Nature 系列](#nature-系列)
+8	- [Science](#science)
+9	- [IEEE](#ieee)
+10	- [Elsevier 系列](#elsevier-系列)
+11	- [PNAS](#pnas)
+12	- [中文核心期刊](#中文核心期刊通用要求)
+13	- [跨期刊速查表](#跨期刊速查表)
+14	- [中文字体安装指南](#中文字体安装指南)
+
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/api.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/api.md"})
+TOOL_RESULT: 1	# 七类图配方
+2	
+3	每一节给一份**可直接运行的 Python 代码**——直接复制改数据就能出图。所有代码假设已经调过 `setup_style()`。
+4	
+5	## 目录
+6	
+7	- [通用前置](#通用前置)
+8	- [1. 折线图（含误差阴影）](#1-折线图含误差阴影)
+9	- [2. 柱状图（分组 + 误差棒）](#2-柱状图分组--误差棒)
+10	- [3. 散点图（多语义映射 + 回归线）](#3-散点图多语义映射--回归线)
+11	- [4. 箱线图 / 小提琴图（叠 stripplot）](#4-箱线图--小提琴图叠-stripplot)
+12	- [5. 热
+TOOL_RESULT: 1	# API Reference — sci-draw
+2	
+3	Conventions, constants, and reusable code blocks. Implement in your script or adapt as needed.
+4	
+5	## Table of Contents
+6	
+7	- Constants (PALETTE, DEFAULT_COLORS, PALETTE_NMI_PASTEL, modality palettes)
+8	- MANDATORY font + PDF rules
+9	- apply_publication_style()
+10
+ASSISTANT: 好的！按照 sci-draw 工作流，我先梳理 **Figure contract（Step 0）**，然后查 **Cell 期刊规范**，再写完整代码。先让我看看脚本工具的具体用法：
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/setup_style.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/setup_style.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/export_figure.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/export_figure.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/layout_tools.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/layout_tools.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: export_figure.py
+3	=============================
+4	Unified figure export — PDF (vector) + PNG (raster) at exact final size.
+5	
+6	- PDF: vector, lossless, editable text (TrueType fonttype 42). Primary format.
+7	- PNG: raster at user-specified DPI (default 300). For manuscripts tha
+TOOL_RESULT: 1	"""
+2	sci-draw :: setup_style.py
+3	=======================================
+4	Publication-grade matplotlib / seaborn style configuration.
+5	
+6	应用出版级样式预设。支持 nature / ieee / science / general 四种期刊预设，
+7	支持中英文（lang='zh'/'en'），中文模式按优先级自动查找
+8	Noto Sans CJK SC > Source Han Sans SC > SimHei > Microsoft YaH
+TOOL_RESULT: 1	"""
+2	sci-draw :: layout_tools.py
+3	========================================
+4	排版安全网 + 多面板子图编号对齐。
+5	
+6	解决两类高频成图问题：
+7	
+8	1. **子图 a/b/c 编号乱放、横竖不对齐** —— `add_panel_labels()`
+9	   把每个标签锚定在各子图的 ``axes fraction (0,1)``（左上角），再统一施加
+10	   **同一个 points 偏移**。由于同一列子图的左边缘 figure-x 相同、同一行子图
+11	   的上边缘 figure-y 
+ASSISTANT: Now I have a thorough understanding of the infrastructure. Let me create the complete Figure 2 script. Following the workflow:
+
+**Figure Contract:**
+- **Core conclusion**: Treatment reshapes cellular composition and induces a distinct transcriptional program
+- **Panel A**: Stacked bar showing cluste
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/ 2>/dev/null; ls /home/joe/Documents/repo/skill/sci-draw/figs/ 2>/dev/null; ls /home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt 2>/dev/null && cat /home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt", "description": "Check assets, figs dirs and requirements"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/ 2>/dev/null; ls /home/joe/Documents/repo/skill/sci-draw/figs/ 2>/dev/null; ls /home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt 2>/dev/null && cat /home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt", "description": "Check assets, figs dirs and requirements"})
+TOOL_RESULT: chart-atlas
+figures4papers
+gallery
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt
+matplotlib>=3.7
+seaborn>=0.13
+Pillow>=10.0
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+
+# Optional (skill degrades gracefully if missing)
+# SciencePlots>=2.1
+# pypdf>=4.0
+# PyMuPDF>=1.23      # only for visu

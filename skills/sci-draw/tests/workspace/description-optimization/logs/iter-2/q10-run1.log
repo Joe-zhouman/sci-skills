@@ -1,0 +1,26 @@
+=== QUERY ===
+帮我用DALL-E生成一张细胞信号通路的机制图，要像Nature Reviews那种风格的，展示PI3K/AKT/mTOR通路的激活过程。
+
+=== SKILL ===
+sci-draw-skill-b41adb90
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: I'd be happy to help! However, I **don't have direct access to DALL-E** or any image generation model in this environment. But I can help you in several practical ways:
+
+## Option 1: I'll craft a detailed DALL-E prompt for you
+
+You can copy-paste this into DALL-E (via ChatGPT, Bing, etc.):
+
+> **Prom
+RESULT: I'd be happy to help! However, I **don't have direct access to DALL-E** or any image generation model in this environment. But I can help you in several practical ways:
+
+## Option 1: I'll craft a detailed DALL-E prompt for you
+
+You can copy-paste this into DALL-E (via ChatGPT, Bing, etc.):
+
+> **Prom

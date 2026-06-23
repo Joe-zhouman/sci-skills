@@ -1,0 +1,32 @@
+=== QUERY ===
+帮我做一个可交互的dashboard来展示我们实验室的实时传感器数据，用Plotly或者Dash，需要能筛选时间和设备类型，数据来自PostgreSQL数据库。
+
+=== SKILL ===
+sci-draw-skill-266b7596
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 好的，这个任务很明确！在动手写代码之前，我先问几个关键问题来确认细节：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "数据库连接信息：你希望我在代码中直接嵌入实际连接参数，还是使用环境变量/配置文件的方式（更安全）？", "header": "数据库配置", "options": [{"label": "环境变量方式", "description": "从环境变量读取 DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD"}, {"label": "配置文件方式", "description": "使用 config.ini 或 .env 文件管理数据库连接"}, {"label": "直接嵌入", "description": "直接写在代码里（仅限开发/演示环境）"}]}, {"question": "传感器数据表的结构是什么样的？请描述一下表名和主要字段（比如时间戳、设备ID、传感器类型、数值等）。如果没有现成的表，我可以建一个示例表结构。", "header": "数据表结构", "options": [{"label": "我有现成的表", "description": "我来描述已有表的结构"}, {"label": "帮我设计示例表", "description": "我来创建一个标准的示例表结构供演示使用"}]}, {"question": "你希望展示哪些类型的可视化图表？", "header": "图表类型", "options": [{"label": "时间序列折线图", "description": "主要展示各传感器数值随时间变化的趋势"}, {"label": "组合视图", "description": "折线图 + 实时仪表盘卡片 + 统计摘要"}, {"label": "多种图表", "description": "折线图、柱状图、热力图、散点图等多个视图"}]}, {"question": "你希望部署成什么形式？是本地运行的脚本、Flask/FastAPI 后端服务，还是 Docker 容器化部署？", "header": "部署方式", "options": [{"label": "本地脚本运行", "description": "一个 .py 文件，直接 python app.py 运行"}, {"label": "Docker 容器化", "description": "包含 Dockerfile，便于部署到服务器"}, {"label": "Flask/FastAPI 服务", "description": "作为 Web 服务运行，可集成到现有后端"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "数据库连接信息：你希望我在代码中直接嵌入实际连接参数，还是使用环境变量/配置文件的方式（更安全）？", "header": "数据库配置", "options": [{"label": "环境变量方式", "description": "从环境变量读取 DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD"}, {"label": "配置文件方式", "description": "使用 config.ini 或 .env 文件管理数据库连接"}, {"label": "直接嵌入", "description": "直接写在代码里（仅限开发/演示环境）"}]}, {"question": "传感器数据表的结构是什么样的？请描述一下表名和主要字段（比如时间戳、设备ID、传感器类型、数值等）。如果没有现成的表，我可以建一个示例表结构。", "header": "数据表结构", "options": [{"label": "我有现成的表", "description": "我来描述已有表的结构"}, {"label": "帮我设计示例表", "description": "我来创建一个标准的示例表结构供演示使用"}]}, {"question": "你希望展示哪些类型的可视化图表？", "header": "图表类型", "options": [{"label": "时间序列折线图", "description": "主要展示各传感器数值随时间变化的趋势"}, {"label": "组合视图", "description": "折线图 + 实时仪表盘卡片 + 统计摘要"}, {"label": "多种图表", "description": "折线图、柱状图、热力图、散点图等多个视图"}]}, {"question": "你希望部署成什么形式？是本地运行的脚本、Flask/FastAPI 后端服务，还是 Docker 容器化部署？", "header": "部署方式", "options": [{"label": "本地脚本运行", "description": "一个 .py 文件，直接 python app.py 运行"}, {"label": "Docker 容器化", "description": "包含 Dockerfile，便于部署到服务器"}, {"label": "Flask/FastAPI 服务", "description": "作为 Web 服务运行，可集成到现有后端"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 好的，我问了以下几个问题，需要你帮忙确认一下：
+
+1. **数据库配置方式** — 你希望用环境变量、配置文件、还是直接写在代码里？
+2. **数据表结构** — 你的传感器数据表是已经存在的，还是需要我创建一个示例表结构？
+3. **图表类型** — 你主要想看时间序列折线图、组合仪表盘、还是多种图表混合？
+4. **部署方式** — 想要一个 `.py` 文件直接运行、Docker 容器化、还是作为 Web 服务集成？
+
+你先回答这些，我来根据你的需求定制最合适的方案 👍
+RESULT: 好的，我问了以下几个问题，需要你帮忙确认一下：
+
+1. **数据库配置方式** — 你希望用环境变量、配置文件、还是直接写在代码里？
+2. **数据表结构** — 你的传感器数据表是已经存在的，还是需要我创建一个示例表结构？
+3. **图表类型** — 你主要想看时间序列折线图、组合仪表盘、还是多种图表混合？
+4. **部署方式** — 想要一个 `.py` 文件直接运行、Docker 容器化、还是作为 Web 服务集成？
+
+你先回答这些，我来根据你的需求定制最合适的方案 👍

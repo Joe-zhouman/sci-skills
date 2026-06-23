@@ -1,0 +1,32 @@
+{
+  "eval_id": 2,
+  "config": "without_skill",
+  "run": 1,
+  "expectations": [
+    {
+      "text": "Profiles data to check n per group",
+      "passed": false,
+      "evidence": "No profiling step"
+    },
+    {
+      "text": "Selects line + error band for time series",
+      "passed": true,
+      "evidence": "Line plot with error"
+    },
+    {
+      "text": "Does NOT intercept (n=8 acceptable)",
+      "passed": true,
+      "evidence": "No interception (correct, n=8 is fine)"
+    },
+    {
+      "text": "Exports PDF + PNG with Nature specs",
+      "passed": true,
+      "evidence": "PDF + PNG export"
+    },
+    {
+      "text": "Generates fig_description.md",
+      "passed": false,
+      "evidence": "No description file"
+    }
+  ]
+}

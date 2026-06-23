@@ -1,0 +1,47 @@
+=== QUERY ===
+我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。
+
+=== SKILL ===
+sci-draw-skill-3a4ff96d
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-3a4ff96d", "args": "绘制药理学concentration-response曲线。x轴：对数刻度，药物浓度10^-9到10^-3 M。y轴：抑制率百分比。需要四参数logistic拟合（四参数logistic曲线），标注IC50值和95%置信区间。期刊：British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3a4ff96d", "args": "绘制药理学concentration-response曲线。x轴：对数刻度，药物浓度10^-9到10^-3 M。y轴：抑制率百分比。需要四参数logistic拟合（四参数logistic曲线），标注IC50值和95%置信区间。期刊：British Journal of Pharmacology（Elsevier），要求EPS格式。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-3a4ff96d
+ASSISTANT: 好的！在开始绘制之前，我需要先确认几个关键信息，确保出图符合BJP的要求。
+
+---
+
+## 图稿定义：Concentration-Response Curve
+
+### 📋 需要确认的信息
+
+**1. 实验数据**
+你有现成的实验数据吗？格式是什么样的？比如：
+- 能否提供你的药物浓度和对应的抑制率数据？（CSV、Excel、或直接贴文本都可以）
+- 是单个药物的一条曲线，还是多个药物的多条曲线？
+
+**2. 期刊格式要求**
+British Journal of Pharmacology 对 Figures 有具体规定，我需要确认：
+- **尺寸**：单栏宽度（84mm）还是双栏（176m
+RESULT: 好的！在开始绘制之前，我需要先确认几个关键信息，确保出图符合BJP的要求。
+
+---
+
+## 图稿定义：Concentration-Response Curve
+
+### 📋 需要确认的信息
+
+**1. 实验数据**
+你有现成的实验数据吗？格式是什么样的？比如：
+- 能否提供你的药物浓度和对应的抑制率数据？（CSV、Excel、或直接贴文本都可以）
+- 是单个药物的一条曲线，还是多个药物的多条曲线？
+
+**2. 期刊格式要求**
+British Journal of Pharmacology 对 Figures 有具体规定，我需要确认：
+- **尺寸**：单栏宽度（84mm）还是双栏（176m

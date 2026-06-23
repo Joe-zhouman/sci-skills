@@ -1,0 +1,367 @@
+=== QUERY ===
+帮我做一个可交互的dashboard来展示我们实验室的实时传感器数据，用Plotly或者Dash，需要能筛选时间和设备类型，数据来自PostgreSQL数据库。
+
+=== SKILL ===
+sci-draw-skill-095e8572
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Agent({"description": "Explore repo structure", "prompt": "Explore the repository at /home/joe/Documents/repo/skill/sci-draw to understand its structure, what files exist, and any existing code patterns. Give me a summary of the directory structure and any relevant existing code.", "subagent_type": "Explore"})
+TOOL_USE: Agent({"description": "Explore repo structure", "prompt": "Explore the repository at /home/joe/Documents/repo/skill/sci-draw to understand its structure, what files exist, and any existing code patterns. Give me a summary of the directory structure and any relevant existing code.", "subagent_type": "Explore"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw", "description": "List top-level directory contents"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Glob({"pattern": "*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/requirements.txt
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/referenc
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/requirements.txt
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/referenc
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f -not -path '*/\\.*' -not -path '*/sensor_venv/*' -not -path '*/__pycache__/*' | sort", "description": "List all files in the repo excluding hidden/sensor_venv/__pycache__"})
+TOOL_RESULT: <persisted-output>
+Output too large (42.4KB). Full output saved to: /home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/06758098-006d-4c63-bba2-7e0ac17113d9/tool-results/b5atgopsj.txt
+
+Preview (first 2KB):
+/home/joe/Documents/re
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type d -not -path '*/\\.*' -not -path '*/sensor_venv/*' -not -path '*/__pycache__/*' | sort", "description": "List all directories in the repo"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw
+/home/joe/Documents/repo/skill/sci-draw/sci-draw
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/chart-atlas
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/assets/figures4papers
+/home/joe/Docume
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt"})
+TOOL_RESULT: 1	# sci-draw
+2	
+3	Submission-grade scientific figure workflow for high-impact journals.
+4	
+5	## Design Decisions
+6	
+7	### QA Strategy: Draft-First, User-Driven Iteration
+8	
+9	The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, m
+TOOL_RESULT: 1	matplotlib>=3.7
+2	seaborn>=0.13
+3	Pillow>=10.0
+4	numpy>=1.24
+5	pandas>=2.0
+6	scipy>=1.10
+7	
+8	# Optional (skill degrades gracefully if missing)
+9	# SciencePlots>=2.1
+10	# pypdf>=4.0
+11	# PyMuPDF>=1.23      # only for visual_qa.render_preview() of already-saved PDFs
+12
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/eval-report.md"})
+TOOL_RESULT: 1	# Skill Evaluation: sci-draw
+2	
+3	## Objective Checks (check-skill.py)
+4	
+5	- **SKILL.md**: 494/500 lines (pass)
+6	- **Errors**: none
+7	- **Warnings**: none
+8	
+9	## Subjective Evaluation
+10	
+11	### Standard #1: Subtraction Filter — 10/10
+12	
+13	- **Fixed**: Duplicate interception table trimmed fro
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw", "pattern": "*.md"})
+TOOL_RESULT: sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/references/nature-2026-observations.md
+sci-draw/references/publicat
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw", "pattern": "*.py"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_comparison.py
+sci-draw/assets/figures4papers/figure_CellSpliceNet/plot_ablation.py
+sci-draw/assets/figures4papers/figure_Cflows/diffusion_swiss_roll.py
+sci-draw/assets/figures4papers/figure_Dispersion/plot_idea
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-draw
+3	description: >-
+4	  Scientific data visualization for creating publication-quality plots from
+5	  experimental data. Use when the user asks to create, revise, or audit
+6	  data-driven figures: statistical plots, bar/box/scatter charts, heatmaps,
+7	  dose-response curves, sur
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/layout_tools.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: layout_tools.py
+3	========================================
+4	排版安全网 + 多面板子图编号对齐。
+5	
+6	解决两类高频成图问题：
+7	
+8	1. **子图 a/b/c 编号乱放、横竖不对齐** —— `add_panel_labels()`
+9	   把每个标签锚定在各子图的 ``axes fraction (0,1)``（左上角），再统一施加
+10	   **同一个 points 偏移**。由于同一列子图的左边缘 figure-x 相同、同一行子图
+11	   的上边缘 figure-y 
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/profile_data.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: profile_data.py
+3	========================================
+4	Exploratory data analysis for figure planning.
+5	
+6	本脚本是 sci-draw 工作流的第 1 步（数据剖析）。
+7	读入 CSV / Excel / DataFrame，输出探索性分析报告——每列类型、缺失率、
+8	样本量、分布形态、异常值、相关性——并基于这些事实给出"建议图型"提示。
+9	
+10	工作流位置:
+11	    用户给数据
+12	        → profile_
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/setup_style.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: setup_style.py
+3	=======================================
+4	Publication-grade matplotlib / seaborn style configuration.
+5	
+6	应用出版级样式预设。支持 nature / ieee / science / general 四种期刊预设，
+7	支持中英文（lang='zh'/'en'），中文模式按优先级自动查找
+8	Noto Sans CJK SC > Source Han Sans SC > SimHei > Microsoft YaH
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/export_figure.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: export_figure.py
+3	=============================
+4	Unified figure export — PDF (vector) + PNG (raster) at exact final size.
+5	
+6	- PDF: vector, lossless, editable text (TrueType fonttype 42). Primary format.
+7	- PNG: raster at user-specified DPI (default 300). For manuscripts tha
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/check_figure.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: check_figure.py
+3	============================
+4	Pre-submission figure compliance audit.
+5	
+6	Per-file checks: format (PDF vector / PNG raster), pixel size/DPI,
+7	PDF font embedding type (must be TrueType/Type 42). Outputs issue list.
+8	Non-destructive — read-only, never modifies
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/scripts/visual_qa.py"})
+TOOL_RESULT: 1	"""
+2	sci-draw :: visual_qa.py
+3	=====================================
+4	出图后的「程序自检」+「渲染预览」——自检闭环的机器那一层。
+5	
+6	设计分工：
+7	- **程序（本脚本）** 抓**确定性**问题：缺字乱码、文字越界裁切、刻度标签重叠。
+8	- **AI 读图**（见 references/visual_review.md）抓**感知性**问题：图例压数据、
+9	  子图标签是否对齐、配色灰度可分、整体观感。
+10	
+11	两层串起来才是完整的「出图 → 渲 PNG → 程序自检 + AI 读图 → 回改
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/figure-contract.md", "limit": 50})
+TOOL_RESULT: 1	# Figure Contract
+2	
+3	Use this reference before writing plotting code. The goal is to make the figure
+4	serve the paper's scientific logic.
+5	
+6	## Privacy rule
+7	
+8	Keep the figure contract user-facing, but keep the working trail private. Do not mention
+9	private paths, source filenames, interna
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/chart_selection.md", "limit": 50})
+TOOL_RESULT: 1	# 图型选择决策框架
+2	
+3	本文档是 `scipilot-figure-skill` 的"大脑"。每次画图都该从这里开始——**先决定要画什么，再决定怎么画**。
+4	
+5	## 目录
+6	
+7	- [决策三轴](#决策三轴)
+8	- [数据形态 → 推荐图型 速查表](#数据形态--推荐图型-速查表)
+9	- [按数据形态分述](#按数据形态分述)
+10	  - [1. 单个连续变量看分布](#1-单个连续变量看分布)
+11	  - [2. 单个分类变量看占比](#2-单个分类变量看占比)
+12	  - [3. 一个分类 + 一个连续（组间比较）](#3-一个分类--一个连续组间比较
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/plot_recipes.md", "limit": 50})
+TOOL_RESULT: 1	# 七类图配方
+2	
+3	每一节给一份**可直接运行的 Python 代码**——直接复制改数据就能出图。所有代码假设已经调过 `setup_style()`。
+4	
+5	## 目录
+6	
+7	- [通用前置](#通用前置)
+8	- [1. 折线图（含误差阴影）](#1-折线图含误差阴影)
+9	- [2. 柱状图（分组 + 误差棒）](#2-柱状图分组--误差棒)
+10	- [3. 散点图（多语义映射 + 回归线）](#3-散点图多语义映射--回归线)
+11	- [4. 箱线图 / 小提琴图（叠 stripplot）](#4-箱线图--小提琴图叠-stripplot)
+12	- [5. 热
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/journal_specs.md", "limit": 50})
+TOOL_RESULT: 1	# 期刊图表规范
+2	
+3	主流期刊对投稿图表的硬性要求汇总。**画图前先查目标期刊**，把栏宽、字号、DPI、推荐字体、矢量格式偏好记下来再开 matplotlib。
+4	
+5	## 目录
+6	
+7	- [Nature 系列](#nature-系列)
+8	- [Science](#science)
+9	- [IEEE](#ieee)
+10	- [Elsevier 系列](#elsevier-系列)
+11	- [PNAS](#pnas)
+12	- [中文核心期刊](#中文核心期刊通用要求)
+13	- [跨期刊速查表](#跨期刊速查表)
+14	- [中文字体安装指南](#中文字体安装指南)
+
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/data_profiling.md", "limit": 50})
+TOOL_RESULT: 1	# 数据剖析报告解读手册
+2	
+3	`scripts/profile_data.py` 跑完输出一份 markdown 报告。本文档讲：**怎么读这份报告 + 怎么把每一条事实翻译成画图决策**。
+4	
+5	## 目录
+6	
+7	- [一份报告长什么样](#一份报告长什么样)
+8	- [列类型识别规则](#列类型识别规则)
+9	- [样本量的影响](#样本量的影响)
+10	- [分布形态的影响](#分布形态的影响)
+11	- [分组结构的影响](#分组结构的影响)
+12	- [相关性 / 多重共线性的提示](#相关性--多重共线性的提示)
+13	- [缺失值与异常值](#缺失值与异常值)
+
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/viz_pitfalls.md", "limit": 50})
+TOOL_RESULT: 1	# 科研可视化避坑清单
+2	
+3	每条错误都按这个结构写：**错误是什么 → 为什么是错的（审稿人视角）→ 正确做法**。这是 `sci-draw` 的"主动拦截"清单——发现用户的需求会触发其中任意一条，**先说明问题再给替代方案，不要默默照做**。
+4	
+5	## 目录
+6	
+7	- [P1. 均值柱状图掩盖分布与样本量](#p1-均值柱状图掩盖分布与样本量)
+8	- [P2. 双 Y 轴的误导性](#p2-双-y-轴的误导性)
+9	- [P3. 饼图与 3D 图](#p3-饼图与-3d-图)
+10	- [P4. Y 轴不当截断](#p4-y-轴不当截断)
+11	- [P5. 连续色阶
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/.claude -type f | sort", "description": "List .claude directory contents"})
+TOOL_RESULT: <persisted-output>
+Output too large (83.3KB). Full output saved to: /home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/06758098-006d-4c63-bba2-7e0ac17113d9/tool-results/bezfooyys.txt
+
+Preview (first 2KB):
+/home/joe/Documents/re
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-draw-skill-eb5c8e4b.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/design-theory.md", "limit": 60})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_RESULT: 1	# Nature Figure Design Theory
+2	
+3	Derived from scripts in the [figures4papers](https://github.com/ChenLiu-1996/figures4papers) repository
+4	(published in *Nature Machine Intelligence* and top ML/bioinformatics venues).
+5	
+6	## Table of Contents
+7	
+8	- 1) Typography
+9	- 2) Axes & Spines
+10	- 3) Co
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/common-patterns.md", "limit": 60})
+TOOL_RESULT: 1	# Common Patterns — Nature Figure Making
+2	
+3	Reusable layout and encoding patterns used across publication-grade scripts.
+4	
+5	## Table of Contents
+6	
+7	- Pattern 1: Ultra-wide multi-metric bar panel
+8	- Pattern 2: Dedicated legend panel
+9	- Pattern 3: Categorical bars without x-tick labels
+10	- 
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/publication_checklist.md", "limit": 60})
+TOOL_RESULT: 1	# 投稿前合规自检清单
+2	
+3	每张图投稿前**逐条勾选**。任何 FAIL 必须重新出图——`scripts/check_figure.py --strict` 是机器版的这份清单。
+4	
+5	> 这份清单只查**形式合规**（尺寸、DPI、字号、误差是否写明）。**语义层面**的避坑（均值柱掩盖分布、双 Y 轴误导、饼图等）在 [`viz_pitfalls.md`](viz_pitfalls.md) — 提交前两份清单都要过。
+6	
+7	## 目录
+8	
+9	- [尺寸 & 分辨率](#尺寸--分辨率)
+10	- [文件格式](#文件格式)
+11	- [字体 & 字号](#字体--字
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/visual_review.md", "limit": 60})
+TOOL_RESULT: 1	# 视觉自检闭环：程序自检 + 人眼复核
+2	
+3	普通画图工具画完就结束了——**没人回看成图**，于是中文方框、文字被裁、图例压住数据、子图编号乱放这些问题全部留到投稿才被审稿人发现。本文件定义一套**出图后的闭环**：
+4	
+5	```
+6	绘制 → ① 程序自检(visual_qa) → ② 导出 PDF+PNG → ③ 人眼复核
+7	                                                      ↓ 发现问题
+8	        ⑤ 通过 ← ④ 回到对应步骤改图 → 重新导出 → 再检查 ←┘
+9	```
+10	
+11	## 两层检查
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/references/api.md", "limit": 60})
+TOOL_USE: Glob({"path": "/home/joe/Documents/repo/skill/sci-draw/.claude", "pattern": "*.{json,md}"})
+TOOL_RESULT: 1	# API Reference — sci-draw
+2	
+3	Conventions, constants, and reusable code blocks. Implement in your script or adapt as needed.
+4	
+5	## Table of Contents
+6	
+7	- Constants (PALETTE, DEFAULT_COLORS, PALETTE_NMI_PASTEL, modality palettes)
+8	- MANDATORY font + PDF rules
+9	- apply_publication_style()
+10
+TOOL_RESULT: .claude/settings.local.json
+.claude/_eval_sandbox_home/.claude/tasks/be7f5e97-74a8-4137-9a5c-3efdc739fbe4/1.json
+.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/0acf2d2f-9f9e-4f44-b5d3-ff34a5f0c433/subagents/agent-a2e230e46abc32eff.meta.json
+.claude/_eval_sandbox_
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-draw-skill-2719f6fe.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/.claude/settings.local.json"})
+TOOL_RESULT: 1	---
+2	description: |
+3	  Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, a
+TOOL_RESULT: 1	{
+2	  "permissions": {
+3	    "allow": [
+4	      "Bash(gh repo *)",
+5	      "mcp__searxng__searxng_web_search",
+6	      "Bash(rtk ls *)",
+7	      "Bash(rtk find *)",
+8	      "Bash(rtk wc *)",
+9	      "Bash(rtk grep *)",
+10	      "Bash(chmod +x *)",
+11	      "Bash(rtk read *)",
+12	      "Bash(python
+TOOL_RESULT: Here is a comprehensive summary of the repository at `/home/joe/Documents/repo/skill/sci-draw`.
+
+---
+
+## Overview
+
+This is a **Claude Code skill** -- `sci-draw` -- designed for scientific data visualization. Its purpose is to help create publication-quality plots from experimental data for high-impa
+ASSISTANT: 好的，我来看看现有的 sensor_dashboard 目录中有什么内容，然后帮你搭建这个仪表盘。
+TOOL_USE: Agent({"description": "Explore sensor_dashboard files", "subagent_type": "Explore", "prompt": "Thoroughly explore the /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/ directory. List all files, read their contents, and summarize what's there — including any existing Python scripts, config files, templates, etc."})
+TOOL_USE: Agent({"description": "Explore sensor_dashboard files", "subagent_type": "Explore", "prompt": "Thoroughly explore the /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/ directory. List all files, read their contents, and summarize what's there — including any existing Python scripts, config files, templates, etc."})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/ -type f | sort", "description": "List all files in the sensor_dashboard directory"})
+TOOL_USE: Bash({"command": "ls -laR /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/", "description": "Detailed recursive listing of the sensor_dashboard directory"})
+TOOL_RESULT: (Bash completed with no output)
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/:
+total 16
+drwxrwxr-x 4 joe joe 4096 6月  23 14:50 .
+drwxrwxr-x 7 joe joe 4096 6月  23 14:57 ..
+drwxrwxr-x 2 joe joe 4096 6月  23 14:50 assets
+drwxrwxr-x 2 joe joe 4096 6月  23 14:50 sql
+
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/s
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/sci-draw/sensor_dashboard/ -name '.*' -type f 2>/dev/null; echo \"---done---\"", "description": "Check for hidden files"})
+TOOL_RESULT: ---done---

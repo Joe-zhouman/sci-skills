@@ -1,0 +1,6 @@
+{
+  "eval_id": 1,
+  "eval_name": "I'm writing a paper on a new drug delivery system. I have da",
+  "prompt": "I'm writing a paper on a new drug delivery system. I have data showing: (1) nanoparticle characterization (size, zeta potential across 4 formulations), (2) in vitro release curves over 72 hours, (3) cell viability at 3 concentrations. I need to design Figure 1 for Nature Materials. Can you plan the figure layout?",
+  "expectations": []
+}

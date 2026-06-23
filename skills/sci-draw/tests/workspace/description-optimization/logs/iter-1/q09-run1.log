@@ -1,0 +1,44 @@
+=== QUERY ===
+我在准备一篇综述论文，需要画一个方法比较的图：四种不同的算法在六个benchmark数据集上的表现。每个数据集一个subpanel，用grouped bar chart，error bar是标准差。需要统一y轴范围，加显著性标记。投的是Nature Reviews Methods Primers。
+
+=== SKILL ===
+sci-draw-skill-6567c02b
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-6567c02b", "args": "我需要画一个方法比较图：四种算法（记作 A1, A2, A3, A4）在六个 benchmark 数据集上的性能对比。每个数据集一个 subpanel (2×3 或 3×2 布局)，用 grouped bar chart，error bar 表示标准差。统一 y 轴范围，加显著性标记（星号或字母）。投 Nature Reviews Methods Primers，需要达到投稿级质量。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-6567c02b", "args": "我需要画一个方法比较图：四种算法（记作 A1, A2, A3, A4）在六个 benchmark 数据集上的性能对比。每个数据集一个 subpanel (2×3 或 3×2 布局)，用 grouped bar chart，error bar 表示标准差。统一 y 轴范围，加显著性标记（星号或字母）。投 Nature Reviews Methods Primers，需要达到投稿级质量。"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-draw-skill-6567c02b</tool_use_error>
+TOOL_USE: Skill({"skill": "sci-draw-skill-aeac8d58", "args": "我需要画一个方法比较图：四种算法在六个 benchmark 数据集上的性能对比。每个数据集一个 subpanel (2×3 布局)，用 grouped bar chart，error bar 表示标准差。统一 y 轴范围，加显著性标记（星号）。投 Nature Reviews Methods Primers，需要达到投稿级质量。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-aeac8d58", "args": "我需要画一个方法比较图：四种算法在六个 benchmark 数据集上的性能对比。每个数据集一个 subpanel (2×3 布局)，用 grouped bar chart，error bar 表示标准差。统一 y 轴范围，加显著性标记（星号）。投 Nature Reviews Methods Primers，需要达到投稿级质量。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-aeac8d58
+ASSISTANT: 好的！我来帮你准备这张投向 **Nature Reviews Methods Primers** 的方法比较图。在开始画之前，我需要确认几个关键信息：
+
+---
+
+### 🔍 前期确认 — 我需要你提供以下信息才能生成投稿级图表
+
+**1. 数据和指标**
+- **你的数据在哪？** 有没有 CSV/Excel 文件？还是需要我先造一份示例数据来设计图？
+- **比较的是什么指标？**（如 Accuracy、F1-score、AUC、RMSE …）
+- **y 轴标签是什么？**（如 "Prediction Accuracy (%)"）
+
+**2. 方法命名**
+- 四种算法的具体名称是什么？
+RESULT: 好的！我来帮你准备这张投向 **Nature Reviews Methods Primers** 的方法比较图。在开始画之前，我需要确认几个关键信息：
+
+---
+
+### 🔍 前期确认 — 我需要你提供以下信息才能生成投稿级图表
+
+**1. 数据和指标**
+- **你的数据在哪？** 有没有 CSV/Excel 文件？还是需要我先造一份示例数据来设计图？
+- **比较的是什么指标？**（如 Accuracy、F1-score、AUC、RMSE …）
+- **y 轴标签是什么？**（如 "Prediction Accuracy (%)"）
+
+**2. 方法命名**
+- 四种算法的具体名称是什么？

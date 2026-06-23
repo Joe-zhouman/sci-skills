@@ -1,0 +1,6 @@
+{
+  "eval_id": 2,
+  "eval_name": "I have a CSV with treatment groups (Control, Drug_A, Drug_B,",
+  "prompt": "I have a CSV with treatment groups (Control, Drug_A, Drug_B, Drug_C), each with n=8 biological replicates, measuring tumor volume over time. I want to show the treatment effect. Nature submission.",
+  "expectations": []
+}

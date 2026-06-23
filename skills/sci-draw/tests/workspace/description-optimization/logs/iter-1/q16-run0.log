@@ -1,0 +1,65 @@
+=== QUERY ===
+Can you make an interactive web visualization of our single-cell RNA-seq data? I want a UMAP with hover tooltips showing cell type annotations, gene expression levels, and sample metadata. Should be deployable as a standalone HTML file. Maybe using Bokeh or Plotly.
+
+=== SKILL ===
+sci-draw-skill-d5a400de
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: Let me start by exploring the repository to find your single-cell RNA-seq data and understand the project structure.
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f | head -80", "description": "List files in the repo"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f | head -80", "description": "List files in the repo"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/README.md
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude.json
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval_sandbox_home/.claude/backups/.claude.json.backup.1782196121148
+/home/joe/Documents/repo/skill/sci-draw/.claude/_eval
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "Check root directory contents"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "Check root directory contents"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-draw
+2	
+3	Submission-grade scientific figure workflow for high-impact journals.
+4	
+5	## Design Decisions
+6	
+7	### QA Strategy: Draft-First, User-Driven Iteration
+8	
+9	The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, m
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f \\( -name \"*.h5ad\" -o -name \"*.h5\" -o -name \"*.csv\" -o -name \"*.tsv\" -o -name \"*.txt\" -o -name \"*.rds\" -o -name \"*.rdata\" -o -name \"*.loom\" -o -name \"*.mtx\" -o -name \"*.json\" -o -name \"*.yaml\" -o -name \"*.yml\" -o -name \"*.toml\" -o -name \"*.cfg\" -o -name \"*.npz\" -o -name \"*.npy\" -o -name \"*.pkl\" -o -name \"*.pickle\" -o -name \"*.zarr\" \\) ! -path \"*/.claude/*\" ! -path \"*/sensor_venv/*\" 2>/dev/null | head -50", "description": "Look for data files in the project"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f \\( -name \"*.h5ad\" -o -name \"*.h5\" -o -name \"*.csv\" -o -name \"*.tsv\" -o -name \"*.txt\" -o -name \"*.rds\" -o -name \"*.rdata\" -o -name \"*.loom\" -o -name \"*.mtx\" -o -name \"*.json\" -o -name \"*.yaml\" -o -name \"*.yml\" -o -name \"*.toml\" -o -name \"*.cfg\" -o -name \"*.npz\" -o -name \"*.npy\" -o -name \"*.pkl\" -o -name \"*.pickle\" -o -name \"*.zarr\" \\) ! -path \"*/.claude/*\" ! -path \"*/sensor_venv/*\" 2>/dev/null | head -50", "description": "Look for data files in the project"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/sci-draw/", "description": "Check sci-draw package contents"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/sci-draw/", "description": "Check sci-draw package contents"})
+TOOL_RESULT: total 48
+drwxrwxr-x 6 joe joe  4096 6月  23 12:53 .
+drwxrwxr-x 5 joe joe  4096 6月  23 13:42 ..
+drwxrwxr-x 5 joe joe  4096 6月  21 16:06 assets
+drwxrwxr-x 2 joe joe  4096 6月  21 18:34 references
+-rw-rw-r-- 1 joe joe   244 6月  21 16:06 requirements.txt
+drwxrwxr-x 3 joe joe  4096 6月  22 21:50 scripts
+-rw
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/sci-draw/requirements.txt
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/tests/evals.json
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/tests/workspace/iteration-1/benchmark.json
+/home/joe/Documents/repo/skill/sci-draw/sci-draw/tests/workspace/iteration-1
+ASSISTANT: I don't see any single-cell RNA-seq data files in this repository. This is the `sci-draw` skill project itself — your actual scRNA-seq data (UMAP coordinates, expression matrices, metadata) would live elsewhere.
+
+Let me clarify a few things so I can build exactly what you need:
+
+1. **Where is your d
+RESULT: I don't see any single-cell RNA-seq data files in this repository. This is the `sci-draw` skill project itself — your actual scRNA-seq data (UMAP coordinates, expression matrices, metadata) would live elsewhere.
+
+Let me clarify a few things so I can build exactly what you need:
+
+1. **Where is your d

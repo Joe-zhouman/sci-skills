@@ -1,0 +1,51 @@
+=== QUERY ===
+我正在写一篇药理学论文，需要画concentration-response曲线。x轴是对数刻度（药物浓度10^-9到10^-3 M），y轴是抑制率百分比。需要拟合四参数logistic曲线，标注IC50值和95%置信区间。投的是British Journal of Pharmacology（Elsevier），要求EPS格式。
+
+=== SKILL ===
+sci-draw-skill-4b7f62cb
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "concentration-response curve, four-parameter logistic fit, IC50, 95% CI, EPS format, British Journal of Pharmacology"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "concentration-response curve, four-parameter logistic fit, IC50, 95% CI, EPS format, British Journal of Pharmacology"})
+TOOL_RESULT: Launching skill: sci-draw-skill-3f3ff3d0
+ASSISTANT: 欢迎使用 **sci-draw** 科研数据可视化技能！
+
+我来帮您绘制 British Journal of Pharmacology 要求的 concentration-response 曲线。在开始之前，我需要您的**实验数据**。
+
+> 请提供您的抑制率数据，格式可以是以下任一：
+> - **两列数据**：浓度(M)、抑制率(%)
+> - **示例数据格式**：
+> ```
+> 1e-9, 2.3
+> 1e-8, 5.1
+> 1e-7, 18.7
+> 1e-6, 45.2
+> 1e-5, 78.9
+> 1e-4, 95.6
+> 1e-3, 98.1
+> ```
+
+另外，请回答几个问题以
+RESULT: 欢迎使用 **sci-draw** 科研数据可视化技能！
+
+我来帮您绘制 British Journal of Pharmacology 要求的 concentration-response 曲线。在开始之前，我需要您的**实验数据**。
+
+> 请提供您的抑制率数据，格式可以是以下任一：
+> - **两列数据**：浓度(M)、抑制率(%)
+> - **示例数据格式**：
+> ```
+> 1e-9, 2.3
+> 1e-8, 5.1
+> 1e-7, 18.7
+> 1e-6, 45.2
+> 1e-5, 78.9
+> 1e-4, 95.6
+> 1e-3, 98.1
+> ```
+
+另外，请回答几个问题以

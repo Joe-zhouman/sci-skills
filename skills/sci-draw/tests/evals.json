@@ -1,0 +1,44 @@
+{
+  "skill_name": "sci-draw",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I'm writing a paper on a new drug delivery system. I have data showing: (1) nanoparticle characterization (size, zeta potential across 4 formulations), (2) in vitro release curves over 72 hours, (3) cell viability at 3 concentrations. I need to design Figure 1 for Nature Materials. Can you plan the figure layout?",
+      "expected_output": "A figure plan with panel layout, evidence hierarchy, archetype selection, and panel-to-claim mapping",
+      "files": [],
+      "expectations": [
+        "Establishes figure contract (core conclusion, archetype)",
+        "Plans panel layout with evidence hierarchy (hero + supporting)",
+        "Maps each panel to a unique claim",
+        "Specifies Nature Materials journal specs",
+        "Generates figure description file after planning"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I have a CSV with treatment groups (Control, Drug_A, Drug_B, Drug_C), each with n=8 biological replicates, measuring tumor volume over time. I want to show the treatment effect. Nature submission.",
+      "expected_output": "Profile data, select appropriate chart, intercept if needed, generate figure + description",
+      "files": [],
+      "expectations": [
+        "Profiles data to check n per group",
+        "Selects appropriate chart (line + error band for time series)",
+        "Does NOT intercept (n=8 is acceptable for the selected chart type)",
+        "Exports PDF + PNG with Nature specs",
+        "Generates fig_description.md with core conclusion, stats, findings"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I'm preparing a manuscript on CRISPR gene editing efficiency. I need 4 figures: Figure 1 is the experimental design schematic + validation, Figure 2 is editing efficiency comparison across 5 guide RNAs, Figure 3 is off-target analysis, Figure 4 is functional outcomes. Plan all four figures for Science.",
+      "expected_output": "Complete 4-figure plan with cross-figure consistency, narrative flow, and per-figure descriptions",
+      "files": [],
+      "expectations": [
+        "Plans 4 figures with distinct core conclusions",
+        "Establishes visual vocabulary in Figure 1 and reuses across figures",
+        "Panel ordering follows narrative logic (system → effect → mechanism → robustness)",
+        "Specifies shared elements (colors, legends) across figures",
+        "Each figure has archetype, panel map, evidence hierarchy"
+      ]
+    }
+  ]
+}

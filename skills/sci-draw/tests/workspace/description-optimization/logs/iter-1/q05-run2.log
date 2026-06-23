@@ -1,0 +1,87 @@
+=== QUERY ===
+我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。
+
+=== SKILL ===
+sci-draw-skill-b0b12296
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES, the assistant invoked the Skill tool with input skill "sci-draw-skill-98c40805", triggering the sci-draw skill.
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-98c40805", "args": "我要画一个基因表达热图，50个基因 x 12个样本，数据在expression_matrix.tsv里。投PNAS，需要colorblind-safe的colormap，行要按cluster排序，列要按处理组分组加annotation bar。最后输出PDF矢量图。"})
+TOOL_RESULT: Launching skill: sci-draw-skill-98c40805
+ASSISTANT: 好的，先按照 sci-draw 工作流来，**规划阶段** 我们需要先明确这个图要讲什么故事、数据长什么样。
+
+让我先看看你的数据：
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/expression_matrix.tsv"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Glob({"pattern": "**/expression_matrix.tsv"})
+TOOL_USE: Glob({"pattern": "**/expression_matrix.tsv"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "*expression*"})
+TOOL_USE: Glob({"pattern": "*expression*"})
+TOOL_RESULT: sci-draw/tests/workspace/iteration-1/eval-3/with_skill/run-2/outputs/scatter_gene_expression.py
+sci-draw/tests/workspace/iteration-1/eval-3/with_skill/run-2/outputs/scatter_gene_expression.pdf
+sci-draw/tests/workspace/iteration-1/eval-3/with_skill/run-2/outputs/scatter_gene_expression.png
+sci-draw/t
+ASSISTANT: 数据文件 `expression_matrix.tsv` 在当前工作目录下没找到。让我搜一下整个 repo：
+TOOL_USE: Grep({"pattern": "expression_matrix", "output_mode": "files_with_matches"})
+TOOL_USE: Grep({"pattern": "expression_matrix", "output_mode": "files_with_matches"})
+TOOL_RESULT: Found 7 files
+.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/ff862211-8167-486c-bd8f-ad35cbf0bfa1.jsonl
+.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/c46adad7-a598-49e1-b89c-7a2d33e1a710.jsonl
+.claude/_eval_sandbox_home/.clau
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/tests/workspace/description-optimization/trigger-eval.json"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-draw/tests/workspace/description-optimization/trigger-eval.json"})
+TOOL_RESULT: 1	[
+2	  {
+3	    "query": "我有一组实验数据在 results.csv 里，三组不同处理的细胞存活率，每组8个样本。我投的是Nature，需要画一个publication-ready的figure。帮我选个合适的图型，考虑到样本量不大，然后画出来。输出要PDF+PNG，300DPI，单栏宽度。",
+4	    "should_trigger": true
+5	  },
+6	  {
+7	    "query": "here's my data file at ~/experiment/fig2_data.xlsx — columns are group, time_poi
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo root directory"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo root directory"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+ASSISTANT: # 🧬 基因表达热图 — Plan Phase
+
+感谢你的请求！这是 PNAS 投稿级别的热图任务。按照 sci-draw 工作流，我先做 **规划阶段**。
+
+但是，`expression_matrix.tsv` 文件在当前工作目录中不存在。我需要你提供几个信息才能继续：
+
+---
+
+## ❓ 需要你确认/补充
+
+### 1. 数据文件
+**`expression_matrix.tsv`** 在哪里？请提供完整路径或把内容贴给我。我需要知道：
+- 数据格式（行=基因？列=样本？已经有cluster列？）
+- 表达值类型（log2(FPKM)、TPM、Z-score？）
+
+### 2. Clu
+RESULT: # 🧬 基因表达热图 — Plan Phase
+
+感谢你的请求！这是 PNAS 投稿级别的热图任务。按照 sci-draw 工作流，我先做 **规划阶段**。
+
+但是，`expression_matrix.tsv` 文件在当前工作目录中不存在。我需要你提供几个信息才能继续：
+
+---
+
+## ❓ 需要你确认/补充
+
+### 1. 数据文件
+**`expression_matrix.tsv`** 在哪里？请提供完整路径或把内容贴给我。我需要知道：
+- 数据格式（行=基因？列=样本？已经有cluster列？）
+- 表达值类型（log2(FPKM)、TPM、Z-score？）
+
+### 2. Clu

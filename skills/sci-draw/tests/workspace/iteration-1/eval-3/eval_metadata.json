@@ -1,0 +1,6 @@
+{
+  "eval_id": 3,
+  "eval_name": "I have two continuous variables (gene expression levels) fro",
+  "prompt": "I have two continuous variables (gene expression levels) from 200 samples, colored by disease status. What's the best way to visualize their relationship for a Nature Methods submission?",
+  "expectations": []
+}

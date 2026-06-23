@@ -1,0 +1,32 @@
+=== QUERY ===
+I have 5 groups with n=6 each. My PI insists on mean bar charts but I've read that's problematic with small samples. Can you help me create a better alternative that shows the actual data distribution? I need it for a Neuroscience paper (IEEE format, single column). Also need significance annotations between groups (we did Mann-Whitney U tests with Bonferroni correction).
+
+=== SKILL ===
+sci-draw-skill-1c968661
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+ASSISTANT: This is a great use case for the `sci-draw` skill — let me invoke it.
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "I have 5 groups with n=6 each. Need a better alternative to mean bar charts for a Neuroscience paper (IEEE format, single column). Need to show actual data distribution with significance annotations between groups (Mann-Whitney U tests with Bonferroni correction)."})
+TOOL_USE: Skill({"skill": "sci-draw-skill-3f3ff3d0", "args": "I have 5 groups with n=6 each. Need a better alternative to mean bar charts for a Neuroscience paper (IEEE format, single column). Need to show actual data distribution with significance annotations between groups (Mann-Whitney U tests with Bonferroni correction)."})
+TOOL_RESULT: Launching skill: sci-draw-skill-3f3ff3d0
+ASSISTANT: Great question — you're absolutely right that mean bar charts hide the distribution, especially with n=6. The standard in neuroscience is a **beeswarm/strip plot + boxplot** (or a **superplot**), showing every data point.
+
+Let me clarify a few things before I write the figure code:
+TOOL_USE: AskUserQuestion({"questions": [{"question": "Can you paste or attach your data? (e.g., 5 columns of 6 values each, or a table format)", "header": "Data", "options": [{"label": "I'll paste it", "description": "I'll provide the numerical values in my next message"}, {"label": "Use synthetic data", "description": "Generate a reasonable example dataset so I can see the figure format first"}], "multiSelect": false}, {"question": "What type of plot overlay do you prefer for small-n data?", "header": "Plot style", "options": [{"label": "Beeswarm + boxplot", "description": "Individual points jittered side-by-side, with a minimalist boxplot (median, IQR, whiskers)"}, {"label": "Beeswarm + mean±SEM", "description": "Points shown individually with mean marker and error bars (superplot style)"}, {"label": "Beeswarm + violin", "description": "Points overlaid on a violin plot showing the full density estimate"}], "multiSelect": false}, {"question": "Which group comparisons are most important to annotate? (Bonferroni correction means we adjust p thresholds for multiple comparisons)", "header": "Comparisons", "options": [{"label": "All vs Control", "description": "Each test group compared to the first (control) group — 4 comparisons"}, {"label": "All pairwise", "description": "Every group compared to every other — 10 comparisons, very stringent correction"}, {"label": "Specific pairs", "description": "I'll specify which comparisons matter most — saves statistical power"}], "multiSelect": false}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "Can you paste or attach your data? (e.g., 5 columns of 6 values each, or a table format)", "header": "Data", "options": [{"label": "I'll paste it", "description": "I'll provide the numerical values in my next message"}, {"label": "Use synthetic data", "description": "Generate a reasonable example dataset so I can see the figure format first"}], "multiSelect": false}, {"question": "What type of plot overlay do you prefer for small-n data?", "header": "Plot style", "options": [{"label": "Beeswarm + boxplot", "description": "Individual points jittered side-by-side, with a minimalist boxplot (median, IQR, whiskers)"}, {"label": "Beeswarm + mean±SEM", "description": "Points shown individually with mean marker and error bars (superplot style)"}, {"label": "Beeswarm + violin", "description": "Points overlaid on a violin plot showing the full density estimate"}], "multiSelect": false}, {"question": "Which group comparisons are most important to annotate? (Bonferroni correction means we adjust p thresholds for multiple comparisons)", "header": "Comparisons", "options": [{"label": "All vs Control", "description": "Each test group compared to the first (control) group — 4 comparisons"}, {"label": "All pairwise", "description": "Every group compared to every other — 10 comparisons, very stringent correction"}, {"label": "Specific pairs", "description": "I'll specify which comparisons matter most — saves statistical power"}], "multiSelect": false}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: I've asked a few questions to tailor the figure precisely for your data. When you're ready, just:
+
+1. **Paste your data** (or I'll use synthetic neuroscience-style data so you can adapt later)
+2. **Pick a plot style** — beeswarm+boxplot is the most common in neuro papers
+3. **Tell me which group com
+RESULT: I've asked a few questions to tailor the figure precisely for your data. When you're ready, just:
+
+1. **Paste your data** (or I'll use synthetic neuroscience-style data so you can adapt later)
+2. **Pick a plot style** — beeswarm+boxplot is the most common in neuro papers
+3. **Tell me which group com

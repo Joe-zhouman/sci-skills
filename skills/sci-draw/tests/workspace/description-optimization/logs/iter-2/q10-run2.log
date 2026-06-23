@@ -1,0 +1,32 @@
+=== QUERY ===
+帮我用DALL-E生成一张细胞信号通路的机制图，要像Nature Reviews那种风格的，展示PI3K/AKT/mTOR通路的激活过程。
+
+=== SKILL ===
+sci-draw-skill-11845929
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 抱歉，我目前没有 DALL-E 或任何 AI 图像生成工具的直接访问权限，所以无法直接调用 DALL-E 帮您生成图片。
+
+不过，我可以帮您 **用 SVG 绘制一张高质量的 PI3K/AKT/mTOR 信号通路机制图**，同样可以达到 Nature Reviews 风格的效果——矢量图、可编辑、可缩放，适合论文或汇报使用。
+
+需要我现在开始画吗？我可以包含以下关键节点：
+
+- **受体层面**：RTK / GPCR
+- **上游**：PI3K (p85/p110) → PIP2 → PIP3
+- **核心节点**：PDK1 → AKT (Thr308 / Ser473 磷酸化)
+- **下游
+RESULT: 抱歉，我目前没有 DALL-E 或任何 AI 图像生成工具的直接访问权限，所以无法直接调用 DALL-E 帮您生成图片。
+
+不过，我可以帮您 **用 SVG 绘制一张高质量的 PI3K/AKT/mTOR 信号通路机制图**，同样可以达到 Nature Reviews 风格的效果——矢量图、可编辑、可缩放，适合论文或汇报使用。
+
+需要我现在开始画吗？我可以包含以下关键节点：
+
+- **受体层面**：RTK / GPCR
+- **上游**：PI3K (p85/p110) → PIP2 → PIP3
+- **核心节点**：PDK1 → AKT (Thr308 / Ser473 磷酸化)
+- **下游

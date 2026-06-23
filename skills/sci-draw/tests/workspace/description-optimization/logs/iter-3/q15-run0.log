@@ -1,0 +1,34 @@
+=== QUERY ===
+帮我用Stable Diffusion生成一张论文封面的科幻风格图片，主题是量子计算和拓扑量子比特，要有蓝紫色调和几何线条。
+
+=== SKILL ===
+sci-draw-skill-ddb6d5dc
+description: Scientific data visualization for creating publication-quality plots from experimental data. Use when the user asks to create, revise, or audit data-driven figures: statistical plots, bar/box/scatter charts, heatmaps, dose-response curves, survival curves, volcano plots, and multi-panel data layouts. Handles journal formatting, colorblind-safe palettes, and export requirements. Not for: AI-generated or text-to-image artwork (DALL-E, Stable Diffusion), conceptual diagrams or graphical abstracts without quantitative data, architecture/flowchart/network diagrams, interactive web visualizations or dashboards (Bokeh/Plotly HTML apps), or any figure not based on empirical data. Covers Chinese phrasings like 科研数据绘图、论文数据可视化、 统计作图、论文图表、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 很抱歉，我无法直接通过 Stable Diffusion 或其他 AI 图像生成工具来生成图片。我的可用技能中，`sci-draw-skill-ddb6d5dc` 是**科研数据可视化**工具（统计图、曲线图、热力图等），它明确排除 AI 文生图（Stable Diffusion / DALL-E）类型的任务。
+
+不过，我可以帮你做下面这些事：
+
+---
+
+### 1️⃣ 为你撰写一份高质量的 Stable Diffusion Prompt
+
+你可以拿去在本地或在线 Stable Diffusion（如 SD WebUI、ComfyUI）中使用：
+
+**Prompt（英文，推荐用于 SDXL 
+RESULT: 很抱歉，我无法直接通过 Stable Diffusion 或其他 AI 图像生成工具来生成图片。我的可用技能中，`sci-draw-skill-ddb6d5dc` 是**科研数据可视化**工具（统计图、曲线图、热力图等），它明确排除 AI 文生图（Stable Diffusion / DALL-E）类型的任务。
+
+不过，我可以帮你做下面这些事：
+
+---
+
+### 1️⃣ 为你撰写一份高质量的 Stable Diffusion Prompt
+
+你可以拿去在本地或在线 Stable Diffusion（如 SD WebUI、ComfyUI）中使用：
+
+**Prompt（英文，推荐用于 SDXL 

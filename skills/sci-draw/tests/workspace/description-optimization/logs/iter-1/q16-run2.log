@@ -1,0 +1,73 @@
+=== QUERY ===
+Can you make an interactive web visualization of our single-cell RNA-seq data? I want a UMAP with hover tooltips showing cell type annotations, gene expression levels, and sample metadata. Should be deployable as a standalone HTML file. Maybe using Bokeh or Plotly.
+
+=== SKILL ===
+sci-draw-skill-48c94baf
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: sci-draw/scripts/layout_tools.py
+sci-draw/requirements.txt
+sci-draw/references/chart_selection.md
+sci-draw/references/data_profiling.md
+sci-draw/references/journal_specs.md
+sci-draw/references/plot_recipes.md
+sci-draw/references/figure-contract.md
+sci-draw/references/chart-types.md
+sci-draw/referenc
+TOOL_USE: Grep({"pattern": "umap|UMAP|scRNA|scrna|single.cell", "path": "/home/joe/Documents/repo/skill/sci-draw", "-i": true})
+TOOL_USE: Grep({"pattern": "umap|UMAP|scRNA|scrna|single.cell", "path": "/home/joe/Documents/repo/skill/sci-draw", "-i": true})
+TOOL_RESULT: Found 57 files
+.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/cd80fd79-e3cc-41c3-ade9-9f996a81c0f5.jsonl
+.claude/_eval_sandbox_home/.claude/projects/-home-joe-Documents-repo-skill-sci-draw/8de41d04-5179-48d1-9eb2-b2e00e2db632.jsonl
+.claude/_eval_sandbox_home/.cla
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/data_profiling.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/data_profiling.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/requirements.txt"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/requirements.txt"})
+TOOL_USE: Glob({"pattern": "**/*.h5ad", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.h5ad", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/data/**", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/data/**", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_RESULT: sensor_venv/lib/python3.9/site-packages/pkg_resources/tests/data/my-test-package-source/setup.py
+sensor_venv/lib/python3.9/site-packages/pkg_resources/tests/data/my-test-package-source/__pycache__/setup.cpython-39.pyc
+TOOL_RESULT: No files found
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/assets/figures4papers/figure_RNAGenScape/plot_manifold.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/assets/figures4papers/figure_RNAGenScape/plot_manifold.py"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/chart_types.md", "limit": 80})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/references/chart_types.md", "limit": 80})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List top-level directory contents"})
+TOOL_USE: Bash({"command": "ls -la /home/joe/Documents/repo/skill/sci-draw/", "description": "List top-level directory contents"})
+TOOL_RESULT: total 1064
+drwxrwxr-x 5 joe joe   4096 6月  23 13:42 .
+drwxrwxr-x 6 joe joe   4096 6月  21 20:26 ..
+drwxrwxr-x 5 joe joe   4096 6月  23 13:30 .claude
+-rw-rw-r-- 1 joe joe   2823 6月  22 21:52 eval-report.md
+-rw-rw-r-- 1 joe joe  30216 6月  23 10:48 neural_network_diagram.pdf
+-rw-rw-r-- 1 joe joe 648136 6
+TOOL_USE: Bash({"command": "pip list 2>/dev/null | grep -iE \"plotly|bokeh|scanpy|anndata|pandas|numpy|umap\" || echo \"Checking venv...\" && python3 -c \"\ntry:\n    import plotly; print(f'plotly {plotly.__version__}')\nexcept: print('plotly not found')\ntry:\n    import bokeh; print(f'bokeh {bokeh.__version__}')\nexcept: print('bokeh not found')\ntry:\n    import scanpy; print(f'scanpy {scanpy.__version__}')\nexcept: print('scanpy not found')\ntry:\n    import umap; print(f'umap {umap.__version__}')\nexcept: print('umap not found')\ntry:\n    import pandas; print(f'pandas {pandas.__version__}')\nexcept: print('pandas not found')\ntry:\n    import numpy; print(f'numpy {numpy.__version__}')\nexcept: print('numpy not found')\ntry:\n    import sklearn; print(f'sklearn {sklearn.__version__}')\nexcept: print('sklearn not found')\n\"", "description": "Check available Python packages"})
+TOOL_USE: Bash({"command": "pip list 2>/dev/null | grep -iE \"plotly|bokeh|scanpy|anndata|pandas|numpy|umap\" || echo \"Checking venv...\" && cd /home/joe/Documents/repo/skill/sci-draw && python3 -c \"\ntry:\n    import plotly; print(f'plotly {plotly.__version__}')\nexcept: print('plotly not found')\ntry:\n    import bokeh; print(f'bokeh {bokeh.__version__}')\nexcept: print('bokeh not found')\ntry:\n    import scanpy; print(f'scanpy {scanpy.__version__}')\nexcept: print('scanpy not found')\ntry:\n    import umap; print(f'umap {umap.__version__}')\nexcept: print('umap not found')\ntry:\n    import pandas; print(f'pandas {pandas.__version__}')\nexcept: print('pandas not found')\ntry:\n    import numpy; print(f'numpy {numpy.__version__}')\nexcept: print('numpy not found')\ntry:\n    import sklearn; print(f'sklearn {sklearn.__version__}')\nexcept: print('sklearn not found')\n\"", "description": "Check available Python packages"})
+TOOL_RESULT: This Bash command contains multiple operations. The following part requires approval: pip list
+TOOL_USE: Bash({"command": "python3 -c \"\ntry:\n    import plotly; print(f'plotly {plotly.__version__}')\nexcept: print('plotly not found')\ntry:\n    import bokeh; print(f'bokeh {bokeh.__version__}')\nexcept: print('bokeh not found')\ntry:\n    import pandas; print(f'pandas {pandas.__version__}')\nexcept: print('pandas not found')\ntry:\n    import numpy; print(f'numpy {numpy.__version__}')\nexcept: print('numpy not found')\ntry:\n    import sklearn; print(f'sklearn {sklearn.__version__}')\nexcept: print('sklearn not found')\n\"", "description": "Check available Python packages"})
+TOOL_USE: Bash({"command": "python3 -c \"\ntry:\n    import plotly; print(f'plotly {plotly.__version__}')\nexcept: print('plotly not found')\ntry:\n    import bokeh; print(f'bokeh {bokeh.__version__}')\nexcept: print('bokeh not found')\ntry:\n    import pandas; print(f'pandas {pandas.__version__}')\nexcept: print('pandas not found')\ntry:\n    import numpy; print(f'numpy {numpy.__version__}')\nexcept: print('numpy not found')\ntry:\n    import sklearn; print(f'sklearn {sklearn.__version__}')\nexcept: print('sklearn not found')\n\"", "description": "Check available Python packages"})
+TOOL_RESULT: /opt/local/anaconda3/lib/python3.9/site-packages/scipy/__init__.py:155: UserWarning: A NumPy version >=1.18.5 and <1.25.0 is required for this version of SciPy (detected version 2.0.2
+  warnings.warn(f"A NumPy version >={np_minversion} and <{np_maxversion}"
+
+A module that was compiled using NumPy 1.
+ASSISTANT: Both Plotly 5.9.0 and Bokeh 2.4.3 are available. I'll use **Plotly** — it produces richer hover tooltips and more self-contained interactivity for standalone HTML. Let me build a polished interactive UMAP viewer.
+TOOL_USE: TaskCreate({"subject": "Create interactive UMAP visualization as standalone HTML", "description": "Build a Python script that generates synthetic scRNA-seq data and produces a standalone Plotly HTML file with UMAP scatter plot, hover tooltips (cell type, gene expression, metadata), and interactive dropdown to switch coloring between cell types, genes, and metadata.", "activeForm": "Building interactive UMAP visualization"})
+TOOL_USE: TaskCreate({"subject": "Create interactive UMAP visualization as standalone HTML", "description": "Build a Python script that generates synthetic scRNA-seq data and produces a standalone Plotly HTML file with UMAP scatter plot, hover tooltips (cell type, gene expression, metadata), and interactive dropdown to switch coloring between cell types, genes, and metadata.", "activeForm": "Building interactive UMAP visualization"})
+TOOL_RESULT: Task #1 created successfully: Create interactive UMAP visualization as standalone HTML
+TOOL_USE: TaskUpdate({"taskId": "1", "status": "in_progress"})
+TOOL_USE: TaskUpdate({"taskId": "1", "status": "in_progress"})
+TOOL_RESULT: Updated task #1 status

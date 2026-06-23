@@ -1,0 +1,15 @@
+=== QUERY ===
+我想做一个Graphical Abstract，是一个概念性的示意图展示我们的纳米药物如何通过EPR效应靶向肿瘤细胞，然后在酸性微环境中释放药物。不需要数据，就是示意图，要有箭头和标注。
+
+=== SKILL ===
+sci-draw-skill-eb747ed5
+description: Submission-grade scientific figure workflow for high-impact journals. Use whenever the user asks to create, revise, audit, or polish manuscript figures, multi-panel scientific plots, or publication-ready charts. Before plotting, define the figure's conclusion, evidence logic, export needs, and review risks. Not for dashboards, Illustrator/Figma-first infographics, or any task that cannot be solved purely with code. Also used for general data visualization needs, and Chinese phrasings like 论文配图、学术写作配图、科研绘图、科研作图、画图、作图、出图、论文图表、可视化、数据可视化.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-draw-skill-d1f1eaa8", "args": "Graphical Abstract - 纳米药物通过EPR效应靶向肿瘤细胞并在酸性微环境中释放药物的概念示意图"})
+TOOL_USE: Skill({"skill": "sci-draw-skill-d1f1eaa8", "args": "Graphical Abstract - 纳米药物通过EPR效应靶向肿瘤细胞并在酸性微环境中释放药物的概念示意图"})
+TOOL_RESULT: Launching skill: sci-draw-skill-d1f1eaa8
