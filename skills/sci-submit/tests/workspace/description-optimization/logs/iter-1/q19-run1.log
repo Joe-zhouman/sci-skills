@@ -1,0 +1,32 @@
+=== QUERY ===
+我需要一封信说明我的文章从另一本期刊撤稿的原因，因为发现了一个数据处理错误。写给之前那本期刊的编辑。
+
+=== SKILL ===
+sci-letter-skill-fa241d16
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 我来帮你写这封撤稿信。虽然 sci-letter 技能主要用于投稿信，但这种撤稿解释信也是学术写作的一部分，我直接帮你撰写。
+
+首先，我需要了解一些信息以便写出更贴切的信件：
+
+- 你的文章标题是什么？
+- 撤稿的期刊名称是什么？
+- 撤稿前文章处于什么状态？（已投稿、审稿中、已接收、已发表？）
+- 数据处理错误的具体情况是怎样的？（影响主要结论吗？是一个变量的计算错误，还是整个分析流程的问题？）
+
+如果你愿意直接告诉我这些细节，我可以给你一个完整的草稿。或者我先给一个通用模板，你再调整？
+RESULT: 我来帮你写这封撤稿信。虽然 sci-letter 技能主要用于投稿信，但这种撤稿解释信也是学术写作的一部分，我直接帮你撰写。
+
+首先，我需要了解一些信息以便写出更贴切的信件：
+
+- 你的文章标题是什么？
+- 撤稿的期刊名称是什么？
+- 撤稿前文章处于什么状态？（已投稿、审稿中、已接收、已发表？）
+- 数据处理错误的具体情况是怎样的？（影响主要结论吗？是一个变量的计算错误，还是整个分析流程的问题？）
+
+如果你愿意直接告诉我这些细节，我可以给你一个完整的草稿。或者我先给一个通用模板，你再调整？

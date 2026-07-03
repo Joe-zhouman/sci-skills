@@ -1,0 +1,28 @@
+=== QUERY ===
+I need to draft a press release for our new paper that just got accepted in Nature. The PR department wants a 300-word summary for the general public.
+
+=== SKILL ===
+sci-letter-skill-b029e383
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: Congratulations on the Nature acceptance — that's a huge deal! 🎉
+
+I'd be happy to draft a ~300-word press release for the public. But I need to know what the paper is about. Could you give me a quick rundown?
+
+Specifically:
+
+1. **What's the core finding/discovery?** (1–2 sentences)
+2. **Why does it 
+RESULT: Congratulations on the Nature acceptance — that's a huge deal! 🎉
+
+I'd be happy to draft a ~300-word press release for the public. But I need to know what the paper is about. Could you give me a quick rundown?
+
+Specifically:
+
+1. **What's the core finding/discovery?** (1–2 sentences)
+2. **Why does it 

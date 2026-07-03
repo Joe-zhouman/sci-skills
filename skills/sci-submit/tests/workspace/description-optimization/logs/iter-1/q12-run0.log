@@ -1,0 +1,34 @@
+=== QUERY ===
+写一封邮件给Nature Communications的编辑，问一下我的稿件NCOMMS-2026-04567审了三个月了怎么还没消息。礼貌一点。
+
+=== SKILL ===
+sci-letter-skill-f076a2f8
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: 当然，我帮你写一封礼貌、专业的催稿信。
+
+---
+
+**Subject:** Inquiry regarding manuscript NCOMMS-2026-04567
+
+Dear Editor,
+
+I hope this message finds you well.
+
+I am writing to respectfully inquire about the status of our manuscript entitled **[请在此填入稿件标题]** (NCOMMS-2026-04567), which was submitted to *Nature Communication
+RESULT: 当然，我帮你写一封礼貌、专业的催稿信。
+
+---
+
+**Subject:** Inquiry regarding manuscript NCOMMS-2026-04567
+
+Dear Editor,
+
+I hope this message finds you well.
+
+I am writing to respectfully inquire about the status of our manuscript entitled **[请在此填入稿件标题]** (NCOMMS-2026-04567), which was submitted to *Nature Communication

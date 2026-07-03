@@ -1,0 +1,56 @@
+\ProvidesPackage{naturetex}
+
+\usepackage{etoolbox}
+\usepackage{authblk}
+\usepackage[utf8]{inputenc}
+\usepackage{lipsum}
+\usepackage{authblk}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%% Replace with your paper title
+\newcommand{\papertitle}{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam}
+\newtoggle{supp}
+\newtoggle{lineno}
+\togglefalse{supp}
+\togglefalse{lineno}
+
+\DeclareOption{supp}{\toggletrue{supp}}
+\DeclareOption{lineno}{\toggletrue{lineno}}
+\ProcessOptions\relax
+
+\iftoggle{lineno}{
+    \usepackage{lineno}
+    \renewcommand{\linenumberfont}{\normalfont\small\sffamily}
+    \AtBeginDocument{\linenumbers}
+}{}
+
+\iftoggle{supp}{
+    \title{Supplementary Information for\\ \papertitle}
+    \usepackage[style=nature, backend=biber]{biblatex}
+    \addbibresource{bibliography.bib}
+}{
+    \title{\papertitle}
+}
+
+%% Replace with your authorship info
+\author[1]{Zhang San}
+\author[1,2]{Li Si}
+\author[1,*]{Wang Wu}
+\affil[1]{a}
+\affil[2]{b}
+\affil[*]{Corresponding author: \texttt{wangwu@example.edu.cn}}
+\date{}
+
+\newcommand{\beginsupplement}{%
+    \setcounter{table}{0}
+    \renewcommand{\tablename}{Supplementary Table}
+    \setcounter{figure}{0}
+    \renewcommand{\figurename}{Supplementary Figure}
+}

@@ -1,0 +1,82 @@
+=== QUERY ===
+我的文章写完了，准备投Nature Materials，帮我写一封投稿信
+
+=== SKILL ===
+sci-letter-skill-900637b9
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "Nature Materials 投稿信"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "Nature Materials 投稿信"})
+TOOL_RESULT: Launching skill: sci-letter-skill-60d8b9ed
+ASSISTANT: 好的！我来帮你写一封投 Nature Materials 的投稿信。首先让我了解一下你的文章内容和项目结构。
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -maxdepth 3 -type f \\( -name \"*.tex\" -o -name \"*.md\" -o -name \"*.pdf\" -o -name \"*.bib\" -o -name \"*.cls\" -o -name \"*.sty\" \\) | head -40", "description": "Find manuscript-related files"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -maxdepth 3 -type f \\( -name \"*.tex\" -o -name \"*.md\" -o -name \"*.pdf\" -o -name \"*.bib\" -o -name \"*.cls\" -o -name \"*.sty\" \\) | head -40", "description": "Find manuscript-related files"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/README.md
+/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-letter-skill-60d8b9ed.md
+/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-letter-skill-ba987aa6.md
+/home/joe/Documents/repo/skill/sci-draw/.claude/commands/sci-letter-skill-7e0c
+TOOL_USE: Glob({"pattern": "**/*.tex", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.tex", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: templates/main/submit/main.tex
+templates/main/tex/sup.tex
+templates/main/tex/main.tex
+templates/response/Reviewers/R1.tex
+templates/response/review_response.tex
+templates/cover_letter/cover_letter.tex
+TOOL_USE: Glob({"pattern": "**/manuscript*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/manuscript*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: skills/sci-draw/references/chart_selection.md
+skills/sci-draw/references/data_profiling.md
+skills/sci-draw/references/journal_specs.md
+skills/sci-draw/references/figure-contract.md
+skills/sci-draw/references/chart-types.md
+skills/sci-draw/references/nature-2026-observations.md
+skills/sci-draw/refere
+ASSISTANT: Let me read the key project files to understand the context of your paper.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-skills
+2	
+3	Claude Code skills for scientific research workflows.
+4	
+5	## Philosophy
+6	
+7	These skills are tools, not magic. Every workflow is designed for **human-in-the-loop** operation: the skill produces a draft, the human reviews it, and iteration drives quality. We don't pretend anythi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README_zh.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README_zh.md"})
+TOOL_RESULT: 1	# sci-skills
+2	
+3	面向科研工作流的 Claude Code 技能集合。
+4	
+5	## 核心理念
+6	
+7	这些 skill 是工具，不是魔法。每个工作流都围绕**人的介入**设计：skill 产出草稿，人来审查，通过迭代提升质量。我们绝不吹嘘"全自动化流程"——真正的科研工作从来不是全自动的。什么时候算够好，由人说了算。
+8	
+9	## 关于本系列
+10	
+11	本仓库中的每一个 skill 均严格按照 [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus) 定义的测试流程开发。所有
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/tex/main.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/tex/main.tex"})
+TOOL_RESULT: 1	\documentclass{article}
+2	\usepackage[lineno]{naturetex}
+3	
+4	\renewcommand{\baselinestretch}{1.5}
+5	
+6	\begin{document}
+7	
+8	\maketitle
+9	
+10	{\setstretch{1.0}
+11	% *** ABSTRACT ***
+12	\section*{Abstract}
+13	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-draw/SKILL.md"})

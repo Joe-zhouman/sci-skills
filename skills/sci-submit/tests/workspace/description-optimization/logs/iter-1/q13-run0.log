@@ -1,0 +1,57 @@
+=== QUERY ===
+帮我写一封求职信，我要申请深圳先进院的助理研究员岗位，我的研究方向是钙钛矿太阳能电池。
+
+=== SKILL ===
+sci-letter-skill-58c7d4ee
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: NO
+
+=== TRANSCRIPT ===
+ASSISTANT: 好的，我来帮你写这封求职信。虽然 `sci-letter` 技能专门用于学术期刊投稿信，但求职信（job application）不在它的适用范围。我来直接为你撰写一封申请深圳先进院助理研究员岗位的求职信。
+
+先了解一下这个岗位的大致背景，让内容更有针对性：
+TOOL_USE: WebSearch({"query": "中国科学院深圳先进技术研究院 助理研究员 招聘 钙钛矿太阳能电池"})
+TOOL_USE: WebSearch({"query": "中国科学院深圳先进技术研究院 助理研究员 招聘 钙钛矿太阳能电池"})
+TOOL_USE: WebSearch({"query": "深圳先进院 SIAT 光伏 钙钛矿 研究方向"})
+TOOL_USE: WebSearch({"query": "深圳先进院 SIAT 光伏 钙钛矿 研究方向"})
+TOOL_RESULT: Web search results for query: "中国科学院深圳先进技术研究院 助理研究员 招聘 钙钛矿太阳能电池"
+
+Links: [{"title":"[交流] 中科院深研院成会明院士/白杨研究员团队诚聘能源光电材料与器件方向博士后/助理研究员","url":"https://muchong.com/t-15499018-1"},{"title":"中科院深圳先进院朱红伟研究员团队诚聘光电能源材料与器件方向博士后、科研助理 - 网大论坛","url":"https://netbig.top/forum.php?mod=viewthread&action=printable&ti
+TOOL_RESULT: Web search results for query: "深圳先进院 SIAT 光伏 钙钛矿 研究方向"
+
+Links: [{"title":"王在伟-中国科学院大学-UCAS","url":"https://people.ucas.ac.cn/~wang.zaiwei"},{"title":"【2026年4月21日 先进材料科学与工程研究所】有机与钙钛矿光伏的进展与融合--中国科学院深圳先进技术研究院","url":"https://siat.ac.cn/yxsh/jzxx/202604/t20260421_8188001.html"},{"title":"低维能源材料研究中心","ur
+ASSISTANT: 我已经查到了深圳先进院在钙钛矿光伏领域的主要研究方向和团队。现在为你写一封针对性强的求职信。
+
+由于这是求职信（非期刊投稿信），我直接为你撰写。信中以 `[方括号]` 标注你需要替换的个人信息。
+
+---
+
+```markdown
+尊敬的深圳先进院招聘负责人 / 相关课题组组长：
+
+您好！
+
+我是 [你的姓名]，[xx大学/研究所] 的 [博士/博士后]，研究方向为钙钛矿太阳能电池。欣闻贵院正在招聘助理研究员，我怀着极大的热情申请这一岗位，希望有机会加入深圳先进院，在钙钛矿光电领域继续深耕。
+
+## 一、研究背景与成果
+
+我在 [博士/博士后] 期间围绕钙钛矿太阳能电池开展了系统性的研究工作，
+RESULT: 我已经查到了深圳先进院在钙钛矿光伏领域的主要研究方向和团队。现在为你写一封针对性强的求职信。
+
+由于这是求职信（非期刊投稿信），我直接为你撰写。信中以 `[方括号]` 标注你需要替换的个人信息。
+
+---
+
+```markdown
+尊敬的深圳先进院招聘负责人 / 相关课题组组长：
+
+您好！
+
+我是 [你的姓名]，[xx大学/研究所] 的 [博士/博士后]，研究方向为钙钛矿太阳能电池。欣闻贵院正在招聘助理研究员，我怀着极大的热情申请这一岗位，希望有机会加入深圳先进院，在钙钛矿光电领域继续深耕。
+
+## 一、研究背景与成果
+
+我在 [博士/博士后] 期间围绕钙钛矿太阳能电池开展了系统性的研究工作，

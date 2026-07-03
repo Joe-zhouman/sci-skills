@@ -1,0 +1,43 @@
+=== QUERY ===
+I want to write a letter to the editor of Nature about a recent paper they published. I think the conclusions are overstated and the methods have flaws. Can you help draft a formal comment/critique?
+
+=== SKILL ===
+sci-letter-skill-c5cf9fd9
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: That's a great idea — submitting a formal Correspondence or Matters Arising to *Nature* is a serious undertaking. Before I can help craft a persuasive critique, I need to understand the specifics of the paper and your concerns.
+
+Let me ask a few questions to get the details right:
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is the DOI or full citation of the Nature paper you want to critique?", "header": "Paper Citation", "options": []}, {"question": "What is your primary concern? (e.g., overstated conclusions, flawed statistical analysis, methodological errors, missing controls, data interpretation issues, etc.)", "header": "Primary Concern", "options": [{"label": "Overstated conclusions", "description": "Claims go beyond what the data actually support"}, {"label": "Statistical flaws", "description": "Improper tests, p-hacking, multiple comparisons, sample size issues"}, {"label": "Methodological errors", "description": "Experimental design flaws, missing controls, confounders"}, {"label": "Data/reproducibility", "description": "Results don't match data, analysis not reproducible, missing data"}, {"label": "Interpretation issues", "description": "Alternative explanations not considered, causal claims unwarranted"}, {"label": "Multiple concerns", "description": "A combination of the above"}]}, {"question": "Do you have specific evidence or alternative analyses that support your critique? (e.g., re-analysis of their data, published counterexamples, methodological literature)", "header": "Supporting Evidence", "options": []}, {"question": "What is your academic affiliation? (Nature typically requires this for correspondence authors)", "header": "Affiliation", "options": []}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_small",
+    "minimum": 2,
+    "inclusive": true,
+    "path": [
+      "questions",
+      0,
+      "options"
+    ],
+    "message": "Too small: expected array to have >=2 items"
+  },
+  {
+    "origin": "array",
+    "code
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is the DOI or full citation of the Nature paper you want to critique?", "header": "Paper Citation", "options": []}, {"question": "What is your primary concern? (e.g., overstated conclusions, flawed statistical analysis, methodological errors, missing controls, data interpretation issues, etc.)", "header": "Primary Concern", "options": [{"label": "Overstated conclusions", "description": "Claims go beyond what the data actually support"}, {"label": "Statistical flaws", "description": "Improper tests, p-hacking, multiple comparisons, sample size issues"}, {"label": "Methodological errors", "description": "Experimental design flaws, missing controls, confounders"}, {"label": "Data/reproducibility", "description": "Results don't match data, analysis not reproducible, missing data"}, {"label": "Interpretation issues", "description": "Alternative explanations not considered, causal claims unwarranted"}, {"label": "Multiple concerns", "description": "A combination of the above"}]}, {"question": "Do you have specific evidence or alternative analyses that support your critique? (e.g., re-analysis of their data, published counterexamples, methodological literature)", "header": "Supporting Evidence", "options": []}, {"question": "What is your academic affiliation? (Nature typically requires this for correspondence authors)", "header": "Affiliation", "options": []}]})
+ASSISTANT: I'm happy to help draft a formal comment letter critiquing a Nature paper! Let me gather the details I need:
+
+**1. Paper details — what's the DOI or full citation of the Nature paper you want to critique?**
+
+**2. What are your specific concerns?** (e.g., overstated conclusions, statistical flaws, me
+RESULT: I'm happy to help draft a formal comment letter critiquing a Nature paper! Let me gather the details I need:
+
+**1. Paper details — what's the DOI or full citation of the Nature paper you want to critique?**
+
+**2. What are your specific concerns?** (e.g., overstated conclusions, statistical flaws, me

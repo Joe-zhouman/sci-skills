@@ -1,0 +1,70 @@
+% sci-submit revision cover letter template
+% Shorter than first-submission — don't re-argue the paper. The editor already knows it.
+\documentclass[11pt]{article}
+\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{mygray}{gray}{0.2}
+\setcounter{secnumdepth}{0}
+\titlespacing*{\paragraph}{10pt}{1ex}{0.01ex}
+\titlespacing*{\subsubsection}{0pt}{1ex}{0.01ex}
+
+\newcommand{\journalname}{{{JOURNAL_NAME}}}
+\newcommand{\manuscripttitle}{{{MANUSCRIPT_TITLE}}}
+\newcommand{\msid}{{{MANUSCRIPT_ID}}}
+\newcommand{\mybullet}{\textbullet\hspace{0.5em}}
+
+\begin{document}
+
+% ---------- Institution header ----------
+\noindent
+\begin{minipage}[t]{0.15\textwidth}
+\vspace*{-2.8cm}
+\includegraphics[width=\linewidth,height=2.8cm,keepaspectratio]{logos/logo.jpg}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.6\textwidth}
+\vspace*{-2.2cm}
+{\color{black} {{DEPARTMENT}}\color{mygray}\small\newline
+{{INSTITUTION}}\small\newline
+{{ADDRESS}}}
+\end{minipage}
+
+\vspace{-0cm}
+\noindent\rule{\linewidth}{1.2pt}
+\bigskip
+
+% ---------- Date ----------
+\noindent \today
+
+\bigskip
+\noindent Dear Editor,
+
+\noindent We are resubmitting our manuscript entitled ``\textbf{\manuscripttitle}'' (MS\# \msid) to \textit{\journalname}, following the reviewers' comments. We have addressed all concerns raised by the reviewers; a detailed point-by-point Response Letter accompanies this submission.
+
+% ---------- Non-scientific changes ----------
+\subsubsection*{Changes Made}
+\noindent {{CHANGES}}
+
+% ---------- Updated manuscript stats ----------
+\subsubsection*{Items Included in This Resubmission}
+\noindent {{STATS}}
+
+% ---------- Closing ----------
+\subsubsection{}
+\noindent We thank the editor and reviewers for their constructive feedback, which has strengthened the manuscript. We look forward to hearing from you.
+
+\bigskip
+\noindent Sincerely,
+
+\bigskip
+\noindent {{AUTHOR_LIST}}
+
+\medskip
+\noindent\textsuperscript{*}Corresponding authors\\
+{{CORRESPONDING_AUTHOR_INFO}}
+
+\end{document}

@@ -1,0 +1,47 @@
+=== QUERY ===
+I'm submitting a revised manuscript to ACS Nano. Can you help draft a resubmission cover letter? The main changes are: reformatted with the journal template, added a new funding acknowledgment, and updated the data availability statement.
+
+=== SKILL ===
+sci-letter-skill-ba987aa6
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: Let me invoke the sci-letter skill to help draft this resubmission cover letter.
+TOOL_USE: Skill({"skill": "sci-letter-skill-ba987aa6"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-ba987aa6"})
+TOOL_RESULT: Launching skill: sci-letter-skill-ba987aa6
+ASSISTANT: Great — I can help draft a resubmission cover letter for ACS Nano. Before I write it, I need a few details to make it specific and accurate. Let me ask for the essentials.
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is the manuscript title?", "header": "Title", "options": []}, {"question": "Who is the corresponding author?", "header": "Author", "options": []}, {"question": "What is the manuscript reference / ID number from the initial submission?", "header": "Manuscript ID", "options": []}, {"question": "Was the decision a minor revision, major revision, or reject-and-resubmit?", "header": "Decision type", "options": [{"label": "Minor revision", "description": "Small changes requested, straightforward revision"}, {"label": "Major revision", "description": "Significant changes requested"}, {"label": "Reject & resubmit", "description": "Rejected but encouraged to resubmit substantially revised version"}]}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_small",
+    "minimum": 2,
+    "inclusive": true,
+    "path": [
+      "questions",
+      0,
+      "options"
+    ],
+    "message": "Too small: expected array to have >=2 items"
+  },
+  {
+    "origin": "array",
+    "code
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is the manuscript title?", "header": "Title", "options": []}, {"question": "Who is the corresponding author?", "header": "Author", "options": []}, {"question": "What is the manuscript reference / ID number from the initial submission?", "header": "Manuscript ID", "options": []}, {"question": "Was the decision a minor revision, major revision, or reject-and-resubmit?", "header": "Decision type", "options": [{"label": "Minor revision", "description": "Small changes requested, straightforward revision"}, {"label": "Major revision", "description": "Significant changes requested"}, {"label": "Reject & resubmit", "description": "Rejected but encouraged to resubmit substantially revised version"}]}]})
+ASSISTANT: Let me just ask you directly for the details I need:
+
+1. **Manuscript title** — what is it?
+2. **Corresponding author name and affiliation** — who is submitting?
+3. **Manuscript ID / reference number** — from the initial submission?
+4. **Decision type** — was it a minor revision, major revision, or 
+RESULT: Let me just ask you directly for the details I need:
+
+1. **Manuscript title** — what is it?
+2. **Corresponding author name and affiliation** — who is submitting?
+3. **Manuscript ID / reference number** — from the initial submission?
+4. **Decision type** — was it a minor revision, major revision, or 

@@ -1,0 +1,18 @@
+=== QUERY ===
+I want to write a letter to the editor of Nature about a recent paper they published. I think the conclusions are overstated and the methods have flaws. Can you help draft a formal comment/critique?
+
+=== SKILL ===
+sci-letter-skill-3a396a0e
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: I'd be happy to help draft a formal critique for a **Letter to the Editor** (also called a "Matters Arising" or "Correspondence" in Nature's terminology). This is a different genre from a manuscript cover letter, so I'll help you directly.
+
+To write an effective critique, I'll need some details from
+RESULT: I'd be happy to help draft a formal critique for a **Letter to the Editor** (also called a "Matters Arising" or "Correspondence" in Nature's terminology). This is a different genre from a manuscript cover letter, so I'll help you directly.
+
+To write an effective critique, I'll need some details from

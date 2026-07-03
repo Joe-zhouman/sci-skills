@@ -1,0 +1,141 @@
+\documentclass{article}
+\usepackage[supp,lineno]{naturetex}
+\addbibresource{ref/sup_bibliography.bib}
+\renewcommand{\theequation}{S\arabic{equation}}
+
+\begin{document}
+
+\maketitle
+
+\beginsupplement
+
+\newpage
+\tableofcontents
+\newpage
+
+% *** SUPPLEMENTARY FIGURES ***
+\newpage
+\section{Supplementary Figures}
+\vspace{-2mm}
+
+\begin{figure}[!h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig_s1}
+    \end{center}
+    \caption{\textbf{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod temp
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nost}
+    \label{sup.fig:s1}
+\addcontentsline{toc}{subsection}{\ref{sup.fig:s1}}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics[width=\textwidth]{fig_s2}
+    \end{center}
+    \caption{\textbf{Lorem ipsum dolor sit amet.}
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, qui
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliq
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqu}
+    \label{sup.fig:s2}
+\addcontentsline{toc}{subsection}{\ref{sup.fig:s2}}
+\end{figure}
+
+% *** SUPPLEMENTARY TABLES ***
+\newpage
+\section{Supplementary Tables}
+\begin{table}[h]
+\centering
+\caption{Lorem ipsum dolor sit amet, consectetur adipiscing elit.}
+\label{sup.tab:s1}
+\addcontentsline{toc}{subsection}{\ref{sup.tab:s1}}
+\begin{tabular}{lcccc}
+\hline
+A & B & C & D & E \\
+\hline
+A & 0.122 & 0.098 & 0.923 & 2.15 \\
+B & 0.105 & 0.082 & 0.937 & 1.98 \\
+C & 0.097 & 0.075 & 0.942 & 1.86 \\
+\textbf{Ours (CNN ensemble)} & \textbf{0.084} & \textbf{0.067} & \textbf{0.951} & \textbf{1.75} \\
+\hline
+\end{tabular}
+\end{table}
+% *** SUPPLEMENTARY METHODS ***
+\clearpage
+\section{Supplementary Methods}
+\setcounter{subsection}{0}
+
+\subsection*{\ref{sup.method:s1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit}
+\addcontentsline{toc}{subsection}{\ref{sup.method:s1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit}
+\label{sup.method:s1}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud e
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dol
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolor
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis au
+
+\subsubsection*{1. Collect all available positions}
+
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=*,itemsep=4pt]
+\item Collect all available positions $(x, y, z)$ of the target atomic species within the specified layer from the current matrix $M$.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliqui
+
+\item Repeat until $n_{\mathrm{remove}}$ vacancies have been placed or the maximum number of attempts ($N_{\mathrm{attempts}}^{\max} = 50 \times n_{\mathrm{remove}}$) is reached:
+\begin{enumerate}[label=(\alph*),noitemsep]
+\item Draw a candidate position uniformly at random from the set of available positions.
+\item If the candidate satisfies the intra-layer distance constraint $d(p, p_i) \geq d_{\min}$ for all previously placed vacancies $p_i$ in the same layer, accept it; otherwise, reject it.
+\item If accepted, remove the position from the available set and mark it in $M$.
+\end{enumerate}
+
+\item If fewer than $n_{\mathrm{remove}}$ vacancies are placed after exhausting the maximum attempts, the algorithm terminates with a warning.
+\end{enumerate}
+
+\subsubsection*{2. Collect all available positions}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nost
+
+\begin{enumerate}[label=\textbf{Step \arabic*.},leftmargin=*,itemsep=4pt]
+\item Collect all available positions as in the random topology.
+
+\item Randomly select $n_{\mathrm{clusters}} = 2$ positions from the available set to serve as cluster centers $C = \{(x_c^{(1)}, y_c^{(1)}, z_c^{(1)}), (x_c^{(2)}, y_c^{(2)}, z_c^{(2)})\}$.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore e
+
+\item Repeat until $n_{\mathrm{remove}}$ vacancies are placed or the maximum number of attempts is reached:
+\begin{enumerate}[label=(\alph*),noitemsep]
+\item For each still-available position $p = (x, y, z)$ that satisfies the distance constraint, compute its selection weight:
+\begin{equation}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna a
+\end{equation}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit
+\[d_{\min}^{\mathrm{center}} = \min_{c \in C,\, z_c = z} \sqrt{(x - x_c)^2 + (y - y_c)^2}\]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut eni
+
+\item Normalize all weights to obtain a probability distribution over available positions: $P(p_i) = w_i / \sum_j w_j$.
+\item Sample one position from this distribution and accept it.
+\item Remove the accepted position from the available set and update the distance constraints.
+\end{enumerate}
+\end{enumerate}
+
+\section{Supplementary Discussion}
+\setcounter{subsection}{0}
+
+\subsection*{\ref{sup.disc:s1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit}
+\addcontentsline{toc}{subsection}{\ref{sup.disc:s1}: Lorem ipsum dolor sit amet, consectetur adipiscing elit}
+\label{sup.disc:s1}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+\ref{sup.tab:s1} presents a comprehensive statistical characterization of the 50 independent AEMD simulations.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidata
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut a
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco lab
+
+\clearpage
+\printbibliography[title=Supplementary References]
+\end{document}

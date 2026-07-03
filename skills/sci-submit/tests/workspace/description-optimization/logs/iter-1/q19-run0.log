@@ -1,0 +1,36 @@
+=== QUERY ===
+我需要一封信说明我的文章从另一本期刊撤稿的原因，因为发现了一个数据处理错误。写给之前那本期刊的编辑。
+
+=== SKILL ===
+sci-letter-skill-f8a865ca
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: NO. The assistant explicitly stated that the sci-letter skill is not applicable (不适用) for the withdrawal letter task.
+
+=== TRANSCRIPT ===
+ASSISTANT: 这个需求属于撤稿说明信（withdrawal letter），不属于投稿信（cover letter）的范畴，所以 sci-letter skill 不适用。不过我可以直接帮你写。
+
+在动笔之前，我需要先问几个问题来把信写准确：
+
+**1. 文章信息**
+- 论文标题是什么？
+- 之前投稿的期刊名称是什么？
+- 稿件编号（Manuscript ID / Reference Number）是什么？
+- 目前文章的状态是什么？（under review / revision / accepted 等）
+
+**2. 数据处理错误的具体信息**
+- 是什么类型的错误？（代码 bug / 公式错误 / 
+RESULT: 这个需求属于撤稿说明信（withdrawal letter），不属于投稿信（cover letter）的范畴，所以 sci-letter skill 不适用。不过我可以直接帮你写。
+
+在动笔之前，我需要先问几个问题来把信写准确：
+
+**1. 文章信息**
+- 论文标题是什么？
+- 之前投稿的期刊名称是什么？
+- 稿件编号（Manuscript ID / Reference Number）是什么？
+- 目前文章的状态是什么？（under review / revision / accepted 等）
+
+**2. 数据处理错误的具体信息**
+- 是什么类型的错误？（代码 bug / 公式错误 / 

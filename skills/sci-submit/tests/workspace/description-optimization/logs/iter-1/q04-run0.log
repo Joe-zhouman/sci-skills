@@ -1,0 +1,102 @@
+=== QUERY ===
+老板让我写个投稿信，第一次投不知道怎么下手，文章是讲石墨烯热导率的，想投Advanced Science。你能教教我吗？
+
+=== SKILL ===
+sci-letter-skill-b4ff7dbf
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "写投稿信，石墨烯热导率，投Advanced Science，第一次投稿"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "写投稿信，石墨烯热导率，投Advanced Science，第一次投稿"})
+TOOL_RESULT: Launching skill: sci-letter-skill-60d8b9ed
+ASSISTANT: 好的！写投稿信是投稿过程中很重要的一步，我来帮你。先看看这个技能准备了哪些模板和指南。
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+TOOL_USE: Glob({"pattern": "templates/**/*letter*"})
+TOOL_USE: Glob({"pattern": "templates/**/*letter*"})
+TOOL_RESULT: templates/cover_letter/cover_letter.aux
+templates/cover_letter/cover_letter.pdf
+templates/cover_letter/cover_letter.out
+templates/cover_letter/cover_letter.log
+templates/cover_letter/cover_letter.tex
+templates/cover_letter/cover_letter.bib
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_RESULT: 1	\documentclass[11pt]{article}
+2	\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+3	\usepackage{mathptmx}
+4	\usepackage{graphicx}
+5	\usepackage{titlesec}
+6	\usepackage{textcomp}
+7	\usepackage{enumitem}
+8	\usepackage{xcolor}
+9	\usepackage[numbers,super,comma,sort&compress]{natbi
+ASSISTANT: 好的！首先我来创建决策文件目录，然后一步步带你写这封投稿信。
+
+第一次投稿写 cover letter 其实并不难，关键是把"为什么这篇文章适合这个期刊"讲清楚。我先建立流程记录，然后需要你提供一些基本信息。
+TOOL_USE: Bash({"command": "mkdir -p /home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/advanced-science", "description": "Create sci-letter decision directory"})
+TOOL_USE: Bash({"command": "mkdir -p /home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/advanced-science", "description": "Create sci-letter decision directory"})
+TOOL_RESULT: mkdir in '/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/advanced-science' was blocked. For security, Claude Code may only create directories in the allowed working directories for this session: '/home/joe/Documents/repo/skill/sci-draw'.
+ASSISTANT: 好的，先跳过目录创建。让我先了解你的文章信息，这样才能写出有针对性的 cover letter。
+
+## 第一步：收集信息
+
+写 cover letter 之前，我需要了解你的文章。请告诉我以下信息：
+
+---
+
+**1. 文章基本信息**
+- **完整标题**是什么？
+- **摘要**可以贴给我吗？
+- **主要通讯作者**的名字、单位、邮箱是什么？
+- **其他作者**有谁？
+- **正文字数**大概多少？**图表**各有多少？
+
+**2. 核心发现**
+- 你用的是什么方法？（分子动力学？第一性原理？实验测量？）
+- 文章的核心**创新点**是什么？（比如：发现了什么新机制、达到了什么性
+RESULT: 好的，先跳过目录创建。让我先了解你的文章信息，这样才能写出有针对性的 cover letter。
+
+## 第一步：收集信息
+
+写 cover letter 之前，我需要了解你的文章。请告诉我以下信息：
+
+---
+
+**1. 文章基本信息**
+- **完整标题**是什么？
+- **摘要**可以贴给我吗？
+- **主要通讯作者**的名字、单位、邮箱是什么？
+- **其他作者**有谁？
+- **正文字数**大概多少？**图表**各有多少？
+
+**2. 核心发现**
+- 你用的是什么方法？（分子动力学？第一性原理？实验测量？）
+- 文章的核心**创新点**是什么？（比如：发现了什么新机制、达到了什么性

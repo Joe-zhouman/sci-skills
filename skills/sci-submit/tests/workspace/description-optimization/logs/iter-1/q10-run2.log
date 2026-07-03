@@ -1,0 +1,75 @@
+=== QUERY ===
+帮我写一封推荐信，推荐我的硕士生申请清华的博士
+
+=== SKILL ===
+sci-letter-skill-61c2242b
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: NO. The assistant's questions about student info and letter style are generic recommendation-letter guidance, not specific to a registered 'sci-letter' skill with no skill tool call or mention.
+
+=== TRANSCRIPT ===
+ASSISTANT: 写推荐信需要了解一些具体信息，这样才能写得充实、有说服力。我来问几个关键问题：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "这位学生叫什么名字？他/她目前在哪所大学读硕士？专业是什么？", "header": "学生信息", "options": []}, {"question": "你与这位学生的关系是什么？（例如：导师、授课老师、科研项目指导老师）认识了多久？", "header": "你的身份", "options": []}, {"question": "学生申请清华哪个学院/专业的博士？是否有意向导师？", "header": "申请目标", "options": []}, {"question": "请简要介绍学生的学术背景和亮点——例如：研究方向、发表的论文、参与的项目、GPA或排名、获奖情况、英语水平等。", "header": "学生亮点", "options": []}, {"question": "你希望推荐信是什么风格和长度？\nA) 正式标准版（500-800字）——结构严谨，突出学术能力\nB) 详细推荐版（1000-1500字）——全面深入，含具体事例\nC) 简洁突出版（300-500字）——精炼有力，聚焦核心优势", "header": "风格和长度", "options": [{"label": "正式标准版", "description": "500-800字，结构严谨，突出学术能力"}, {"label": "详细推荐版", "description": "1000-1500字，全面深入，含具体事例"}, {"label": "简洁突出版", "description": "300-500字，精炼有力，聚焦核心优势"}]}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_small",
+    "minimum": 2,
+    "inclusive": true,
+    "path": [
+      "questions",
+      0,
+      "options"
+    ],
+    "message": "Too small: expected array to have >=2 items"
+  },
+  {
+    "origin": "array",
+    "code
+TOOL_USE: AskUserQuestion({"questions": [{"question": "这位学生叫什么名字？他/她目前在哪所大学读硕士？专业是什么？", "header": "学生信息", "options": []}, {"question": "你与这位学生的关系是什么？（例如：导师、授课老师、科研项目指导老师）认识了多久？", "header": "你的身份", "options": []}, {"question": "学生申请清华哪个学院/专业的博士？是否有意向导师？", "header": "申请目标", "options": []}, {"question": "请简要介绍学生的学术背景和亮点——例如：研究方向、发表的论文、参与的项目、GPA或排名、获奖情况、英语水平等。", "header": "学生亮点", "options": []}, {"question": "你希望推荐信是什么风格和长度？\nA) 正式标准版（500-800字）——结构严谨，突出学术能力\nB) 详细推荐版（1000-1500字）——全面深入，含具体事例\nC) 简洁突出版（300-500字）——精炼有力，聚焦核心优势", "header": "风格和长度", "options": [{"label": "正式标准版", "description": "500-800字，结构严谨，突出学术能力"}, {"label": "详细推荐版", "description": "1000-1500字，全面深入，含具体事例"}, {"label": "简洁突出版", "description": "300-500字，精炼有力，聚焦核心优势"}]}]})
+ASSISTANT: 好，我来问几个关键问题，以便帮您写出一封有说服力的推荐信。
+
+**1. 学生信息**
+- 学生姓名？
+- 目前在哪所大学读硕士？什么专业？
+
+**2. 您与学生的关系**
+- 您是他的导师、授课老师，还是科研项目指导老师？认识了多久？
+
+**3. 申请目标**
+- 学生申请清华哪个学院/专业的博士？是否有意向导师？
+
+**4. 学术亮点**（请尽可能详细）
+- 研究方向是什么？
+- 是否发表过论文？如有，请提供期刊/会议名称和论文题目。
+- 参与过哪些重要的科研项目？
+- GPA 或排名如何？
+- 获得过哪些奖项或荣誉？
+- 英语水平（托福/雅思/GRE 等）？
+
+**5. 风格偏好**
+- 
+RESULT: 好，我来问几个关键问题，以便帮您写出一封有说服力的推荐信。
+
+**1. 学生信息**
+- 学生姓名？
+- 目前在哪所大学读硕士？什么专业？
+
+**2. 您与学生的关系**
+- 您是他的导师、授课老师，还是科研项目指导老师？认识了多久？
+
+**3. 申请目标**
+- 学生申请清华哪个学院/专业的博士？是否有意向导师？
+
+**4. 学术亮点**（请尽可能详细）
+- 研究方向是什么？
+- 是否发表过论文？如有，请提供期刊/会议名称和论文题目。
+- 参与过哪些重要的科研项目？
+- GPA 或排名如何？
+- 获得过哪些奖项或荣誉？
+- 英语水平（托福/雅思/GRE 等）？
+
+**5. 风格偏好**
+- 

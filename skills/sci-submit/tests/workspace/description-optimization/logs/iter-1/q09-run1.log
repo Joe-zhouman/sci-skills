@@ -1,0 +1,63 @@
+=== QUERY ===
+我想投PNAS，听说cover letter要指定NAS member editor，这个怎么回事？帮我写的时候注意一下这个要求。
+
+=== SKILL ===
+sci-letter-skill-7040e50e
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-7040e50e"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-7040e50e"})
+TOOL_RESULT: Launching skill: sci-letter-skill-7040e50e
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+skills/sci-letter/tests/workspace/desc
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+ASSISTANT: 好的，我理解了。PNAS 的 cover letter 有个独特要求——必须建议 **NAS 成员（National Academy of Sciences member）作为编辑**。你来的引用材料已经说明得很清楚：
+
+> **PNAS 要求**: 必须在 cover letter 中建议 ≥ 3 名 NAS 成员作为可能的编辑。若没有建议足够成员，稿件可能被退回。
+
+在开始写之前，我需要先了解你的稿件信息。按照技能工作流，我需要先收集信息。
+
+---
+
+### PNAS NAS 成员编辑机制说明
+
+PNAS 与其他期刊不同，它不设全职专业编辑团队，而是由 **NAS 成员（院士）担任编辑*
+RESULT: 好的，我理解了。PNAS 的 cover letter 有个独特要求——必须建议 **NAS 成员（National Academy of Sciences member）作为编辑**。你来的引用材料已经说明得很清楚：
+
+> **PNAS 要求**: 必须在 cover letter 中建议 ≥ 3 名 NAS 成员作为可能的编辑。若没有建议足够成员，稿件可能被退回。
+
+在开始写之前，我需要先了解你的稿件信息。按照技能工作流，我需要先收集信息。
+
+---
+
+### PNAS NAS 成员编辑机制说明
+
+PNAS 与其他期刊不同，它不设全职专业编辑团队，而是由 **NAS 成员（院士）担任编辑*

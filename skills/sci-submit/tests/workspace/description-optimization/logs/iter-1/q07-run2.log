@@ -1,0 +1,83 @@
+=== QUERY ===
+帮我看一下这封cover letter写得好不好，有没有需要改的地方——主要是投Nature Energy用的，我担心期刊契合度那部分没写好。
+
+=== SKILL ===
+sci-letter-skill-5e72e913
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-6aca14aa", "args": "review cover letter"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-6aca14aa", "args": "review cover letter"})
+TOOL_RESULT: Launching skill: sci-letter-skill-6aca14aa
+ASSISTANT: I see there's a `skills/sci-letter/` directory in the git status. Let me first look for your cover letter file to review it.
+TOOL_USE: Glob({"pattern": "**/*cover*"})
+TOOL_USE: Glob({"pattern": "**/*cover*"})
+TOOL_RESULT: templates/cover_letter/cover_letter.aux
+templates/cover_letter/cover_letter.pdf
+templates/cover_letter/cover_letter.out
+templates/cover_letter/cover_letter.log
+templates/cover_letter/cover_letter.tex
+templates/cover_letter/cover_letter.bib
+TOOL_USE: Glob({"pattern": "**/*letter*"})
+TOOL_USE: Glob({"pattern": "**/*letter*"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_RESULT: templates/cover_letter/cover_letter.aux
+templates/cover_letter/cover_letter.pdf
+templates/cover_letter/cover_letter.out
+templates/cover_letter/cover_letter.log
+templates/cover_letter/cover_letter.tex
+templates/cover_letter/cover_letter.bib
+.claude/commands/sci-letter-skill-eedfeb22.md
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+skills/sci-letter/tests/workspace/desc
+ASSISTANT: Let me read your cover letter and the journal requirements reference:
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_RESULT: 1	\documentclass[11pt]{article}
+2	\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+3	\usepackage{mathptmx}
+4	\usepackage{graphicx}
+5	\usepackage{titlesec}
+6	\usepackage{textcomp}
+7	\usepackage{enumitem}
+8	\usepackage{xcolor}
+9	\usepackage[numbers,super,comma,sort&compress]{natbi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+ASSISTANT: 这个文件是模板（`templates/cover_letter/cover_letter.tex`），不是您实际的投稿信。我没找到您已经写好的 cover letter 草稿。
+
+请把您的 cover letter 贴在这里（Markdown 或纯文本都行），我来帮您审读。重点看：
+
+1. **整体结构与语气**是否合适
+2. **Nature Energy 期刊契合度**——这部分我来重点把关
+3. 其他常见的坑（声明、格式、竞争利益等）
+
+直接贴内容过来就可以。
+RESULT: 这个文件是模板（`templates/cover_letter/cover_letter.tex`），不是您实际的投稿信。我没找到您已经写好的 cover letter 草稿。
+
+请把您的 cover letter 贴在这里（Markdown 或纯文本都行），我来帮您审读。重点看：
+
+1. **整体结构与语气**是否合适
+2. **Nature Energy 期刊契合度**——这部分我来重点把关
+3. 其他常见的坑（声明、格式、竞争利益等）
+
+直接贴内容过来就可以。

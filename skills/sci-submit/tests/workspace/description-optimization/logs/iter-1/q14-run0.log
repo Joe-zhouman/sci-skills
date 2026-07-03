@@ -1,0 +1,40 @@
+=== QUERY ===
+I need to draft a press release for our new paper that just got accepted in Nature. The PR department wants a 300-word summary for the general public.
+
+=== SKILL ===
+sci-letter-skill-0e5d6706
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: Great news about the Nature acceptance! Let me first explore the repo to understand what the paper is about, then draft the press release.
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo root"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/", "description": "List repo root"})
+TOOL_RESULT: README.md
+README_zh.md
+skills
+templates
+TOOL_USE: Glob({"pattern": "**/*.{md,tex,txt,pdf}", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.{md,tex,txt,pdf}", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: skills/sci-draw/requirements.txt
+skills/sci-draw/references/chart_selection.md
+skills/sci-draw/references/data_profiling.md
+skills/sci-draw/references/journal_specs.md
+skills/sci-draw/references/figure-contract.md
+skills/sci-draw/references/chart-types.md
+skills/sci-draw/references/nature-2026-obser
+ASSISTANT: Let me read the key documents to understand the project context.
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-skills
+2	
+3	Claude Code skills for scientific research workflows.
+4	
+5	## Philosophy
+6	
+7	These skills are tools, not magic. Every workflow is designed for **human-in-the-loop** operation: the skill produces a draft, the human reviews it, and iteration drives quality. We don't pretend anythi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-draw/SKILL.md"})

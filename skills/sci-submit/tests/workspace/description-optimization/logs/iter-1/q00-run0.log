@@ -1,0 +1,52 @@
+=== QUERY ===
+我的文章写完了，准备投Nature Materials，帮我写一封投稿信
+
+=== SKILL ===
+sci-letter-skill-3df686fe
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-ba987aa6", "args": "投 Nature Materials 投稿信"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-ba987aa6", "args": "投 Nature Materials 投稿信"})
+TOOL_RESULT: Launching skill: sci-letter-skill-ba987aa6
+ASSISTANT: 好的！我来帮你写一封投 **Nature Materials** 的投稿信（cover letter）。在动笔之前，我需要先了解你的文章信息。请告诉我以下几个关键要素：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你的文章标题是什么？（中英文均可，最好提供英文标题）", "header": "文章标题", "options": []}, {"question": "请简要描述你的核心发现 / 主要结论（1-3句话）。Nature Materials 的编辑看重突破性、机理性理解和广泛影响力。", "header": "核心发现", "options": []}, {"question": "你的文章有哪些关键证据支撑结论？（例如：第一性原理计算 + 实验验证 / 原位表征 + 理论模型 / 大规模数据集分析…）", "header": "关键证据", "options": []}, {"question": "你的工作是在哪个具体领域？有哪些最近的 Nature Materials 论文与你的工作最相关？（可提供DOI或标题关键词）", "header": "领域与对标", "options": []}, {"question": "你的作者单位和通讯作者信息是？", "header": "作者信息", "options": []}, {"question": "是否需要排除某些审稿人？", "header": "排除审稿人", "options": []}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_small",
+    "minimum": 2,
+    "inclusive": true,
+    "path": [
+      "questions",
+      0,
+      "options"
+    ],
+    "message": "Too small: expected array to have >=2 items"
+  },
+  {
+    "origin": "array",
+    "code
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你的文章标题是什么？（中英文均可，最好提供英文标题）", "header": "文章标题", "options": []}, {"question": "请简要描述你的核心发现 / 主要结论（1-3句话）。Nature Materials 的编辑看重突破性、机理性理解和广泛影响力。", "header": "核心发现", "options": []}, {"question": "你的文章有哪些关键证据支撑结论？（例如：第一性原理计算 + 实验验证 / 原位表征 + 理论模型 / 大规模数据集分析…）", "header": "关键证据", "options": []}, {"question": "你的工作是在哪个具体领域？有哪些最近的 Nature Materials 论文与你的工作最相关？（可提供DOI或标题关键词）", "header": "领域与对标", "options": []}, {"question": "你的作者单位和通讯作者信息是？", "header": "作者信息", "options": []}, {"question": "是否需要排除某些审稿人？", "header": "排除审稿人", "options": []}]})
+ASSISTANT: 好的，我来逐一问你：
+
+**1. 文章标题是什么？**（中英文均可，最好有英文标题）
+
+**2. 请用1-3句话概括核心发现**——Nature Materials 的编辑看重：突破性发现、机理性理解、广泛影响力。你的工作解决了什么关键科学问题？
+
+**3. 你有哪些关键证据支撑结论？**（例如：DFT计算 + 实验 / 原位表征 + 理论模型 / 器件数据 + 模拟…）
+
+**4. 第一作者单位和通讯作者信息？**（需在信中署名）
+RESULT: 好的，我来逐一问你：
+
+**1. 文章标题是什么？**（中英文均可，最好有英文标题）
+
+**2. 请用1-3句话概括核心发现**——Nature Materials 的编辑看重：突破性发现、机理性理解、广泛影响力。你的工作解决了什么关键科学问题？
+
+**3. 你有哪些关键证据支撑结论？**（例如：DFT计算 + 实验 / 原位表征 + 理论模型 / 器件数据 + 模拟…）
+
+**4. 第一作者单位和通讯作者信息？**（需在信中署名）

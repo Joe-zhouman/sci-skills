@@ -1,0 +1,75 @@
+=== QUERY ===
+投稿信需要写哪些内容？我想投国内的Science Bulletin，英文的。
+
+=== SKILL ===
+sci-letter-skill-4cf3aa19
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: YES The assistant clearly invoked the skill via Skill tool calls matching 'sci-letter-skill-*', received a launch confirmation, then read the skill's SKILL.md and references to produce the response.
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "用户想了解投稿信（cover letter）需要写哪些内容，目标期刊是国内的 Science Bulletin（英文期刊）。用户目前还没有要求写具体信件，只是先问投稿信的内容结构要求。"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "用户想了解投稿信（cover letter）需要写哪些内容，目标期刊是国内的 Science Bulletin（英文期刊）。用户目前还没有要求写具体信件，只是先问投稿信的内容结构要求。"})
+TOOL_RESULT: Launching skill: sci-letter-skill-60d8b9ed
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/CLAUDE.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/CLAUDE.md"})
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+ASSISTANT: ## Science Bulletin 投稿信内容指南
+
+*Science Bulletin*（《科学通报》英文版）是由 **Science China Press**（科学出版社）出版、**Elsevier** 发行的综合性英文期刊，定位为**快速发表**、**多学科覆盖**的通讯类期刊（半月刊）。
+
+### 投稿信结构
+
+下面是标准首投投稿信的完整结构，按 Science Bulletin 的特点做了定制：
+
+---
+
+#### 1️⃣ 开头
+
+```
+Dear Editor,
+
+We wish to submit our manuscript entitled "[标题]" for co
+RESULT: ## Science Bulletin 投稿信内容指南
+
+*Science Bulletin*（《科学通报》英文版）是由 **Science China Press**（科学出版社）出版、**Elsevier** 发行的综合性英文期刊，定位为**快速发表**、**多学科覆盖**的通讯类期刊（半月刊）。
+
+### 投稿信结构
+
+下面是标准首投投稿信的完整结构，按 Science Bulletin 的特点做了定制：
+
+---
+
+#### 1️⃣ 开头
+
+```
+Dear Editor,
+
+We wish to submit our manuscript entitled "[标题]" for co

@@ -1,0 +1,60 @@
+=== QUERY ===
+I need to write a cover letter for my manuscript. It's about perovskite solar cell stability, targeting Advanced Materials. Can you draft one?
+
+=== SKILL ===
+sci-letter-skill-e8ea4fed
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-ba987aa6", "args": "First submission cover letter for Advanced Materials. Manuscript topic: perovskite solar cell stability. Need a draft."})
+TOOL_USE: Skill({"skill": "sci-letter-skill-ba987aa6", "args": "First submission cover letter for Advanced Materials. Manuscript topic: perovskite solar cell stability. Need a draft."})
+TOOL_RESULT: Launching skill: sci-letter-skill-ba987aa6
+ASSISTANT: Let me start by exploring the skill's templates and resources to craft a strong, journal-specific cover letter.
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/.claude/skills/sci-letter"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/.claude/skills/sci-letter"})
+TOOL_RESULT: <tool_use_error>Directory does not exist: /home/joe/.claude/skills/sci-letter. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.</tool_use_error>
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter"})
+TOOL_USE: Glob({"pattern": "**/*", "path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter"})
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+ASSISTANT: Good — I have the journal requirements and workflow. Let me check for any existing submission context, then gather the info I need from you.
+TOOL_USE: Glob({"pattern": "sci-letter/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "sci-letter/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+ASSISTANT: No existing submission history — this is fresh. Let me search for recent *Advanced Materials* papers on perovskite stability so the journal-fit section is grounded in real citations, while I also gather a few details from you.
+TOOL_USE: WebSearch({"query": "perovskite solar cell stability Advanced Materials 2024 2025"})
+TOOL_USE: WebSearch({"query": "perovskite solar cell stability Advanced Materials 2024 2025"})
+TOOL_RESULT: Web search results for query: "perovskite solar cell stability Advanced Materials 2024 2025"
+
+Links: [{"title":"HZB-Publication","url":"https://www.helmholtz-berlin.de/pubbin/oai_publication?ID=115051&typoid=80084;sprache=de"},{"title":"恭喜课题组唐颖，张祖宏在Advanced Materials发表关于钙钛矿变温稳定性方面的研究性论文 - 课题组新闻","ur
+ASSISTANT: Excellent — I've found recent *Advanced Materials* papers on perovskite stability (heat-triggered self-healing frameworks, triple-additive strategies, photochromic control layers, scalable modules). This gives strong grounding for a journal-fit argument.
+
+**Before I write the letter, I need a few de
+RESULT: Excellent — I've found recent *Advanced Materials* papers on perovskite stability (heat-triggered self-healing frameworks, triple-additive strategies, photochromic control layers, scalable modules). This gives strong grounding for a journal-fit argument.
+
+**Before I write the letter, I need a few de

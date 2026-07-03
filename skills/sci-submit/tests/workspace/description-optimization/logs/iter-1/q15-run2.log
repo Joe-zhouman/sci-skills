@@ -1,0 +1,18 @@
+=== QUERY ===
+帮我写一份国家自然科学基金面上项目的立项依据和研究内容，题目是关于二维材料热输运的。预算80万，四年。
+
+=== SKILL ===
+sci-letter-skill-ccba485c
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: TaskCreate({"subject": "Write NSFC general project proposal on 2D material thermal transport", "description": "Write a complete NSFC 面上项目 proposal (立项依据 + 研究内容) on thermal transport in 2D materials, budget 800K RMB over 4 years. Save to a markdown file.", "activeForm": "Writing NSFC proposal on 2D material thermal transport"})
+TOOL_USE: TaskCreate({"subject": "Write NSFC general project proposal on 2D material thermal transport", "description": "Write a complete NSFC 面上项目 proposal (立项依据 + 研究内容) on thermal transport in 2D materials, budget 800K RMB over 4 years. Save to a markdown file.", "activeForm": "Writing NSFC proposal on 2D material thermal transport"})
+TOOL_RESULT: Task #1 created successfully: Write NSFC general project proposal on 2D material thermal transport
+TOOL_USE: TaskUpdate({"taskId": "1", "status": "in_progress"})
+TOOL_USE: TaskUpdate({"taskId": "1", "status": "in_progress"})
+TOOL_RESULT: Updated task #1 status

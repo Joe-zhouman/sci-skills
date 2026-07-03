@@ -1,0 +1,38 @@
+=== QUERY ===
+I need to draft a press release for our new paper that just got accepted in Nature. The PR department wants a 300-word summary for the general public.
+
+=== SKILL ===
+sci-letter-skill-20dba1e7
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is this paper about? I need a brief description of the research finding, the lead author/institution, and any key context to write the press release.", "header": "Paper details", "multiSelect": false, "options": [{"label": "I'll describe it", "description": "I'll provide the details about the paper's topic, findings, and authors"}]}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_small",
+    "minimum": 2,
+    "inclusive": true,
+    "path": [
+      "questions",
+      0,
+      "options"
+    ],
+    "message": "Too small: expected array to have >=2 items"
+  }
+]</tool_use_error>
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is this paper about? I need a brief description of the research finding, the lead author/institution, and any key context to write the press release.", "header": "Paper details", "multiSelect": false, "options": [{"label": "I'll describe it", "description": "I'll provide the details about the paper's topic, findings, and authors"}]}]})
+ASSISTANT: Great news about the Nature acceptance! To draft a press release, I need details about the paper. Could you tell me:
+
+1. **What is the paper about?** (the key finding / discovery)
+2. **Who are the authors?** (lead author, corresponding author, institution)
+3. **What's the significance?** (why does t
+RESULT: Great news about the Nature acceptance! To draft a press release, I need details about the paper. Could you tell me:
+
+1. **What is the paper about?** (the key finding / discovery)
+2. **Who are the authors?** (lead author, corresponding author, institution)
+3. **What's the significance?** (why does t

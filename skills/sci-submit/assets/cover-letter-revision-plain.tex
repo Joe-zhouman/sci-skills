@@ -1,0 +1,46 @@
+% sci-submit revision cover letter template — plain (no logo, no letterhead)
+\documentclass[11pt]{article}
+\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+\usepackage{mathptmx}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+\setcounter{secnumdepth}{0}
+\titlespacing*{\subsubsection}{0pt}{1ex}{0.01ex}
+
+\newcommand{\journalname}{{{JOURNAL_NAME}}}
+\newcommand{\manuscripttitle}{{{MANUSCRIPT_TITLE}}}
+\newcommand{\msid}{{{MANUSCRIPT_ID}}}
+
+\begin{document}
+
+\noindent \today
+
+\bigskip
+\noindent Dear Editor,
+
+\noindent We are resubmitting our manuscript entitled ``\textbf{\manuscripttitle}'' (MS\# \msid) to \textit{\journalname}, following the reviewers' comments. We have addressed all concerns raised by the reviewers; a detailed point-by-point Response Letter accompanies this submission.
+
+% ---------- Non-scientific changes ----------
+\subsubsection*{Changes Made}
+\noindent {{CHANGES}}
+
+% ---------- Updated manuscript stats ----------
+\subsubsection*{Items Included in This Resubmission}
+\noindent {{STATS}}
+
+% ---------- Closing ----------
+\subsubsection{}
+\noindent We thank the editor and reviewers for their constructive feedback, which has strengthened the manuscript. We look forward to hearing from you.
+
+\bigskip
+\noindent Sincerely,
+
+\bigskip
+\noindent {{AUTHOR_LIST}}
+
+\medskip
+\noindent\textsuperscript{*}Corresponding authors\\
+{{CORRESPONDING_AUTHOR_INFO}}
+
+\end{document}

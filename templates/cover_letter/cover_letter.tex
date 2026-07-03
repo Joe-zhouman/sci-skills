@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+\usepackage{mathptmx}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{textcomp}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[numbers,super,comma,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{mygray}{gray}{0.2}
+\setcounter{secnumdepth}{0}
+\titlespacing*{\paragraph}{10pt}{1ex}{0.01ex}
+\titlespacing*{\subsubsection}{0pt}{1ex}{0.01ex}
+\bibliographystyle{abbrvnat}
+
+% === PLACEHOLDERS — fill these in ===
+\newcommand{\journalname}{JOURNAL-NAME}
+\newcommand{\manuscripttitle}{MANUSCRIPT-TITLE}
+\newcommand{\mybullet}{\textbullet\hspace{0.5em}}
+
+\begin{document}
+
+\noindent
+\begin{minipage}[t]{0.15\textwidth}
+\vspace*{-2.8cm}
+\includegraphics[width=\linewidth,height=2.8cm,keepaspectratio]{logos/logo.png}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.6\textwidth}
+\vspace*{-2.2cm}
+{\color{black}{AFFILIATION-DEPT}\color{mygray}\small\newline
+{AFFILIATION-UNIV}\small\newline
+{AFFILIATION-ADDRESS}}
+\end{minipage}
+
+\vspace{-0cm}
+\noindent\rule{\linewidth}{1.2pt}
+\bigskip
+
+\noindent \today
+
+\bigskip
+\noindent Dear Editor,
+
+\noindent We wish to submit our manuscript entitled ``\textbf{\manuscripttitle}'' for consideration for publication in \textit{\journalname}.
+
+\subsubsection{}
+\noindent {OPENING-PARAGRAPH}
+
+\subsubsection{}
+\noindent {MAIN-FINDINGS-PARAGRAPH}
+
+\subsubsection*{Summary of Scientific Grounds for Consideration at \textit{\journalname}}
+\noindent {SCIENTIFIC-GROUNDS}
+
+\subsubsection*{Summary of Appeal to a Broad Audience}
+\noindent {BROAD-APPEAL}
+
+\subsubsection{Items Included in This Submission}
+\noindent {ITEMS-INCLUDED}
+
+\subsubsection{}
+\noindent We confirm that this manuscript has not been published elsewhere and is not under consideration by another journal. All authors have read and approved the final version and agree with its submission. The authors declare no competing financial interests.
+
+\subsubsection{}
+\noindent We appreciate your time and consideration and look forward to hearing from you.
+
+\bigskip
+\noindent Sincerely,
+
+\bigskip
+\noindent{AUTHORS}
+
+\medskip
+\noindent\textsuperscript{*}Corresponding authors\\
+{CORRESPONDING-AUTHOR-INFO}
+
+\bibliography{cover_letter.bib}
+
+\end{document}

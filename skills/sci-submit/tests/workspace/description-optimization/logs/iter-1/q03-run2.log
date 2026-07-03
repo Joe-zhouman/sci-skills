@@ -1,0 +1,22 @@
+=== QUERY ===
+文章修改完了，准备resubmit，需要写一个revision cover letter。这次主要在格式上换了官方模板，语言也润色过了，作者加了一个人。帮我看一下怎么写。
+
+=== SKILL ===
+sci-letter-skill-54b9362c
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+ASSISTANT: This is exactly the job for the cover letter skill — let me invoke it.
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "Write a revision/resubmission cover letter for a scientific manuscript. The changes made are: (1) reformatted the manuscript to use the official journal template, (2) polished the language throughout, (3) added one new co-author."})
+TOOL_USE: Skill({"skill": "sci-letter-skill-60d8b9ed", "args": "Write a revision/resubmission cover letter for a scientific manuscript. The changes made are: (1) reformatted the manuscript to use the official journal template, (2) polished the language throughout, (3) added one new co-author."})
+TOOL_RESULT: Launching skill: sci-letter-skill-60d8b9ed
+ASSISTANT: 好的！在写 revision cover letter 之前，我需要了解几个关键信息，这样才能把信写得准确到位：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你的文章投的是哪个期刊？这封信是写给谁的（例如 Editor-in-Chief, Guest Editor 等）？", "header": "目标期刊", "options": [{"label": "Neural Networks", "description": "Elsevier 期刊 Neural Networks"}, {"label": "PLOS ONE", "description": "PLOS ONE 期刊"}, {"label": "Science China Information Sciences", "description": "Science China 期刊"}, {"label": "其他", "description": "不是以上期刊，我会提供具体名称"}]}, {"question": "第一次投稿是什么时候？审稿意见大概等了多少天？", "header": "审稿周期", "options": [{"label": "1-3个月", "description": "一轮审稿大概 1-3 个月"}, {"label": "3-6个月", "description": "一轮审稿大概 3-6 个月"}, {"label": "6个月以上", "description": "等待了较长时间"}, {"label": "不记得了/无所谓", "description": "不需要提及审稿周期"}]}, {"question": "新增的作者贡献了什么？在 cover letter 中是否要特意说明为什么加作者？", "header": "新增作者说明", "options": [{"label": "需要详细说明", "description": "需要解释新作者的贡献及加作者的原因"}, {"label": "简单带过即可", "description": "只需顺带提一句加了新作者"}, {"label": "不需要提原因", "description": "只列出作者名单变化，不解释为什么"}, {"label": "我不确定是否要提", "description": "由你来判断是否需要在 cover letter 中说明"}]}, {"question": "文章标题和摘要方便分享一下吗？或者文章的简短概况。", "header": "文章信息", "options": [{"label": "我可以提供标题和摘要", "description": "我会把标题摘要贴出来"}, {"label": "不方便提供", "description": "用通用的占位符即可"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "你的文章投的是哪个期刊？这封信是写给谁的（例如 Editor-in-Chief, Guest Editor 等）？", "header": "目标期刊", "options": [{"label": "Neural Networks", "description": "Elsevier 期刊 Neural Networks"}, {"label": "PLOS ONE", "description": "PLOS ONE 期刊"}, {"label": "Science China Information Sciences", "description": "Science China 期刊"}, {"label": "其他", "description": "不是以上期刊，我会提供具体名称"}]}, {"question": "第一次投稿是什么时候？审稿意见大概等了多少天？", "header": "审稿周期", "options": [{"label": "1-3个月", "description": "一轮审稿大概 1-3 个月"}, {"label": "3-6个月", "description": "一轮审稿大概 3-6 个月"}, {"label": "6个月以上", "description": "等待了较长时间"}, {"label": "不记得了/无所谓", "description": "不需要提及审稿周期"}]}, {"question": "新增的作者贡献了什么？在 cover letter 中是否要特意说明为什么加作者？", "header": "新增作者说明", "options": [{"label": "需要详细说明", "description": "需要解释新作者的贡献及加作者的原因"}, {"label": "简单带过即可", "description": "只需顺带提一句加了新作者"}, {"label": "不需要提原因", "description": "只列出作者名单变化，不解释为什么"}, {"label": "我不确定是否要提", "description": "由你来判断是否需要在 cover letter 中说明"}]}, {"question": "文章标题和摘要方便分享一下吗？或者文章的简短概况。", "header": "文章信息", "options": [{"label": "我可以提供标题和摘要", "description": "我会把标题摘要贴出来"}, {"label": "不方便提供", "description": "用通用的占位符即可"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 请填一下上面的信息，这样我能帮你写出一封贴合你具体情况、读起来自然得体的 revision cover letter。尤其需要知道：投哪个期刊、文章大概主题、以及新增作者是否要额外说明。
+RESULT: 请填一下上面的信息，这样我能帮你写出一封贴合你具体情况、读起来自然得体的 revision cover letter。尤其需要知道：投哪个期刊、文章大概主题、以及新增作者是否要额外说明。

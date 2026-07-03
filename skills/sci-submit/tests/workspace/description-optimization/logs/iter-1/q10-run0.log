@@ -1,0 +1,42 @@
+=== QUERY ===
+帮我写一封推荐信，推荐我的硕士生申请清华的博士
+
+=== SKILL ===
+sci-letter-skill-2d38cd44
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: No evidence in the transcript that the assistant invoked, consulted, or followed the workflow of the 'sci-letter' skill; it simply asked typical questions for writing a recommendation letter.
+
+=== TRANSCRIPT ===
+ASSISTANT: 好的，我来帮你写这封推荐信。不过我需要先了解一些关键信息，才能写出一封有说服力的推荐信。请告诉我以下信息：
+
+---
+
+**关于学生：**
+1. **学生姓名**是什么？
+2. **申请的专业和方向**是什么？（例如：计算机科学、物理、生物等）
+3. **学生的硕士学校和专业**？目前是研几？
+4. **学生的核心优势**是什么？（GPA、论文发表、科研项目、获奖情况等）
+5. **学生的研究兴趣和博士计划的研究方向**是什么？
+
+**关于你（推荐人）：**
+6. **你的身份和职称**？（教授、副教授、研究员等）
+7. **你和学生的关系**？（导师、授课老师、科研合作者？认识多久？）
+8.
+RESULT: 好的，我来帮你写这封推荐信。不过我需要先了解一些关键信息，才能写出一封有说服力的推荐信。请告诉我以下信息：
+
+---
+
+**关于学生：**
+1. **学生姓名**是什么？
+2. **申请的专业和方向**是什么？（例如：计算机科学、物理、生物等）
+3. **学生的硕士学校和专业**？目前是研几？
+4. **学生的核心优势**是什么？（GPA、论文发表、科研项目、获奖情况等）
+5. **学生的研究兴趣和博士计划的研究方向**是什么？
+
+**关于你（推荐人）：**
+6. **你的身份和职称**？（教授、副教授、研究员等）
+7. **你和学生的关系**？（导师、授课老师、科研合作者？认识多久？）
+8.

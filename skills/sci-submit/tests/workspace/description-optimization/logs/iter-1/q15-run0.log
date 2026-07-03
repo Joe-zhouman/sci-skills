@@ -1,0 +1,46 @@
+=== QUERY ===
+帮我写一份国家自然科学基金面上项目的立项依据和研究内容，题目是关于二维材料热输运的。预算80万，四年。
+
+=== SKILL ===
+sci-letter-skill-9eb5bec8
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: NO. The assistant only listed the skill directory but did not invoke, consult, or follow the workflow of the sci-letter skill; it proceeded to ask user questions and write a grant proposal independently.
+
+=== TRANSCRIPT ===
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/skills/ /home/joe/Documents/repo/skill/sci-draw/templates/ 2>/dev/null | head -40", "description": "List repo structure for relevant templates"})
+TOOL_USE: Bash({"command": "ls /home/joe/Documents/repo/skill/sci-draw/skills/ /home/joe/Documents/repo/skill/sci-draw/templates/ 2>/dev/null | head -40", "description": "List repo structure for relevant templates"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/skills/:
+sci-draw
+sci-letter
+
+/home/joe/Documents/repo/skill/sci-draw/templates/:
+cover_letter
+main
+response
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw/templates"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw/templates"})
+TOOL_RESULT: No files found
+ASSISTANT: 这是一个非常专业的学术写作任务。不过在动笔之前，我想先确认几个关键方向，确保写出来的本子既有深度又有针对性：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "项目的研究重心偏向哪一类？", "header": "研究范式", "options": [{"label": "理论计算为主", "description": "第一性原理、分子动力学、玻尔兹曼输运方程等计算方法，研究声子输运机制、界面热阻等"}, {"label": "实验测量为主", "description": "拉曼光谱、时域热反射（TDTR）、稳态法等实验手段测量热导率"}, {"label": "理论+实验结合", "description": "理论预测与实验验证相结合的综合研究方案"}]}, {"question": "主要关注哪类二维材料体系？", "header": "材料体系", "options": [{"label": "石墨烯/类石墨烯", "description": "石墨烯、硅烯、锗烯、磷烯等单元素二维材料"}, {"label": "过渡金属硫族化物", "description": "MoS₂、WS₂、WSe₂等TMDCs材料"}, {"label": "异质结/超晶格", "description": "二维材料垂直/横向异质结、moire超晶格等"}, {"label": "新型二维材料", "description": "MXenes、二维钙钛矿、MOFs等新型二维材料"}]}, {"question": "希望聚焦哪个核心科学问题？", "header": "科学问题", "options": [{"label": "热输运调控机制", "description": "通过应变、电场、缺陷工程等手段调控热输运"}, {"label": "界面热输运", "description": "二维材料与衬底间、层间、异质结界面的热输运"}, {"label": "热电性能优化", "description": "热导率与电导率的协同调控，提升热电优值(ZT)"}, {"label": "非平衡/超快热输运", "description": "超快激光激发下的非平衡热载流子-声子耦合动力学"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "项目的研究重心偏向哪一类？", "header": "研究范式", "options": [{"label": "理论计算为主", "description": "第一性原理、分子动力学、玻尔兹曼输运方程等计算方法，研究声子输运机制、界面热阻等"}, {"label": "实验测量为主", "description": "拉曼光谱、时域热反射（TDTR）、稳态法等实验手段测量热导率"}, {"label": "理论+实验结合", "description": "理论预测与实验验证相结合的综合研究方案"}]}, {"question": "主要关注哪类二维材料体系？", "header": "材料体系", "options": [{"label": "石墨烯/类石墨烯", "description": "石墨烯、硅烯、锗烯、磷烯等单元素二维材料"}, {"label": "过渡金属硫族化物", "description": "MoS₂、WS₂、WSe₂等TMDCs材料"}, {"label": "异质结/超晶格", "description": "二维材料垂直/横向异质结、moire超晶格等"}, {"label": "新型二维材料", "description": "MXenes、二维钙钛矿、MOFs等新型二维材料"}]}, {"question": "希望聚焦哪个核心科学问题？", "header": "科学问题", "options": [{"label": "热输运调控机制", "description": "通过应变、电场、缺陷工程等手段调控热输运"}, {"label": "界面热输运", "description": "二维材料与衬底间、层间、异质结界面的热输运"}, {"label": "热电性能优化", "description": "热导率与电导率的协同调控，提升热电优值(ZT)"}, {"label": "非平衡/超快热输运", "description": "超快激光激发下的非平衡热载流子-声子耦合动力学"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 好的，我来先查一下领域最新进展，然后为你撰写一份高质量的本子。
+TOOL_USE: WebSearch({"query": "二维材料热输运 研究进展 2024 2025 2026"})
+TOOL_USE: WebSearch({"query": "二维材料热输运 研究进展 2024 2025 2026"})
+TOOL_USE: WebSearch({"query": "2D materials thermal transport review 2025 2026 phonon engineering"})
+TOOL_USE: WebSearch({"query": "2D materials thermal transport review 2025 2026 phonon engineering"})
+TOOL_USE: WebSearch({"query": "二维材料界面热阻 异质结 热导率调控 最新研究"})
+TOOL_USE: WebSearch({"query": "二维材料界面热阻 异质结 热导率调控 最新研究"})
+TOOL_RESULT: Web search results for query: "二维材料热输运 研究进展 2024 2025 2026"
+
+Links: [{"title":"Thermal transport in mechanically deformed two-dimensional materials and designed structures with their applications","url":"https://pubs.rsc.org/zh-tw/content/articlehtml/2026/nh/d5nh00607d?page=search"},{"title":"Therma
+TOOL_RESULT: Web search results for query: "二维材料界面热阻 异质结 热导率调控 最新研究"
+
+Links: [{"title":"Anomalous enhancement of thermal conduction across twisted van der Waals heterointerfaces | PNAS","url":"https://www.pnas.org/doi/abs/10.1073/pnas.2531049123?mi=hffvsy&af=R&AllField=radiative+effects&content=articlesChapters&
+TOOL_RESULT: Web search results for query: "2D materials thermal transport review 2025 2026 phonon engineering"
+
+Links: [{"title":"Electron-Phonon interaction and lattice thermal conductivity from metals to 2D Dirac crystals: a review","url":"https://ar5iv.labs.arxiv.org/html/2508.18477"},{"title":"","url":"http
+ASSISTANT: 好，基于最新文献调研，我来为你撰写一份高质量的国自然面上项目申请书（立项依据＋研究内容）。考虑到主题的时效性和竞争性，我将聚焦于**二维异质结界面热输运的多场协同调控**这一前沿方向，结合机器学习势方法、转角工程和主动调控三大热点。

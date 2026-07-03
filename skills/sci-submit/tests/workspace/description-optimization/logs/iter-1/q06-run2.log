@@ -1,0 +1,112 @@
+=== QUERY ===
+投稿信需要写哪些内容？我想投国内的Science Bulletin，英文的。
+
+=== SKILL ===
+sci-letter-skill-711aaf3b
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-711aaf3b", "args": "我想投国内的Science Bulletin，英文。请告诉我投稿信需要写哪些内容，以及注意事项。"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-711aaf3b", "args": "我想投国内的Science Bulletin，英文。请告诉我投稿信需要写哪些内容，以及注意事项。"})
+TOOL_RESULT: Launching skill: sci-letter-skill-711aaf3b
+ASSISTANT: Let我先查看仓库中是否有相关的模板或参考资料。
+TOOL_USE: Glob({"pattern": "**/*sci-letter*/**"})
+TOOL_USE: Glob({"pattern": "**/*sci-letter*/**"})
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+skills/sci-letter/tests/workspace/desc
+TOOL_USE: Glob({"pattern": "**/*letter*"})
+TOOL_USE: Glob({"pattern": "**/*letter*"})
+TOOL_RESULT: templates/cover_letter/cover_letter.aux
+templates/cover_letter/cover_letter.pdf
+templates/cover_letter/cover_letter.out
+templates/cover_letter/cover_letter.log
+templates/cover_letter/cover_letter.tex
+templates/cover_letter/cover_letter.bib
+.claude/commands/sci-letter-skill-c2a6e8bb.md
+TOOL_USE: Glob({"pattern": "**/*cover*"})
+TOOL_USE: Glob({"pattern": "**/*cover*"})
+TOOL_RESULT: templates/cover_letter/cover_letter.aux
+templates/cover_letter/cover_letter.pdf
+templates/cover_letter/cover_letter.out
+templates/cover_letter/cover_letter.log
+templates/cover_letter/cover_letter.tex
+templates/cover_letter/cover_letter.bib
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_RESULT: 1	\documentclass[11pt]{article}
+2	\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+3	\usepackage{mathptmx}
+4	\usepackage{graphicx}
+5	\usepackage{titlesec}
+6	\usepackage{textcomp}
+7	\usepackage{enumitem}
+8	\usepackage{xcolor}
+9	\usepackage[numbers,super,comma,sort&compress]{natbi
+ASSISTANT: 好的，以下是为 **Science Bulletin**（《科学通报》英文版）写投稿信（Cover Letter）的完整指南。
+
+---
+
+## Science Bulletin 概况
+
+- **出版商**: Science China Press（中国科学院主管），Elsevier 发行
+- **语种**: 英文
+- **类型**: 多学科综合性期刊（快速发表）
+- **Cover letter 要求**: 与 Elsevier 系相近，要求不苛刻但建议附上
+
+---
+
+## 投稿信必备内容
+
+### 1️⃣ 开头段落
+
+```
+Dear Editor,
+
+We wish to submit
+RESULT: 好的，以下是为 **Science Bulletin**（《科学通报》英文版）写投稿信（Cover Letter）的完整指南。
+
+---
+
+## Science Bulletin 概况
+
+- **出版商**: Science China Press（中国科学院主管），Elsevier 发行
+- **语种**: 英文
+- **类型**: 多学科综合性期刊（快速发表）
+- **Cover letter 要求**: 与 Elsevier 系相近，要求不苛刻但建议附上
+
+---
+
+## 投稿信必备内容
+
+### 1️⃣ 开头段落
+
+```
+Dear Editor,
+
+We wish to submit

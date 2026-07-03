@@ -1,0 +1,14 @@
+=== QUERY ===
+能帮我把这封cover letter从英文翻译成中文吗？保持原来的格式和语气。
+
+=== SKILL ===
+sci-letter-skill-84b50d06
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: The assistant did not mention, invoke, or follow the workflow of the 'sci-letter' skill; it merely responded to a translation request without any reference to the skill.
+
+=== TRANSCRIPT ===
+ASSISTANT: 我乐意帮你翻译这封cover letter，但我没有看到英文原文内容。能请你把需要翻译的英文cover letter贴出来吗？
+RESULT: 我乐意帮你翻译这封cover letter，但我没有看到英文原文内容。能请你把需要翻译的英文cover letter贴出来吗？

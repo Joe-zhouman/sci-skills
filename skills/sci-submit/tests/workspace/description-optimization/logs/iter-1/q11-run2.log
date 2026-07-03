@@ -1,0 +1,22 @@
+=== QUERY ===
+I need to write a detailed response to these reviewer comments. Reviewer 1 had issues with our statistical analysis and wants us to add more controls. Can you help draft the point-by-point reply?
+
+=== SKILL ===
+sci-letter-skill-bee80c16
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: False
+rationale: No evidence that the assistant invoked, consulted, or followed the workflow of the 'sci-letter' skill.
+
+=== TRANSCRIPT ===
+ASSISTANT: I'd be happy to help draft a point-by-point response to Reviewer 1's comments! To write an effective rebuttal, I'll need a bit more context. Could you share:
+
+1. **The specific reviewer comments** — what exactly did Reviewer 1 say about the statistical analysis and controls?
+
+2. **Your manuscript co
+RESULT: I'd be happy to help draft a point-by-point response to Reviewer 1's comments! To write an effective rebuttal, I'll need a bit more context. Could you share:
+
+1. **The specific reviewer comments** — what exactly did Reviewer 1 say about the statistical analysis and controls?
+
+2. **Your manuscript co

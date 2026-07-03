@@ -1,0 +1,83 @@
+=== QUERY ===
+这篇文章被拒了三次了，帮我分析一下问题出在哪里。第一次投Nature Energy desk reject，第二次投Advanced Materials送审后被拒，第三次投Small也被拒了。
+
+=== SKILL ===
+sci-letter-skill-ca3f20d8
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f | head -100", "description": "Explore repository structure"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw -type f | head -100", "description": "Explore repository structure"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/README.md
+/home/joe/Documents/repo/skill/sci-draw/.git/gk/config
+/home/joe/Documents/repo/skill/sci-draw/.git/description
+/home/joe/Documents/repo/skill/sci-draw/.git/config
+/home/joe/Documents/repo/skill/sci-draw/.git/ORIG_HEAD
+/home/joe/Documents/repo/skill/
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/skills/sci-letter -type f 2>/dev/null; find /home/joe/Documents/repo/skill/sci-draw -name \"*.tex\" -o -name \"*.md\" -o -name \"*.txt\" -o -name \"*.pdf\" 2>/dev/null | head -50", "description": "Find manuscript-related files"})
+TOOL_USE: Bash({"command": "find /home/joe/Documents/repo/skill/sci-draw/skills/sci-letter -type f 2>/dev/null; find /home/joe/Documents/repo/skill/sci-draw -name \"*.tex\" -o -name \"*.md\" -o -name \"*.txt\" -o -name \"*.pdf\" 2>/dev/null | head -50", "description": "Find manuscript-related files"})
+TOOL_RESULT: /home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/assets/.gitkeep
+/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md
+/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/.gitkeep
+/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requ
+ASSISTANT: Let我先看一下这个仓库中的相关文件，包括手稿、cover letter 和审稿意见。
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-skills
+2	
+3	Claude Code skills for scientific research workflows.
+4	
+5	## Philosophy
+6	
+7	These skills are tools, not magic. Every workflow is designed for **human-in-the-loop** operation: the skill produces a draft, the human reviews it, and iteration drives quality. We don't pretend anythi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README_zh.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README_zh.md"})
+TOOL_RESULT: 1	# sci-skills
+2	
+3	面向科研工作流的 Claude Code 技能集合。
+4	
+5	## 核心理念
+6	
+7	这些 skill 是工具，不是魔法。每个工作流都围绕**人的介入**设计：skill 产出草稿，人来审查，通过迭代提升质量。我们绝不吹嘘"全自动化流程"——真正的科研工作从来不是全自动的。什么时候算够好，由人说了算。
+8	
+9	## 关于本系列
+10	
+11	本仓库中的每一个 skill 均严格按照 [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus) 定义的测试流程开发。所有
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_RESULT: 1	\documentclass[11pt]{article}
+2	\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+3	\usepackage{mathptmx}
+4	\usepackage{graphicx}
+5	\usepackage{titlesec}
+6	\usepackage{textcomp}
+7	\usepackage{enumitem}
+8	\usepackage{xcolor}
+9	\usepackage[numbers,super,comma,sort&compress]{natbi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/tex/main.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/tex/main.tex"})
+TOOL_RESULT: 1	\documentclass{article}
+2	\usepackage[lineno]{naturetex}
+3	
+4	\renewcommand{\baselinestretch}{1.5}
+5	
+6	\begin{document}
+7	
+8	\maketitle
+9	
+10	{\setstretch{1.0}
+11	% *** ABSTRACT ***
+12	\section*{Abstract}
+13	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-draw/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-draw/SKILL.md"})

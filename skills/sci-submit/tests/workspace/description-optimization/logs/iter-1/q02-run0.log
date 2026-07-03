@@ -1,0 +1,165 @@
+=== QUERY ===
+之前投了Nature被desk reject了，现在要改投Science Advances，帮我把cover letter改一下，重点突出这个工作对广泛读者的吸引力
+
+=== SKILL ===
+sci-letter-skill-ea62762d
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: 
+
+=== TRANSCRIPT ===
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*"})
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+TOOL_USE: Glob({"pattern": "**/*cover*"})
+TOOL_USE: Glob({"pattern": "**/*cover*"})
+TOOL_RESULT: templates/cover_letter/cover_letter.aux
+templates/cover_letter/cover_letter.pdf
+templates/cover_letter/cover_letter.out
+templates/cover_letter/cover_letter.log
+templates/cover_letter/cover_letter.tex
+templates/cover_letter/cover_letter.bib
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_RESULT: 1	\documentclass[11pt]{article}
+2	\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+3	\usepackage{mathptmx}
+4	\usepackage{graphicx}
+5	\usepackage{titlesec}
+6	\usepackage{textcomp}
+7	\usepackage{enumitem}
+8	\usepackage{xcolor}
+9	\usepackage[numbers,super,comma,sort&compress]{natbi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+ASSISTANT: Let me look at the project structure and find the actual cover letter content and manuscript details.
+TOOL_USE: Glob({"pattern": "**/*.tex"})
+TOOL_USE: Glob({"pattern": "**/*.tex"})
+TOOL_RESULT: templates/main/submit/main.tex
+templates/main/tex/sup.tex
+templates/main/tex/main.tex
+templates/response/Reviewers/R1.tex
+templates/response/review_response.tex
+templates/cover_letter/cover_letter.tex
+TOOL_USE: Glob({"pattern": "**/*.md"})
+TOOL_USE: Glob({"pattern": "**/*.md"})
+TOOL_RESULT: skills/sci-draw/references/chart_selection.md
+skills/sci-draw/references/data_profiling.md
+skills/sci-draw/references/journal_specs.md
+skills/sci-draw/references/figure-contract.md
+skills/sci-draw/references/chart-types.md
+skills/sci-draw/references/nature-2026-observations.md
+skills/sci-draw/refere
+TOOL_USE: Glob({"pattern": "**/logos/**"})
+TOOL_USE: Glob({"pattern": "**/logos/**"})
+TOOL_RESULT: templates/cover_letter/logos/logo.png
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/tex/main.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/tex/main.tex"})
+TOOL_RESULT: 1	\documentclass{article}
+2	\usepackage[lineno]{naturetex}
+3	
+4	\renewcommand{\baselinestretch}{1.5}
+5	
+6	\begin{document}
+7	
+8	\maketitle
+9	
+10	{\setstretch{1.0}
+11	% *** ABSTRACT ***
+12	\section*{Abstract}
+13	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt
+TOOL_USE: Grep({"pattern": "cover.?letter|coverletter", "-i": true, "output_mode": "files_with_matches"})
+TOOL_USE: Grep({"pattern": "cover.?letter|coverletter", "-i": true, "output_mode": "files_with_matches"})
+TOOL_RESULT: Found 11 files
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+skills/sci-letter/SKILL.md
+skills/sci-letter/references/journal-requirements.md
+templates/cover_letter/cover_letter.bib
+templates/cover_letter/cover_letter.tex
+templates/response/review_response.tex
+README_zh
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/README.md"})
+TOOL_RESULT: 1	# sci-skills
+2	
+3	Claude Code skills for scientific research workflows.
+4	
+5	## Philosophy
+6	
+7	These skills are tools, not magic. Every workflow is designed for **human-in-the-loop** operation: the skill produces a draft, the human reviews it, and iteration drives quality. We don't pretend anythi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.bib"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.bib"})
+TOOL_RESULT: 1	% References cited in the cover letter.
+2	% Add your bib entries here. Example:
+3	
+4	@article{example2024,
+5	  author  = {Author, A. and Author, B.},
+6	  title   = {Example reference for cover letter},
+7	  journal = {Journal Name},
+8	  year    = {2024},
+9	  volume  = {1},
+10	  pages   = {1--10},
+1
+ASSISTANT: 这个是 sci-letter skill 的典型使用场景——把已有的 Nature cover letter 改写成 Science Advances 版本。我先看看当前有没有之前写过但还没放进模板的内容。
+TOOL_USE: Skill({"skill": "sci-letter-skill-3a4427db", "args": "将 Nature 投稿信改为 Science Advances 投稿信"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-3a4427db", "args": "将 Nature 投稿信改为 Science Advances 投稿信"})
+TOOL_RESULT: <tool_use_error>Unknown skill: sci-letter-skill-3a4427db</tool_use_error>
+TOOL_USE: Skill({"args": "将 Nature 投稿信改为 Science Advances 投稿信", "skill": "sci-letter-skill-eedfeb22"})
+TOOL_USE: Skill({"args": "将 Nature 投稿信改为 Science Advances 投稿信", "skill": "sci-letter-skill-eedfeb22"})
+TOOL_RESULT: Launching skill: sci-letter-skill-eedfeb22
+ASSISTANT: 我来按照 sci-letter 工作流的步骤处理。先检查当前工作目录和已有的投递记录。
+TOOL_USE: Bash({"command": "ls -la sci-letter/ 2>/dev/null || echo \"NO_SCI_LETTER_DIR\"", "description": "Check for sci-letter directory"})
+TOOL_USE: Bash({"command": "ls -la sci-letter/ 2>/dev/null || echo \"NO_SCI_LETTER_DIR\"", "description": "Check for sci-letter directory"})
+TOOL_RESULT: NO_SCI_LETTER_DIR
+TOOL_USE: Glob({"pattern": "**/*nature*"})
+TOOL_USE: Glob({"pattern": "**/*nature*"})
+TOOL_RESULT: skills/sci-draw/references/nature-2026-observations.md
+templates/main/tex/naturetex.sty
+skills/sci-draw/tests/workspace/iteration-1/eval-1/without_skill/run-2/outputs/nature_grouped_bar_chart.pdf
+skills/sci-draw/tests/workspace/iteration-1/eval-1/without_skill/run-2/outputs/nature_grouped_bar_chart.
+ASSISTANT: 没有找到已有的 `sci-letter/` 目录或之前的 Nature 投稿信存档。为了让 skill 正常工作，我需要先问你几个问题：
+
+---
+
+**Step 0: 先收集信息。** 我知道你的工作从关键词来看是关于**缺陷拓扑 + 深度学习 + 2D材料**（CNN, ResNet, 分子动力学模拟），但以下几项需要你补充：
+
+1️⃣ **你之前投 Nature 的投稿信草稿在哪里？**（或者你能直接把正文贴过来吗？）我需要基于它来改写，而不是从零开始。
+
+2️⃣ **论文的具体信息：**
+   - 完整标题
+   - 作者列表（通讯作者是谁？）
+   - 正文字数、图表数、补充材料情况
+RESULT: 没有找到已有的 `sci-letter/` 目录或之前的 Nature 投稿信存档。为了让 skill 正常工作，我需要先问你几个问题：
+
+---
+
+**Step 0: 先收集信息。** 我知道你的工作从关键词来看是关于**缺陷拓扑 + 深度学习 + 2D材料**（CNN, ResNet, 分子动力学模拟），但以下几项需要你补充：
+
+1️⃣ **你之前投 Nature 的投稿信草稿在哪里？**（或者你能直接把正文贴过来吗？）我需要基于它来改写，而不是从零开始。
+
+2️⃣ **论文的具体信息：**
+   - 完整标题
+   - 作者列表（通讯作者是谁？）
+   - 正文字数、图表数、补充材料情况

@@ -1,0 +1,127 @@
+=== QUERY ===
+We got rejected from Science after review. The editor suggested we could transfer to Science Advances. How should I adapt the cover letter to emphasize the specialized audience fit?
+
+=== SKILL ===
+sci-letter-skill-eedfeb22
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-eedfeb22", "args": "Adapt a cover letter previously written for Science to emphasize specialized audience fit for Science Advances. Context: The manuscript was rejected from Science after full review. The editor suggested transferring to Science Advances. Key considerations: Science Advances is broader than a specialty journal but more focused than Science — it celebrates rigorous science across all fields without requiring the same \"broad general interest\" bar. The letter should acknowledge the transfer context positively (not apologetically), reframe the work's significance for a specialized audience that still spans disciplines, and mention that the Science reviewers' comments have been addressed (if applicable)."})
+TOOL_USE: Skill({"skill": "sci-letter-skill-eedfeb22", "args": "Adapt a cover letter previously written for Science to emphasize specialized audience fit for Science Advances. Context: The manuscript was rejected from Science after full review. The editor suggested transferring to Science Advances. Key considerations: Science Advances is broader than a specialty journal but more focused than Science — it celebrates rigorous science across all fields without requiring the same \"broad general interest\" bar. The letter should acknowledge the transfer context positively (not apologetically), reframe the work's significance for a specialized audience that still spans disciplines, and mention that the Science reviewers' comments have been addressed (if applicable)."})
+TOOL_RESULT: Launching skill: sci-letter-skill-eedfeb22
+ASSISTANT: Let me start by understanding your manuscript and finding any existing cover letter or project context.
+TOOL_USE: Glob({"pattern": "**/*.tex", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.tex", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "skills/sci-letter/**/*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: templates/main/submit/main.tex
+templates/main/tex/sup.tex
+templates/main/tex/main.tex
+templates/response/Reviewers/R1.tex
+templates/response/review_response.tex
+templates/cover_letter/cover_letter.tex
+TOOL_RESULT: skills/sci-draw/references/chart_selection.md
+skills/sci-draw/references/data_profiling.md
+skills/sci-draw/references/journal_specs.md
+skills/sci-draw/references/figure-contract.md
+skills/sci-draw/references/chart-types.md
+skills/sci-draw/references/nature-2026-observations.md
+skills/sci-draw/refere
+TOOL_RESULT: skills/sci-letter/assets/.gitkeep
+skills/sci-letter/references/.gitkeep
+skills/sci-letter/tests/.gitkeep
+skills/sci-letter/references/journal-requirements.md
+skills/sci-letter/SKILL.md
+skills/sci-letter/tests/workspace/description-optimization/trigger-eval.json
+skills/sci-letter/tests/workspace/desc
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/cover_letter/cover_letter.tex"})
+TOOL_RESULT: 1	\documentclass[11pt]{article}
+2	\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+3	\usepackage{mathptmx}
+4	\usepackage{graphicx}
+5	\usepackage{titlesec}
+6	\usepackage{textcomp}
+7	\usepackage{enumitem}
+8	\usepackage{xcolor}
+9	\usepackage[numbers,super,comma,sort&compress]{natbi
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/references/journal-requirements.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/skills/sci-letter/SKILL.md"})
+TOOL_RESULT: 1	---
+2	name: sci-letter
+3	description: >-
+4	  Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journ
+TOOL_RESULT: 1	# 主流期刊 Cover Letter 特别要求
+2	
+3	各期刊 family 除通用内容外，有各自必须包含或强烈建议的要点。投稿前务必确认目标期刊最新指南——以下为各期刊 family 的特殊要求汇总。
+4	
+5	## Science 系 (Science, Science Advances, Science Immunology, etc.)
+6	
+7	**Science:**
+8	- **Editor 指定**: 建议在 cover letter 中指定 1-2 位 Board of Reviewing Editors (BRE) 成员处理稿件。若不指定，编辑部分配可能较慢。
+9	
+ASSISTANT: Good, I've loaded the skill context. Let me check for your submission history and any existing cover letter files before we proceed.
+TOOL_USE: Glob({"pattern": "**/submit-history.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/submit-history.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "**/*-description.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/*-description.md", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+TOOL_USE: Glob({"pattern": "**/cover-letter*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "**/cover-letter*", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_RESULT: No files found
+ASSISTANT: No existing cover letter or submission history found. Let me check for the manuscript and any other related files to understand your work.
+TOOL_USE: Glob({"pattern": "*.tex", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Glob({"pattern": "*.tex", "path": "/home/joe/Documents/repo/skill/sci-draw"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/main.tex"})
+TOOL_USE: Read({"file_path": "/home/joe/Documents/repo/skill/sci-draw/templates/main/main.tex"})
+TOOL_RESULT: templates/main/submit/main.tex
+templates/main/tex/sup.tex
+templates/main/tex/main.tex
+templates/response/Reviewers/R1.tex
+templates/response/review_response.tex
+templates/cover_letter/cover_letter.tex
+TOOL_RESULT: File does not exist. Note: your current working directory is /home/joe/Documents/repo/skill/sci-draw.
+ASSISTANT: I see we're working from scratch — no previous cover letter files or submission history exist yet. Let me set up the tracking files and ask about your manuscript.
+TOOL_USE: Write({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-letter/submit-history.md", "content": "# Submission History — [Manuscript Title]\n\n### [Date] — Submitted to Science\n- MS#: [Science manuscript number]\n- Cover letter angle: [brief description]\n- Decision: Rejected after review ([date])\n- Editor note: Suggested transfer to Science Advances\n\n### [Date] — Submitting to Science Advances\n- Transfer from Science (MS# [previous number])\n- Adaptations: reframed for specialized interdisciplinary audience; acknowledged reviewer comments\n"})
+TOOL_USE: Write({"file_path": "/home/joe/Documents/repo/skill/sci-draw/sci-letter/submit-history.md", "content": "# Submission History — [Manuscript Title]\n\n### [Date] — Submitted to Science\n- MS#: [Science manuscript number]\n- Cover letter angle: [brief description]\n- Decision: Rejected after review ([date])\n- Editor note: Suggested transfer to Science Advances\n\n### [Date] — Submitting to Science Advances\n- Transfer from Science (MS# [previous number])\n- Adaptations: reframed for specialized interdisciplinary audience; acknowledged reviewer comments\n"})
+TOOL_RESULT: Claude requested permissions to write to /home/joe/Documents/repo/skill/sci-draw/sci-letter/submit-history.md, but you haven't granted it yet.
+ASSISTANT: To write the adapted cover letter, I need some information about your manuscript and your previous Science submission. Let me ask a few questions:
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is the title of your manuscript, and what field/subfield does it belong to? (e.g., materials science, structural biology, machine learning for chemistry, etc.)", "header": "Manuscript info", "options": []}, {"question": "Do you still have the original cover letter you submitted to Science? If so, please share it — it gives me your existing framing to adapt. (Even a rough summary of the main argument is fine.)", "header": "Previous cover letter", "options": []}, {"question": "Did the Science reviewers raise concerns that you've addressed in the revised manuscript? If yes, briefly summarize the nature of the revisions (major experiments added? text rewritten? etc.)", "header": "Reviewer comments", "options": []}, {"question": "Who are the corresponding authors and their affiliations?", "header": "Author info", "options": []}]})
+TOOL_RESULT: <tool_use_error>InputValidationError: [
+  {
+    "origin": "array",
+    "code": "too_small",
+    "minimum": 2,
+    "inclusive": true,
+    "path": [
+      "questions",
+      0,
+      "options"
+    ],
+    "message": "Too small: expected array to have >=2 items"
+  },
+  {
+    "origin": "array",
+    "code
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What is the title of your manuscript, and what field/subfield does it belong to? (e.g., materials science, structural biology, machine learning for chemistry, etc.)", "header": "Manuscript info", "options": []}, {"question": "Do you still have the original cover letter you submitted to Science? If so, please share it — it gives me your existing framing to adapt. (Even a rough summary of the main argument is fine.)", "header": "Previous cover letter", "options": []}, {"question": "Did the Science reviewers raise concerns that you've addressed in the revised manuscript? If yes, briefly summarize the nature of the revisions (major experiments added? text rewritten? etc.)", "header": "Reviewer comments", "options": []}, {"question": "Who are the corresponding authors and their affiliations?", "header": "Author info", "options": []}]})
+ASSISTANT: Let me ask more simply:
+TOOL_USE: AskUserQuestion({"questions": [{"question": "What's the title of your manuscript and what field does it belong to?", "header": "Field", "options": [{"label": "Materials/Chemistry", "description": "materials science, chemistry, nanotechnology, etc."}, {"label": "Life Sciences", "description": "biology, medicine, neuroscience, etc."}, {"label": "Physics/Engineering", "description": "physics, engineering, applied sciences, etc."}]}, {"question": "Do you have the original Science cover letter you can share? Even a rough summary of the key argument.", "header": "Previous letter", "options": [{"label": "Yes — I'll paste it after", "description": "I have the previous letter ready to share"}, {"label": "No — but I can describe it", "description": "I don't have the letter but can tell you the angle"}]}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question":"What's the title of your manuscript and what field does it belong to?","header":"Field","options":[{"label":"Materials/Chemistry","description":"materials science, chemistry, nanotechnology, etc."},{"label":"Life Sciences","description":"biology, medicine, neuroscience, etc."},{"label":"Physics/Engineering","description":"physics, engineering, applied sciences, etc."}]},{"question":"Do you have the original Science cover letter you can share? Even a rough summary of the key argument.","header":"Previous letter","options":[{"label":"Yes — I'll paste it after","description":"I have the previous letter ready to share"},{"label":"No — but I can describe it","description":"I don't have the letter but can tell you the angle"}]}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: I've asked a couple of questions to help me tailor the cover letter to your work. When you're ready, please share:
+
+1. **Your manuscript title and field** — so I can write specific, relevant content
+2. **The original Science cover letter** (or a summary of the key argument) — so I can adapt rather t
+RESULT: I've asked a couple of questions to help me tailor the cover letter to your work. When you're ready, please share:
+
+1. **Your manuscript title and field** — so I can write specific, relevant content
+2. **The original Science cover letter** (or a summary of the key argument) — so I can adapt rather t

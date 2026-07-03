@@ -1,43 +1,50 @@
-# sci-draw
+# sci-skills
 
-Submission-grade scientific figure workflow for high-impact journals.
+Claude Code skills for scientific research workflows.
 
-## Design Decisions
+## Philosophy
 
-### QA Strategy: Draft-First, User-Driven Iteration
+These skills are tools, not magic. Every workflow is designed for **human-in-the-loop** operation: the skill produces a draft, the human reviews it, and iteration drives quality. We don't pretend anything is fully automated — because real scientific work never is. The human decides when it's good enough.
 
-The workflow produces a working draft, not a self-correcting final version. Pre-export checks (font clipping, tick overlap, missing glyphs) are one-shot — fix what's found, then export. The model is not trusted to self-diagnose and iterate to perfection.
+## About this series
 
-**Why:** LLMs don't reliably self-correct. A "QA loop" that asks the model to find its own mistakes and fix them is performative, not effective. The user reviewing the output and requesting changes is faster and more reliable than the model pretending to audit itself.
+Every skill in this repo is developed following the testing workflow defined by [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus). All test records (evals, iterations, benchmarks, grading) are preserved under each skill's `tests/` directory.
 
-**What this means in practice:**
-- `audit_layout()` catches deterministic issues (missing glyphs, text clipping, tick overlap) before export
-- Everything else is user-driven: the user sees the output, says what to change, and the agent makes those changes
-- No "fix → re-export → re-check until clean" loop
-- Fine-tuning happens outside this skill's workflow
+skill-creator-plus mirrors:
+- GitHub: <https://github.com/Joe-zhouman/skill-creator-plus>
+- Gitee: <https://gitee.com/Joe-zhouman/skill-creator-plus>
+- GitCode: <https://gitcode.com/Joe-zhouman/skill-creator-plus>
 
-### Description: Trigger-Focused, Not Tutorial
+## Skills
 
-The YAML description lists concrete trigger scenarios (including Chinese phrasings) and exclusions. It does not summarize the workflow — that's what SKILL.md body is for.
+| Skill | Description |
+|-------|-------------|
+| [sci-draw](skills/sci-draw/) | Publication-quality scientific data visualization — statistical plots, multi-panel figures, heatmaps, dose-response curves, and more |
+
+## Templates
+
+LaTeX templates for manuscript projects — copy what you need into your working directory. `main/` includes a full build pipeline (`make`), cross-reference auto-numbering, and structural best practices from a published paper.
+
+```
+templates/
+├── cover_letter/
+├── main/          ← manuscript + supplementary + build chain
+└── response/      ← point-by-point review reply
+```
 
 ## Structure
 
-```
-sci-draw/
-├── SKILL.md              # Core workflow (9 steps)
-├── references/           # Loaded on demand
-│   ├── chart_selection.md
-│   ├── viz_pitfalls.md
-│   ├── plot_recipes.md
-│   ├── journal_specs.md
-│   └── ...
-├── scripts/              # Deterministic tools
-│   ├── profile_data.py
-│   ├── setup_style.py
-│   ├── export_figure.py
-│   ├── check_figure.py
-│   ├── visual_qa.py
-│   └── layout_tools.py
-├── assets/               # Demo figures and reference plots
-└── tests/
+Skills live under `skills/<name>/`. Templates live under `templates/`.
+
+## Installation
+
+Two branches are available:
+
+| Branch | Purpose |
+|--------|---------|
+| [`release`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/release) | Clean distribution — no test workspace artifacts. **Use this to install skills.** |
+| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Full development history — includes all test records under `tests/workspace/`. For contributors. |
+
+```bash
+git clone -b release git@gitcode.com:Joe-zhouman/sci-skills.git
 ```

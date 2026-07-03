@@ -1,0 +1,21 @@
+=== QUERY ===
+我需要一封信说明我的文章从另一本期刊撤稿的原因，因为发现了一个数据处理错误。写给之前那本期刊的编辑。
+
+=== SKILL ===
+sci-letter-skill-eed4ce5c
+description: Scientific manuscript cover letter writing for journal submission and revision. Use when the user asks to write, revise, or review a cover letter for a manuscript: first-submission cover letters (投稿信), revision/resubmission cover letters (修改稿投稿信), journal-specific fit arguments, or adapting an existing cover letter for a different journal. Handles TeX and Markdown output. Not for: response letters to reviewers (回复审稿人), recommendation letters, grant proposals, job applications, or general business correspondence.
+
+=== JUDGE ===
+triggered: True
+rationale: YES
+
+=== TRANSCRIPT ===
+TOOL_USE: Skill({"skill": "sci-letter-skill-eed4ce5c", "args": "我需要一封信说明我的文章从另一本期刊撤稿的原因，因为发现了一个数据处理错误。写给之前那本期刊的编辑。"})
+TOOL_USE: Skill({"skill": "sci-letter-skill-eed4ce5c", "args": "我需要一封信说明我的文章从另一本期刊撤稿的原因，因为发现了一个数据处理错误。写给之前那本期刊的编辑。"})
+TOOL_RESULT: Launching skill: sci-letter-skill-eed4ce5c
+ASSISTANT: 好的，我来帮您写这封撤稿信（Withdrawal/Retraction letter）。在动笔之前，想先确认几个细节：
+TOOL_USE: AskUserQuestion({"questions": [{"question": "您的文章处于哪个阶段？", "header": "稿件状态", "options": [{"label": "已投稿，审稿中 (Under Review)", "description": "稿件已提交，正在审稿流程中"}, {"label": "已收到审稿意见 (Under Revision)", "description": "已收到修改意见，尚未提交修改稿"}, {"label": "已被接收 (Accepted)", "description": "文章已被接收，可能已在线发表"}, {"label": "已发表 (Published)", "description": "文章已经正式发表（需要撤稿声明）"}], "multiSelect": false}, {"question": "您希望使用哪种语言输出？", "header": "语言", "options": [{"label": "英文", "description": "Standard English academic correspondence"}, {"label": "中文", "description": "中文学术书信"}], "multiSelect": false}, {"question": "您希望输出为哪种格式？", "header": "格式", "options": [{"label": "Markdown", "description": "纯文本 Markdown 格式，便于直接编辑"}, {"label": "TeX (LaTeX)", "description": "LaTeX 格式，适合需要正式排版的场景"}], "multiSelect": false}]})
+TOOL_USE: AskUserQuestion({"questions": [{"question": "您的文章处于哪个阶段？", "header": "稿件状态", "options": [{"label": "已投稿，审稿中 (Under Review)", "description": "稿件已提交，正在审稿流程中"}, {"label": "已收到审稿意见 (Under Revision)", "description": "已收到修改意见，尚未提交修改稿"}, {"label": "已被接收 (Accepted)", "description": "文章已被接收，可能已在线发表"}, {"label": "已发表 (Published)", "description": "文章已经正式发表（需要撤稿声明）"}], "multiSelect": false}, {"question": "您希望使用哪种语言输出？", "header": "语言", "options": [{"label": "英文", "description": "Standard English academic correspondence"}, {"label": "中文", "description": "中文学术书信"}], "multiSelect": false}, {"question": "您希望输出为哪种格式？", "header": "格式", "options": [{"label": "Markdown", "description": "纯文本 Markdown 格式，便于直接编辑"}, {"label": "TeX (LaTeX)", "description": "LaTeX 格式，适合需要正式排版的场景"}], "multiSelect": false}]})
+TOOL_RESULT: Answer questions?
+ASSISTANT: 请回答以上几个问题，这样我能为您写出最合适的撤稿信。
+RESULT: 请回答以上几个问题，这样我能为您写出最合适的撤稿信。

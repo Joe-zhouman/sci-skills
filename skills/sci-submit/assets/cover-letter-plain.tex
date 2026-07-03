@@ -1,0 +1,67 @@
+% sci-submit cover letter template — plain (no logo, no letterhead)
+% Use this when the journal doesn't need institutional letterhead or
+% you're pasting into a text box anyway.
+\documentclass[11pt]{article}
+\usepackage[bottom=1in, left=0.75in, right=0.75in, top=1in]{geometry}
+\usepackage{mathptmx}
+\usepackage{titlesec}
+\usepackage[numbers,super,comma,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\setcounter{secnumdepth}{0}
+\titlespacing*{\subsubsection}{0pt}{1ex}{0.01ex}
+\bibliographystyle{abbrvnat}
+
+\newcommand{\journalname}{{{JOURNAL_NAME}}}
+\newcommand{\manuscripttitle}{{{MANUSCRIPT_TITLE}}}
+
+\begin{document}
+
+\noindent \today
+
+\bigskip
+\noindent Dear Editor,
+
+\noindent We wish to submit our manuscript entitled ``\textbf{\manuscripttitle}'' for consideration for publication in \textit{\journalname}.
+
+% ---------- Background / hook ----------
+\subsubsection{}
+\noindent {{BACKGROUND_PARAGRAPH}}
+
+% ---------- Findings summary ----------
+\subsubsection{}
+\noindent {{FINDINGS_PARAGRAPH}}
+
+% ---------- Journal fit ----------
+\subsubsection*{Summary of Scientific Grounds for Consideration at \textit{\journalname}}
+\noindent {{JOURNAL_FIT_PARAGRAPH}}
+
+% ---------- Broad audience appeal ----------
+\subsubsection*{Summary of Appeal to a Broad Audience}
+\noindent {{AUDIENCE_PARAGRAPH}}
+
+% ---------- Submission details ----------
+\subsubsection{Items Included in This Submission}
+\noindent {{SUBMISSION_DETAILS}}
+
+% ---------- Declarations ----------
+\subsubsection{}
+\noindent {{DECLARATIONS}}
+
+% ---------- Closing ----------
+\subsubsection{}
+\noindent We appreciate your time and consideration and look forward to hearing from you.
+
+\bigskip
+\noindent Sincerely,
+
+\bigskip
+\noindent {{AUTHOR_LIST}}
+
+\medskip
+\noindent\textsuperscript{*}Corresponding authors\\
+{{CORRESPONDING_AUTHOR_INFO}}
+
+\bibliography{cover_letter}
+
+\end{document}
