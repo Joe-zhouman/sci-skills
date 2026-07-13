@@ -49,12 +49,12 @@ Do not hardcode a specific environment path — use `check_env.py` each time.
 **Single figure**: user gives data + asks for a figure → follow Steps 0-7 below.
 **Figure set planning**: user describes a research theme or manuscript → plan a complete set of figures (Figure 1-N), each with contract, panel layout, and narrative role. See "Figure set planning" section at the end of this file.
 
-## Working directory: `sci-draw/`
+## Working directory: `sci-skills/sci-draw/`
 
-All figure work lives in `sci-draw/` under the project root. Each figure gets its own set of files — the process log, the final report, and the exported graphics:
+All figure work lives in `sci-skills/sci-draw/` under the project root. Each figure gets its own set of files — the process log, the final report, and the exported graphics:
 
 ```
-sci-draw/
+sci-skills/sci-draw/
   fig1.py                 # Plotting script (written at Step 4)
   fig1-description.md     # Process log (created at Step 0, filled through Steps 1-6)
   fig1-report.md          # Final structured report (distilled at Step 7)
@@ -68,16 +68,16 @@ sci-draw/
   ...
 ```
 
-**File-based workflow**: the files in `sci-draw/` are the ground truth. When returning to a figure after a break, read the files first — they contain what was decided and why. Trust the files, not conversation memory.
+**File-based workflow**: the files in `sci-skills/sci-draw/` are the ground truth. When returning to a figure after a break, read the files first — they contain what was decided and why. Trust the files, not conversation memory.
 
 _why_ **Context windows are ephemeral.** A session ends, a summary truncates, and last week's reasoning is gone. Writing decisions into files at the moment they're made preserves the *why* at the point of highest clarity. When you return, the file is a time capsule of actual reasoning, not a reconstruction from fading memory. The alternative — "I'll remember and write it up at the end" — produces reports that are clean but hollow, missing the trade-offs and dead-ends that shaped the final result.
 
 ### Startup
 
-Before entering the workflow, check the state of `sci-draw/`:
+Before entering the workflow, check the state of `sci-skills/sci-draw/`:
 
-1. **`sci-draw/` does not exist** → create it, then start from Step 0.
-2. **`sci-draw/` exists** → ask the user: "Is there a figure in `sci-draw/` you want to continue working on?" If yes, read the relevant `-description.md` and `-report.md` files to understand the current state, then pick up from the appropriate step — **don't** restart from scratch. If no, start a new figure from Step 0.
+1. **`sci-skills/sci-draw/` does not exist** → create it, then start from Step 0.
+2. **`sci-skills/sci-draw/` exists** → ask the user: "Is there a figure in `sci-skills/sci-draw/` you want to continue working on?" If yes, read the relevant `-description.md` and `-report.md` files to understand the current state, then pick up from the appropriate step — **don't** restart from scratch. If no, start a new figure from Step 0.
 
 _why_ **Restarting discards prior decisions.** Starting from Step 0 every time forces the user to re-explain their data and goals. Reading the files first means you already know the claim, the chart choice, the journal, and the statistical methods — the user picks up where they left off, not where you assume they are.
 
@@ -101,7 +101,7 @@ _why_ **Same data, different claims = different charts.** Without a claim, chart
 
 If the user hasn't stated the claim, ask: "What should this figure convince the reader of?" or infer from manuscript context and state your assumption.
 
-**Start the process log**: create `sci-draw/<fig-name>-description.md` as a scratch file. Write down the contract decisions above (claim, evidence chain, archetype, journal constraints). This file accumulates raw notes through Steps 1-6 — decisions, data findings, rationale, issues encountered. At Step 7, it gets distilled into a clean report at `sci-draw/<fig-name>-report.md`.
+**Start the process log**: create `sci-skills/sci-draw/<fig-name>-description.md` as a scratch file. Write down the contract decisions above (claim, evidence chain, archetype, journal constraints). This file accumulates raw notes through Steps 1-6 — decisions, data findings, rationale, issues encountered. At Step 7, it gets distilled into a clean report at `sci-skills/sci-draw/<fig-name>-report.md`.
 
 ### Step 1: Explore data
 
@@ -130,7 +130,7 @@ The profile script is a convenience, not an authority. You know your data better
 
 _why_ **Data facts drive chart choice, not the reverse.** The most common plotting mistake isn't a coding error — it's fitting data into a preconceived chart type. "I want a bar chart" before looking at n=5 per group with a skewed distribution is the root of most reviewer rejections. Exploring first reverses the decision flow: data facts → chart choice, not chart preference → forced data. The human checks are mandatory because only you know that column 3 is a treatment group, not a continuous variable — no script can infer semantics from numbers alone.
 
-**Record in `sci-draw/<fig-name>-description.md`**: data source, per-group n, key data features (skew, outliers, dimensionality), and any type corrections you made.
+**Record in `sci-skills/sci-draw/<fig-name>-description.md`**: data source, per-group n, key data features (skew, outliers, dimensionality), and any type corrections you made.
 
 ### Step 2: Select chart
 
@@ -178,7 +178,7 @@ _why_ **Matplotlib renders text in absolute points.** If you plot at default siz
 
 ### Step 4: Plot
 
-Write the plotting script and save it as `sci-draw/<fig-name>.py`. This is the reproducible source — anyone (including your future self) should be able to run it and regenerate the figure.
+Write the plotting script and save it as `sci-skills/sci-draw/<fig-name>.py`. This is the reproducible source — anyone (including your future self) should be able to run it and regenerate the figure.
 
 Follow `references/plot_recipes.md` for chart-specific recipes. For design rationale (color semantics, typography, multi-panel architecture) see `references/design-theory.md`. For palette constants and helper signatures see `references/api.md`. For specialized chart types see `references/chart-types.md`. Additional patterns in `references/common-patterns.md` and `references/tutorials.md`.
 
@@ -196,7 +196,7 @@ _why_ **Three rejection causes, three hard rules.** (1) Scaling a figure in Word
 ```python
 from scripts.export_figure import export_figure
 export_figure(
-    fig, basename='sci-draw/fig1',
+    fig, basename='sci-skills/sci-draw/fig1',
     formats=['pdf', 'png'],
     size_inches=(3.5, 2.625),
     dpi=300,
@@ -227,7 +227,7 @@ next check after this is peer review — catch what you can before that.
 
 ### Step 7: Finalize report
 
-The process log `sci-draw/<fig-name>-description.md` now contains raw notes accumulated through Steps 0-7: decisions, data findings, rationale, issues. Review it and **distill into a clean report** at `sci-draw/<fig-name>-report.md`.
+The process log `sci-skills/sci-draw/<fig-name>-description.md` now contains raw notes accumulated through Steps 0-7: decisions, data findings, rationale, issues. Review it and **distill into a clean report** at `sci-skills/sci-draw/<fig-name>-report.md`.
 
 The report is NOT the figure legend — it's a machine-readable record for downstream workflows (manuscript writing, revision, cross-referencing). The description log remains as the raw audit trail; don't delete it.
 
