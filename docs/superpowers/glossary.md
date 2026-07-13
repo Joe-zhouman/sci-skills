@@ -1,6 +1,12 @@
 # sci-skills Glossary
 
-The canonical domain language for the sci-skills family (sci-draw / sci-write / future siblings + the future `using-sci-skills` orchestrator). Terms here are settled — use them verbatim in all output, never re-ask what's already defined, and never silently use an `_Avoid_` alias.
+The canonical domain language for the sci-skills family (sci-draw / sci-write / sci-submit / sci-skills-init / future siblings). Terms here are settled — use them verbatim in all output, never re-ask what's already defined, and never silently use an `_Avoid_` alias.
+
+## Family principles (above the terms — these constrain every design decision)
+
+- **No Save, No Safe.** Important content must land on disk. Conversations and context windows are ephemeral; real research work spans days/weeks/months and must survive across sessions. Anything that lives only in a conversation is unsafe — it can vanish on truncation, summary, or session end. This is why every decision, contract, intermediate state, and artifact in this family is a file (paper-plan, figN-report, figN-reading, manuscript/, hard-constraints, the `.README.md` contracts, this glossary). **Test for any "important" thing: is it on disk? If not, it's unsafe — write it.** File handoff is also what makes the workflow isomorphic to real work (advisor reads your PDF, editor receives your tex, a collaborator edits your docx) — output flows directly into real processes instead of needing "translation" out of a chat.
+- **Decoupled single-purpose skills > thick-orchestration skills (and the gap widens).** Thick orchestration (a skill with a baked-in multi-stage process chain) hedges against weak models and poor harness. As models and harness features (workflow/loop/Explore/MCP) improve, runtime orchestration beats compile-time scaffolding. So: lightweight skills that mesh via directory contracts; orchestration deferred to the harness at runtime or to the human; never baked into a skill. No skill orchestrates another.
+- **Contracts over imports.** Skills interconnect via on-disk directory contracts (the `.README.md` per subdirectory), never via code imports. A skill producing into a directory follows its contract without knowing which skill consumes it. This is what makes skills independently replaceable — the survival strategy in a crowded ecosystem.
 
 ## Terms
 
