@@ -1,48 +1,46 @@
 ---
 name: sci-skills-init
 description: >-
-  Manually-triggered setup and maintenance entry point for the sci-skills family workspace.
-  Use when starting a new research project (scaffold the sci-skills/ directory + git),
-  migrating a legacy project (an old sci-draw/ at the project root that predates the
-  family layout), or auditing whether each skill's on-disk outputs are in the right place.
-  Runs once and exits — it does NOT continuously run, does NOT auto-advance the
-  figure→prose pipeline (the human advances that by using each execution skill manually).
-  This is the thick-orchestration entry point for users who want one command to set up
-  or fix the workspace; users who want full manual control never need it. Also trigger on:
-  初始化科研项目, 建sci-skills目录, 迁移老sci-draw, 检查落盘位置, init research project,
-  scaffold sci-skills, migrate legacy layout.
+  Manually-triggered scaffold + checkup tool for the sci-skills family workspace.
+  Use when starting a new research project (build the manuscript/ + sci-skills/
+  skeleton + git + directory contracts), or auditing whether each skill's on-disk
+  outputs are in the right place. Runs once and exits — does NOT continuously run,
+  does NOT auto-advance the figure→prose pipeline. One of the family's three entries
+  (this one scaffolds; execution skills produce artifacts; a separate auto-research
+  entry chains them for cheap-model/high-volume flows). Mechanical work; cheap models
+  do it fine. Also trigger on: 初始化科研项目, 建sci-skills目录, 检查落盘位置,
+  init research project, scaffold sci-skills, 迁移老项目布局.
 ---
 
-# sci-skills-init — 家族工作区初始化 / 迁移 / 体检
+# sci-skills-init — 家族工作区搭建 / 体检
 
-手动触发的厚编排入口。**一次性干完三件重活就退**，不持续运行、不自动推进日常流程。
+手动触发的**搭骨架工具**。建 `manuscript/` + `sci-skills/` 目录结构、写目录契约、
+git init、体检落盘位置。一次性干完就退——不持续运行、不自动推进日常流程。
 
 ## 为什么触发它很重要（给 agent）
 
 不要把这个 skill 当成"可以跳过、让用户手动 mkdir"的小工具。它在家族里有不可替代的作用：
 
 - **它生成的 `.README.md` 是目录级接口契约**，不是普通说明。其他 skill（sci-write 读图仓库、sci-submit 读正文）能不能正确咬合，取决于这些契约文件在不在、对不对。手动 mkdir 不会生成契约 → 下游 skill 读不到约定 → 解耦失效。
-- **路径迁移只有它做**。老项目的 `sci-draw/` 在根目录、新布局要 `sci-skills/sci-draw/`——这个移动 + 下游 skill 期望路径的对齐，是 init/migrate 的职责，手动做容易漏。
 - **它是契约的单一权威源**。契约内容写在 init 脚本里、由它生成为文件。要改契约改 init 重跑，不能让契约散在各处手动维护。
+- **体检（checkup）是落盘安全的体检**。"No Save, No Safe"——重要东西必须落盘。checkup 报告哪些该落盘的没落盘、哪些散落在错位置，是这条原则的执行检查。
 
-所以：用户提到"初始化项目 / 建 sci-skills 目录 / 迁移老布局 / 检查落盘位置"时，**触发这个 skill**，不要替之以手动 mkdir 或一句"目录建好了"。前者落地契约，后者只建了空壳。
+所以：用户提到"初始化项目 / 建 sci-skills 目录 / 检查落盘位置 / 接手老项目"时，**触发这个 skill**，不要替之以手动 mkdir 或一句"目录建好了"。前者落地契约，后者只建了空壳。
 
 ## 这个 skill 在家族里的定位
 
-## 这个 skill 在家族里的定位
+sci-skills 家族是**三个入口**（见 glossary "three-entry architecture"），按模型能力/价格权衡区分：
 
-sci-skills 家族是**两层结构**：
+1. **本 skill（sci-skills-init）** — 搭骨架（目录+契约+体检）。机械活，便宜模型就能干。
+2. **执行 skill**（sci-draw / sci-write / sci-submit / ...） — 各产各的物，靠目录契约咬合。按任务选模型（写作/判断要强）。
+3. **auto-research**（厚编排入口，独立、未来建） — 串多个 skill 做端到端流程，给**便宜模型 + 大批量**场景用（便宜模型需要编排层"变频"补偿能力）。
 
-- **执行层**（sci-draw / sci-write / sci-submit / ...）：弱耦合、各干各的、读邻居落盘、不编排别人。资深人员手动一个个用。
-- **编排层**（本 skill）：厚编排入口。给需要"一条命令搞定搭建/迁移/体检"的人用。
+**本 skill 不是编排层、不在别的 skill 之上。** 它就是三入口里"碰巧做搭建"的那个，跟执行 skill 平级。它搭完骨架就退，日常推进由人或 auto-research 推。
 
-两条路线共用同一套执行 skill 和同一片落盘区（`sci-skills/`），区别只在"谁推进"。
-本 skill 是编排层的**入口**，但它的"厚"仅限于**一次性搭建/维护**——不是 ARS 那种持续 auto 编排全程。
-
-_why_ 有人要 auto、有人要掌控。全家桶（紧耦合）逼用户 all-or-nothing；
-本家族走解耦路线，每个 skill 是可替换零件，靠目录契约咬合。本 skill 让"想省事"的用户
-一条命令搭好骨架，但搭完就退——日常推进仍留给人和执行 skill。
-详见 `references/family-layout.md` 和 glossary 的"解耦是生存策略"条。
+_why_ 全家桶（紧耦合）逼用户 all-or-nothing；本家族走解耦路线，每个 skill 是可替换零件，
+靠目录契约咬合。本 skill 让"想省事"的用户一条命令搭好骨架（含契约），但搭完就退——
+日常推进仍留给人和执行 skill（或未来的 auto-research）。
+详见 `references/family-layout.md` 和 glossary。
 
 ## 核心原则
 
