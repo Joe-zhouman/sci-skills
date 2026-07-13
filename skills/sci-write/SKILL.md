@@ -7,7 +7,10 @@ description: >-
   write discussion, draft from figures, claim-evidence mapping, 数据写论文,
   数据驱动写作, 把图画完写正文, 写结果/讨论/结论. Drafts section by section from
   figure reports + a data profile, runs claim-vs-figure consistency checks via
-  the paper-figure vision tool, leaves real-DOI citation placeholders for the
+  an image-understanding capability (any vision tool or vision-capable model;
+  not bound to a specific tool), leaves real-DOI citation placeholders for the
+  user to insert via Zotero.
+  user to insert via Zotero.
   user to insert via Zotero. Also use proactively whenever the user is working
   on a research paper and needs data-driven sections drafted, even if they
   don't name this skill explicitly. Does not draw figures, does not do
@@ -53,7 +56,7 @@ aren't repeated here. This file is the execution procedure.
 | `paper-plan.md` | this skill (after human confirms) | this skill (baton), human | fig entries + section status (Step 1) |
 | `data-profile.json` | this skill (Step 0, via `profile_data`) | this skill (Method) | `profile_data()` return dict as JSON |
 | `../sci-draw/figN-report.md` | any figure-maker | this skill (claim/findings/stats) | 6-section markdown (see neighbor-contract ref) |
-| `../sci-draw/figN.png` | any figure-maker | this skill (Step 3 → paper-figure) | PNG |
+| `../sci-draw/figN.png` | any figure-maker | this skill (Step 3 → an image-understanding capability) | PNG |
 | `figN-reading.md` | this skill (Step 3) | this skill (Results/Discussion) | consistency-check schema (Step 3) |
 
 ## Workflow
@@ -101,14 +104,14 @@ Reports each figure's status (plan status vs report existence, discrepancies). P
 For each figure with a ready report:
 
 1. Read `../sci-draw/figN-report.md` → `Core conclusion` (the claim). Missing or not one sentence → contract-gap handling (ask, don't fabricate).
-2. Call the `paper-figure` vision action (PRO / high effort — high-leverage, never lite) on `../sci-draw/figN.png`. It returns a reader-perspective description and **does not read the claim text** — that independence is what makes the check honest.
+2. Use an **image-understanding capability** (any vision tool or a vision-capable model — not bound to a specific one; see figure-reading ref) at high effort on `../sci-draw/figN.png`, with an audit prompt that asks for an independent reader view (what it conveys / notable features / potential misreads). **Do not pass the claim** — independence is what makes the check honest. The claim comparison is done by this skill, not by the vision step.
 3. Compare description vs claim: agree where? where might a reader misread (overlapping error bands, divergent series, non-zero axis start)?
 4. Write `figN-reading.md`:
    ```markdown
    # Figure figN — 图义核查
    ## claim (from report)
    <figN-report Core conclusion>
-   ## figure conveys (from paper-figure)
+   ## figure conveys (from image-understanding, independent reader view)
    <vision description>
    ## consistency
    - agree: ...
@@ -181,7 +184,7 @@ Detail and the why in `references/neighbor-contract.md`.
 | File | Open when |
 |---|---|
 | `references/writing-discipline.md` | Before drafting any section (confirmation gate, verb calibration, citation protocol, output format) |
-| `references/figure-reading.md` | At Step 3 (paper-figure call flow, figN-reading schema, claim-correction handling) |
+| `references/figure-reading.md` | At Step 3 (image-understanding capability for audit, audit prompt, figN-reading schema, claim-correction handling) |
 | `references/section-templates.md` | At Steps 4–6 (Method/Results/Discussion/Conclusion structure + per-paragraph jobs + material source) |
 | `references/neighbor-contract.md` | Whenever reading figure-warehouse files (field mapping, contract-gap handling, decoupling self-check) |
 

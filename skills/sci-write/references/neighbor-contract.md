@@ -29,7 +29,7 @@ sci-write 消费的是**文件契约**，不是某个 skill。邻居目录里的
 | 邻居文件 | 何时读 | 读什么字段 |
 |---|---|---|
 | `../sci-draw/figN-report.md` | 图就绪后（scan_neighbor 报告） | 见下表 |
-| `../sci-draw/figN.png` | Step 3 图义核查时，喂给 seed-viz paper-figure | 整张图 |
+| `../sci-draw/figN.png` | Step 3 图义核查时，喂给识图能力（任何识图工具/识图模型，不绑具体工具） | 整张图 |
 
 **不读** `figN-description.md`（若存在，那是某个画图流程的过程草稿，下游不该依赖）。**不读** `figN.py`（若存在，是实现细节，不稳）。本 skill 只依赖 report + png 两个文件。
 
