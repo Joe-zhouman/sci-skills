@@ -10,7 +10,7 @@
 
 打开两个东西，左右分屏：
 - **左边**：期刊的在线 proof 系统
-- **右边**：`sci-submit/manuscript-meta.md`
+- **右边**：`sci-skills/sci-submit/manuscript-meta.md`
 
 ## 能做和不能做的
 

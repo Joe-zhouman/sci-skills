@@ -2,7 +2,7 @@
 
 ## 持久化文件
 
-硬约束采集后写入 `sci-submit/hard-constraints.md`，与 `manuscript-meta.md` 并列。`journal-shortlist.md` 的排序以该文件为首要筛选条件。
+硬约束采集后写入 `sci-skills/sci-submit/hard-constraints.md`，与 `manuscript-meta.md` 并列。`journal-shortlist.md` 的排序以该文件为首要筛选条件。
 
 ## 触发条件
 

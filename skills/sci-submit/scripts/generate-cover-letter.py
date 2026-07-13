@@ -5,41 +5,41 @@ Usage:
   # First submission
   python3 generate-cover-letter.py \\
     --type first \\
-    --journal "Nano Research" \\
-    --title "Defect topology controls ITR in graphene/hBN" \\
-    --background "Three developments have recently converged..." \\
-    --findings "We constructed a systematically varied dataset..." \\
-    --journal-fit "Nano Research has sustained a clear editorial..." \\
-    --audience "Beyond the nanoscale thermal transport..." \\
-    --stats "~7,000 words, 6 figures, 3 tables" \\
-    --declarations "This manuscript has not been published..." \\
-    --authors "Man Zhou, Ping Zhang*, Lin Tao*" \\
-    --corresponding "pingzhang@guet.edu.cn (P. Zhang)\\nTaolin@guet.edu.cn (L. Tao)" \\
-    --dept "School of Mechanical and Electrical Engineering" \\
-    --institution "Guilin University of Electronic Technology" \\
-    --address "No.1 Jinji Road, Guilin, Guangxi, 541004, China" \\
+    --journal "Journal Name" \\
+    --title "Full Manuscript Title Goes Here" \\
+    --background "Two recent developments have converged..." \\
+    --findings "We found that..." \\
+    --journal-fit "Journal Name has published key studies at..." \\
+    --audience "This work should interest researchers in..." \\
+    --stats "~X,000 words, N figures, N tables" \\
+    --declarations "This manuscript has not been published elsewhere..." \\
+    --authors "First Author, Second Author, Corresponding Author*" \\
+    --corresponding "email@university.edu (C. Author)" \\
+    --dept "Department of XXXX" \\
+    --institution "University of XXXX" \\
+    --address "Address Line, City, Postal Code, Country" \\
     --out cover-letter.docx
 
   # Revision
   python3 generate-cover-letter.py \\
     --type revision \\
-    --journal "Nano Research" \\
-    --title "Defect topology controls ITR in graphene/hBN" \\
-    --msid "NARE-2026-01234" \\
-    --changes "Reformatted with journal LaTeX template.\\nMinor language corrections.\\nUpdated Data Availability Statement." \\
-    --stats "~7,200 words, 6 figures, 3 tables" \\
-    --authors "Man Zhou, Ping Zhang*, Lin Tao*" \\
-    --corresponding "pingzhang@guet.edu.cn (P. Zhang)\\nTaolin@guet.edu.cn (L. Tao)" \\
-    --dept "School of Mechanical and Electrical Engineering" \\
-    --institution "Guilin University of Electronic Technology" \\
-    --address "No.1 Jinji Road, Guilin, Guangxi, 541004, China" \\
+    --journal "Journal Name" \\
+    --title "Full Manuscript Title Goes Here" \\
+    --msid "JRNL-2026-XXXXX" \\
+    --changes "Reformatted with journal template.\\nMinor language corrections." \\
+    --stats "~X,000 words, N figures, N tables" \\
+    --authors "First Author, Second Author, Corresponding Author*" \\
+    --corresponding "email@university.edu (C. Author)" \\
+    --dept "Department of XXXX" \\
+    --institution "University of XXXX" \\
+    --address "Address Line, City, Postal Code, Country" \\
     --out cover-letter-revision.docx
 
   # Highlights (standalone file, Elsevier and some Springer journals)
   python3 generate-cover-letter.py \\
     --type highlights \\
     --highlights "Core finding one ≤85 chars|Core finding two|Core finding three" \\
-    --title "Manuscript Title" \\
+    --title "Full Manuscript Title Goes Here" \\
     --out highlights.docx
 
 Requires: python-docx (pip install python-docx)

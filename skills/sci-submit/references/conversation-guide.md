@@ -83,4 +83,4 @@
 
 ## 采集完之后
 
-把所有信息翻译成量化条件，写入 `sci-submit/hard-constraints.md`。模板见 `references/workflow-constraints.md`。
+把所有信息翻译成量化条件，写入 `sci-skills/sci-submit/hard-constraints.md`。模板见 `references/workflow-constraints.md`。

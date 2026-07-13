@@ -16,7 +16,11 @@
 
 ### Step 1: 提取已知信息
 
-读取手稿文件（`.tex` / `.md` / `.docx`），提取：标题、摘要、关键词、作者列表、单位、基金号。向用户确认。
+读取正文，提取：标题、摘要、关键词、作者列表、单位、基金号。向用户确认。
+
+**正文位置**：`../manuscript/`（项目根的一等公民，按 v/r 轮次组织）。读当前轮次——首投读 `../manuscript/v1/`，修回读 `../manuscript/rN/`。正文可能是 LaTeX 项目（`tex/main.tex` + `figures/` + `ref/`）或单个 `.md`/`.docx`。若 `manuscript/` 不存在或空，问用户正文在哪——不假设。
+
+**薄耦合**：sci-submit 只**读** `../manuscript/`，不复制、不改、不写它。提取的元数据落进本 skill 的 `manuscript-meta.md`，正文本身仍是 `manuscript/` 的。
 
 **⚠️ 作者名单——第一稿就定死。** 拿到作者列表之后，确认之前，问一句：> "这个名单你跟导师确认过了吗？投稿之后调顺序、加人、删人在 revision 阶段极其麻烦，proof 阶段根本不可能。导师最关心的是什么——就是谁排第一个、谁是通讯。你投之前给他看一遍，省得后面改不了。"
 
@@ -32,7 +36,7 @@
 
 ### Step 2: 生成 metadata 文件
 
-照着 `assets/manuscript-meta-template.md` 的结构，复制 Author 块和 Affiliation 块，填入已知信息。写入 `sci-submit/manuscript-meta.md`。
+照着 `assets/manuscript-meta-template.md` 的结构，复制 Author 块和 Affiliation 块，填入已知信息。写入 `sci-skills/sci-submit/manuscript-meta.md`。
 
 **Affiliations 单独成节，不嵌在 Author 块里。** 地址拆成可粘贴零件：University（块）、School/Department（块）、Address（块）、Postal Code（块）——这些不好记。City 和 Country 不设块——好记。每个地址一个 `### #N`，作者通过 `地址编号 → #1 #2` 引用。一个作者挂多个地址、多个作者共享一个地址都正常——编号只管地址本身。
 
@@ -43,7 +47,7 @@
 这是最容易被跳过但最不该跳的一步。流程：
 
 1. **先尝试从手稿提取**——有些期刊在手稿末尾有 Author Contributions 段落。如果能提取到，预填 checkbox（`[x]` 表示有贡献）。
-2. **如果手稿里没有**——告诉用户："你的手稿里没有作者贡献声明。CRediT 是很多期刊投稿时的必填项（Elsevier、Springer Nature、ACS 等），现在填好以后每次投稿直接复制。下面我给你每人列了一份清单，你打开 `sci-submit/manuscript-meta.md`，在对应的角色后面把 `[ ]` 改成 `[x]` 就行。"
+2. **如果手稿里没有**——告诉用户："你的手稿里没有作者贡献声明。CRediT 是很多期刊投稿时的必填项（Elsevier、Springer Nature、ACS 等），现在填好以后每次投稿直接复制。下面我给你每人列了一份清单，你打开 `sci-skills/sci-submit/manuscript-meta.md`，在对应的角色后面把 `[ ]` 改成 `[x]` 就行。"
 3. **如果用户不清楚每个角色的含义**——简短解释（不要列 14 个定义，太长了；只说容易混淆的）：
    - *Conceptualization* = 想出这个研究的核心想法
    - *Investigation* = 做实验/跑模拟/收集数据的人

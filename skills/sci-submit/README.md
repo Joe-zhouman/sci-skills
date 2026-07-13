@@ -42,7 +42,7 @@ project/
 ├── assets/                     # Reusable submission assets
 │   ├── declarations.tex        # Conflict of interest, author contributions, etc.
 │   └── author-bios.tex         # Author biographies
-└── sci-submit/                 # Decision files
+└── sci-skills/sci-submit/                 # Decision files
     ├── manuscript-meta.md      # Reusable metadata + cover letter cheat sheet
     ├── hard-constraints.md     # Hard constraints
     ├── submit-history.md       # Full submission timeline

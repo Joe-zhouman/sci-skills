@@ -20,7 +20,7 @@ description: >-
 用户投文章不是为了投稿——是为了毕业、评职称、满足导师要求、项目结题。但他们不会主动说。在学术等级里，说"导师的目标不现实"等于说自己懒、自己没信心。所以他们习惯了不说。你得让他们说——不要用"硬性约束"这个词，不要扮演中立的助手。去读 `references/conversation-guide.md`，按里面的方式问。
 
 流程：
-1. 检查 `sci-submit/hard-constraints.md` 是否存在
+1. 检查 `sci-skills/sci-submit/hard-constraints.md` 是否存在
 2. **不存在** → 读 conversation-guide → 采集 → 写入 `hard-constraints.md`（模板 `references/workflow-constraints.md`）
 3. **已存在** → 读取确认
 
@@ -41,7 +41,7 @@ description: >-
 
 每次触发时：
 
-1. 没有 `sci-submit/` → 创建目录
+1. 没有 `sci-skills/sci-submit/` → 创建目录
 2. **没有 `hard-constraints.md` → 立刻进入硬性约束采集（见上节"第一步"），不得跳过**。这是强制前置步骤。
 3. 没有 `manuscript-meta.md` → 进入 **Workflow A**
 4. 没有 `submit-history.md` → 创建空模板，询问历史记录
@@ -71,25 +71,26 @@ description: >-
 
 ```
 project/
-├── manuscript.tex
-├── assets/                         # 可复用投稿素材（与 sci-submit/ 同级）
-│   ├── declarations.tex            # 冲突利益、作者贡献、数据可用性等标准声明
-│   ├── author-bios.tex             # 作者简介（部分期刊需要）
-│   └── ...
-└── sci-submit/
+├── manuscript/                     ← 正式正文（一等公民，按 v/r 轮次）
+│   └── v1/                         ← 当前轮次的稿（tex/figures/ref/）
+│       └── tex/main.tex            ← sci-submit 读这里提发现/元数据/打包
+└── sci-skills/sci-submit/          ← 投稿产物（本 skill 的家）
     ├── manuscript-meta.md
     ├── hard-constraints.md
     ├── submit-history.md
     ├── journal-shortlist.md
+    ├── declarations/               ← 标准声明（COI/Author Contributions/Data Availability）
     └── cover-letter/
         └── <journal-name>-<YYYY-MM-DD>/
             ├── cover-letter.tex
             └── highlights.docx       # Elsevier 需要时生成
 ```
 
-**`assets/`**：存那些换期刊也不怎么变的东西——标准声明（Elsevier 的 Conflict of Interest、ACS 的 Author Contributions、Data Availability Statement 等）、作者简介、图文摘要……这些内容本质上来自 `manuscript-meta.md`，第一次投稿时生成一次，之后就复用。如果用户不是第一次投稿，先问用户有没有现成文件，分门别类放进来。
+**正文在 `manuscript/v1/`（或当前轮 rN/），不在 `sci-skills/sci-submit/` 下。** sci-submit **读** `../manuscript/` 提发现/元数据/打包投稿，但**不复制正文进来**——正文是 `manuscript/` 的一等公民，sci-submit 只产投稿产物（cover letter/history/meta/declarations）。多轮修回时读对应轮次（v1 首投、r1 第一轮修回…），轮次管理见 `manuscript/.README.md` 契约。
 
-**Cover letter**：LaTeX 或 DOCX，二选一，放 `sci-submit/cover-letter/<journal-name>-<YYYY-MM-DD>/`。
+**`declarations/`**：存那些换期刊也不怎么变的东西——标准声明（Elsevier 的 Conflict of Interest、ACS 的 Author Contributions、Data Availability Statement 等）、作者简介、图文摘要……这些内容本质上来自 `manuscript-meta.md`，第一次投稿时生成一次，之后就复用。它们是**投稿产物**（不是正文），放 `sci-skills/sci-submit/declarations/`。如果用户不是第一次投稿，先问有没有现成文件，分门别类放进来。
+
+**Cover letter**：LaTeX 或 DOCX，二选一，放 `sci-skills/sci-submit/cover-letter/<journal-name>-<YYYY-MM-DD>/`。
 - **LaTeX**：首投 `assets/cover-letter-template.tex`（带 logo/单位抬头）或 `assets/cover-letter-plain.tex`（纯文字，无 logo，适合贴文本框或不需要机构抬头的期刊）。修回对应 `assets/cover-letter-revision-template.tex` 或 `assets/cover-letter-revision-plain.tex`。先问用户要不要抬头。
 - **DOCX**：用户要 DOCX 或没 LaTeX 环境时用 `scripts/generate-cover-letter.py --type first`（首投）或 `--type revision`（修回）。首投传 `--background --findings --journal-fit --audience`，修回传 `--changes --msid`。Times New Roman 11pt，对齐 LaTeX 版。
 
@@ -97,7 +98,7 @@ project/
 
 **GTOC / Graphical Abstract**：sci-submit 不画图，但会提醒你准备。规格参考 `data/gtoc-guide.md`。大多数要求单独上传 TIFF/EPS，Elsevier 标准 5:2 比例 1328×531px 300dpi。
 
-**决策文件**：Markdown，直接放 `sci-submit/` 根下。
+**决策文件**：Markdown，直接放 `sci-skills/sci-submit/` 根下。
 
 ## 每次流程结束：收尾
 
@@ -105,13 +106,13 @@ project/
 
 ### 1. 扫路径，列清单
 
-跑 `ls -laR sci-submit/ assets/ 2>/dev/null`，把输出整理成一个简短的文件清单，告诉用户"本次变更涉及这些文件"：
+跑 `ls -laR sci-skills/sci-submit/ assets/ 2>/dev/null`，把输出整理成一个简短的文件清单，告诉用户"本次变更涉及这些文件"：
 
 ```
 本次创建/更新的文件：
-  sci-submit/hard-constraints.md      ← 新建
-  sci-submit/manuscript-meta.md       ← 新建
-  sci-submit/cover-letter/nano-research-2026-07-03/cover-letter.tex  ← 新建
+  sci-skills/sci-submit/hard-constraints.md      ← 新建
+  sci-skills/sci-submit/manuscript-meta.md       ← 新建
+  sci-skills/sci-submit/cover-letter/nano-research-2026-07-03/cover-letter.tex  ← 新建
   assets/cover-letter.docx            ← 新建
 ```
 

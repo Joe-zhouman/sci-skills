@@ -42,7 +42,7 @@ project/
 ├── assets/                     # 可复用投稿素材
 │   ├── declarations.tex        # 标准声明（冲突利益、作者贡献等）
 │   └── author-bios.tex         # 作者简介
-└── sci-submit/                 # 决策文件
+└── sci-skills/sci-submit/                 # 决策文件
     ├── manuscript-meta.md      # 可复用投稿元数据 + 封面信 Cheat Sheet
     ├── hard-constraints.md     # 硬性约束
     ├── submit-history.md       # 投稿时间线

@@ -122,8 +122,8 @@ Sincerely,
 状态每次变更，更新 `submit-history.md` 里的时间线，比如：
 
 ```markdown
-### 2026-07-03 — Submitted to Nano Research
-- MS#: NARE-2026-01234
+### YYYY-MM-DD — Submitted to [Journal Name]
+- MS#: JRNL-YYYY-XXXXX
 - 07-05: With Editor
 - 07-08: Under Review
 - 09-15: Required Reviews Complete  ← 更新
