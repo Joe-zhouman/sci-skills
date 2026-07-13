@@ -6,13 +6,34 @@
 ## 顶层结构
 
 ```
-<project-root>/sci-skills/        ← 家族 namespace，固定名，有辨识度
-  README.md                       ← 家族自述（init 生成）
-  sci-draw/                       ← 图仓库（任何来源的图 + report）
-  sci-write/                      ← 写作产物（plan/profile/正文/reading）
-  sci-submit/                     ← 投稿产物
-  (sci-polish/ 待定，暂不预建)
+<project-root>/
+  manuscript/                      ← 正式正文（一等公民，在项目根，不在 sci-skills/ 下）
+    .README.md                     ← 目录契约（v/r 轮次制）
+    v1/                            ← 初版（首投那套稿，一套投多刊）
+    r1/ r2/ ...                    ← 修回轮次（真到 revision 时才建，init 不预建）
+  sci-skills/                      ← 家族 namespace，固定名，有辨识度（skill 产物区）
+    README.md                      ← 家族自述（init 生成）
+    sci-draw/                      ← 图仓库（任何来源的图 + report）
+    sci-write/                     ← 写作中间产物（plan/profile/reading + md 草稿，不碰 manuscript）
+    sci-submit/                    ← 投稿产物（读 manuscript/ 提发现/打包）
+    (sci-polish/ 待定，暂不预建)
 ```
+
+**主目录 = 成果（manuscript/），sci-skills/ = 工具产物。** 正文是项目一等公民，
+skill 都来服务它、读它写它，但都不拥有它。正文常从外部来（别处的 Word/Overleaf/合作者项目）。
+
+## manuscript/ 的 v/r 轮次制
+
+正文按**审稿轮次**单维度组织（不按期刊、不按文件类型）：
+- **v1** = 初版（首投那套稿）。一套 v1 投多个期刊——绝大多数初审是 your-paper-your-way，
+  一套模板差不多，只需修修补补。投了哪些期刊记在 `sci-skills/sci-submit/submit-history.md`。
+- **rN** = 第 N 轮修回。某刊给 revision 后，在 v1（或上轮 r）基础上改出的版本。
+  每个 rN 是完整包：改后稿 + Response + 审稿意见 + revision cover letter。该 rN 是哪个刊的修回，
+  同样记 submit-history。
+- **改投 ≠ 新 v**。换刊通常不换模板，改投只是"把同一 v/r 再投下一刊"。
+- init 只建 v1/，r1/r2 真到 revision 时建。
+
+详见 `manuscript/.README.md` 契约（init 生成）。
 
 ## 为什么是固定名 `sci-skills/`
 
@@ -47,8 +68,9 @@ agent 读 `sci-write/.README.md`，照做就能消费图仓库的 report。skill
 
 | 目录 | 角色 | 关键契约文件 | 生产者 | 消费者 |
 |---|---|---|---|---|
-| `sci-draw/` | 图仓库（中性存储） | `figN-report.md`（6 段）+ `figN.png` | 任何来源（skill/手工/复制） | sci-write 等 |
-| `sci-write/` | 写作产物 | `paper-plan.md`（图清单+章节状态）、四章正文、`data-profile.json`、`figN-reading.md` | sci-write | 人、润色/投稿 skill |
+| `manuscript/` | 正式正文（一等公民） | v1/rN 轮次目录 + tex/figures/ref | 人（或未来 md→tex skill） | sci-submit、sci-response |
+| `sci-draw/` | 图仓库（中性存储） | `figN-report.md`（6 段）+ `figN.png` | 任何来源（skill/手工/复制） | sci-write、人（复制进 manuscript/figures/） |
+| `sci-write/` | 写作中间产物 | `paper-plan.md`（图清单+章节状态）、`data-profile.json`、`figN-reading.md`、md 草稿 | sci-write | 人（搬进 manuscript/tex/） |
 | `sci-submit/` | 投稿产物 | （设计确定后补） | sci-submit | 人 |
 
 ## 跨目录数据流（不复制、只读邻居）
@@ -56,8 +78,13 @@ agent 读 `sci-write/.README.md`，照做就能消费图仓库的 report。skill
 skill 之间**不复制对方的产物**，避免双份不同步。只读邻居：
 
 - sci-write 读 `../sci-draw/figN-report.md` 和 `figN.png`，但**不复制**进 `sci-write/`。
-- sci-submit 读 `../sci-write/` 的正文，但不复制。
-- 图仓库是图的唯一存放点；写作目录是正文的唯一存放点。
+  sci-write 只产 md 草稿（内容载体），**不碰 `manuscript/`**——把内容搬进 manuscript/tex/
+  是人的活（或未来独立的 md→tex skill）。
+- sci-submit 读 `../manuscript/` 提"核心发现/元数据/打包投稿"，但**不复制**正文进 `sci-submit/`。
+  这是它正文的唯一上游（不再读 sci-write/ 的草稿——正文以 manuscript/ 为准）。
+- 人把 `../sci-skills/sci-draw/` 的成品图**复制**进 `manuscript/v1/figures/`（不软链），
+  保证正文项目自含可独立编译。
+- manuscript/ 是正文的唯一存放点；sci-draw/ 是图的源仓库；sci-write/ 是草稿/中间产物区。
 
 每个 skill 守自己的目录，读邻居的目录，写自己的目录。这是"读邻居不编排"的物质基础。
 

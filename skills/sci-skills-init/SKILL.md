@@ -48,24 +48,33 @@ _why_ 有人要 auto、有人要掌控。全家桶（紧耦合）逼用户 all-o
 
 1. **手动触发，跑一次就退。** 不驻留、不监听、不自动推进。做完报告就结束。
 2. **幂等。** 重复跑不破坏已有内容。已存在的目录/文件跳过，不覆盖。
-3. **不自动改用户数据。** migrate 默认 dry-run，要 `--apply` 才真迁；init 不覆盖已有 .gitignore。
-4. **只动产物侧，不动源码侧。** 它管用户项目里的 `sci-skills/`，不动仓库的 `skills/`。
+3. **确定性归脚本，判断性归 agent。** init/checkup 是确定性机械活，脚本做；
+   migrate 是判断活（老项目结构千变万化、会误判用户文件），脚本只**侦察摆现状**，
+   迁移决策和 mv 命令由 agent 跟用户确认后发。脚本永不自动移动用户文件。
+4. **只动产物侧，不动源码侧。** 它管用户项目里的 `manuscript/` 和 `sci-skills/`，不动仓库的 `skills/`。
 
-## 三个模式
+## 两个脚本模式 + 一个 agent 流程
 
 ### `init` — 初始化新项目
 
-在当前目录建家族骨架：
+在当前目录建完整骨架（正文一等公民 + skill 产物区）：
 
 ```
-<cwd>/sci-skills/
-  README.md                  ← 家族自述
-  sci-draw/    + .README.md  ← 图仓库（目录契约）
-  sci-write/   + .README.md  ← 写作产物（目录契约）
-  sci-submit/  + .README.md  ← 投稿产物（目录契约）
-.gitignore                   ← 科研项目常见忽略项
-.git/                        ← git init（除非 --no-git）
+<cwd>/manuscript/              ← 正式正文（一等公民，在项目根）
+  .README.md                   ← 目录契约（v/r 轮次制）
+  v1/                          ← 初版（空，用户决定 tex 模板内容）
+<cwd>/sci-skills/              ← skill 产物区
+  README.md                    ← 家族自述
+  sci-draw/    + .README.md    ← 图仓库（目录契约）
+  sci-write/   + .README.md    ← 写作产物（目录契约）
+  sci-submit/  + .README.md    ← 投稿产物（目录契约）
+<cwd>/.gitignore               ← 科研项目常见忽略项
+<cwd>/.git/                    ← git init（除非 --no-git）
 ```
+
+**init 只建空目录 + 契约文件，不生成任何 tex 模板内容**——模板高度定制（期刊/个人风格），
+用户说了算（仓库 `templates/main/` 有蓝本可复制）。r1/r2 等修回轮次也不预建，
+真到了 revision 时由人/agent 建。
 
 每个子目录的 `.README.md` 是**目录级接口契约**——任何 agent/skill 产出到该目录都遵守它。
 不需要 import 任何东西，照契约产出就能被下游消费。这是解耦的落地。
@@ -77,28 +86,30 @@ python scripts/init_project.py init --no-git  # 跳过 git init
 
 **何时用**：开始一个新科研项目，想立刻有干净的家族布局 + git 跟踪。
 
-### `migrate` — 迁移老布局
-
-检测项目根下的老 `sci-draw/`（不在 `sci-skills/` 下，是路径迁移前的旧布局），
-迁到 `sci-skills/sci-draw/`。默认 dry-run：
-
-```bash
-python scripts/init_project.py migrate          # dry-run，只报告会迁什么
-python scripts/init_project.py migrate --apply  # 真迁
-```
-
-**何时用**：老项目用的是根目录 `sci-draw/`，想迁到新的 `sci-skills/sci-draw/` 家族布局。
-迁移后老目录消失，产物进家族顶层。若 git 跟踪了老路径，迁移后 `git add -A` 提交这次重命名。
-
-冲突处理：若 `sci-skills/sci-draw/` 已存在，不自动合并，报告让用户手动决定。
-
 ### `checkup` — 体检落盘位置
 
 扫描当前结构，报告：
-- 家族顶层 `sci-skills/` 在不在
-- 各兄弟子目录的状态（在/缺、文件数）
-- 错位检测：有没有 skill 目录散落在项目根（不在 `sci-skills/` 下）→ 提示 migrate
+- `manuscript/`（一等公民）在不在、有哪些轮次（v1/r1/r2）、v1 有没有内容
+- 家族顶层 `sci-skills/` 在不在、各兄弟子目录状态
+- **项目根有没有不该在根的内容** → 发信号：派 Explore agent 读懂内容、判断归位
 - git 状态
+
+```bash
+python scripts/init_project.py checkup
+```
+
+### 迁移：agent 流程，不是脚本子命令
+
+老项目迁移没有脚本命令——老项目结构千变万化（Word/Overleaf/合作者的奇怪布局），写死规则会误判用户文件。迁移是 agent 流程：
+
+```
+checkup 报「项目根有 N 项错位」
+  → 派 Explore agent 读懂这些内容（脚本只看到文件名，Explore 能判断「这是正文」「这是老图仓库」）
+  → agent 跟用户确认每项归位（正文→manuscript/v1/，老图→sci-skills/sci-draw/ 等）
+  → agent 发 mv 命令
+```
+
+为什么脚本不迁：脚本只看到文件名，看不懂内容；Explore 能。把"判断"交给 Explore，把"移动"交给 agent + 人确认，脚本永不自动移动用户文件。
 
 ```bash
 python scripts/init_project.py checkup

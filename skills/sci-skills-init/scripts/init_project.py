@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
-"""init_project.py — sci-skills 家族项目初始化 / 迁移 / 体检。
+"""init_project.py — sci-skills 家族项目初始化 / 体检。
 
-手动触发的厚编排入口 sci-skills-init 的执行载体。一次性干完三件重活就退：
+手动触发的厚编排入口 sci-skills-init 的执行载体。一次性干完就退：
 不持续运行、不自动推进日常图→文流程（那是人手动用各执行 skill）。
 
-三个子命令:
-    init      在 cwd 建 sci-skills/ 骨架（预建全部兄弟子目录）+ git init + .gitignore
-    migrate   检测老 <root>/sci-draw/（不在 sci-skills/ 下）→ 迁到 sci-skills/sci-draw/
-    checkup   体检：扫描当前结构，报告各 skill 落盘是否在正确位置，发现错位提示修正
+两个子命令（都只做确定性机械活）:
+    init      在 cwd 建 manuscript/ + sci-skills/ 骨架 + git init + .gitignore
+    checkup   体检：扫描结构，报告正文/skill 落盘位置；项目根有错位时发信号
 
-哲学（与整个家族一致）:
+迁移不是脚本子命令——老项目结构千变万化、会误判用户文件。迁移是 agent 流程:
+    checkup 报错位信号 → 派 Explore agent 读懂内容判断归位 → 跟用户确认 → agent 发 mv
+
+哲学:
 - 幂等：重复跑不破坏已有内容。已存在的目录/文件跳过，不覆盖。
-- 不自动改用户数据：migrate 默认 dry-run，要 --apply 才真迁。
+- 确定性归脚本，判断性归 agent：init/checkup 脚本做；读懂内容判断归位 Explore 做；
+  移动用户文件 agent 跟用户确认后做。脚本永不自动移动用户文件。
 - 纯 stdlib，无外部依赖。
 
 用法:
     python init_project.py init [--no-git]
-    python init_project.py migrate [--apply]
     python init_project.py checkup
 """
 
@@ -31,6 +33,9 @@ from pathlib import Path
 
 # 家族顶层目录名（固定，有辨识度）
 FAMILY_ROOT_NAME = "sci-skills"
+
+# 正文项目目录名（一等公民，在项目根，不在 sci-skills/ 下）
+MANUSCRIPT_DIR_NAME = "manuscript"
 
 # 预建的兄弟 skill 子目录（与仓库 skills/ 下的 skill 对齐）。
 # 列表随 skill 成熟度演化——只预建设计已定的。sci-polish 待定，暂不预建。
@@ -161,6 +166,85 @@ Owner: sci-polish（设计确定后）。
 """,
 }
 
+# manuscript/ 的契约文案。manuscript/ 是项目一等公民（在项目根，不在 sci-skills/ 下）。
+# init 只建空目录 + 这份契约，**不生成任何 tex 模板内容**——模板高度定制，用户说了算。
+# 结构按"审稿轮次"单维度组织（v/r），期刊维度归 sci-submit/submit-history。
+MANUSCRIPT_GUIDE = """# manuscript/ — 正式正文（the manuscript, first-class citizen）
+
+> **这份文件是契约（contract）。** 本目录是项目的**唯一正式正文**，按**审稿轮次**
+> 组织。所有 skill 读它、写它，但都不"拥有"它——正文比任何 skill 都大。具体 tex 模板、
+> 期刊样式由用户决定，init 不预填任何模板内容。
+
+## 目录结构（v/r 轮次制）
+
+```
+manuscript/
+  .README.md              ← 本契约
+  v1/                     ← 初版（首投的那套稿，一套投多刊）
+    tex/ figures/ ref/    ← 用户决定具体内容/模板
+    (submission/)         ← 编译出的提交版（可选）
+  r1/                     ← 第一轮修回（审稿意见到了，改这一轮）
+    tex/                  ← 改后的稿（在 v1 基础上改）
+    response/             ← point-by-point Response（每条审稿意见→指向正文哪处改了）
+    reviews/              ← 审稿意见原文
+    revision-cover-letter/← 修回的 cover letter（简短版，不重新推销）
+  r2/                     ← 第二轮修回（若有，结构同 r1）
+  ...
+```
+
+**单维度原则：只按"审稿轮次"组织，不按期刊、不按文件类型分顶层目录。**
+
+## v 和 r 的语义
+
+- **v1 = 初版**。首次投稿的那套稿。**一套 v1 投多个期刊**——绝大多数初审是
+  your-paper-your-way，一套模板差不多，只需修修补补。投了哪些期刊、各自什么结果，
+  记在 `../sci-skills/sci-submit/submit-history.md`，**不在这里分目录**。
+- **rN = 第 N 轮修回**。某期刊给 major/minor revision 后，在 v1（或上一轮 r）基础上
+  改出的版本。每个 rN 是一个完整包：改后的稿 + Response + 审稿意见 + revision cover letter。
+  这个 rN 是哪个期刊的修回，同样记在 submit-history。
+- **改投别刊 ≠ 新 v**。换期刊通常不换模板（your-paper-your-way），改投只是"把同一个
+  v/r 再投给下一个期刊"，投稿行为记 history。**只有真的要换一套全新模板时**，
+  用户才手动开 v2（罕见），那是用户的事，不是 init 预设的。
+
+## 什么时候建 r1/r2
+
+init **只建 v1/**，不预建 r1/r2。rN 在**真到了那轮 revision 时**由人（或未来的
+sci-response skill）建——因为没有审稿意见就建空 r1 没意义。建 rN 时照上面的结构。
+
+## 为什么在项目根、不在 sci-skills/ 下
+
+正文是**成果**，skill 是**工具**。成果不该塞进工具的子目录。而且正文经常**从外部来**
+（别处写好的 Word/Overleaf/合作者的项目），是独立的一等公民，skill 都来服务它。
+
+## 放什么（用户决定具体形式）
+
+常见 LaTeX 项目（仅供参考，**不强制**；仓库 `templates/main/` 有成熟蓝本可复制）：
+- `tex/main.tex` / `tex/sup.tex` — 正文源 + 补充材料
+- `figures/figN.png` — 正文的图（从 `../sci-skills/sci-draw/` 复制来，保证正文项目自含可独立编译）
+- `ref/bibliography.bib` — 参考文献（用户用 Zotero/Endnote 维护，最终插入是人的活）
+- `Makefile` / `.gitignore` — 编译链 + 忽略中间产物（可选）
+
+**正文项目要自含**——能独立编译、能打包投稿。图从图仓库**复制**进 figures/，不要软链
+（软链跨机器/打包会断）。
+
+## 谁读它 / 谁写它
+
+- **sci-submit**：读 v1/（或当前轮 rN/）提"核心发现/元数据/打包投稿"。它正文的唯一上游。
+- **sci-response**（未来）：建 rN/，在正文上留痕改、产 Response、revision cover letter。
+- **人**：从 `../sci-skills/sci-write/` 的 md 草稿把内容搬进 v1/tex/（搬运是人的活，
+  或未来由独立的 md→tex skill 做）。Zotero 插文献、改 tex 形式、换模板，都是人的活。
+- **init**：只建 `manuscript/` + `v1/` + 本契约，不写任何 tex 内容。
+
+## 不放什么
+
+- 不放 sci-write 的 md 草稿（中间产物，留在 `../sci-skills/sci-write/`，内容载体，形式不重要）
+- 不放画图中间产物（留在 `../sci-skills/sci-draw/`，只把成品图复制进 figures/）
+- 不放投稿产物（cover letter/history 等留在 `../sci-skills/sci-submit/`）
+- 不按期刊分顶层目录（期刊维度归 submit-history）
+
+本目录只放**正式正文本身**，按轮次组织。
+"""
+
 # 科研项目常见忽略项（init 时写入 .gitignore）
 GITIGNORE_LINES = [
     "# Python",
@@ -213,6 +297,25 @@ def cmd_init(args: argparse.Namespace) -> int:
     root = find_project_root()
     fam = family_root(root)
     report: list[str] = []
+
+    # 0. manuscript/ —— 一等公民，最先建（在 skill 产物目录之前）。
+    #    只建空 manuscript/ + v1/ + 契约 .README.md，不生成任何 tex 模板内容。
+    ms_dir = root / MANUSCRIPT_DIR_NAME
+    ms_guide = ms_dir / ".README.md"
+    if ms_dir.exists():
+        if not ms_guide.exists():
+            ms_guide.write_text(MANUSCRIPT_GUIDE, encoding="utf-8")
+            report.append(f"✓ {MANUSCRIPT_DIR_NAME}/ 已存在，补 .README.md 契约")
+        else:
+            report.append(f"✓ {MANUSCRIPT_DIR_NAME}/ 已存在（跳过）")
+    else:
+        ms_dir.mkdir(parents=True)
+        ms_guide.write_text(MANUSCRIPT_GUIDE, encoding="utf-8")
+        # v1/ 是初版目录；只建空目录 + 留个 git 跟踪文件，不预填 tex 内容
+        v1 = ms_dir / "v1"
+        v1.mkdir(exist_ok=True)
+        (v1 / ".gitkeep").write_text("", encoding="utf-8")
+        report.append(f"✓ 创建 {MANUSCRIPT_DIR_NAME}/ + v1/ + .README.md 契约")
 
     # 1. 家族顶层
     if fam.exists():
@@ -288,79 +391,95 @@ def cmd_init(args: argparse.Namespace) -> int:
     return 0
 
 
-# ----------------------------- migrate -----------------------------
+# ----------------------------- checkup helpers -----------------------------
 
 
-def find_legacy_sci_draw(root: Path) -> Path | None:
-    """检测老的 <root>/sci-draw/（不在 sci-skills/ 下）。
-    返回老路径或 None。"""
-    legacy = root / "sci-draw"
-    if legacy.is_dir() and legacy != family_root(root) / "sci-draw":
-        # 确认它不是 sci-skills/sci-draw（即它真在根下）
-        try:
-            legacy.relative_to(root)
-        except ValueError:
-            return None
-        # 排除它就是 family_root/sci-draw 的情况（已在上面的 != 判断里）
-        return legacy
-    return None
-
-
-def cmd_migrate(args: argparse.Namespace) -> int:
-    root = find_project_root()
-    legacy = find_legacy_sci_draw(root)
-    target = family_root(root) / "sci-draw"
-
-    if legacy is None:
-        print(f"migrate @ {root}\n✓ 没有检测到老的 sci-draw/（在项目根、不在 sci-skills/ 下）。无需迁移。")
-        return 0
-
-    report = [f"migrate @ {root}", f"检测到老的 sci-draw/ → {legacy.relative_to(root)}"]
-    report.append(f"  目标位置 → {target.relative_to(root)}")
-
-    # 冲突检查：目标已存在
-    if target.exists():
-        report.append(
-            f"⚠ 目标 {target.relative_to(root)} 已存在。不会自动合并。"
-            "请手动决定：保留哪一个、或合并内容后删旧的。"
-        )
-        print("\n".join(report))
-        return 1
-
-    # 列出将迁移的内容
-    files = sorted(p for p in legacy.rglob("*") if p.is_file())
-    report.append(f"  将迁移 {len(files)} 个文件")
-
-    if not args.apply:
-        report.append("\n[dry-run] 加 --apply 真正执行迁移。迁移 = mv 老目录到新位置。")
-        print("\n".join(report))
-        return 0
-
-    # 真迁
-    target.parent.mkdir(parents=True, exist_ok=True)
-    legacy.rename(target)
-    report.append(f"✓ 已迁移 → {target.relative_to(root)}")
-    report.append("  提示：若 git 跟踪了老路径，请 git add -A 提交这次重命名。")
-    print("\n".join(report))
-    return 0
+def list_root_candidates(root: Path) -> list[dict]:
+    """列出项目根下不在标准位置的内容（manuscript/、sci-skills/、.git 之外的东西）。
+    浅层扫描，只给 checkup 当"该派 Explore 深查"的信号——**不下结论**这些是什么、
+    该进哪。判断（这是不是正文、是不是老图仓库）由 Explore agent 读懂内容后做，
+    脚本写死规则会误判用户文件。
+    """
+    entries: list[dict] = []
+    if root.is_dir():
+        for entry in sorted(root.iterdir()):
+            if entry.name in {FAMILY_ROOT_NAME, MANUSCRIPT_DIR_NAME, ".git"}:
+                continue
+            if entry.name.startswith("."):
+                continue
+            if entry.is_dir():
+                n_files = sum(1 for _ in entry.rglob("*") if _.is_file())
+                entries.append({"name": entry.name + "/", "type": "dir", "files": n_files})
+            else:
+                entries.append({"name": entry.name, "type": "file", "size": entry.stat().st_size})
+    return entries
 
 
 # ----------------------------- checkup -----------------------------
 
 
 def cmd_checkup(args: argparse.Namespace) -> int:
-    """体检：扫描当前结构，报告各 skill 落盘位置对不对。"""
+    """体检：扫描当前结构，报告正文 + 各 skill 落盘位置对不对。"""
     root = find_project_root()
     fam = family_root(root)
     report: list[str] = [f"checkup @ {root}"]
     issues: list[str] = []
-    info: dict = {"project_root": str(root), "family_root_exists": fam.is_dir(), "skills": {}}
+    info: dict = {
+        "project_root": str(root),
+        "manuscript": {},
+        "family_root_exists": fam.is_dir(),
+        "skills": {},
+    }
+
+    # 0. manuscript/（一等公民，先报）
+    ms_dir = root / MANUSCRIPT_DIR_NAME
+    if not ms_dir.is_dir():
+        issues.append(
+            f"⚠ {MANUSCRIPT_DIR_NAME}/ 不存在。正文是一等公民——跑 `init` 建它 + v1/。"
+        )
+        info["manuscript"] = {"present": False}
+    else:
+        # 列出 v1/r1/r2... 轮次目录
+        rounds = sorted(
+            d.name for d in ms_dir.iterdir()
+            if d.is_dir() and (d.name == "v1" or d.name.startswith("r"))
+        )
+        # v1 有没有真内容（非 .gitkeep/.README）
+        v1_files = [
+            p for p in (ms_dir / "v1").rglob("*")
+            if p.is_file() and p.name not in {".gitkeep", ".README.md"}
+        ] if (ms_dir / "v1").is_dir() else []
+        report.append(
+            f"manuscript/   ✓  轮次: {', '.join(rounds) if rounds else '(无)'}  "
+            f"v1内容: {len(v1_files)} 文件"
+        )
+        info["manuscript"] = {
+            "present": True, "rounds": rounds, "v1_file_count": len(v1_files),
+        }
+        if not v1_files:
+            issues.append(
+                f"⚠ {MANUSCRIPT_DIR_NAME}/v1/ 还是空的。"
+                "把正文（tex/figures/bib）放进去，或从仓库 templates/main/ 复制蓝本。"
+            )
+
+    # 0b. 项目根是否有不该在根的内容（浅层信号，深度判断派 Explore）
+    root_cands = list_root_candidates(root)
+    if root_cands:
+        info["root_candidates"] = root_cands
+        cand_names = ", ".join(c["name"] for c in root_cands)
+        issues.append(
+            f"⚠ 项目根有 {len(root_cands)} 项不在 {MANUSCRIPT_DIR_NAME}/ 或 "
+            f"{FAMILY_ROOT_NAME}/ 下（{cand_names}）。派 Explore agent 读懂这些内容、"
+            f"判断归位（正文→{MANUSCRIPT_DIR_NAME}/v1/，老图→{FAMILY_ROOT_NAME}/sci-draw/ 等），"
+            "跟用户确认后发 mv。脚本不自动判断、不自动移。"
+        )
 
     # 1. 家族顶层在不在
     if not fam.is_dir():
         issues.append(
             f"✗ {FAMILY_ROOT_NAME}/ 不存在。本项目还没初始化——跑 `init_project.py init`。"
         )
+        report.append("")
         report.extend(issues)
         print("\n".join(report))
         info["issues"] = issues
@@ -385,22 +504,7 @@ def cmd_checkup(args: argparse.Namespace) -> int:
         )
         info["skills"][skill] = {"present": True, "file_count": len(files)}
 
-    # 3. 错位检测：项目根下是否有散落的 skill 目录（不在 sci-skills/ 下）
-    scattered: list[str] = []
-    if root.is_dir():
-        for entry in root.iterdir():
-            if entry.is_dir() and entry.name in BROTHER_SKILLS:
-                if not _is_subpath(entry, fam):
-                    scattered.append(entry.name)
-    if scattered:
-        for name in scattered:
-            issues.append(
-                f"⚠ {name}/ 散落在项目根（不在 {FAMILY_ROOT_NAME}/ 下）。"
-                f"跑 `init_project.py migrate --apply` 迁到 {FAMILY_ROOT_NAME}/{name}/。"
-            )
-        info["scattered"] = scattered
-
-    # 4. git 状态
+    # 3. git 状态
     if not is_git_repo(root):
         issues.append("⚠ 项目未 git init。建议 git init 跟踪产物演化。")
         info["git"] = False
@@ -421,14 +525,6 @@ def cmd_checkup(args: argparse.Namespace) -> int:
     return 1 if issues else 0
 
 
-def _is_subpath(child: Path, parent: Path) -> bool:
-    try:
-        child.resolve().relative_to(parent.resolve())
-        return True
-    except ValueError:
-        return False
-
-
 # ----------------------------- main -----------------------------
 
 
@@ -442,11 +538,7 @@ def main(argv: list[str]) -> int:
     p_init.add_argument("--no-git", action="store_true", help="跳过 git init")
     p_init.set_defaults(func=cmd_init)
 
-    p_mig = sub.add_parser("migrate", help="迁移老 sci-draw/ 到 sci-skills/sci-draw/")
-    p_mig.add_argument("--apply", action="store_true", help="真正执行（默认 dry-run）")
-    p_mig.set_defaults(func=cmd_migrate)
-
-    p_chk = sub.add_parser("checkup", help="体检落盘位置")
+    p_chk = sub.add_parser("checkup", help="体检落盘位置 + 报错位信号")
     p_chk.set_defaults(func=cmd_checkup)
 
     args = parser.parse_args(argv[1:])
