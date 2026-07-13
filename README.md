@@ -6,6 +6,8 @@ Claude Code skills for scientific research workflows.
 
 These skills are tools, not magic. Every workflow is designed for **human-in-the-loop** operation: the skill produces a draft, the human reviews it, and iteration drives quality. We don't pretend anything is fully automated — because real scientific work never is. The human decides when it's good enough.
 
+The research-skills ecosystem is crowded and everyone has their own taste. So these skills are built to **decouple**: each one is an independently replaceable part that interconnects via on-disk directory contracts (not code imports). Use our sci-write with someone else's plotting tool and manual submission — as long as the `sci-skills/` directory contracts are honored, the parts mesh. A part that cooperates with others beats a self-consistent but closed suite.
+
 ## About this series
 
 Every skill in this repo is developed following the testing workflow defined by [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus). All test records (evals, iterations, benchmarks, grading) are preserved under each skill's `tests/` directory.
@@ -20,6 +22,8 @@ skill-creator-plus mirrors:
 | Skill | Description |
 |-------|-------------|
 | [sci-draw](skills/sci-draw/) | Publication-quality scientific data visualization — statistical plots, multi-panel figures, heatmaps, dose-response curves, and more |
+| [sci-write](skills/sci-write/) | Data-driven manuscript writing — drafts Method/Results/Discussion/Conclusion from figure reports + data profile, with claim-vs-figure consistency checks and real-DOI citation placeholders |
+| [sci-skills-init](skills/sci-skills-init/) | Manually-triggered setup/migrate/checkup for the `sci-skills/` family workspace — scaffolds the layout, migrates legacy dirs, audits on-disk placement |
 
 ## Templates
 
