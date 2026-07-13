@@ -44,23 +44,28 @@ _why_ These five rules are the difference between a writing assistant and an aut
 All sci-* skills share one top-level family directory with a fixed, recognizable name — analogous to how `docs/superpowers/` marks that skill family's on-disk presence. This is a **family namespace, not a project namespace**: same name across every project, so anyone (human or skill) recognizing the layout knows immediately where things live.
 
 ```
-<project-root>/sci-skills/
-  sci-draw/                    ← the agreed "figure warehouse" directory.
-                                 Name borrows sci-draw's recognizability, but the
-                                 semantic is neutral: figures land here regardless
-                                 of source (any skill / hand-made / copied).
-    fig1-report.md             ← figure report (6-section markdown contract)
-    fig1.png                   ← exported preview
-    fig1.pdf / fig1.py / ...   ← whatever the figure-maker produced
-  sci-write/                   ← THIS skill's home
-    paper-plan.md              ← baton: figure list + section progress
-    data-profile.json          ← data profile (this skill produces)
-    fig1-reading.md            ← figure-reading consistency check (per figure)
-    method.md | method.tex     ← the four data-driven sections
-    results.md | results.tex     (format asked per-section: md or tex)
-    discussion.md | discussion.tex
-    conclusion.md | conclusion.tex
+<project-root>/
+  manuscript/                  ← the official manuscript (first-class citizen, at project root)
+    v1/                        ← original draft (tex project — user owns the form, not this skill)
+      tex/ figures/ ref/
+  sci-skills/
+    sci-draw/                  ← the agreed "figure warehouse" directory.
+                                 Figures land here regardless of source.
+      fig1-report.md           ← figure report (6-section markdown contract)
+      fig1.png                 ← exported preview
+      fig1.pdf / fig1.py / ...
+    sci-write/                 ← THIS skill's home — intermediate products only
+      paper-plan.md            ← baton: figure list + section progress
+      data-profile.json        ← data profile (this skill produces)
+      fig1-reading.md          ← figure-reading consistency check (per figure)
+      method.md                ← md DRAFTS of the four data-driven sections
+      results.md                 (content carriers; form doesn't matter here)
+      discussion.md              NOT the official manuscript — that's manuscript/.
+      conclusion.md              Human moves content from here into manuscript/v1/tex/
+                                 (or a future md→tex skill does).
 ```
+
+**This skill does NOT touch `manuscript/`.** The md files in `sci-write/` are **content drafts**, not the official manuscript. The official manuscript is a first-class citizen at the project root (a LaTeX project the user owns, often arriving from outside). Moving content from these drafts into `manuscript/v1/tex/` is the human's job (or a future independent md→tex skill) — sci-write doesn't write to `manuscript/`, doesn't learn LaTeX project structure, stays a content producer.
 
 From `sci-skills/sci-write/`, the figure warehouse is `../sci-draw/`. If the family root or warehouse directory differs, the human tells this skill where; `scan_neighbor.py` accepts an absolute path.
 
@@ -78,7 +83,7 @@ This skill **never writes** to `../sci-draw/` — that's the figure warehouse, o
 
 ## Output format
 
-**Before drafting each section, ask the human: md or tex?** Both supported, not both produced (avoid maintaining two divergent copies). Default if the human has no preference: md for Method/Results/Discussion (easy to diff, matches the contract files), tex for sections with heavy math on request.
+**This skill produces md content drafts, always.** The official manuscript is `manuscript/v1/tex/` (a LaTeX project the human owns) — not produced here. md is chosen because: it's easy to diff across revisions, matches the contract files (paper-plan / figN-reading are md), and the form here doesn't matter (content is what counts; the human or a future md→tex skill reshapes it into LaTeX). Don't ask "md or tex" — the answer here is always md; tex is a different skill's concern.
 
 ## Workflow (Step 0–7)
 
@@ -141,7 +146,7 @@ _why_ A typeset-perfect figure can still mislead at the argument level — claim
 2. Draft by evidence ladder: system validation → main result → baseline → ablation → stress test. Not every paper has all rungs; order by each figure's evidence role.
 3. Every claim hangs on evidence (figure + statistic). Calibrate verbs to evidence strength (`show`/`demonstrate` for direct main results, `suggest`/`indicate` for trends, leave `may`/`could` for Discussion).
 4. Run the **confirmation gate** (writing-discipline ref) before full prose: echo the one-sentence argument + key terms + assumptions, get human confirmation.
-5. Write `results.{md|tex}` (format per human's choice).
+5. Write `results.md` — a **content draft** in `sci-write/`. This is not the official manuscript; the human moves it into `manuscript/v1/tex/` later. So: optimize for content (claims + evidence), don't fuss over LaTeX form here.
 
 _why_ Results is the spine — every other section refers back to it. Drafting it from the figure reports (not from memory, not from a vague sense of "what we found") keeps the prose tethered to evidence. The reading's corrected claim wins because arguing against your own figure is a losing position.
 
@@ -150,7 +155,7 @@ _why_ Results is the spine — every other section refers back to it. Drafting i
 1. Extract mechanism / significance / literature comparison / limitations from the findings.
 2. Keep observation (Results syntax: `was detected`, `increased`) separate from interpretation (Discussion syntax: `may reflect`, `suggests`). Don't mix.
 3. **Literature comparison: run the search MCP, get real DOIs, leave real-DOI placeholders.** Never empty placeholders, never fabricated entries. The human inserts the final Zotero/Endnote citation.
-4. Run the confirmation gate; write `discussion.{md|tex}`.
+4. Run the confirmation gate; write `discussion.md` (content draft in `sci-write/`).
 
 _why_ Discussion is where papers get rejected for overclaiming or for unsupported mechanisms. The verb discipline (weak verbs for mechanisms) and the real-DOI rule (no invented literature) are the two guards. Marking the literature-comparison honestly — including conflicts with prior work — is what makes it a Discussion and not a sales pitch.
 
@@ -159,18 +164,20 @@ _why_ Discussion is where papers get rejected for overclaiming or for unsupporte
 **Method** (pure factual statement, no literature search):
 - Data description from `data-profile.json` (N, per-group n, variables, missingness).
 - Statistical methods **copied verbatim** from each `figN-report.md`'s `Statistical methods` section — do not paraphrase, round, or "improve." If a field is missing, contract-gap handling.
-- Write `method.{md|tex}`.
+- Write `method.md` (content draft in `sci-write/`).
 
 **Conclusion** (short, from findings):
 - Contribution + one-line evidence + one-line limitation + one-line bounded impact. No new data, no new citations, no mechanisms not already in Discussion.
-- Write `conclusion.{md|tex}`.
+- Write `conclusion.md` (content draft in `sci-write/`).
 
 _why_ Method's verbatim-copy rule: statistics are facts, prose is narrative — never let narrative instinct alter a number or a test name. Conclusion's "no new anything" rule: it's a capstone, not a fresh argument.
 
 ### Step 7 — External handoff (no orchestration)
 
 1. Mark Introduction / Abstract / Keyword as `external` in paper-plan. Do not write them.
-2. Prompt the human: "Method/Results/Discussion/Conclusion are on disk at `sci-skills/sci-write/`. Introduction/Abstract/Keyword need literature-first reasoning — start them in a research-oriented skill, reading this directory's outputs as input."
+2. Tell the human where things stand and what's next — two handoffs, neither orchestrated by this skill:
+   - **Content → manuscript**: "Method/Results/Discussion/Conclusion md drafts are at `sci-skills/sci-write/`. These are **content drafts**, not the official manuscript. Move the content into `manuscript/v1/tex/` (or use a future md→tex skill) when ready — that's your call, this skill doesn't touch `manuscript/`."
+   - **External chapters**: "Introduction/Abstract/Keyword need literature-first reasoning — start them in a research-oriented skill, reading `sci-skills/sci-write/` + `manuscript/` as input."
 3. Update paper-plan section statuses to `written` for the four done sections.
 
 _why_ Those three chapters are written last in practice (you frame the contribution after you know what the contribution actually is — "draw the target after the arrow lands"). They also lean heavily on literature positioning, which is a different mode of work than data-driven drafting. Marking them external keeps this skill honest about its scope.
