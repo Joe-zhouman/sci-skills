@@ -35,17 +35,11 @@ Usage:
     --address "Address Line, City, Postal Code, Country" \\
     --out cover-letter-revision.docx
 
-  # Highlights (standalone file, Elsevier and some Springer journals)
-  python3 generate-cover-letter.py \\
-    --type highlights \\
-    --highlights "Core finding one ≤85 chars|Core finding two|Core finding three" \\
-    --title "Full Manuscript Title Goes Here" \\
-    --out highlights.docx
-
 Requires: python-docx (pip install python-docx)
 """
 
-import argparse, textwrap, os
+import argparse
+import os
 from datetime import date
 
 try:
@@ -82,7 +76,6 @@ def add_horizontal_line(doc):
     p.paragraph_format.space_before = Pt(0)
     run = p.add_run(" " * 80)
     run.font.size = Pt(1)
-    # Bottom border on paragraph simulates a thin line
     from docx.oxml.ns import qn
     pPr = p._p.get_or_add_pPr()
     pBdr = pPr.makeelement(qn("w:pBdr"), {})
@@ -97,7 +90,6 @@ def add_horizontal_line(doc):
 
 
 def build_header(doc, args):
-    """Institution header block."""
     set_paragraph(doc, args.dept, bold=True, size=12, space_after=0)
     set_paragraph(doc, args.institution, size=9, space_after=0)
     set_paragraph(doc, args.address, size=9, space_after=0, italic=True)
@@ -107,24 +99,20 @@ def build_header(doc, args):
 
 def build_first(doc, args):
     build_header(doc, args)
-
     set_paragraph(doc, "Dear Editor,", size=11, space_after=6)
 
     opening = (f'We wish to submit our manuscript entitled '
-               f'“{args.title}” '
+               f'"{args.title}" '
                f'for consideration for publication in {args.journal}.')
     set_paragraph(doc, opening, size=11, space_after=12)
 
     if args.background:
         set_paragraph(doc, args.background, size=11, space_after=12)
-
     if args.findings:
         set_paragraph(doc, args.findings, size=11, space_after=12)
-
     if args.journal_fit:
         set_paragraph(doc, f"Summary of Scientific Grounds for Consideration at {args.journal}", bold=True, size=11, space_after=6)
         set_paragraph(doc, args.journal_fit, size=11, space_after=12)
-
     if args.audience:
         set_paragraph(doc, "Summary of Appeal to a Broad Audience", bold=True, size=11, space_after=6)
         set_paragraph(doc, args.audience, size=11, space_after=12)
@@ -136,19 +124,17 @@ def build_first(doc, args):
         set_paragraph(doc, args.declarations, size=11, space_after=12)
 
     set_paragraph(doc, "We appreciate your time and consideration and look forward to hearing from you.", size=11, space_after=24)
-
     build_signature(doc, args)
 
 
 def build_revision(doc, args):
     build_header(doc, args)
-
     set_paragraph(doc, "Dear Editor,", size=11, space_after=6)
 
     opening = (f'We are resubmitting our manuscript entitled '
-               f'“{args.title}” '
+               f'"{args.title}" '
                f'(MS# {args.msid}) to {args.journal}, '
-               f'following the reviewers’ comments. '
+               f'following the reviewers\' comments. '
                f'We have addressed all concerns raised by the reviewers; '
                f'a detailed point-by-point Response Letter accompanies this submission.')
     set_paragraph(doc, opening, size=11, space_after=12)
@@ -162,39 +148,12 @@ def build_revision(doc, args):
     set_paragraph(doc, f"The revised manuscript comprises {args.stats}. A Supplementary Information document and a detailed Response Letter are included.", size=11, space_after=12)
 
     set_paragraph(doc, "We thank the editor and reviewers for their constructive feedback, which has strengthened the manuscript.", size=11, space_after=24)
-
     build_signature(doc, args)
-
-
-def build_highlights(doc, args):
-    """Generate a standalone Highlights DOCX (Elsevier format)."""
-    # Title
-    set_paragraph(doc, "Highlights", bold=True, size=14, space_after=12)
-    set_paragraph(doc, args.title, italic=True, size=10, space_after=18)
-
-    # Bullet points, | separated
-    items = [h.strip() for h in args.highlights.split("|") if h.strip()]
-    for item in items:
-        if len(item) > 85:
-            print(f"WARNING: '{item[:60]}...' is {len(item)} chars (max 85)", file=__import__('sys').stderr)
-        p = doc.add_paragraph(style='List Bullet')
-        run = p.add_run(item)
-        run.font.name = "Times New Roman"
-        run.font.size = Pt(11)
-
-    # Footer note
-    doc.add_paragraph()
-    set_paragraph(
-        doc,
-        f"Each bullet ≤ 85 characters (including spaces). {len(items)} highlights.",
-        size=8, italic=True, space_after=0
-    )
 
 
 def build_signature(doc, args):
     set_paragraph(doc, "Sincerely,", size=11, space_after=24)
     set_paragraph(doc, args.authors, size=11, space_after=12)
-
     if args.corresponding:
         set_paragraph(doc, "* Corresponding authors", size=10, space_after=6)
         set_multiline(doc, args.corresponding, size=10, space_after=6)
@@ -202,13 +161,10 @@ def build_signature(doc, args):
 
 def main():
     p = argparse.ArgumentParser(description="Generate a DOCX cover letter")
-    p.add_argument("--type", required=True, choices=["first", "revision", "highlights"])
+    p.add_argument("--type", required=True, choices=["first", "revision"])
     p.add_argument("--journal", default="")
     p.add_argument("--title", default="")
     p.add_argument("--out", required=True, help="Output .docx path")
-
-    # Highlights fields
-    p.add_argument("--highlights", help="Bullet points separated by | (--type highlights)")
 
     # First-submission fields
     p.add_argument("--background")
@@ -231,30 +187,19 @@ def main():
 
     args = p.parse_args()
 
-    if args.type == "highlights":
-        if not args.highlights:
-            p.error("--highlights is required for --type highlights")
-        if not args.title:
-            p.error("--title is required for --type highlights")
-
     doc = Document()
-
-    # Page setup
     for section in doc.sections:
         section.top_margin = Inches(1)
         section.bottom_margin = Inches(1)
         section.left_margin = Inches(0.75)
         section.right_margin = Inches(0.75)
 
-    # Default style
     style = doc.styles["Normal"]
     font = style.font
     font.name = "Times New Roman"
     font.size = Pt(11)
 
-    if args.type == "highlights":
-        build_highlights(doc, args)
-    elif args.type == "first":
+    if args.type == "first":
         build_first(doc, args)
     else:
         build_revision(doc, args)

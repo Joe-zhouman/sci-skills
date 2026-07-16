@@ -1,6 +1,6 @@
 # Section templates — 数据驱动四件套结构
 
-本 skill 写 Method / Results / Discussion / Conclusion 四章。Introduction / Abstract / Keyword 不在此（external，外接）。
+本 skill 写 Method / Results / Conclusion 三章。Introduction / Discussion / Abstract / Keyword 不在本 skill 范围内，由叙事写作阶段处理。
 
 每个模板给"骨架 + 每段的 job + 素材来源"。素材来源指向本 skill 已落盘的文件（data-profile.json / figN-report.md / figN-reading.md），不指向任何外部 skill。
 
@@ -65,45 +65,9 @@
 - 具体观察 ← `figN-report.md` 的 `Key findings`
 - 统计量 ← `figN-report.md` 的 `Statistical methods`
 
-**动词校准**: 主结果用 show/demonstrate；趋势级用 suggest/indicate；机制推测留到 Discussion。
+**动词校准**: 主结果用 show/demonstrate；趋势级用 suggest/indicate。机制推测和文献对比不在此（那是 Discussion 的事）。
 
-**Results 不做**: 不解释为什么（那是 Discussion）；不引文献对比（那是 Discussion）；不混 `may reflect` 这类解释语法。
-
----
-
-## Discussion
-
-**目的**：解释 Results、定位贡献、说局限。**机制解释 + 文献对比，不是 Results 的复述。**
-
-**结构**:
-
-1. **开头：主发现的解释段**
-   - job: 不复述结果，回答"这意味着什么"。
-   - 例: "Our results [show/demonstrate] that [主发现]. This [suggests/indicates] [机制或意义]."
-   - 素材: Results 的主 claim + `figN-reading.md`（图实际传达）。
-
-2. **机制段**（核心）
-   - job: 为什么会观察到这个？给出合理机制。
-   - 动词: may / could / might（机制推测，配弱动词）。
-   - 注意: 机制是推测——必须配"这是 plausible 但未直接验证"的边界。
-
-3. **文献对比段**
-   - job: 和已有工作比——一致、延伸、还是冲突？
-   - **调检索 MCP 拿真实 DOI**，走引用占位符协议。**不空占位、不编文献。**
-   - 例: "Our finding aligns with [Wang2023, DOI:...] who reported [...]. We extend this by [...]."
-   - 冲突尤其重要：和文献不一致的地方要说清楚、给解释。
-
-4. **局限段**
-   - job: 你的证据边界在哪。
-   - 诚实：样本量、数据来源、未控变量、泛化范围。审稿人会挑的，你自己先说。
-
-5. **影响/展望段**（可选）
-   - job: 这意味着什么、下一步。
-   - 不要过度——bounded claim。
-
-**Discussion 不做**: 不报新数据（那是 Results）；不用 `was detected` 这类观察语法（那是 Results）。
-
----
+**Results 不做**: 不解释为什么；不引文献对比；不混 `may reflect` 这类解释语法。Report observations, don't interpret them.
 
 ## Conclusion
 
@@ -118,13 +82,13 @@
 
 **动词**: 主贡献用 show/demonstrate；影响用 suggest/enable。
 
-**Conclusion 不做**: 不复述 Results 细节；不引入 Discussion 没讨论过的新机制；不出现新引用（引用都在前章已出现）。
+**Conclusion 不做**: 不复述 Results 细节；不引入新机制（机制解释是 Discussion 的事）；不出现新引用（引用都在前章已出现）。
 
 ---
 
-## 章节间一致性（写完四章后扫一遍）
+## 章节间一致性（写完本 skill 的三章后扫一遍）
 
-- **claim 一致**: Results 的 claim、Discussion 的解释、Conclusion 的贡献声明，三者不矛盾。figN-reading.md 的修正版贯穿三章。
-- **术语一致**: 同一变量/方法在四章里用同一个词。建一个术语小账，首次出现锁定，后续复用。
+- **claim 一致**: Results 的 claim 和 Conclusion 的贡献声明不矛盾。figN-reading.md 的修正版贯穿。
+- **术语一致**: 同一变量/方法在三章里用同一个词。建一个术语小账，首次出现锁定，后续复用。
 - **统计一致**: 所有章节引到的统计量（n、test、误差类型）和 `figN-report.md` 的 `Statistical methods` 完全一致——逐字校对。
-- **figure 引用一致**: Results 引 "Fig 1"，Discussion 解释 "Fig 1"，编号一致，不串。
+- **figure 引用一致**: Results 引 "Fig 1"，编号一致，不串。

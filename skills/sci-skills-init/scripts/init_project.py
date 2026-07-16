@@ -38,15 +38,16 @@ FAMILY_ROOT_NAME = "sci-skills"
 MANUSCRIPT_DIR_NAME = "manuscript"
 
 # 预建的兄弟 skill 子目录（与仓库 skills/ 下的 skill 对齐）。
-# 列表随 skill 成熟度演化——只预建设计已定的。sci-polish 待定，暂不预建。
+# 列表随 skill 成熟度演化——只预建需要自己输出目录的 skill。
+# sci-polish 不预建：它直接在 manuscript/ 里改 tex 文件，零落盘。
 BROTHER_SKILLS = ["sci-draw", "sci-write", "sci-submit"]
 
-# 每个子目录的引导文件内容（.README.md，点开头=隐藏，给人看，也帮 git 跟踪空目录）。
-# 关键定位：**这些 .README.md 本身就是目录级接口契约**——任何 agent / 任何 skill
+# 每个子目录的契约文件内容（CONTRACT.md，点开头=隐藏，给人看，也帮 git 跟踪空目录）。
+# 关键定位：**这些 CONTRACT.md 本身就是目录级接口契约**——任何 agent / 任何 skill
 # 拿到这份文件，就知道往这个目录放什么、按什么 schema、谁会读。照着契约就能产出
 # 合规产物，不需要知道是哪个 skill 在用、不需要 import 任何东西。这是解耦的落地。
 # 三件事都说清：这个文件夹代表什么 / 有什么用 / 产物怎么放进来（含 schema + 命名 + 来源）。
-SKILL_DIR_GUIDES: dict[str, str] = {
+SKILL_DIR_CONTRACTS: dict[str, str] = {
     "sci-draw": """# sci-draw/ — 图仓库（figure warehouse）
 
 > **这份文件是契约（contract）。** 任何 agent / 任何 skill 往本目录产出图，
@@ -169,7 +170,7 @@ Owner: sci-polish（设计确定后）。
 # manuscript/ 的契约文案。manuscript/ 是项目一等公民（在项目根，不在 sci-skills/ 下）。
 # init 只建空目录 + 这份契约，**不生成任何 tex 模板内容**——模板高度定制，用户说了算。
 # 结构按"审稿轮次"单维度组织（v/r），期刊维度归 sci-submit/submit-history。
-MANUSCRIPT_GUIDE = """# manuscript/ — 正式正文（the manuscript, first-class citizen）
+MANUSCRIPT_CONTRACT = """# manuscript/ — 正式正文（the manuscript, first-class citizen）
 
 > **这份文件是契约（contract）。** 本目录是项目的**唯一正式正文**，按**审稿轮次**
 > 组织。所有 skill 读它、写它，但都不"拥有"它——正文比任何 skill 都大。具体 tex 模板、
@@ -179,7 +180,7 @@ MANUSCRIPT_GUIDE = """# manuscript/ — 正式正文（the manuscript, first-cla
 
 ```
 manuscript/
-  .README.md              ← 本契约
+  CONTRACT.md              ← 本契约
   v1/                     ← 初版（首投的那套稿，一套投多刊）
     tex/ figures/ ref/    ← 用户决定具体内容/模板
     (submission/)         ← 编译出的提交版（可选）
@@ -299,23 +300,23 @@ def cmd_init(args: argparse.Namespace) -> int:
     report: list[str] = []
 
     # 0. manuscript/ —— 一等公民，最先建（在 skill 产物目录之前）。
-    #    只建空 manuscript/ + v1/ + 契约 .README.md，不生成任何 tex 模板内容。
+    #    只建空 manuscript/ + v1/ + 契约 CONTRACT.md，不生成任何 tex 模板内容。
     ms_dir = root / MANUSCRIPT_DIR_NAME
-    ms_guide = ms_dir / ".README.md"
+    ms_contract = ms_dir / "CONTRACT.md"
     if ms_dir.exists():
-        if not ms_guide.exists():
-            ms_guide.write_text(MANUSCRIPT_GUIDE, encoding="utf-8")
-            report.append(f"✓ {MANUSCRIPT_DIR_NAME}/ 已存在，补 .README.md 契约")
+        if not ms_contract.exists():
+            ms_contract.write_text(MANUSCRIPT_CONTRACT, encoding="utf-8")
+            report.append(f"✓ {MANUSCRIPT_DIR_NAME}/ 已存在，补 CONTRACT.md 契约")
         else:
             report.append(f"✓ {MANUSCRIPT_DIR_NAME}/ 已存在（跳过）")
     else:
         ms_dir.mkdir(parents=True)
-        ms_guide.write_text(MANUSCRIPT_GUIDE, encoding="utf-8")
+        ms_contract.write_text(MANUSCRIPT_CONTRACT, encoding="utf-8")
         # v1/ 是初版目录；只建空目录 + 留个 git 跟踪文件，不预填 tex 内容
         v1 = ms_dir / "v1"
         v1.mkdir(exist_ok=True)
         (v1 / ".gitkeep").write_text("", encoding="utf-8")
-        report.append(f"✓ 创建 {MANUSCRIPT_DIR_NAME}/ + v1/ + .README.md 契约")
+        report.append(f"✓ 创建 {MANUSCRIPT_DIR_NAME}/ + v1/ + CONTRACT.md 契约")
 
     # 1. 家族顶层
     if fam.exists():
@@ -324,25 +325,25 @@ def cmd_init(args: argparse.Namespace) -> int:
         fam.mkdir(parents=True)
         report.append(f"✓ 创建 {fam.name}/")
 
-    # 2. 预建兄弟子目录 + .README.md（点开头=隐藏；给人看的引导文件，
+    # 2. 预建兄弟子目录 + CONTRACT.md（点开头=隐藏；给人看的契约文件，
     #    说明这个目录归谁、放什么；也帮 git 跟踪空目录。比 .gitkeep 有意义。）
     for skill in BROTHER_SKILLS:
         skill_dir = fam / skill
-        guide = skill_dir / ".README.md"
+        contract = skill_dir / "CONTRACT.md"
         if skill_dir.exists():
-            if not guide.exists() and skill in SKILL_DIR_GUIDES:
-                # 目录在但缺引导文件 → 补一份（不覆盖已有内容）
-                guide.write_text(SKILL_DIR_GUIDES[skill], encoding="utf-8")
-                report.append(f"  - {skill}/ 已存在，补 .README.md")
+            if not contract.exists() and skill in SKILL_DIR_CONTRACTS:
+                # 目录在但缺契约文件 → 补一份（不覆盖已有内容）
+                contract.write_text(SKILL_DIR_CONTRACTS[skill], encoding="utf-8")
+                report.append(f"  - {skill}/ 已存在，补 CONTRACT.md")
             else:
                 report.append(f"  - {skill}/ 已存在（跳过）")
         else:
             skill_dir.mkdir()
-            guide_text = SKILL_DIR_GUIDES.get(
+            contract_text = SKILL_DIR_CONTRACTS.get(
                 skill, f"# {skill}/\n\nReserved for the {skill} skill.\n"
             )
-            guide.write_text(guide_text, encoding="utf-8")
-            report.append(f"  - 创建 {skill}/ + .README.md")
+            contract.write_text(contract_text, encoding="utf-8")
+            report.append(f"  - 创建 {skill}/ + CONTRACT.md")
 
     # 3. .gitignore
     if has_gitignore(root):
@@ -444,10 +445,10 @@ def cmd_checkup(args: argparse.Namespace) -> int:
             d.name for d in ms_dir.iterdir()
             if d.is_dir() and (d.name == "v1" or d.name.startswith("r"))
         )
-        # v1 有没有真内容（非 .gitkeep/.README）
+        # v1 有没有真内容（非 .gitkeep / CONTRACT.md）
         v1_files = [
             p for p in (ms_dir / "v1").rglob("*")
-            if p.is_file() and p.name not in {".gitkeep", ".README.md"}
+            if p.is_file() and p.name not in {".gitkeep", "CONTRACT.md"}
         ] if (ms_dir / "v1").is_dir() else []
         report.append(
             f"manuscript/   ✓  轮次: {', '.join(rounds) if rounds else '(无)'}  "
@@ -497,7 +498,7 @@ def cmd_checkup(args: argparse.Namespace) -> int:
             continue
         files = [
             p for p in skill_dir.rglob("*")
-            if p.is_file() and p.name != ".README.md"
+            if p.is_file() and p.name != "CONTRACT.md"
         ]
         report.append(
             f"{skill:<12} {'✓':<8} {len(files):<8} {'空' if not files else '有产物'}"

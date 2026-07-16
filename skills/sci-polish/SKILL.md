@@ -1,74 +1,153 @@
 ---
 name: sci-polish
 description: >-
-  Polish, restructure, or translate academic prose into publication-quality English using writing-strategy principles and curated academic phrase patterns. Use when the user asks to polish, revise, edit, proofread, or translate academic/scientific manuscript text — abstracts, introductions, results, discussions, conclusions, titles, methods sections, or full drafts. Also covers LaTeX layout/typesetting fixes (loose pages, stranded headings, float placement). Triggers on: polish my paper, revise this paragraph, edit manuscript, proofread, academic writing, scientific writing, SCI paper, English polishing, language editing, Chinese-to-English academic translation, 学术写作、科研写作、论文润色、SCI写作、英文论文润色、润色、改写、学术英语、翻译、排版.
+  Polish academic manuscript prose by editing manuscript/vN/tex/ directly — git
+  commits serve as the audit trail, no separate polish output directory. Reads
+  the figure warehouse and writing drafts before editing to preserve
+  claim/evidence consistency. Covers polish, restructure, and Chinese-to-English translation of academic/scientific manuscript text —
+  abstracts, introductions, results, discussions, conclusions, titles, methods
+  sections, or full drafts. Also covers LaTeX layout/typesetting fixes (float
+  placement, stranded headings, loose pages). Triggers on: polish my paper,
+  revise this paragraph, edit manuscript, proofread, academic writing, scientific
+  writing, SCI paper, English polishing, language editing, Chinese-to-English
+  academic translation, 学术写作、科研写作、论文润色、SCI写作、英文论文润色、润色、
+  改写、学术英语、翻译、排版.
 ---
 
-# sci-polish — Academic Polishing Workflow
+# sci-polish
 
-Polish academic prose by diagnosing structural problems first, fixing argument logic before sentence-level cleanup. The skill's primary output is a decision-documented, reproducible polish — not just prettier sentences.
+Polish academic manuscript prose directly in `manuscript/vN/tex/`. Git tracks every
+change; commit messages carry the diagnosis and revision summary. No separate polish
+output directory — the manuscript is both source and output.
 
-## Core philosophy
-
-**File archiving and human involvement > AI automation.** Every polish job leaves a process log (what was diagnosed, what was changed, why) and a final report (polished text + revision notes). The files are the ground truth — when returning to a draft after a break, read the files, not conversation memory. Human review checkpoints are mandatory, not optional: the author owns the argument, the terminology, and the final call on every change.
-
-## If this isn't what you need
-
-- **Cover letter writing** → use `sci-letter` — handles first-submission and revision/resubmission cover letters
-- **Scientific figures / data visualization** → use `sci-draw` — creates publication-quality plots from experimental data
-- **Response to reviewers** (回复审稿人) → not yet covered by any sci-skill
-- **Writing a manuscript from scratch** → this skill polishes existing text, doesn't author papers; draft the content first, then come back
-
-## Working directory: `sci-polish/`
-
-All polish work lives in `sci-polish/` under the project root. Each polish job gets two files — the process log and the final report:
+## Layout & boundaries
 
 ```
-sci-polish/
-  abstract-description.md     # Process log (decisions, diagnostics, terminology ledger)
-  abstract-report.md          # Final report (polished text + revision notes)
-  intro-description.md
-  intro-report.md
-  discussion-description.md
-  discussion-report.md
-  ...
+<project-root>/
+  manuscript/
+    v1/tex/                     ← THIS skill reads and edits here (or current round)
+    r1/tex/                     ← also works on revision rounds
+  sci-skills/
+    sci-write/                  ← READ + WRITE on terminology-ledger.md (co-owned);
+                                   READ-ONLY: paper-plan.md, results.md, discussion.md,
+                                   conclusion.md, method.md, figN-reading.md
+    sci-draw/                   ← READ-ONLY: figN-report.md (claims, findings, stats,
+                                   terminology)
 ```
 
-**File-based workflow**: the files in `sci-polish/` are the ground truth. When returning to a draft after a break, read the files first — they contain what was diagnosed, what was changed, and why. Trust the files, not conversation memory.
+- **Edits `manuscript/` directly.** The manuscript IS the working surface. No
+  intermediate files, no `sci-polish/` output directory.
+- **Git is the audit trail.** `git diff` shows what changed; the commit message
+  records the diagnosis and revision decisions. No separate description/report
+  files — the git history is the permanent record.
+- **`sci-skills/sci-write/terminology-ledger.md` is co-owned.** Both the writing stage and the polishing stage read and write this file. Content-level decisions are recorded first; form-level constraints discovered during polish extend it.
+- **Reads other neighbors — never edits.** Claim files and figure reports are read-only.
 
-_why_ **Context windows are ephemeral.** A session ends, a summary truncates, and last week's polishing decisions are gone. Writing decisions into files at the moment they're made preserves the *why* at the point of highest clarity. When you return, the file is a time capsule of actual reasoning — which failure modes were found, which terminology was standardized, which changes the author approved.
+## Startup
 
-### Startup
+Every session starts here:
 
-Before entering the workflow, check the state of `sci-polish/`:
+1. **Locate the manuscript.** Check `manuscript/v1/tex/` (default) or the current
+   review round (`manuscript/rN/tex/`). If absent, ask the user where the tex files
+   are. If no tex files exist anywhere, ask the user to provide the manuscript
+   content — this skill works on existing text, not a blank page.
 
-1. **`sci-polish/` does not exist** → create it, then start from Step 0.
-2. **`sci-polish/` exists** → ask the user: "Is there a draft in `sci-polish/` you want to continue working on?" If yes, read the relevant `-description.md` and `-report.md` files to understand the current state, then pick up from the appropriate step. If no, start a new polish job from Step 0.
+2. **Check git tracking.** If the manuscript directory is not under git, remind
+   the user: "Polish without git loses the audit trail. `git init` or `git add`
+   the tex files first, then come back." Don't proceed without git — the commit
+   history IS the polish record.
 
-## Core workflow (6 steps)
+3. **Read the neighbors** (skip any that don't exist — the manuscript may not
+   have been drafted in the writing stage):
 
-Each step depends on the output of the previous one. Never skip diagnosis (Step 1) — sentence-polishing a structurally broken paragraph is a failed edit.
+   From `../sci-skills/sci-write/`:
+   - `terminology-ledger.md` — **co-owned file.** The canonical term ledger
+     produced by the writing stage (or an earlier polish round). Read it; enforce it.
+     Extend it after polish for any new constraints discovered.
+   - `paper-plan.md` — figure claims (the "what this paper argues" map) and
+     section status
+   - `results.md` / `discussion.md` / `conclusion.md` / `method.md` — drafted
+     prose with claim/evidence structure
+   - `figN-reading.md` — claim corrections from the figure-reading consistency
+     check (the corrected claim wins over the original figure report)
 
-### Step 0: Gather information + detect axes
+   From `../sci-skills/sci-draw/` (*figure warehouse* — read regardless of source):
+   - `figN-report.md` — `Core conclusion`, `Key findings`, `Statistical methods`,
+     terminology. These are the evidence ground truth.
 
-Before touching a single sentence, collect:
+   **If the writing drafts exist**: the claims recorded there are the non-negotiable
+   content baseline. Polish improves expression without altering claim substance,
+   evidentiary strength, or boundary. The terminology ledger, if present, provides
+   the canonical form for every term — enforce it.
 
-1. **The text** to polish — get the full passage, not a fragment
-2. **Paper type** — research / methods / hypothesis / algorithmic / review. Default: research. Ask if ambiguous.
-3. **Section** — abstract / intro / results / discussion / conclusion / title / methods. May be multiple. Ask if it affects the polish.
-4. **Language** — en (English source) or zh-to-en (Chinese-to-English). Detect from the draft.
-5. **Target journal** — nature / nat-comms / generic. Default: generic. If the user names a specific journal, note it.
-6. **Previous polish logs** — check `sci-polish/` for existing `-description.md` files from prior rounds on this manuscript
+   **If the writing drafts don't exist**: work standalone. Diagnose from the
+   manuscript text alone, without family context. The diagnosis hierarchy still
+   applies; you just lack the external claim reference and pre-built ledger.
 
-State the detected axis values in one short line to the user before proceeding, so they can correct you cheaply.
+4. **Load or build the terminology ledger.**
 
-_why_ **Axes determine what rules apply.** A Results section and a Discussion section have different jobs — applying the wrong section playbook produces polished prose that performs the wrong rhetorical function. Stating axes upfront costs one line and catches mismatches before you've rewritten a paragraph.
+   **If `sci-skills/sci-write/terminology-ledger.md` exists** → read it, enforce it.
 
-**Start the process log**: create `sci-polish/<job-name>-description.md`. Record the gathered information, detected axes, and any user corrections.
+   **If it doesn't exist** → build it from these sources in priority order:
+   1. Manuscript glossary (`glossary.tex`, `nomenclature.tex`, etc.) — authoritative
+   2. Figure reports (`figN-report.md`)
+   3. neighboring writing files
+   4. Manuscript text itself
 
-### Step 1: Diagnose — find the real problem
+   Write to `sci-skills/sci-write/terminology-ledger.md`:
 
-Before rewriting, identify the main failure mode. Prioritize in this exact order:
+   ```markdown
+   # Terminology Ledger
+
+   | Category | Term / variants | Canonical form | Source | Notes |
+   |---|---|---|---|---|
+   | Compound | contact thermal resistance / thermal contact resistance | thermal contact resistance | manuscript glossary | |
+   | Variable | IL-6 / interleukin-6 | IL-6 | fig1-report | |
+   | Stats | SD / SEM / 95% CI | SD | fig1-report | |
+   | ... | ... | ... | ... | |
+   ```
+
+   Source column: `manuscript glossary`, `figN-report`, `drafting-stage`, `polish-discovered`.
+   Conflict resolution: manuscript glossary wins.
+
+   Enforce during polish. Update after polish (with human approval), commit together with tex changes.
+
+5. **If manuscript glossary exists** (`glossary.tex`, `nomenclature.tex`, etc.): read it. Terms defined there are authoritative; ledger conflicts → glossary wins, flag and update ledger.
+
+## Workflow
+
+### Step 0 — Gather axes
+
+Before touching a sentence, collect:
+
+1. **The text** — which tex file(s), which section(s)
+2. **Paper type** — research / methods / hypothesis / algorithmic / review.
+   Default: research. Ask if ambiguous.
+3. **Section context** — what job does this section perform? If neighboring writing files
+   exist, cross-reference against the section templates in
+   `references/section-guide.md` with the drafted prose as the concrete
+   example of that job. If no writing drafts, use `references/section-guide.md`
+   alone.
+4. **Language** — en (English source) or zh-to-en (Chinese-to-English). Detect
+   from the draft.
+5. **Target journal** — nature / nat-comms / generic. Default: generic. Affects
+   style guardrails.
+6. **Claim baseline** — if neighboring writing files exist, extract the claim list:
+   - From `paper-plan.md`: which figures, what each claims
+   - From `results.md`: which paragraph carries which claim, verb strength used
+   - From `discussion.md`: mechanism interpretations, limitation boundaries
+   - From `figN-reading.md`: corrected claims (these win over original reports)
+
+   If no writing drafts, the claim baseline is what the manuscript text
+   currently states — you'll preserve substance during polish without a separate
+   reference.
+
+State the detected axis values in one short line before proceeding. Correct
+cheaply — the user sees a one-line summary and can override any axis.
+
+### Step 1 — Diagnose
+
+Identify the main failure mode before editing. Prioritize in this exact order:
 
 ```
 paper type logic → section job → paragraph structure → claim/evidence/boundary → sentence polish
@@ -76,123 +155,88 @@ paper type logic → section job → paragraph structure → claim/evidence/boun
 
 Check each level:
 
-| Level | What to look for |
-|---|---|
-| Paper type | Wrong architecture for this paper type (e.g., methods paper structured as research article) |
-| Section job | Section doing the wrong rhetorical work (e.g., Results drifting into Discussion) |
-| Paragraph | No controlling idea, stacked claims without support, missing logical connections |
-| Claim/evidence/boundary | Claim without evidence, data without a claim, missing limitation/scope, correlation → causation |
-| Sentence | Wordiness, overloaded sentences (>30 words), clutter, inconsistent terminology |
+| Level | What to look for | With family context |
+|---|---|---|
+| Paper type | Wrong architecture for this paper type | Cross-check with `references/paper-types.md` playbook |
+| Section job | Section performing wrong rhetorical work | Compare against the section template for this section |
+| Paragraph | No controlling idea, stacked claims, missing logic | Cross-check paragraph claim against `paper-plan.md` figure claim |
+| Claim/evidence/boundary | Claim without evidence, missing limitation, correlation→causation | Verify verb strength matches `figN-report.md` stats (show vs suggest vs may) |
+| Sentence | Wordiness, overloaded sentences (>30 words), inconsistent terminology | Enforce terminology ledger |
 
-**Do not sentence-polish a draft whose section job is wrong.** Surface the structural problem first, explain it to the user, then polish only after they confirm the direction.
+**Do not sentence-polish a draft whose section job is wrong.** Surface the
+structural problem first, explain it, then polish only after the user confirms.
 
-**If a paragraph's structural problem cannot be fixed without inventing content, flag it.** Don't paper over missing logic with smooth prose.
+**If a paragraph's structural problem cannot be fixed without inventing content,
+flag it.** Don't paper over missing logic with smooth prose.
 
-_why_ **Polishing a broken argument produces a prettier broken argument.** The reader's confusion doesn't come from word choice — it comes from claims without evidence, Results that interpret instead of report, Discussions that re-summarize instead of explain. Fix these first, and sentence polish becomes straightforward.
+**Claim drift detection (when family context exists):** Before editing any
+sentence that carries a scientific claim, compare against the claim baseline
+(Step 0.6). If the manuscript text already differs from the recorded claim,
+flag it — the human needs to decide which version is correct. If the edit
+would change what is claimed, how strongly, what evidence supports it, or
+where the boundary is → flag for human review rather than silently rewriting.
 
-**Record in `-description.md`**: the primary failure mode(s) found, which level they're at, and what structural fixes are needed.
+### Step 2 — Polish
 
-### Step 2: Build terminology ledger
+Apply polish in priority order, matching the diagnosis hierarchy:
 
-Before polishing, extract and standardize terminology across the text:
-
-- Key technical terms, abbreviations, gene/protein names, model names, dataset names
-- Units and notation
-- Statistical language (SD/SEM/CI, test names)
-
-Pick one canonical form per term and use it consistently throughout. Do not introduce synonyms to vary the prose — in academic writing, consistency > variety.
-
-_why_ **Inconsistent terminology is the #1 tell of unpolished academic writing.** A reader who sees "IL-6" in paragraph 2 and "interleukin-6" in paragraph 5 wonders if they're the same thing. The terminology ledger is a single source of truth — build it once, enforce it everywhere.
-
-**Record in `-description.md`**: the terminology ledger as a simple table or list.
-
-### Step 3: Polish
-
-Apply polish in this priority order, matching the diagnosis hierarchy from Step 1:
-
-1. **Paper-type architecture** — load `references/paper-types.md`, apply the relevant playbook
-2. **Section job** — load `references/section-guide.md`, fix rhetorical function
-3. **Paragraph logic** — load `references/writing-strategy.md`, restructure flow (hourglass, claim/evidence/boundary)
-4. **Language rules** — load `references/language-guide.md`, apply sentence and paragraph rules
-5. **Style mechanics** — load `references/style-guardrails.md`, check articles, register, overclaim
+1. **Paper-type architecture** — load `references/paper-types.md`, apply the
+   relevant playbook
+2. **Section job** — load `references/section-guide.md`, fix rhetorical function.
+   If the writing drafts exist, the section template tells you what job this
+   section performs; cross-check that the polished version still does that job.
+3. **Paragraph logic** — load `references/writing-strategy.md`, restructure flow
+   (hourglass, claim/evidence/boundary)
+4. **Language rules** — load `references/language-guide.md`, apply sentence and
+   paragraph rules
+5. **Style mechanics** — load `references/style-guardrails.md`, check articles,
+   register, overclaim
 
 Load only the reference files needed for this job. Don't load everything at once.
 
-**For Chinese-to-English (zh-to-en)**: extract core propositions first, reconstruct logical links, then apply English rules. Do not translate clause-by-clause. See `references/language-guide.md` for the full workflow.
+**Claim-preservation rule:** when editing prose that carries a claim — flag if the edit would change what is claimed, verb strength, or limitation boundary. Allow wording/grammar fixes. When in doubt, flag.
 
-**For LaTeX layout requests**: skip the prose axes and load `references/latex-layout.md` directly. That file is self-contained — diagnosis workflow, float patterns, and the "regenerate wide figures taller at the source" rule. Always compile and visually inspect before and after.
+**For Chinese-to-English (zh-to-en):** extract core propositions first,
+reconstruct logical links, then apply English rules. Do not translate
+clause-by-clause. See `references/language-guide.md` for the full workflow.
 
-**Core rules throughout:**
+**For LaTeX layout requests:** skip the prose axes and load
+`references/latex-layout.md` directly. That file is self-contained — diagnosis
+workflow, float patterns, and the "regenerate wide figures taller at the source"
+rule. Always compile and visually inspect before and after.
 
-- Language serves argument. Don't polish sentences while leaving the reasoning broken.
-- Do not invent data, references, mechanisms, or novelty claims.
-- Do not alter quantitative values unless correcting an obvious typo the user confirms.
-- Keep technical terms, gene/protein names, model names, and statistical terms stable.
-- Avoid em dashes in polished output by default. Prefer commas, parentheses, or full stops.
+**Core rules:** language serves argument. Don't invent data, references, or claims. Don't alter quantitative values. Enforce the terminology ledger. Avoid em dashes.
 
-**Record in `-description.md`**: which reference files were loaded, key structural changes made, and any flagged issues that couldn't be fixed without author input.
+### Step 3 — Human review
 
-### Step 4: Human review checkpoint
+**Mandatory. Do not skip.**
 
-**This is mandatory. Do not skip.**
+Present the polished changes with `git diff`. The diff is the review surface —
+the user sees exactly what changed, line by line.
 
-Present the polished text to the user with:
+Ask explicitly: "Does this look right? Any changes needed?"
 
-1. The polished prose (plain text, not in a code block)
-2. **Revision notes**: 3-5 short bullets on major structural and stylistic changes
-3. Any flagged issues that need author decisions (e.g., ambiguous claims, missing boundaries)
+The author owns the argument, the terminology, and the final call on every
+change. If they reject a change, revert it. If they want a different direction,
+return to Step 1 with their feedback.
 
-Ask the user explicitly: "Does this look right? Any changes needed?"
+### Step 4 — Commit
 
-The author owns the argument, the terminology, and the final call. If they reject a change, revert it and record the decision. If they want a different direction, return to Step 1 with their feedback.
+After the human approves:
 
-_why_ **AI can improve expression, but only the author knows the science.** A polished sentence that subtly changes a mechanism's direction or a claim's strength is worse than the original — it's wrong AND confident-looking. The human checkpoint catches these before they fossilize into the manuscript.
+```bash
+git add manuscript/vN/tex/<changed-files> sci-skills/sci-write/terminology-ledger.md
+git commit -m "polish(<section>): <one-line diagnosis>
 
-**Record in `-description.md`**: what the user approved, rejected, or changed. This is the audit trail.
-
-### Step 5: Finalize report
-
-The process log `sci-polish/<job-name>-description.md` now contains raw notes from Steps 0-4. Review it and **distill into a clean report** at `sci-polish/<job-name>-report.md`:
-
-```markdown
-# Polish Report — [section name]
-
-## Source
-- Paper type: [research / methods / hypothesis / algorithmic / review]
-- Section: [abstract / intro / results / discussion / conclusion / title / methods]
-- Language: [en / zh-to-en]
-- Journal: [nature / nat-comms / generic]
-
-## Diagnosis
-- Primary failure mode: [paper type / section job / paragraph / claim-evidence / sentence]
-- Specific issues found: [list]
-
-## Terminology ledger
-| Term | Canonical form | Notes |
-|---|---|---|
-| ... | ... | ... |
-
-## Polished text
-
-[Full polished prose]
-
-## Revision notes
-1. [Structural change 1]
-2. [Structural change 2]
-3. [Sentence-level change]
-4. ...
-
-## Author decisions
-- [Approved / rejected / modified items from Step 4]
+- <structural change>
+- <claim/evidence adjustment, if any>
+- <terminology ledger: new/updated entries with source>
+- <sentence-level summary>"
 ```
 
-The description log remains as the raw audit trail; don't delete it.
-
-_why_ **Two files, two audiences.** The log is chronological and messy — decisions scattered across five steps of notes, useful for the maker retracing reasoning. The report is clean and structured: a future you, a collaborator, or a journal editor can read the polished text and understand exactly what changed and why without reading the full process log.
+Each polish round is one commit. `git log -- manuscript/vN/tex/` is the polish history.
 
 ## Routing table
-
-When loading references in Step 3, use this table to decide what to load:
 
 | Axis | Value | Load |
 |---|---|---|
@@ -204,7 +248,7 @@ When loading references in Step 3, use this table to decide what to load:
 | Section | any | `references/section-guide.md` — relevant section(s) |
 | Language | en | `references/language-guide.md` § English source |
 | | zh-to-en | `references/language-guide.md` § Chinese-to-English |
-| Journal | any | `references/style-guardrails.md` — journal-specific rules if any |
+| Journal | any | `references/style-guardrails.md` — journal-specific rules if applicable |
 
 **Always load** `references/writing-strategy.md` (core principles apply to every job).
 
@@ -214,7 +258,8 @@ When loading references in Step 3, use this table to decide what to load:
 
 ## Active interception
 
-When the user's draft or request triggers these, explain and offer alternatives. Respect the user's final decision, but leave a clear record of the warning.
+When the user's draft or request triggers these, explain and offer alternatives.
+Respect the user's final decision, but leave a clear record of the warning.
 
 | Issue | Why wrong | Fix |
 |---|---|---|
@@ -225,19 +270,49 @@ When the user's draft or request triggers these, explain and offer alternatives.
 | "Prove" / "conclusively" / "unprecedented" / "first" | Overclaiming kills credibility with reviewers | Replace with "show" / "suggest" / "to our knowledge" / "among the first" |
 | Chinese draft: clause-by-clause translation | Produces topic-comment chains, missing logical connectives | Extract propositions first, reconstruct logic, then write English |
 | Asking AI to write the core argument from scratch | AI should polish expression, not author scientific claims | Ask the user to provide the argument; help structure and express it |
+| Silently rewriting a claim recorded in neighboring writing files | The claim was calibrated to figure evidence in the figure-reading step | Flag the discrepancy; let the human decide which version is correct |
+| New terminology constraint discovered during polish (word order, convention) not written back to ledger | Next sci-write or sci-polish round starts from scratch, same mistakes recur | Add the constraint to `sci-skills/sci-write/terminology-ledger.md`; mark source `polish-discovered`; commit together with the tex changes |
+| Ledger entry conflicts with manuscript glossary | Manuscript glossary is the authoritative source for terms it defines | Flag the discrepancy; manuscript glossary wins; update ledger to match
 
-## Reference files
+## Reference index
 
-| File | When to load | Content |
-|---|---|---|
-| `references/writing-strategy.md` | Every job | Hourglass structure, claim/evidence/boundary, section responsibilities, writing order, failure mode diagnosis |
-| `references/paper-types.md` | When paper type matters for architecture | Research / methods / hypothesis / algorithmic / review playbooks |
-| `references/section-guide.md` | When section context is known | Per-section job, polishing priorities, common failure modes, syntax patterns |
-| `references/language-guide.md` | Every job | English sentence/paragraph rules, Chinese-to-English workflow, common CN-influenced patterns |
-| `references/phrasebank.md` | On demand — user wants phrase alternatives | Evidence verbs, transition families, hedging, limitation language, future-work patterns |
-| `references/style-guardrails.md` | Every job | Academic register, articles, numbers/units, overclaim checklist, integrity rules |
-| `references/latex-layout.md` | On demand — LaTeX layout/typesetting requests | Float placement, page fill, stranded headings, multi-panel arrangement, diagnosis workflow |
+| File | Open when |
+|---|---|
+| `references/writing-strategy.md` | Every job — hourglass structure, claim/evidence/boundary, section responsibilities, failure mode diagnosis |
+| `references/section-guide.md` | Section context known — per-section job, polishing priorities, common failure modes, syntax patterns |
+| `references/language-guide.md` | Every job — English sentence/paragraph rules, Chinese-to-English workflow, common CN-influenced patterns |
+| `references/paper-types.md` | Paper type matters for architecture — research/methods/hypothesis/algorithmic/review playbooks |
+| `references/style-guardrails.md` | Every job — academic register, articles, numbers/units, overclaim checklist, integrity rules |
+| `references/phrasebank.md` | On demand — evidence verbs, transition families, hedging, limitation language, future-work patterns |
+| `references/latex-layout.md` | On demand — float placement, page fill, stranded headings, multi-panel arrangement, SI structure, diagnosis workflow |
 
-## Privacy rule
+## Boundaries
 
-Do not disclose private local paths, filenames, attachment names, or internal reference filenames in polished output, revision notes, or reports. Use generic descriptions like "the manuscript text provided." Only reveal exact paths when the user explicitly asks for an audit trail.
+This skill does not do these things:
+
+| Need | Where |
+|---|---|
+| Write a manuscript from scratch | Draft content first (data-driven or manual), then come back to polish |
+| Write a cover letter | submission stage — handles cover letters for submission and revision |
+| Create scientific figures | figure creation — produces publication-quality plots from experimental data |
+| Response to reviewers | Not yet covered |
+| Literature search / Introduction drafting | narrative writing stage; polish here after drafting |
+
+## Decoupling self-check
+
+Run after any change to this skill:
+
+```bash
+grep -rn "from sci-write\|import sci-write\|sci_write\." skills/sci-polish/   # must be empty
+grep -rn "from sci-draw\|import sci-draw\|sci_draw\." skills/sci-polish/     # must be empty
+grep -rni "nature-writing\|nature_writing" skills/sci-polish/                # must be empty
+```
+
+Reading files is allowed; importing code or assuming co-presence is a leak.
+
+## Privacy
+
+Do not disclose private paths, filenames, or unpublished manuscript content in
+user-facing output, commit messages, or `git diff` commentary. Use generic
+descriptions ("the manuscript tex file"). Reveal exact paths only when the user
+explicitly asks for an audit trail.

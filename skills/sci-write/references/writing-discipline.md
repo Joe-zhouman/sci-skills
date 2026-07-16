@@ -54,11 +54,11 @@
 成稿前扫一遍：`first` `unique` `unprecedented` `comprehensive` `complete` `always` `never` `revolutionary`。
 证据真支持才留，否则改成有边界的 claim 或删掉。
 
-## Results vs Discussion 语法不混
+## Results 语法纪律
 
 - **Results**：报告观察到的。`was detected` / `increased` / `showed` / `achieved`。过去时为主。
-- **Discussion**：解释观察到的。`may reflect` / `suggests` / `is likely due to`。
-- 同一段里混用两种语法 = 读者分不清哪是事实哪是解释。切换要明确。
+- 不混解释语法（`may reflect` / `suggests`）——解释是 Discussion 的事。
+- 同一段里混用两种语法 = 读者分不清哪是事实哪是解释。
 
 ## 段落流（一句话一个 message）
 

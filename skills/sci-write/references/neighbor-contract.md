@@ -78,12 +78,12 @@ claim 在 plan 阶段是"打算证明的"，在 report 阶段是"图实际证明
 
 ## 数据画像的共享
 
-本 skill 在 Step 0 调 sci-draw 的 `profile_data.py`（借用工具，不是耦合——profile_data 是无副作用的纯函数），把返回 dict 落盘成 `data-profile.json`。
+本 skill 在 Step 0 调 figure warehouse 的 `profile_data.py`（借用工具，不是耦合——profile_data 是无副作用的纯函数），把返回 dict 落盘成 `data-profile.json`。
 
 - **本 skill 读 profile**：做科学判断（这数据能支撑哪些 claim、值得做几张图）。
-- **sci-draw 画图时**：可读这个 `data-profile.json`，也可自己重跑 `profile_data.py`（幂等，无副作用）。两边不强迫对方读自己的产物。
+- **画图时**：可读这个 `data-profile.json`，也可自己重跑 `profile_data.py`（幂等，无副作用）。两边不强迫对方读自己的产物。
 
-`data-profile.json` 放在 `sci-write/`（产出者即所有者），不放共享区——因为它是本 skill 的中间产物，sci-draw 有自己的等价途径。
+`data-profile.json` 放在 `sci-write/`（产出者即所有者），不放共享区——因为它是本 skill 的中间产物，figure warehouse 有自己的等价途径。
 
 ## external 章节（Introduction/Abstract/Keyword）的交接
 

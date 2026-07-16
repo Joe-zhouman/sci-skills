@@ -2,33 +2,23 @@
 name: sci-write
 description: >-
   Data-driven academic manuscript writing — turn finished figures + data into
-  publication prose (Method, Results, Discussion, Conclusion). Use when the user
-  has data and/or figures and wants to draft these four sections: write results,
-  write discussion, draft from figures, claim-evidence mapping, 数据写论文,
-  数据驱动写作, 把图画完写正文, 写结果/讨论/结论. Drafts section by section from
+  publication prose (Method, Results, Conclusion). Use when the user has data
+  and/or figures and wants to draft these three sections: write results, write
+  method, write conclusion, draft from figures, claim-evidence mapping, 数据写论文,
+  数据驱动写作, 把图画完写正文, 写结果/方法/结论. Drafts section by section from
   figure reports + a data profile, runs claim-vs-figure consistency checks via
   an image-understanding capability (any vision tool or vision-capable model;
   not bound to a specific tool), leaves real-DOI citation placeholders for the
-  user to insert via Zotero.
-  user to insert via Zotero.
-  user to insert via Zotero. Also use proactively whenever the user is working
-  on a research paper and needs data-driven sections drafted, even if they
-  don't name this skill explicitly. Does not draw figures, does not do
-  literature-first chapters (Introduction/Abstract/Keyword are external).
+  user to insert via Zotero. Does not draw figures. Introduction, Discussion,
+  Introduction, Abstract, Keywords → narrative drafting (external to this skill).
 ---
 
 # sci-write
 
-Write Method / Results / Discussion / Conclusion from finished figures + a data
+Write Method / Results / Conclusion from finished figures + a data
 profile. Every claim hangs on evidence (a figure, a statistic); every section
 serves a one-sentence argument. Output is **md content drafts**, not the
 official manuscript.
-
-The family's design principles (on-disk files are the only coupling surface;
-humans intervene at key nodes; read neighbors, don't orchestrate; real-DOI
-placeholders not fabricated citations; contract gaps → human fills → becomes
-contract) live in `docs/superpowers/glossary.md` — they govern this skill but
-aren't repeated here. This file is the execution procedure.
 
 ## Layout & boundaries
 
@@ -41,8 +31,10 @@ aren't repeated here. This file is the execution procedure.
       paper-plan.md              ← baton: figure list + section progress
       data-profile.json          ← data profile (Step 0 produces)
       fig1-reading.md            ← claim-vs-figure consistency check (Step 3)
-      method.md results.md       ← md DRAFTS of the four sections
-      discussion.md conclusion.md  (content carriers; human moves into manuscript/v1/tex/ later)
+      method.md results.md       ← md DRAFTS of the three sections
+      conclusion.md                (content carriers; human moves into manuscript/v1/tex/ later)
+      intro.md discussion.md     ← narrative sections (drafted externally, not by this skill)
+      abstract.md                  same directory, different stage
 ```
 
 - **Does NOT touch `manuscript/`.** md drafts in `sci-write/` are content carriers, not the manuscript. Moving them into `manuscript/v1/tex/` is the human's job (or a future md→tex skill).
@@ -66,7 +58,7 @@ Steps run in order; each depends on the previous. **Steps 1 and 3 stop for human
 ### Step 0 — Intake & data analysis
 
 1. Receive raw data + research question.
-2. Profile the data. If `profile_data` (from a figure-making skill like sci-draw) is available, borrow it as a side-effect-free tool:
+2. Profile the data. If `profile_data` (from the figure warehouse) is available, borrow it as a side-effect-free tool:
    ```bash
    python -c "import json, sys; sys.path.insert(0,'../sci-draw/scripts'); from profile_data import profile_data; json.dump(profile_data('<data-file>'), open('data-profile.json','w'), ensure_ascii=False, indent=2)"
    ```
@@ -85,7 +77,7 @@ Steps run in order; each depends on the previous. **Steps 1 and 3 stop for human
    - status: pending
    - report-ref:                                 # filled when drawn
    ```
-   Add a `## Sections` block: four sections `pending`, Introduction/Abstract/Keyword `external`.
+   Add a `## Sections` block: Method/Results/Conclusion `pending`, Introduction/Discussion/Abstract/Keyword `story-drafted` (narrative sections, external to this skill).
 2. **Stop. Show the human.** Ask them to confirm/edit the claim list (which claims, how many figures, which data each uses). The whole downstream rests on this — a wrong claim wastes every later step; confirming now is far cheaper than discovering it in drafted prose.
 3. After confirmation, write `paper-plan.md`.
 4. Prompt: "Figures 1–N are pending. Go draw them — any tool, any session. Come back when done. I will not auto-trigger drawing."
@@ -131,14 +123,7 @@ A typeset-perfect figure can still mislead at the argument level — claim says 
 4. Run the **confirmation gate** (writing-discipline ref) before full prose: echo the one-sentence argument + key terms + assumptions; get human confirmation.
 5. Write `results.md` (content draft in `sci-write/`, not the manuscript).
 
-### Step 5 — Write Discussion
-
-1. Extract mechanism / significance / literature comparison / limitations from findings.
-2. Keep observation (`was detected`, `increased`) separate from interpretation (`may reflect`, `suggests`). Don't mix.
-3. Literature comparison: **run the search MCP, get real DOIs, leave real-DOI placeholders.** Never empty `[CITE:?]`, never fabricated entries. The human does the final Zotero/Endnote insertion.
-4. Confirmation gate; write `discussion.md`.
-
-### Step 6 — Write Method + Conclusion
+### Step 5 — Write Method + Conclusion
 
 **Method** (factual, no literature search):
 - Data description from `data-profile.json` (N, per-group n, variables, missingness).
@@ -151,15 +136,15 @@ A typeset-perfect figure can still mislead at the argument level — claim says 
 
 Method's verbatim rule: statistics are facts, prose is narrative — never let narrative instinct alter a number or test name.
 
-### Step 7 — External handoff (no orchestration)
+### Step 6 — External handoff (no orchestration)
 
-1. Mark Introduction/Abstract/Keyword `external` in paper-plan. Don't write them.
+1. Mark Introduction/Discussion/Abstract/Keyword `story-drafted` in paper-plan (narrative sections, external to this skill).
 2. Two handoffs, neither orchestrated by this skill:
-   - **Content → manuscript**: "Method/Results/Discussion/Conclusion md drafts are at `sci-skills/sci-write/`. They're content drafts, not the manuscript — move content into `manuscript/v1/tex/` (or use a future md→tex skill) when ready. That's your call; this skill doesn't touch `manuscript/`."
-   - **External chapters**: "Introduction/Abstract/Keyword need literature-first reasoning — start them in a research-oriented skill, reading `sci-skills/sci-write/` + `manuscript/` as input."
-3. Set the four sections to `written` in paper-plan.
+   - **Content → manuscript**: "Method/Results/Conclusion md drafts are at `sci-skills/sci-write/`. They're content drafts, not the manuscript — move content into `manuscript/v1/tex/` when ready."
+   - **Narrative chapters**: "Introduction/Discussion/Abstract/Keywords are drafted in a separate stage, reading `sci-skills/sci-write/` + figure warehouse reports and writing `intro.md`, `discussion.md`, `abstract.md` into `sci-skills/sci-write/`."
+3. Set the three sections (Method/Results/Conclusion) to `written` in paper-plan.
 
-## Pervasive discipline (Steps 4–6)
+## Pervasive discipline (Steps 4–5)
 
 Runs around every section draft, not a separate step. Detail in `references/writing-discipline.md`:
 - Confirmation gate before each section's full prose.
@@ -185,7 +170,7 @@ Detail and the why in `references/neighbor-contract.md`.
 |---|---|
 | `references/writing-discipline.md` | Before drafting any section (confirmation gate, verb calibration, citation protocol, output format) |
 | `references/figure-reading.md` | At Step 3 (image-understanding capability for audit, audit prompt, figN-reading schema, claim-correction handling) |
-| `references/section-templates.md` | At Steps 4–6 (Method/Results/Discussion/Conclusion structure + per-paragraph jobs + material source) |
+| `references/section-templates.md` | At Steps 4–5 (Method/Results/Conclusion structure + per-paragraph jobs + material source) |
 | `references/neighbor-contract.md` | Whenever reading figure-warehouse files (field mapping, contract-gap handling, decoupling self-check) |
 
 ## Privacy

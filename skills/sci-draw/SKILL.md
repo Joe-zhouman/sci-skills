@@ -21,12 +21,11 @@ The biggest pain point isn't "I can't use matplotlib" — it's "I have data and 
 
 **Scope**: pure data charts only — line, bar, scatter, box/violin, heatmap, error bar, distribution, correlation matrix, multi-panel composites. **Not** diagrams, flowcharts, architecture diagrams, or schematics.
 
-## If this isn't what you need
+## Boundaries
 
-- **Prose polishing / editing / translation** → use `sci-polish` — handles manuscript text, abstracts, Chinese-to-English
-- **Cover letter writing** → use `sci-letter` — handles first-submission and revision cover letters
-- **AI text-to-image art** (DALL-E, Stable Diffusion, Midjourney) → out of scope for all sci-skills
-- **Diagrams / flowcharts / schematics** → out of scope; consider `diagrams` / `mermaid` / Illustrator
+- **AI text-to-image art** (DALL-E, Stable Diffusion, Midjourney) → not this skill
+- **Diagrams / flowcharts / schematics** → not this skill; use dedicated diagram tools
+- **Prose / polishing / cover letters / submission** → not this skill; this skill only produces figures and figure reports
 
 ## Environment setup (first run only)
 

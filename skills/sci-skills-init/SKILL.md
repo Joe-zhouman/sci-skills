@@ -1,15 +1,9 @@
 ---
 name: sci-skills-init
 description: >-
-  Scaffold and audit the sci-skills family workspace for a research project. Run
-  when the user explicitly asks to initialize a project, set up the manuscript/
-  and sci-skills/ layout, or check that on-disk outputs are in the right place.
-  Manual only — does not auto-trigger; the user invokes it on purpose. Creates
-  the directory skeleton + directory contracts (.README.md) + git init, and runs
-  a placement audit. It does not draw figures, write prose, or submit — those are
-  other skills. Triggers: 初始化科研项目, 建sci-skills目录, 检查落盘位置,
-  init research project, scaffold sci-skills.
-disable-model-invocation: true
+  科研项目初始化 / Research project init — scaffold manuscript/ + sci-skills/ skeleton,
+  write directory contracts, audit layout, migrate legacy files. 纯手动，不自动触发。
+  Manual only. 不画图不写文不投稿 / Does not draw, write, or submit.
 ---
 
 # sci-skills-init
@@ -18,18 +12,35 @@ Manual scaffold + audit tool. Run once, exit. It builds the directory skeleton
 and the directory contracts; it does not stay running and does not advance the
 figure→prose pipeline (the human does, by using each skill).
 
+**This is the only skill in the family that knows about all sibling skills.**
+Every other skill is decoupled — it only knows files. When the user wants to
+draw / write / polish / submit, check the table below and invoke the right skill
+via the Skill tool. Don't try to do the work without the skill — each one has
+procedures, references, and guardrails that prevent specific failures.
+
+## Sibling skills
+
+| When the user says | Invoke |
+|---|---|
+| 画图 / plot / figure / chart / 数据可视化 / revise figure | `sci-draw` |
+| 写论文 / write results / method / conclusion / 从数据写正文 | `sci-write` |
+| 写引言 / 写讨论 / 写摘要 / write introduction / discussion / abstract | `sci-story` |
+| 润色 / polish / revise paragraph / proofread / 翻译 / 排版 / LaTeX layout | `sci-polish` |
+| 投稿 / submit / cover letter / 选期刊 / 被拒转投 / 投稿追踪 | `sci-submit` |
+| 初始化 / init / 建目录 / scaffold / checkup / 迁移老项目 | (this skill) |
+
 ## Layout it builds
 
 ```
 <project-root>/
   manuscript/                      ← the official manuscript (first-class citizen, at root)
-    .README.md                     ← directory contract (v/r round scheme)
+    CONTRACT.md                    ← directory contract (v/r round scheme)
     v1/                            ← original draft (empty; user picks the tex template)
   sci-skills/                      ← skill-output region (family namespace, fixed name)
     README.md                      ← family self-description (generated)
-    sci-draw/    + .README.md      ← figure warehouse (contract)
-    sci-write/   + .README.md      ← writing intermediate products (contract)
-    sci-submit/  + .README.md      ← submission products (contract)
+    sci-draw/    + CONTRACT.md     ← figure warehouse (contract)
+    sci-write/   + CONTRACT.md     ← writing intermediate products (contract)
+    sci-submit/  + CONTRACT.md     ← submission products (contract)
   .gitignore                       ← common research-project ignores
   .git/                            ← git init (unless --no-git)
 ```
@@ -37,7 +48,7 @@ figure→prose pipeline (the human does, by using each skill).
 Two things to internalize about this layout:
 
 - **`manuscript/` is the product; `sci-skills/` is tool output.** The manuscript is a first-class citizen at the project root because it often arrives from outside (Word / Overleaf / a collaborator's project) and is bigger than any one skill. Skills serve it; none owns it.
-- **Each subdirectory's `.README.md` is a directory-level contract, not a help file.** Any agent/skill producing into a directory follows that contract — schema, field names, naming, who reads it — without needing to know which skill consumes it. This is how the family decouples. `init` generates these contracts; if the user just `mkdir`s, the contracts are missing and downstream skills can't mesh.
+- **Each subdirectory's `CONTRACT.md` is a directory-level contract, not a help file.** Any agent/skill producing into a directory follows that contract — schema, field names, naming, who reads it — without needing to know which skill consumes it. This is how the family decouples. `init` generates these contracts; if the user just `mkdir`s, the contracts are missing and downstream skills can't mesh.
 
 The manuscript is organized by review round (single dimension): `v1` = original draft (one v1 can submit to many journals — most are your-paper-your-way); `rN` = Nth revision package (revised tex + Response + reviews + revision cover letter). Which journal a v/r went to lives in `sci-skills/sci-submit/submit-history.md`, not in the directory structure. `init` builds only `v1/`; `r1`/`r2` are created when revision actually happens.
 
@@ -54,7 +65,7 @@ python scripts/init_project.py init --no-git  # skip git init
 
 Idempotent — re-running skips existing dirs/files, never overwrites. Only builds empty `v1/` and the contracts; it does **not** generate any tex template content (templates are highly customized — the user decides; repo `templates/main/` is a reference blueprint). `r1`/`r2` are not pre-built.
 
-If `manuscript/` or `sci-skills/` already exists, init still fills in any missing `.README.md` contracts (so an existing project that predates the contracts gets them retroactively without clobbering content).
+If `manuscript/` or `sci-skills/` already exists, init still fills in any missing `CONTRACT.md` contracts (so an existing project that predates the contracts gets them retroactively without clobbering content).
 
 ## checkup
 
@@ -93,8 +104,8 @@ The script never moves user files. Determinism belongs to the script (init/check
 
 ## Sibling dirs
 
-Currently pre-built (design settled): `sci-draw`, `sci-write`, `sci-submit`. `sci-polish` is deferred (strategy TBD); it gets added to `BROTHER_SKILLS` + `SKILL_DIR_GUIDES` in `scripts/init_project.py` once decided. Only pre-build skills whose design is settled — don't pre-build what isn't thought through.
+Pre-built (design settled): `sci-draw`, `sci-write`, `sci-submit`. `sci-polish` is not pre-built (zero output dir — it edits manuscript tex directly).
 
 ## Privacy
 
-Don't leak private paths or unpublished content in generated contracts (`.README.md`) or audit reports. The paths shown in a checkup report are the user's own project paths (visible to them, not exfiltrated).
+Don't leak private paths or unpublished content in generated contracts (`CONTRACT.md`) or audit reports. The paths shown in a checkup report are the user's own project paths (visible to them, not exfiltrated).

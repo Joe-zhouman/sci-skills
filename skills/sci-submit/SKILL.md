@@ -8,7 +8,7 @@ description: >-
   this skill when the user says they want to submit a paper (我要投稿), write a
   cover letter, select journals, handle rejection, or track submission status.
   Handles TeX and Markdown output. Not for: response letters to reviewers,
-  manuscript polishing (use sci-polish), recommendation letters, or grant proposals.
+  manuscript polishing, recommendation letters, or grant proposals.
 ---
 
 # sci-submit — Submission Campaign Manager
@@ -41,14 +41,14 @@ description: >-
 
 每次触发时：
 
-1. 没有 `sci-skills/sci-submit/` → **不要自己 mkdir**。家族骨架（含本目录 + `.README.md` 契约）由 `sci-skills-init` 建。提示用户先跑 init，再回来。
+1. 没有 `sci-skills/sci-submit/` → **不要自己 mkdir**。家族骨架（含本目录 + `CONTRACT.md` 契约）由 the project init tool 建。提示用户先跑 init，再回来。
 2. **没有 `hard-constraints.md` → 立刻进入硬性约束采集（见上节"第一步"），不得跳过**。这是强制前置步骤。
 3. 没有 `manuscript-meta.md` → 进入 **Workflow A**
 4. 没有 `submit-history.md` → 创建空模板，询问历史记录
 5. 没有 `journal-shortlist.md` → 询问是否需要建立候选列表
 6. 读取已有文件，判断当前阶段，选择对应工作流
 
-落盘时遵守 `sci-skills/sci-submit/.README.md` 契约（init 生成）—— 该目录放什么、命名、谁读，以契约为准。
+落盘时遵守 `sci-skills/sci-submit/CONTRACT.md` 契约（init 生成）—— 该目录放什么、命名、谁读，以契约为准。
 
 ## 路由表
 
@@ -96,7 +96,7 @@ project/
 - **LaTeX**：首投用 `cover-letter-template.tex`（带 logo/单位抬头）或 `cover-letter-plain.tex`（纯文字，无 logo，适合贴文本框或不需要机构抬头的期刊）。修回对应 `-revision-` 版。先问用户要不要抬头。
 - **DOCX**：用户要 DOCX 或没 LaTeX 环境时用 `scripts/generate-cover-letter.py --type first`（首投）或 `--type revision`（修回）。首投传 `--background --findings --journal-fit --audience`，修回传 `--changes --msid`。Times New Roman 11pt，对齐 LaTeX 版。
 
-**Highlights**：Elsevier 要求单独上传文件。`scripts/generate-cover-letter.py --type highlights` 生成 DOCX，落到该 cover-letter 目录。内容来自 `manuscript-meta.md` → Highlights，每条 ≤85 字符。
+**Highlights**：Elsevier 要求单独上传文件。用 `scripts/generate-highlights.py --highlight "..." --highlight "..."` 生成 DOCX，落到该 cover-letter 目录。内容来自 `manuscript-meta.md` → Highlights。
 
 **GTOC / Graphical Abstract**：sci-submit 不画图，但会提醒你准备。规格参考 `data/gtoc-guide.md`（Elsevier 标准 5:2 比例 1328×531px 300dpi）。画完的 GTOC 落到 `sci-skills/sci-submit/cover-letter/<journal-name>-<YYYY-MM-DD>/toc-figure.tiff`。
 
@@ -123,11 +123,11 @@ project/
 
 ### 2. 提醒 commit（不 init）
 
-项目 git 应该已经被 `sci-skills-init` 建好了（家族骨架含 git）。这里只提醒 commit 本次产物：
+项目 git 应该已经被 the project init tool 建好了（家族骨架含 git）。这里只提醒 commit 本次产物：
 
 > "本次产物都在 `sci-skills/sci-submit/`。建议 `git add` 这些文件然后 commit，以后每次投完改完都能回溯。"
 
-如果发现项目还没 git（说明没跑过 init）——提示用户先跑 `sci-skills-init`，**不要在这里替它干 init 的活**。职责分明：init 建骨架+git，执行 skill 只产产物+提醒 commit。
+如果发现项目还没 git（说明没跑过 init）——提示用户先跑 the project init tool，**不要在这里替它干 init 的活**。职责分明：init 建骨架+git，执行 skill 只产产物+提醒 commit。
 
 ## 边界
 
@@ -136,12 +136,12 @@ project/
 | 需求 | 去哪里 |
 |---|---|
 | 回复审稿人（point-by-point response） | 明确排除。sci-submit 只写到 cover letter 为止 |
-| 手稿润色、翻译、排版 | `sci-polish` |
-| 科研数据图 | `sci-draw` |
-| 模拟审稿 | `academic-paper-reviewer` |
-| 完整论文写作流程 | `academic-research-skills:academic-paper` |
+| 手稿润色、翻译、排版 | prose polishing — edits manuscript tex directly |
+| 科研数据图 | figure creation — produces plots and figure reports |
+| 模拟审稿 | simulated peer review |
+| 完整论文写作流程 | full-paper pipeline |
 | 推荐信、求职信、基金申请书 | 通用写作，不在此技能范围 |
 
 **常见混淆场景**：
 - "帮我写一封回复审稿人的信" → 这不是 cover letter，sci-submit 不做。建议用户找专门的 response-letter 工具。
-- "帮我润色这段 cover letter 的语言" → 如果只是语言问题，用 `sci-polish`。如果是内容和论证有问题，sci-submit 处理。
+- "帮我润色这段 cover letter 的语言" → 如果只是语言问题，用 prose polishing。如果是内容和论证有问题，sci-submit 处理。
