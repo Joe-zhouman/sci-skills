@@ -129,26 +129,24 @@ can actually support. Come back with `claim.md`."
 **Stop. Show the human.** "This is the paper's argument from `claim.md`. Still
 right?" If the human changes it, update `claim.md` before proceeding.
 
-### Step 2 — Draft Discussion first
+### Step 2 — Draft Discussion + Conclusion first
 
 Discussion anchors interpretation. Write it first so Introduction knows exactly
-what narrative arc it must set up.
+what narrative arc it must set up. **First paragraph is Conclusion**, rest is Discussion —
+this is the common denominator across almost all journals.
 
 Load `references/discussion-guide.md`. Structure:
 
-1. **Opening** — restate the main finding as a contribution, not an observation.
-   "Our results show [contribution]. This means [interpretation]."
-2. **Mechanism** — why this result? Plausible mechanism, hedged. Address rival
-   explanations.
-3. **Literature comparison** — align/contrast with prior work. Use real-DOI
-   placeholders from search MCP.
-4. **Limitations** — evidence boundaries. Specific, not generic.
-5. **Implications** — bounded significance statement.
+1. **Conclusion** — contribution statement (not interpretation). Three sentences:
+   what we demonstrated + decisive evidence + boundary. "This work demonstrates... The decisive evidence is... A boundary is..."
+2. **Opening** — "Our results show [contribution]. This means [interpretation]."
+3. **Mechanism** — why this result? Plausible mechanism, hedged. Address rival explanations.
+4. **Literature comparison** — align/contrast with prior work. Real-DOI placeholders.
+5. **Limitations** — evidence boundaries. Specific, not generic.
+6. **Implications** — bounded significance statement.
 
-Before writing full prose, run the **confirmation gate** (see `references/writing-discipline.md`):
-echo the Discussion's one-paragraph argument + key interpretations + assumptions.
-Get human confirmation.
-
+Before writing full prose, run the **confirmation gate**: echo the Conclusion paragraph
++ Discussion's one-paragraph argument + key interpretations. Get human confirmation.
 Write `discussion.md`.
 
 ### Step 3 — Draft Introduction

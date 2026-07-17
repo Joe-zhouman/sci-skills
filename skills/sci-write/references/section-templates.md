@@ -73,21 +73,17 @@
 
 **目的**：从 findings 收口。短。不引入新内容。
 
-**结构**（一段或几段，紧凑）:
+**结构（一段）：**
 
 1. **贡献声明**: 我们做出了什么。（主 claim，从 paper-plan + Results 提炼）
 2. **证据一句话**: 由 [figN 的关键 evidence] 支撑。
 3. **局限一句话**: 边界在哪。
-4. **影响一句话**: 这意味着什么（bounded，不吹）。
 
-**动词**: 主贡献用 show/demonstrate；影响用 suggest/enable。
+**动词**: 主贡献用 show/demonstrate。
 
-**Conclusion 不做**: 不复述 Results 细节；不引入新机制（机制解释是 Discussion 的事）；不出现新引用（引用都在前章已出现）。
+**Conclusion 不做**: 不复述 Results 细节；不引入新机制；不出现新引用。
 
-**按期刊策略：**
-- 要求独立 Conclusion → 写短，不重复 Discussion。四句收口。
-- Discussion + Conclusion 合并 → Discussion 尾部三句：contribution statement + decisive evidence + boundary。不另起一节。
-- 不要求 Conclusion → 不写。Discussion 尾段已经自然收口的，塞一个等于让读者读同样东西两遍。
+> 统一写法：第一段为 Conclusion，后面写 Discussion。这是几乎所有期刊的公因数。
 
 ---
 

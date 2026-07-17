@@ -25,23 +25,19 @@
 
 中文材料（用户的笔记、数据描述、中文草稿）的正确处理方式：读中文 → 提取核心命题 → 直接用英文组织论证。不是"翻译"——是"用英文思考、用英文写"。中文只是信息来源，不是语言模板。
 
-## 四个章节，四个身份
+## 三个章节，三个身份
 
-Introduction、Discussion、Conclusion、Abstract 写不好全像一个东西——都是"这篇论文做了什么"的不同表述。根本原因是没给每个分配独立功能。
+Introduction、Discussion（含 Conclusion）、Abstract 写不好全像一个东西——都是"这篇论文做了什么"的不同表述。根本原因是没给每个分配独立功能。
+
+统一写法：**Discussion 第一段为 Conclusion，后面写 Discussion。** 这是几乎所有期刊的公因数。Conclusion 段三句话收口——贡献声明 + 决定性证据 + 边界。不推测、不展开。
 
 | | 服务谁的什么需求 | 问什么 | 不应该是什么 |
 |---|---|---|---|
 | **Introduction** | 审稿人/读者想判断"这个工作值得做吗" | gap 是什么？前人为什么没填？我们怎么填？ | 不是 mini-review，不是 Results 预览 |
-| **Discussion** | 同行想理解"这些发现意味着什么" | 怎么解释这个发现？跟前人一致还是冲突？边界在哪？ | 不是 Results 的复述，不是"我们也发现了 X"的清单 |
-| **Abstract** | 潜在读者想决定"这论文值不值得细读" | 问题/方法/主发现/意义各一句——够不够我决定翻页？ | 不是 Introduction 的缩写，不是 Conclusion 的翻版 |
-| **Conclusion** | 已经读了全文的人想记住"到底做了什么、边界在哪" | 核心贡献 + 决定性的证据 + 边界 | 不是 mini-Discussion，不引入 Discussion 没讨论过的东西 |
+| **Discussion** (含 Conclusion) | 同行想理解"这些发现意味着什么" | 我们做了什么（C）+ 怎么解释（D）、跟前人一致还是冲突、边界在哪？ | 不是 Results 的复述 |
+| **Abstract** | 潜在读者想决定"这论文值不值得细读" | 问题/方法/主发现/意义各一句——够不够决定翻页？ | 不是 Introduction 的缩写，不是 Discussion 的翻版 |
 
-**自检：随便抽一段出来，不看标题，能判断它来自哪个章节吗？** 如果不能——四个都在做同一件事，需要重新分工。
-
-**结论怎么处理因期刊而异：**
-- 独立 Conclusion 段 → 写短，不重复 Discussion。贡献声明 + 证据一句 + 边界一句。
-- Discussion + Conclusion 合并 → Discussion 尾部三句话收口：contribution → decisive evidence → boundary。不另起一节。
-- 不要求 Conclusion → 不写。不要因为写了就更好——Discussion 尾段已经自然收口时，塞一个 Conclusion 等于让读者读两遍同样的东西。
+**自检：随便抽一段出来，不看标题，能判断它来自哪个章节吗？** 不能 → 三个都在做同一件事，重新分工。
 
 ## Introduction-Discussion 一致性铁律
 

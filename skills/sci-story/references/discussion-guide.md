@@ -3,9 +3,19 @@
 Discussion 的目的：解释 Results 意味着什么、把发现放回 field 里、说清楚贡献的边界。
 Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个缺口"，Discussion 答"我们填了，这意味着 X"。
 
-## Discussion 的默认结构
+统一写法：**第一段为 Conclusion，后面写 Discussion。** 这是几乎所有期刊的公因数。
 
-### 段落 1: Opening — 主发现的解释（不复述 Results）
+## 结构
+
+### 段落 1: Conclusion — 贡献声明（不是解释，是陈述）
+
+- job: 把论文的核心贡献钉死。不是 Discussion 的开场白——是这篇论文的终局答案。
+- 写法: "This work demonstrates [核心贡献]. The decisive evidence is [figN / 统计量]. A boundary is [局限]."
+- 三句话：贡献声明 + 决定性证据 + 边界。不展开——展开留给后面的 Discussion 段。
+- 误写: 写成 mini-Discussion（"this suggests... may indicate... could mean..."）——Conclusion 段不推测，只陈述。
+- 误写: 写成复述 Results——不是"我们发现 X 上升了 Y%"，是"我们提供了 X 的证据"。
+
+### 段落 2: Opening — 主发现的解释（不复述 Results）
 
 - job: 回答"主发现意味着什么"，不是复述"我们观察到什么"。
 - 写法: "Our results show that [contribution statement]. This [suggests/indicates/demonstrates] [meaning or mechanism]."
@@ -13,7 +23,7 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 - 误写: 开头就是 "We observed that X increased by Y% (Fig 1)." —— 那是 Results 的开头，不是 Discussion 的。
 - 正确: "Our study provides evidence that [mechanism/insight]. Specifically, the [具体发现] suggests [解释]."
 
-### 段落 2-3: Mechanism（核心机制段）
+### 段落 3-4: Mechanism（核心机制段）
 
 - job: 为什么会观察到这个？给出合理的机制解释。同时考虑 rival explanations。
 - 动词: may / could / might / is consistent with / could be explained by
@@ -22,7 +32,7 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 - 误写: 只给一个解释，不提 rival（审稿人一定会提）。
 - 误写: 用 show/demonstrate 来形容未被直接验证的机制。
 
-### 段落 4: Literature comparison（文献对比）
+### 段落 5: Literature comparison（文献对比）
 
 - job: 和已有工作比——一致（aligns with）、延伸（extends）、还是冲突（contrasts with）。
 - 引文纪律: 见 `references/literature-search.md` — 优先学术搜索 MCP，退到通用搜索。真实 DOI 占位符，不空占位、不编文献。
@@ -30,7 +40,7 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 - 冲突: "In contrast to [Author, DOI:...] who found [X], our results show [Y]. This discrepancy may arise from [reason]."
 - 不要做的事: 拉一个 "X also found Y, Z also found Y" 的长清单——那不是讨论，那是列举。只比关键、正面对话。
 
-### 段落 5: Limitations（局限）
+### 段落 6: Limitations（局限）
 
 - job: 你的证据边界在哪。诚实。审稿人会挑的，你自己先说。
 - 写法: 每个 limitation 给方向（可能往哪个方向偏）、给补救（未来怎么做可解决）。
@@ -40,7 +50,7 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
   - 泛化的边界（"In settings where [条件] does not hold..."）
 - 误写: "This study has limitations" 然后不列具体是什么——等于没写。必须是具体可操作的局限。
 
-### 段落 6: Implications / Outlook（影响/展望，可选）
+### 段落 7: Implications / Outlook（影响/展望，可选）
 
 - job: 这意味着什么、下一步。
 - 写法: bounded claim。不要画大饼。
