@@ -213,9 +213,23 @@ A figure whose conclusion and visual don't match will mislead every reader — c
 
 ### Step 5 — Write Method + Conclusion
 
-**Method** (factual, no literature search):
+**Method** — make the claim credible by showing HOW we know.
+
+Load `references/section-templates.md` → Method. Every Method sub-section answers three questions:
+1. **Motivation** — why does the reader need to know this to trust the claim?
+2. **Mechanism** — what we actually did (enough to reproduce).
+3. **Role in claim** — where does this connect to the claim and which figure shows the result?
+
+If a paragraph can't answer Role in claim → it doesn't belong in Method.
+
+**Methods paper vs. non-methods paper:**
+- Non-methods paper: Method is support. Keep it lean — enough to reproduce, no more.
+- Methods paper: Method IS part of the claim. Every design choice needs motivation + advantage over alternatives.
+
+**Data sources:**
 - Data description from `data-profile.json` (N, per-group n, variables, missingness).
 - Statistical methods **copied verbatim** from each `figN-report.md` `Statistical methods` — don't paraphrase, round, or "improve." Missing field → contract-gap handling.
+- Don't fabricate "standard practices" citations. If a method needs a reference, use Real-DOI placeholders.
 - Write `method.md`.
 
 **Conclusion** (short, from findings):

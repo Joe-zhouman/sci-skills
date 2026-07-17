@@ -8,32 +8,36 @@
 
 ## Method
 
-**目的**：让读者能复现。纯事实陈述，不检索、不叙事。
+**目的**：让读者相信 claim 的方法基础。不是堆砌步骤——每段回答"为什么读者需要知道这个才能信任 claim？"
 
-**结构（每段一个 job）**：
+**两种写法：**
 
-1. **数据来源段**
-   - job: 说明数据是什么、从哪来、多少。
-   - 素材: `data-profile.json`（样本量 N、每组 n、变量列表、缺失率）。
-   - 例: "We analyzed [N] samples from [来源描述]. The dataset contains [变量列表]. Missing data: [率/处理]."
+| | 非方法学论文 | 方法学论文 |
+|---|---|---|
+| Method 角色 | 支撑 claim——方法不是贡献本身 | Method 是 claim 的一部分——"我们发明了一个新方法" |
+| 写作篇幅 | 精简——别人能复现即可 | 详尽——每步解释为什么这样设计、为什么比已有方案好 |
+| 三段式 | 每段轻触：做什么 + 为什么这样做 + 怎么连接到 claim | 每段深入：motivation + design + advantage |
 
-2. **关键变量段**
-   - job: 定义每组的含义、每列的语义（连续/分类/序数）、单位。
-   - 素材: `data-profile.json` 的 columns 段。
-   - 注意: 区分 ID 列 vs 真实变量——ID 被误当连续是经典坑。
+**统一三段式（每个子段落的骨架）：**
 
-3. **统计方法段**
-   - job: 每个比较用的什么 test、什么 correction、误差类型、n。
-   - 素材: 各 `figN-report.md` 的 `## Statistical methods` 段——**逐字搬运**，不自创。
-   - 例: "Group comparisons used [test] with [correction] correction. Error bars represent [SD/SEM/95% CI]. Significance: *p<0.05, **p<0.01. n=[X] per group."
+1. **Motivation** — 为什么需要这个环节？对 claim 有什么贡献？
+2. **Mechanism** — 具体做了什么。够别人复现。
+3. **Role in claim** — 这个环节的结果怎么支撑 claim？指向哪张图？
 
-4. **图表方法段（可选）**
-   - job: 说明用了什么可视化、为何选（审稿人会问）。
-   - 素材: 各 `figN-report.md` 的 `## Chart type & rationale`。
+如果一段列不出 Role in claim → 这段不该在这。Method 不是操作手册，是 claim 的证据链的上游。
 
-**动词**：Method 几乎全是过去时、被动或 we。不用 show/demonstrate（那是 Results）。
+**素材来源——从文件提取，不编造：**
 
-**不写**：不用检索文献"标准做法也用此方法"——若要引，走引用占位符协议（真 DOI）。
+| 需要的内容 | 从哪来 | 怎么用 |
+|---|---|---|
+| 样本/数据描述 (N, per-group n, 变量, 缺失) | `data-profile.json` | Mechanism 段的开头——别人要知道你的数据长什么样 |
+| 统计方法 (test, correction, error bar, n) | 各 `figN-report.md` → `Statistical methods` | Mechanism 段——**逐字搬运**，不改数字、不四舍五入、不改测试名称 |
+| 图表方法 (为什么选此图) | 各 `figN-report.md` → `Chart type & rationale` | 非方法学论文可省略；方法学论文放 Role in claim 段 |
+| Claim 上下文 | `claim.md` | Motivation 段的指引——"这个方法环节支撑了 claim 的哪个部分？" |
+
+**动词**：过去时、被动或 we。不用 show/demonstrate（那是 Results）。
+
+**不写**：不该出现在 Method 里的东西——不引非方法文献论证"标准做法"（要引走 Real-DOI 占位符）、不分析结果好坏（那是 Results 的活）、不解释发现（那是 Discussion 的活）。"under standard conditions""using routine methods""data were analyzed statistically"——全换掉，写具体。
 
 ---
 
