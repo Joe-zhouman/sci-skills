@@ -2,51 +2,104 @@
 
 Parts + management for research writing. Not a full suite.
 
-## Why this exists
+## Why
 
-The research-skills ecosystem is crowded. Everyone has their own lit-review tool, their own plotting tool, their own writing assistant. Most of them don't talk to each other. Most don't leave files on disk for the next step to pick up.
+The research-skills ecosystem is saturated. Everyone sells an end-to-end pipeline. Most
+don't leave files on disk. Most don't talk to each other.
 
-**Our bet: don't compete on coverage. Compete on the handoff.**
+**Our bet: don't compete on quality. Compete on the handoff.**
 
-We build small, focused parts (one skill = one artifact). Each part only knows files, not other skills — replace any part with someone else's tool and nothing breaks. We also build the management layer: a project manager skill that scaffolds the workspace, writes file contracts, and translates external outputs so everything meshes. Use our parts. Use someone else's lit review. Use your own Excel figures. As long as outputs land on disk with the right shape, the pipeline works.
+We build small parts — one skill, one artifact. Each knows only files, never other skills.
+Replace any part with someone else's tool — nothing breaks. We also build the management
+layer: a project manager that scaffolds the workspace, writes file contracts, and translates
+external outputs so everything meshes. Use our parts. Use someone else's lit review. Use
+your own Excel figures. As long as outputs land on disk conforming to the contract, the
+pipeline works.
 
-**A part that cooperates beats a closed suite.** This is our survival strategy in a crowded field — and our only real differentiator.
+**A part that cooperates beats a closed suite.** This is our survival strategy — and our
+only differentiator.
 
-## What's included
+## Architecture
 
-### Scene A: English journal submission
+### Skills know files, not each other
 
-| Skill | Does |
-|---|---|
-| [sci-skills-init](skills/sci-skills-init/) | Project manager — scaffolds the workspace, writes directory contracts, migrates external outputs into contract-compliant files, audits layout |
-| [sci-draw](skills/sci-draw/) | Publication-quality figures from experimental data + figure reports that downstream skills read |
-| [sci-write](skills/sci-write/) | Data-driven manuscript drafting (Method / Results / Discussion / Conclusion) from figure reports + data profile. Claim-vs-figure consistency checks. Real-DOI citation placeholders |
-| [sci-polish](skills/sci-polish/) | Polish manuscript prose directly in tex files. Git commits are the audit trail. Reads sci-write outputs to preserve claim/evidence consistency |
-| [sci-submit](skills/sci-submit/) | Submission campaign manager — hard constraints, journal selection, cover letters, rejection handling, post-submission tracking |
+Every skill reads and writes on-disk files in `sci-skills/`. No skill imports another's
+code or assumes another's presence. Replace the producer, keep the file contract — nothing
+breaks. Any agent, any tool, any human can produce into a directory as long as the
+`CONTRACT.md` is honored.
 
-### Scene B & C
+### Claim-driven, not template-driven
 
-Chinese thesis and grant proposal — separate scenes with their own parts and init. Coming later.
+A single `claim.md` anchors everything. sci-write establishes it — data vs claim
+calibration, literature benchmarking. sci-story reads it to draft Introduction and
+Discussion. sci-polish checks every editorial change against it. sci-submit reads
+its journal ambition for venue selection. Every figure is a sub-claim. Every section
+serves the one-sentence argument.
 
-## How it works
+### Three layers of decoupling
+
+| Layer | What it does | Example |
+|---|---|---|
+| Execution skills | Produce one kind of artifact | sci-draw → figures; sci-write → method/results/conclusion |
+| File contracts | The universal handoff surface | `CONTRACT.md` per directory — any producer, any consumer |
+| Project manager | Scaffold, translate, audit | sci-skills-init builds workspace, migrates external outputs |
+
+### Human-in-the-loop at hard gates
+
+Claim calibration. Paper-plan confirmation. Figure-reading check. Every section's
+confirmation gate. Self-checks before human review. The agent proposes, the human decides.
+No "fully automated" claims — real research never has been.
+
+### Scene-based, not one-size-fits-all
+
+One scene = one skill set. Scene A (English journal submission) is what ships today.
+Scene B (Chinese thesis), Scene C (grant proposal) are separate scenes with their own
+parts and contracts. Skills don't cross scenes — file-contract philosophy is the
+only shared DNA.
+
+### Top-journal floor, not journal-dependent rules
+
+Write to Nature/Science standards regardless of target venue. 求其上者得其中. Introduction
+is a two-stage funnel (domain-level gap → research-level gap). Discussion fuses Conclusion
+as its first paragraph — the common denominator across almost all journals.
+
+### Outsourcing is by design
+
+We own the parts we do well. We outsource the rest — but require outsourced outputs to
+land on disk conforming to file contracts. sci-skills-init translates external outputs
+(Word→tex, manual figures→warehouse, others' markdown→paper-plan entries) so downstream
+skills can consume them. The family is the CI/CD layer for research outputs.
+
+## Pipeline
 
 ```
-Project root/
-  manuscript/               ← the official manuscript (first-class citizen)
-    v1/tex/                 ← skills read and edit here
-  sci-skills/               ← skill outputs (figure reports, drafts, metadata, ledger)
-    sci-draw/               ← figure warehouse (neutral — any tool can produce here)
-    sci-write/              ← drafts + paper-plan + terminology-ledger
-    sci-submit/             ← cover letters, journal shortlists, submission history
+claim.md ──────────── the central contract (sci-write Step 0)
+  │
+  ├─→ sci-draw ───── figures + figure reports (conclusion-driven)
+  ├─→ sci-write ──── method / results / conclusion (claim-anchored)
+  │                    sup-list.md (SI parking, accumulated during writing)
+  ├─→ sci-story ──── introduction (two-stage funnel) / discussion (+ fused conclusion) /
+  │                    abstract / title / keywords
+  ├─→ sci-export ─── md→tex + SI assembly + cross-ref check / tex→docx
+  ├─→ sci-polish ─── direct tex editing, git as audit trail
+  └─→ sci-submit ─── journal selection, cover letters, submission tracking
 ```
 
-Each subdirectory has a `.README.md` contract. Any agent, any skill, any tool can read from it and produce into it — as long as the contract is honored. No skill knows who produced the files. No skill knows who will consume them. Replace the producer, swap the consumer, nothing breaks. The contracts are the universal handoff surface.
+## Skills
 
-## Philosophy
+| Skill | Does | Human gates |
+|---|---|---|
+| [sci-skills-init](skills/sci-skills-init/) | Scaffold workspace, write contracts, audit layout, migrate external files | Every migration destination confirmed |
+| [sci-draw](skills/sci-draw/) | Publication-quality figures + structured figure reports | Panel plan approved before drawing |
+| [sci-write](skills/sci-write/) | Method / Results / Conclusion from figures + data. Claim-vs-figure consistency. | claim.md confirmed; paper-plan confirmed; figure-reading check |
+| [sci-story](skills/sci-story/) | Introduction (two-stage funnel) / Discussion (+ fused conclusion) / Abstract / Title / Keywords. Literature search. | Claim read & confirmed; confirmation gate per section; self-checks |
+| [sci-polish](skills/sci-polish/) | Polish tex prose directly. Git as audit trail. AI-prose anti-patterns. | Git diff review |
+| [sci-export](skills/sci-export/) | md→tex (drafted content → manuscript). tex→docx (pandoc). SI assembly + cross-ref check. | Template choice confirmed |
+| [sci-submit](skills/sci-submit/) | Hard constraints → journal selection → cover letters → rejection handling → submission tracking | Hard constraints collected; cover letter per paragraph confirmed |
 
-- **Human-in-the-loop.** Skills produce drafts. Humans review. No "fully automated" claims — real research never is.
-- **Files over imports.** The only coupling surface is the filesystem. Skills read neighbors' outputs; they never import each other's code or trigger each other to run.
-- **Cooperation over lock-in.** Use our parts, mix in others, outsource what we don't do well. The management layer handles the rest.
+## Philosophy in one sentence
+
+小零件，大契约。不卖全家桶。能跟别人配合的零件比封闭套件活得久。
 
 ## Installation
 
@@ -57,8 +110,8 @@ git clone -b release git@gitcode.com:Joe-zhouman/sci-skills.git
 | Branch | Purpose |
 |---|---|
 | [`release`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/release) | Clean distribution — install this |
-| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Full dev history + test records |
+| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Full development history |
 
 ## Development
 
-Every skill follows the [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus) workflow (evals → iterations → benchmark → grading). Test records under `skills/*/tests/`.
+Every skill follows [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus).
