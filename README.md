@@ -70,21 +70,6 @@ land on disk conforming to file contracts. sci-skills-init translates external o
 (Word→tex, manual figures→warehouse, others' markdown→paper-plan entries) so downstream
 skills can consume them. The family is the CI/CD layer for research outputs.
 
-## Pipeline
-
-```
-claim.md ──────────── the central contract (sci-write Step 0)
-  │
-  ├─→ sci-draw ───── figures + figure reports (conclusion-driven)
-  ├─→ sci-write ──── method / results / conclusion (claim-anchored)
-  │                    sup-list.md (SI parking, accumulated during writing)
-  ├─→ sci-story ──── introduction (two-stage funnel) / discussion (+ fused conclusion) /
-  │                    abstract / title / keywords
-  ├─→ sci-export ─── md→tex + SI assembly + cross-ref check / tex→docx
-  ├─→ sci-polish ─── direct tex editing, git as audit trail
-  └─→ sci-submit ─── journal selection, cover letters, submission tracking
-```
-
 ## Skills
 
 | Skill | Does | Human gates |
@@ -97,20 +82,30 @@ claim.md ──────────── the central contract (sci-write St
 | [sci-export](skills/sci-export/) | md→tex (drafted content → manuscript). tex→docx (pandoc). SI assembly + cross-ref check. | Template choice confirmed |
 | [sci-submit](skills/sci-submit/) | Hard constraints → journal selection → cover letters → rejection handling → submission tracking | Hard constraints collected; cover letter per paragraph confirmed |
 
+## Pipeline
+
+```
+claim.md ──────────── the central contract (sci-write Step 0)
+  │
+  ├─→ sci-draw ───── figures + figure reports (conclusion-driven)
+  ├─→ sci-write ──── method / results / conclusion (claim-anchored)
+  │                    sup-list.md (SI parking, accumulated during writing)
+  ├─→ sci-story ──── introduction / discussion / abstract / title / keywords
+  ├─→ sci-export ─── md→tex + SI assembly + cross-ref check / tex→docx
+  ├─→ sci-polish ─── direct tex editing, git as audit trail
+  └─→ sci-submit ─── journal selection, cover letters, submission tracking
+```
+
 ## Philosophy in one sentence
 
 小零件，大契约。不卖全家桶。能跟别人配合的零件比封闭套件活得久。
 
 ## Installation
 
-```bash
-git clone -b release git@gitcode.com:Joe-zhouman/sci-skills.git
-```
-
-| Branch | Purpose |
-|---|---|
-| [`release`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/release) | Clean distribution — install this |
-| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Full development history |
+| Branch | What | Clone |
+|---|---|---|
+| [`v1`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/v1) | **Stable** — bug fixes only, no breaking changes | `git clone -b v1 git@gitcode.com:Joe-zhouman/sci-skills.git` |
+| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Bleeding edge — latest features, may shift | `git clone -b master git@gitcode.com:Joe-zhouman/sci-skills.git` |
 
 ## Development
 

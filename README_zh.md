@@ -46,21 +46,6 @@ claim 校准。paper-plan 确认。图义核查。每节确认门。自检后才
 
 自己做零件，不做的外包——但要求外包产物落盘符合契约。sci-skills-init 把外部产物翻译成下游能消费的格式。整个家族是科研产物的 CI/CD 层。
 
-## 管线
-
-```
-claim.md ──────────── 中心契约 (sci-write Step 0)
-  │
-  ├─→ sci-draw ───── 图 + 图报告 (conclusion 驱动)
-  ├─→ sci-write ──── method / results / conclusion (claim 锚定)
-  │                    sup-list.md (SI 公园清单，写作中逐条累积)
-  ├─→ sci-story ──── introduction (两段漏斗) / discussion (融合 conclusion) /
-  │                    abstract / title / keywords
-  ├─→ sci-export ─── md→tex + SI 组装 + 交叉引用检测 / tex→docx
-  ├─→ sci-polish ─── 直接改 tex，git 即审计
-  └─→ sci-submit ─── 选刊 / 封面信 / 被拒转投 / 投稿追踪
-```
-
 ## 技能清单
 
 | Skill | 做什么 | 人在哪介入 |
@@ -73,20 +58,30 @@ claim.md ──────────── 中心契约 (sci-write Step 0)
 | [sci-export](skills/sci-export/) | md→tex (草稿 → 正文)。tex→docx (pandoc)。SI 组装 + 交叉引用检测。 | 模板选择确认 |
 | [sci-submit](skills/sci-submit/) | 硬约束 → 选刊 → 封面信 → 被拒转投 → 投稿追踪 | 硬约束采集；封面信逐段确认 |
 
+## 管线
+
+```
+claim.md ──────────── 中心契约 (sci-write Step 0)
+  │
+  ├─→ sci-draw ───── 图 + 图报告 (conclusion 驱动)
+  ├─→ sci-write ──── method / results / conclusion (claim 锚定)
+  │                    sup-list.md (SI 公园清单，写作中逐条累积)
+  ├─→ sci-story ──── introduction / discussion / abstract / title / keywords
+  ├─→ sci-export ─── md→tex + SI 组装 + 交叉引用检测 / tex→docx
+  ├─→ sci-polish ─── 直接改 tex，git 即审计
+  └─→ sci-submit ─── 选刊 / 封面信 / 被拒转投 / 投稿追踪
+```
+
 ## 哲学一句话
 
 小零件，大契约。不卖全家桶。能跟别人配合的零件比封闭套件活得久。
 
 ## 安装
 
-```bash
-git clone -b release git@gitcode.com:Joe-zhouman/sci-skills.git
-```
-
-| 分支 | 用途 |
-|---|---|
-| [`release`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/release) | 干净分发版，安装用这个 |
-| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | 完整开发历史 |
+| 分支 | 是什么 | 克隆命令 |
+|---|---|---|
+| [`v1`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/v1) | **稳定版** — 只修 bug，不破坏现有功能 | `git clone -b v1 git@gitcode.com:Joe-zhouman/sci-skills.git` |
+| [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | 尝鲜版 — 最新功能，可能变动 | `git clone -b master git@gitcode.com:Joe-zhouman/sci-skills.git` |
 
 ## 开发
 
