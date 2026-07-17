@@ -199,9 +199,9 @@ For each figure with a ready report:
    ## conclusion correction
    <narrow / re-draw / add qualifier — human decides>
    ```
-5. **Stop. Ask the human.**
+5. **Stop. Ask the human.** "Figure-reading found [finding]. Also — as an experienced researcher: does this conclusion hold up? Statistical method right? Would a colleague with different background interpret this differently?" See `references/writing-discipline.md` → 人类判断检查点.
 
-A figure whose conclusion and visual don't match will mislead every reader — catch it here, before prose is built on a false premise.
+A figure whose conclusion and visual don't match will mislead every reader — catch it here, before prose is built on a false premise. Technical verification catches visual misreads; only the human catches academic judgment errors.
 
 ### Step 4 — Write Results
 
