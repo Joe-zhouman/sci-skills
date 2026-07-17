@@ -24,6 +24,7 @@ with the same spine, not independently.
   sci-skills/
     sci-draw/                    ← figure warehouse — READ-ONLY: figN-report.md
     sci-write/                   ← THIS skill reads and writes here
+      claim.md                   ← READ: canonical claim (one-sentence argument + gap + evidence)
       paper-plan.md              ← READ: figure list + section progress
       results.md                 ← READ: completed Results (evidence baseline for Discussion)
       method.md                  ← READ: data/sample context for Introduction
@@ -45,6 +46,7 @@ with the same spine, not independently.
 
 | File | Produced by | Read by | Schema |
 |---|---|---|---|
+| `claim.md` | data-driven drafting (Step 0) | this skill, submission stage | one-sentence argument + gap + evidence baseline |
 | `paper-plan.md` | drafting stage | this skill | fig entries + section status |
 | `results.md` | drafting stage | this skill | data-driven prose (evidence baseline) |
 | `conclusion.md` | drafting stage | this skill | contribution statement |
@@ -88,33 +90,44 @@ Every session starts here:
 
 ## Workflow
 
-### Step 0 — Gather axes + read inputs
+### Step 0 — Gather axes + backward reasoning
 
 1. **Paper type** — research / methods / hypothesis / algorithmic / review.
-   Default: research. Ask if ambiguous.
-2. **Target journal** — nature / nat-comms / generic. Default: generic.
-3. **Language** — en. Default.
-4. Read all neighbor files thoroughly. Build a mental model: key claims, figure
-   support, contribution statement, evidence boundary.
-5. **Infer the gap** from context. Introduction hasn't been written yet, so infer
-   from what Results claim vs what Conclusion states as contribution. If gap is
-   unclear, ask the human.
+   Default: research.
+2. **Target journal** — nature / nat-comms / generic. Default: generic. Affects
+   word limits and format, NOT writing quality. Top-journal standards apply
+   regardless of target.
+3. **Read all neighbor files** — results.md, conclusion.md, method.md, figN-report.md,
+   figN-reading.md, paper-plan.md. Build the evidence baseline.
+4. **Backward reasoning first** (before writing anything):
+   - What technical problem do we solve, and why is there no well-established solution?
+   - What are the contributions, and what new insight do they bring?
+   - How do we use prior methods to lead readers to our challenge and insight?
 
-State the detected axes in one short line before proceeding.
+State axes in one short line before proceeding.
 
-### Step 1 — Write the four-question spine (human intervention point)
+### Step 1 — Read the claim (human intervention point)
 
-Draft the spine that every section will serve:
+**Claim is established upstream, not here.** Read `claim.md` — it was produced
+by the data-driven drafting stage (Step 0) and confirmed by the human.
+It carries:
 
-> (1) What problem do we solve, and why is there no well-established solution?
-> (2) What is our contribution?
-> (3) Why can our method work in essence?
-> (4) What advantage and new insight do we provide?
+- One-sentence argument
+- The gap the paper fills (and why no one filled it before)
+- Evidence baseline
+- Boundary
+- Journal ambition estimate
 
-**Stop. Show the human.** Ask: "Does this spine capture the paper's argument?
-Introduction and Discussion will both be built from this — get it right now."
+Read it. Trust it. If `claim.md` doesn't exist — stop. Tell the user: "The
+claim hasn't been established yet. Run the data-driven drafting stage first —
+it profiles the data, searches the literature, and calibrates what the data
+can actually support. Come back with `claim.md`."
 
-Write the spine to `sci-skills/sci-write/story-spine.md` after human confirms.
+**Gap 不能多。** "他用了 scikit-learn，你用了 XGBoost"不算 gap。"他用了 XGBoost，
+你提了一个新算法"才算。不是所有差异都是 gap——`claim.md` 里已经做了这个筛选。
+
+**Stop. Show the human.** "This is the paper's argument from `claim.md`. Still
+right?" If the human changes it, update `claim.md` before proceeding.
 
 ### Step 2 — Draft Discussion first
 
@@ -140,24 +153,33 @@ Write `discussion.md`.
 
 ### Step 3 — Draft Introduction
 
-Load `references/introduction-guide.md`. Funnel structure:
+Load `references/introduction-guide.md` and `references/literature-search.md`.
+Introduction is a **two-stage funnel**, not a single five-layer:
 
-1. **Field stake** — why this field matters.
-2. **Bottleneck** — state of the art and its limitation.
-3. **Prior work** — key attempts, what they left unsolved.
-4. **Gap** — the specific unsolved problem. This must match what Discussion addresses.
-5. **Present study** — what we did, what we found, how it fills the gap.
+**Stage 1 — Domain-level** ("why this direction matters"):
+1. 大背景 (1-2 sentences, ≥3 independent citation sources from different angles)
+2. 小背景 + 现状 (funnel narrowing from one concrete number to the core concept)
+3. Prior work (woven into narrative, each claim has a source)
+4. Gap (断层 not 空白 — structural mismatch, not literature gap)
+5. 跳板 (natural transition, not a summary)
 
-**Introduction-Discussion coherence check (mandatory before writing full prose):**
+**Stage 2 — Research-level** ("what's missing + what we did"):
+1. 转折 ("In contrast, ML/DL..." — pivot, not conclusion)
+2. 小背景 + 现状 (specific problems, clustered by issue)
+3. Prior work (clustered by problem, not chronological. Same paper can appear under multiple problems.)
+4. Gap (narrower than Stage 1 — what current approaches specifically fail at)
+5. Present study (framework-level preview, not mini-Methods)
 
-Run the check from `references/writing-discipline.md`: for every gap/bottleneck
-in the Introduction outline, confirm Discussion has a corresponding response.
-If mismatch, fix before drafting.
+**Before writing:** search literature per `literature-search.md` — check for academic
+MCP tools, fall back to general search. Verify journal quality if possible. Real-DOI
+placeholders for all citations.
 
-Before writing full prose, run the **confirmation gate**: echo the funnel structure
-+ gap statement + coherence check results. Get human confirmation.
+**Introduction-Discussion coherence check (mandatory):** for every gap/bottleneck in
+the Introduction outline, confirm Discussion has a corresponding response. If mismatch,
+fix before drafting.
 
-Write `intro.md`.
+Run the confirmation gate (spine + gap statements + coherence check). Get human
+confirmation. Write `intro.md`.
 
 ### Step 4 — Draft Abstract
 
@@ -173,7 +195,41 @@ Run the confirmation gate: echo the compressed spine. Get human confirmation.
 
 Write `abstract.md`.
 
-### Step 5 — Human review
+### Step 5 — Self-checks
+
+Run both checks before showing the human. Fix issues, don't just flag.
+
+**Check 1 — 故事主线。** 抛开骨架（五层漏斗、六段结构），这篇论文到底讲了一个什么故事？
+
+用最直白的话写出来：
+```
+背景：[……]下，[……]成了瓶颈。
+前人：有人做了[……]、[……]、[……]。
+但他们都卡在：[……]。
+我们：[……]。
+结果我们发现了：[……]。
+这意味着：[……]，但限于[……]。
+```
+
+如果这段白话文自己读着不对——某个环节断了、逻辑跳了、gap 跟 contribution 对不上——那就是结构有问题。回头修结构，不要修措辞。
+
+**Check 2 — Gap-fill 对齐。** 把 Introduction 里提到的每个 gap 和 bottleneck 列出来，逐条对 Discussion 和 Present study：
+
+```
+Intro 提了 gap/bottleneck         →   Discussion/Present study 填了吗？
+  "数据与设计脱节"                 →   填了：框架输出设计指导
+  "材料表征不足（one-hot）"        →   填了：元素质量分数编码
+  "黑箱不可解释"                  →   填了：注意力可视化 + 流形学习
+  "不能蒸馏可复用洞见"            →   填了：physicochemical similarity map
+```
+
+两条铁律：
+- Intro 提了但没填的 gap → 砍掉，或者补 Discussion。
+- Discussion 里出现但 Intro 没提的东西 → 要么 Intro 补一句，要么 Discussion 里砍掉。
+
+**修完自检之后**再进 Step 6。
+
+### Step 6 — Human review
 
 **Mandatory. Do not skip.**
 
@@ -183,7 +239,7 @@ Ask explicitly: "Do intro/discussion/abstract look right? Any coherence issues?"
 
 The author owns the argument. Revisions are targeted, not full rewrites.
 
-### Step 6 — Commit
+### Step 7 — Commit
 
 After the human approves:
 
@@ -237,18 +293,6 @@ Runs around every section draft. Detail in `references/writing-discipline.md`:
 | Create scientific figures | figure creation — produces plots and figure reports |
 | Submit manuscript / cover letter | submission management |
 | Full systematic lit review | This skill does targeted search for positioning and comparison; a different mode |
-
-## Decoupling self-check
-
-Run after any change to this skill:
-
-```bash
-grep -rn "from sci-write\|import sci-write\|sci_write\." skills/sci-story/   # must be empty
-grep -rn "from sci-draw\|import sci-draw\|sci_draw\." skills/sci-story/     # must be empty
-grep -rni "nature-writing\|nature_writing" skills/sci-story/                # must be empty
-```
-
-Reading files is allowed; importing code or assuming co-presence is a leak.
 
 ## Privacy
 

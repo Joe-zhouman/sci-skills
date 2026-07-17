@@ -4,6 +4,8 @@
 
 ## 四问脊柱优先
 
+**先有 claim，才有 Introduction。** 一切写作围绕一个核心 claim 展开：gap 是什么，你解决了什么。图的 claim 是大 claim 的小 claim。Introduction 是 claim 的包装。Discussion 是 claim 的回答。没有 claim = 没有故事 = 不要写。
+
 写任何章节前，先写出贯穿全文的四问脊柱：
 
 > (1) 我们解决什么问题？为什么没有已有方案能解决？
@@ -11,9 +13,17 @@
 > (3) 为什么我们的方法本质上能 work？
 > (4) 我们提供了什么优势和新的洞见？
 
-Introduction 详细回答这四个问题。Discussion 反思这些答案意味着什么。Abstract 压缩它们。
+**Gap 不能多——找最核心的那个。** "他用了 scikit-learn，你用了 XGBoost"不算 gap。"他用了 XGBoost，你提了一个新算法"才算。不是所有差异都是 gap——只有从 claim 倒推回来、必须填的那个洞才是。提的所有问题必须能收敛到一句 gap 句子。收不拢 → gap 太多了，删到剩一个。
 
 写不出脊柱 = 论文还没有论证 = 先解决论证，再写句子。
+
+## 直接写英文，不走中转
+
+**铁的纪律：永远不要先写中文再翻译英文。直接写英文。**
+
+中文和英文的学术表达方式有本质区别——中文学术写作倾向 topic-comment 结构、隐式逻辑连接、长串逗号分句；英文学术写作要求 subject-verb proposition、显式逻辑关系、句间连接词。先写中文再过翻译，相当于把英文的论证骨架硬塞进中文的句法模板里再拆出来——两次变形之后，逻辑线全断。
+
+中文材料（用户的笔记、数据描述、中文草稿）的正确处理方式：读中文 → 提取核心命题 → 直接用英文组织论证。不是"翻译"——是"用英文思考、用英文写"。中文只是信息来源，不是语言模板。
 
 ## Introduction-Discussion 一致性铁律
 
@@ -21,22 +31,36 @@ Introduction 和 Discussion 是同一块论证的正反两面：
 
 - Intro gap（"这里有个缺口，前人没填"）→ Discussion 必须填（"我们填了，这意味着 X"）。
 - Intro 声称的核心问题必须是 Discussion 解释的核心发现。
-- Intro 提出的竞争假说/现有方法的局限 → Discussion 必须回应（我们的结果如何优于/不同于这些）。
-- Intro 没提的 gap → Discussion 不能突然冒出解释（那是无根之木）。
+- Intro 提出的竞争假说/现有方法的局限 → Discussion 必须回应。
+- Intro 没提的 gap → Discussion 不能突然冒出解释（无根之木）。
 
-**每写完一版 Introduction，必须回头对 Discussion 做一致性检查：**
+写完 Introduction 和 Discussion 后，跑两道自检：
+
+**Check 1 — 故事主线。** 抛开骨架，用白话文把论文讲一遍：
 
 ```
-Intro gap: [X 未解决]
-Discuss 回应: [我们提供了 X 的答案 Y]
-一致：是/否
-
-Intro bottleneck: [现有方法在 Z 条件下失效]
-Discuss 回应: [Z 条件下我们的方法生效，因为 W]
-一致：是/否
+背景：[……]下，[……]成了瓶颈。
+前人：有人做了[……]、[……]、[……]。
+但他们都卡在：[……]。
+我们：[……]。
+结果我们发现了：[……]。
+这意味着：[……]，但限于[……]。
 ```
 
-不一致 → 先修，再继续。一致性检查不通过不落盘。
+读一遍。断了、跳了、gap 跟 contribution 对不上 → 结构有问题，回头修结构不修措辞。
+
+**Check 2 — Gap-fill 对齐。** 逐条对照：
+
+```
+Intro 提了 gap/bottleneck     →  Discussion/Present study 填了吗？
+  "X 未解决"                  →   填了：我们用 Y
+  "现有方法在 Z 条件下失效"    →   填了：Z 条件下我们生效，因为 W
+```
+
+- Intro 提了但没填 → 砍掉，或补 Discussion。
+- Discussion 里出现但 Intro 没铺垫 → 要么 Intro 补一句，要么砍掉。
+
+两条都不通过不落盘。
 
 ## Confirmation gate（落盘前对齐）
 

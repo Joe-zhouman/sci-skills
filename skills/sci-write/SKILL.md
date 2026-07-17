@@ -28,6 +28,7 @@ official manuscript.
   sci-skills/
     sci-draw/                    ← figure warehouse — read ../sci-draw/figN-report.md + figN.png
     sci-write/                   ← THIS skill's home — intermediate products + md drafts
+      claim.md                   ← canonical claim (Step 0 — the paper's one-sentence argument)
       paper-plan.md              ← baton: figure list + section progress
       data-profile.json          ← data profile (Step 0 produces)
       fig1-reading.md            ← claim-vs-figure consistency check (Step 3)
@@ -45,6 +46,7 @@ official manuscript.
 
 | File | Produced by | Read by | Schema |
 |---|---|---|---|
+| `claim.md` | this skill (Step 0, after human confirms) | this skill, narrative drafting, submission stage | one-sentence claim + evidence baseline (see Step 0) |
 | `paper-plan.md` | this skill (after human confirms) | this skill (baton), human | fig entries + section status (Step 1) |
 | `data-profile.json` | this skill (Step 0, via `profile_data`) | this skill (Method) | `profile_data()` return dict as JSON |
 | `../sci-draw/figN-report.md` | any figure-maker | this skill (claim/findings/stats) | 6-section markdown (see neighbor-contract ref) |
@@ -55,32 +57,115 @@ official manuscript.
 
 Steps run in order; each depends on the previous. **Steps 1 and 3 stop for human confirmation** — do not skip those gates.
 
-### Step 0 — Intake & data analysis
+### Step 0 — Establish the claim (human intervention point)
 
-1. Receive raw data + research question.
-2. Profile the data. If `profile_data` (from the figure warehouse) is available, borrow it as a side-effect-free tool:
-   ```bash
-   python -c "import json, sys; sys.path.insert(0,'../sci-draw/scripts'); from profile_data import profile_data; json.dump(profile_data('<data-file>'), open('data-profile.json','w'), ensure_ascii=False, indent=2)"
+**This is the hard gate. Everything downstream serves this claim. If the claim is
+wrong, every section is waste. If the claim isn't settled, don't draft.**
+
+1. **Receive the human's rough idea.** What do they think the paper argues? One sentence,
+   even if vague. "We think X causes Y" / "We built a better Z" / "Our data shows W."
+
+2. **Profile the data.** What can the data actually support? Run `profile_data` (borrow
+   from figure warehouse if available). If unavailable, ask the human for key facts
+   (N, per-group n, variable semantics, distribution shape). Don't fabricate.
+
+3. **Search the literature.** What claims do comparable papers make? At what journal tier?
+   What's the state of the art? This calibrates ambition — you can't claim "first ever"
+   if three Nature papers did it last year. Use academic search tools or fall back to
+   general search.
+
+4. **Calibrate claim vs. data.** Three outcomes:
+
+   | Data vs. claim | Action |
+   |---|---|
+   | Data supports the claim | → Write `claim.md`, proceed to Step 1 |
+   | Data **doesn't** support | → **Hard stop.** Tell the human: "The data can't support this claim. Options: (a) collect more data, (b) lower the target." Loop until resolved. |
+   | Data supports **more** than the claim | → Tell the human: "The data can support a stronger claim. Upgrade?" Human decides. |
+
+   Doing nothing = the paper has no argument = don't write.
+
+5. **Write `claim.md`** after human confirms:
+
+   ```markdown
+   # Claim
+
+   **One-sentence argument:**
+   In [system/problem], we show [advance] using [approach],
+   supported by [evidence], with [boundary].
+
+   **Gap we fill:**
+   [One sentence. What didn't exist before, and why not.]
+
+   **Evidence baseline:**
+   - [Evidence 1 — figure or statistical support]
+   - [Evidence 2]
+   - ...
+
+   **Boundary:**
+   [Where the claim stops. What this paper does NOT establish.]
+
+   **Journal ambition:**
+   [tier estimate based on literature calibration — e.g. "Nature Communications level" / "field top-tier" / "solid specialist journal"]
    ```
-   If unavailable, ask the human for the key facts (N, per-group n, variable semantics, distribution shape) — don't fabricate.
-3. Make a scientific judgment: what claims can this data support, how many figures, what each argues.
 
-### Step 1 — Draft paper-plan  (human intervention point)
+   This file is the contract. Figure claims in paper-plan are sub-claims of this
+   one-sentence argument. Narrative drafting reads it. Submission reads it for
+   journal tier. If the data changes, update this file first.
 
-1. Draft a figure list. Each entry reuses figure-report field names (plan→report = same schema, pending→done):
+### Step 1 — Draft paper-plan (human intervention point)
+
+1. Read `claim.md`. Each figure must serve the main claim. Drop any figure that doesn't.
+
+2. Draft a figure list. Each entry has two layers:
+
    ```
    ## Figure fig1
-   - topic: <one-line theme>
-   - claim: <what this figure will argue>      # ↔ report Core conclusion
-   - data-source: <file or description>         # ↔ report Data source
-   - suggested-chart: <recommended chart type>  # ↔ report Chart type
+   - section: <method / results>
+   - conclusion: <what this figure itself shows>
+   - claim: <how this supports claim.md>
+   - data-source: <file or description>
    - status: pending
-   - report-ref:                                 # filled when drawn
+   - report-ref:
    ```
-   Add a `## Sections` block: Method/Results/Conclusion `pending`, Introduction/Discussion/Abstract/Keyword `story-drafted` (narrative sections, external to this skill).
-2. **Stop. Show the human.** Ask them to confirm/edit the claim list (which claims, how many figures, which data each uses). The whole downstream rests on this — a wrong claim wastes every later step; confirming now is far cheaper than discovering it in drafted prose.
-3. After confirmation, write `paper-plan.md`.
-4. Prompt: "Figures 1–N are pending. Go draw them — any tool, any session. Come back when done. I will not auto-trigger drawing."
+
+   `conclusion` 是图自己的答案。`claim` 是"so what"——这个结论对一句论证的支撑。
+
+   **Method 部分和 Results 部分的图，claim 的难度不一样：**
+
+   ```
+   Results 图：conclusion 天然就有 → 重点是 claim（对 claim.md 的解释）
+             数据跑出来是什么、结论就是什么。
+             难在"这个结论怎么支撑整篇论文的论证"——这是解释工作。
+
+   Method 图：  conclusion → claim（先想清楚 conclusion 才有资格谈 claim）
+             方法图的 conclusion 不好想——"这张方法图证明了什么？"
+             想清楚了 conclusion + claim，这张图才有存在的必要。
+             列不出来 → 方法二段文字说清就够了，不需要图。
+   ```
+
+   **Method 图自检——更严格：**
+   ```
+   conclusion: [这张方法图证明了什么？]
+        claim: [这个结论怎么支持 claim.md？]
+   两个都列不出来 → 砍。只列得出 conclusion 列不出 claim → 砍。
+   两个都列得出 → 留。这是 method 图存在的硬门。
+   ```
+
+3. **Self-check — 所有图（在给人看之前先跑）：**
+
+   ```
+   fig1 [results] conclusion: [数据说了什么]
+                  claim: [支撑 claim.md 的哪一步？]
+   fig2 [method]  conclusion: [这张方法图证明了什么？]
+                  claim: [—]  ← 列不出来 → 砍
+   ```
+
+   两张图的 conclusion 相同？→ 合并或砍一张。列不出 claim？→ 砍。
+   列得出来但牵强？→ Supplementary。
+
+4. Add a `## Sections` block.
+
+5. **Stop. Show the human.**
 
 ### Step 2 — Sense the neighbor (every start / resume)
 
@@ -91,29 +176,32 @@ python scripts/scan_neighbor.py /abs/sci-skills  # absolute path for testing
 
 Reports each figure's status (plan status vs report existence, discrepancies). Propose status changes; the human confirms before anything is written to paper-plan. Sensing is automatic (a read); writing the plan is human-gated.
 
-### Step 3 — Figure-reading consistency check  (human intervention point)
+### Step 3 — Figure-reading consistency check (human intervention point)
+
+**This step verifies the `conclusion` — does the figure actually show what it claims to show?**
+`claim` (how this conclusion supports the paper's argument) is connected in Step 4 when writing prose.
 
 For each figure with a ready report:
 
-1. Read `../sci-draw/figN-report.md` → `Core conclusion` (the claim). Missing or not one sentence → contract-gap handling (ask, don't fabricate).
-2. Use an **image-understanding capability** (any vision tool or a vision-capable model — not bound to a specific one; see figure-reading ref) at high effort on `../sci-draw/figN.png`, with an audit prompt that asks for an independent reader view (what it conveys / notable features / potential misreads). **Do not pass the claim** — independence is what makes the check honest. The claim comparison is done by this skill, not by the vision step.
-3. Compare description vs claim: agree where? where might a reader misread (overlapping error bands, divergent series, non-zero axis start)?
+1. Read `../sci-draw/figN-report.md` → `Core conclusion`. This is what sci-draw proved with this figure. Missing or not one sentence → contract-gap handling.
+2. Use an **image-understanding capability** on `../sci-draw/figN.png`, with an audit prompt asking for an independent reader view. **Do not pass the conclusion** — independence is what makes the check honest.
+3. Compare: does the figure actually convey the stated conclusion? Where might a reader misread (overlapping error bands, divergent series, non-zero axis start)?
 4. Write `figN-reading.md`:
    ```markdown
-   # Figure figN — 图义核查
-   ## claim (from report)
+   # Figure figN — conclusion check
+   ## conclusion (from report)
    <figN-report Core conclusion>
-   ## figure conveys (from image-understanding, independent reader view)
+   ## figure conveys (independent reader view)
    <vision description>
    ## consistency
    - agree: ...
    - misread risk: ...  (tie to specific visual feature)
-   ## claim correction suggestion
-   <soft suggestion: narrow / re-draw / add qualifier — human decides>
+   ## conclusion correction
+   <narrow / re-draw / add qualifier — human decides>
    ```
-5. **Stop. Ask the human**: "Figure-reading found [discrepancy]. Suggest [narrow / re-draw / qualifier]. Which?" Never silently rewrite the claim.
+5. **Stop. Ask the human.**
 
-A typeset-perfect figure can still mislead at the argument level — claim says "A beats B" but overlapping bands make a reader see "comparable." Catching it here prevents building prose on a claim readers won't accept.
+A figure whose conclusion and visual don't match will mislead every reader — catch it here, before prose is built on a false premise.
 
 ### Step 4 — Write Results
 
@@ -177,10 +265,5 @@ Detail and the why in `references/neighbor-contract.md`.
 
 Don't disclose private paths, private filenames, or unpublished manuscript content in user-facing replies, generated prose, figure-reading files, or commit messages. Use generic descriptions ("the provided data file"). Reveal exact paths only when the human asks for an audit trail.
 
-## Decoupling self-check (run after any change to this skill)
 
-```bash
-grep -rn "from sci-draw\|import sci-draw\|sci_draw\." skills/sci-write/   # must be empty
-grep -rni "nature-writing\|nature_writing" skills/sci-write/             # must be empty
-```
-Any `import <other-skill>`, or logic assuming another skill must be co-present, is a coupling leak. Borrowing `profile_data.py` as a side-effect-free tool is allowed; depending on its presence is not (Step 0 falls back to asking the human).
+

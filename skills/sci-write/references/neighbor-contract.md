@@ -51,11 +51,11 @@ sci-write 消费的是**文件契约**，不是某个 skill。邻居目录里的
 
 | report 字段 | 本 skill 怎么用 |
 |---|---|
-| `Core conclusion` | 一句话 claim → 写 Results 该图段落的领头句；写 Discussion 时回看是否被数据支撑 |
-| `Data source` | 写 Method 的数据描述段；claim-evidence map 的 evidence 来源 |
+| `Core conclusion` | 这张图证明的 conclusion → 写 Results 该图段落的领头句；Step 3 图义核查验的就是这个 |
+| `Data source` | 写 Method 的数据描述段 |
 | `Chart type & rationale` | 写 Method 时引用"为何选此图"；回答审稿人"为什么这么画" |
 | `Statistical methods` | 写 Method 的统计段（test/correction/error bar/n）——逐字搬运，不自创 |
-| `Key findings` | 写 Results 的具体观察句；写 Discussion 的解释起点；写 Conclusion 的证据 |
+| `Key findings` | 写 Results 的具体观察句；从 observation 到 conclusion 的中间证据 |
 | `Journal specs` | 决定正文里图的引用方式（单栏/双栏尺寸影响布局说明） |
 
 **搬运纪律**：统计方法、样本量、误差类型这些**逐字从 report 搬**，不自创、不四舍五入、不"改写得更好看"。数据和统计是事实层，写作是叙事层，两者分明。
@@ -66,15 +66,18 @@ plan 里每张图的条目（Step 1 起草）用与 report 同名的字段，使
 
 ```
 plan 条目字段          ↔  report 字段（drawn 后）
-topic                    （plan 独有，report 没必要）
-claim                    ↔  Core conclusion
+conclusion               ↔  Core conclusion     （sci-draw 证明的就是这个）
+claim                    （plan 独有）            —  conclusion 怎么支撑 claim.md，sci-write 的写作责任，不进报告
 data-source              ↔  Data source
-suggested-chart          ↔  Chart type
 status                   （plan 独有：pending|drawn|written）
 report-ref               （drawn 后填 ../sci-draw/figN-report.md）
 ```
 
-claim 在 plan 阶段是"打算证明的"，在 report 阶段是"图实际证明的"。两者可能不一致——这正是 Step 3 图义核查要查的。
+**两层分工：**
+- `conclusion` → sci-draw 的活：拿到数据 + conclusion → 画图，图报告里的 Core conclusion 就是画完后验证过的 conclusion
+- `claim` → sci-write 的活：拿到 conclusion → 写正文，解释"这个 conclusion 怎么支撑论文的一句论证"
+
+conclusion 在 plan 阶段是"打算证明的"，在 report 阶段是"图实际证明的"（Core conclusion）。两者可能不一致——这正是 Step 3 图义核查要查的。
 
 ## 数据画像的共享
 

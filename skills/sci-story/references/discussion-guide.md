@@ -25,7 +25,7 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 ### 段落 4: Literature comparison（文献对比）
 
 - job: 和已有工作比——一致（aligns with）、延伸（extends）、还是冲突（contrasts with）。
-- 引文纪律: **调检索 MCP 拿真实 DOI**，走引用占位符协议。不空占位、不编文献。
+- 引文纪律: 见 `references/literature-search.md` — 优先学术搜索 MCP，退到通用搜索。真实 DOI 占位符，不空占位、不编文献。
 - 写法: "Our finding aligns with [Author, DOI:...] who reported [specific result]. We extend this by [specific extension]."
 - 冲突: "In contrast to [Author, DOI:...] who found [X], our results show [Y]. This discrepancy may arise from [reason]."
 - 不要做的事: 拉一个 "X also found Y, Z also found Y" 的长清单——那不是讨论，那是列举。只比关键、正面对话。

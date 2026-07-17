@@ -7,14 +7,14 @@ description: >-
 # sci-draw — Scientific Figure Workflow
 
 Publication-grade scientific figures as a visual argument, not isolated pretty plots.
-Every figure starts from a claim, an evidence hierarchy, and a review-risk check before code or aesthetics.
+Every figure starts from a conclusion, an evidence hierarchy, and a review-risk check before code or aesthetics.
 
 ## Overview
 
 The biggest pain point isn't "I can't use matplotlib" — it's "I have data and don't know what chart best communicates my conclusion." This skill's primary ability is **thinking and judgment**, then **drawing**.
 
 **Always think before drawing:**
-1. Understand what the figure must argue — same data, different claims = different charts
+1. Understand what the figure must argue — same data, different conclusions = different charts
 2. Explore the data first — let facts drive chart selection
 3. Actively intercept classic mistakes — don't just comply
 4. Too many dimensions → suggest splitting, not cramming
@@ -78,7 +78,7 @@ Before entering the workflow, check the state of `sci-skills/sci-draw/`:
 1. **`sci-skills/sci-draw/` does not exist** → create it, then start from Step 0.
 2. **`sci-skills/sci-draw/` exists** → ask the user: "Is there a figure in `sci-skills/sci-draw/` you want to continue working on?" If yes, read the relevant `-description.md` and `-report.md` files to understand the current state, then pick up from the appropriate step — **don't** restart from scratch. If no, start a new figure from Step 0.
 
-_why_ **Restarting discards prior decisions.** Starting from Step 0 every time forces the user to re-explain their data and goals. Reading the files first means you already know the claim, the chart choice, the journal, and the statistical methods — the user picks up where they left off, not where you assume they are.
+_why_ **Restarting discards prior decisions.** Starting from Step 0 every time forces the user to re-explain their data and goals. Reading the files first means you already know the conclusion, the chart choice, the journal, and the statistical methods — the user picks up where they left off, not where you assume they are.
 
 ## Core workflow (8 steps)
 
@@ -89,18 +89,18 @@ Each step depends on the output of the previous one.
 
 Before generating any code, establish the contract (`references/figure-contract.md`):
 
-1. **Core conclusion**: one-sentence claim the figure must defend
-2. **Evidence chain**: map each planned panel to the claim; drop panels that don't carry a unique piece of evidence
+1. **Core conclusion**: one-sentence conclusion the figure must prove
+2. **Evidence chain**: map each planned panel to the conclusion; drop panels that don't carry a unique piece of evidence
 3. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`. See `references/nature-2026-observations.md` for archetype examples from published papers.
 4. **Journal/export constraints**: final dimensions, DPI, source data traceability
 
 The highest-priority rule: **the chart serves the scientific logic**. Aesthetic polish, template matching, and complex layout are subordinate to making the core conclusion clear.
 
-_why_ **Same data, different claims = different charts.** Without a claim, chart selection is blind — you pick based on data shape alone, which produces correct-looking figures that argue nothing. The contract forces you to answer "what must this figure prove?" before touching a single plot. Every subsequent step (chart type, panel layout, statistical annotation) traces back to this answer. Skip it, and you build a figure that is technically competent but rhetorically empty.
+_why_ **Same data, different conclusions = different charts.** Without a conclusion, chart selection is blind — you pick based on data shape alone, which produces correct-looking figures that argue nothing. The contract forces you to answer "what must this figure prove?" before touching a single plot. Every subsequent step (chart type, panel layout, statistical annotation) traces back to this answer. Skip it, and you build a figure that is technically competent but rhetorically empty.
 
-If the user hasn't stated the claim, ask: "What should this figure convince the reader of?" or infer from manuscript context and state your assumption.
+If the user hasn't stated the conclusion, ask: "What should this figure convince the reader of?" or read from paper-plan's `conclusion` field.
 
-**Start the process log**: create `sci-skills/sci-draw/<fig-name>-description.md` as a scratch file. Write down the contract decisions above (claim, evidence chain, archetype, journal constraints). This file accumulates raw notes through Steps 1-6 — decisions, data findings, rationale, issues encountered. At Step 7, it gets distilled into a clean report at `sci-skills/sci-draw/<fig-name>-report.md`.
+**Start the process log**: create `sci-skills/sci-draw/<fig-name>-description.md` as a scratch file. Write down the contract decisions above (conclusion, evidence chain, archetype, journal constraints). This file accumulates raw notes through Steps 1-6 — decisions, data findings, rationale, issues encountered. At Step 7, it gets distilled into a clean report at `sci-skills/sci-draw/<fig-name>-report.md`.
 
 ### Step 1: Explore data
 
@@ -133,9 +133,9 @@ _why_ **Data facts drive chart choice, not the reverse.** The most common plotti
 
 ### Step 2: Select chart
 
-**This is the advisor's core responsibility.** Reason from Steps 0-1: data characteristics + claim determine the chart, not user preference or habit.
+**This is the advisor's core responsibility.** Reason from Steps 0-1: data characteristics + conclusion determine the chart, not user preference or habit.
 
-**Decision = data shape + claim + sample size:**
+**Decision = data shape + conclusion + sample size:**
 
 | Data shape | Default | Small-n rule |
 |---|---|---|
@@ -146,14 +146,14 @@ _why_ **Data facts drive chart choice, not the reverse.** The most common plotti
 | Multi-variable (>3 cols) | Correlation heatmap / pairplot | — |
 | Matrix data | Heatmap (viridis/RdBu_r) | — |
 
-**Same data, different claims = different charts.** Example: 30 subjects × 2 drugs × 5 timepoints. "Drug A is faster than B overall" → boxplot pooling all timepoints. "A and B diverge most at t=3" → line chart with error bands over time. "Subject variability is large" → spaghetti plot with individual lines. The data is identical; the chart changes because the argument changes.
+**Same data, different conclusions = different charts.** Example: 30 subjects × 2 drugs × 5 timepoints. "Drug A is faster than B overall" → boxplot pooling all timepoints. "A and B diverge most at t=3" → line chart with error bands over time. "Subject variability is large" → spaghetti plot with individual lines. The data is identical; the chart changes because the argument changes.
 
 **When to split, not cram:**
 - Grouping combinations > 12 → too many visual channels exhausted
 - x-axis labels > 8 → 45° rotation means the figure is too crowded
 - Legend items > 6 → exceeds short-term memory; reader can't track
 - y-axis spans multiple orders of magnitude and can't use log → split by magnitude
-- The figure wants to make two independent claims → two figures
+- The figure wants to make two independent conclusions → two figures
 
 **Give**: recommendation + brief reason + 1-2 alternatives. If the user's choice doesn't fit the data (e.g., n=5 mean bar), explain why and offer the better option (see "Active interception" below). For deeper examples and edge cases, see `references/chart_selection.md`.
 
@@ -238,7 +238,7 @@ _why_ **Two files, two audiences.** The log is chronological and messy — decis
 # Figure 1 — [short title]
 
 ## Core conclusion
-[One-sentence claim this figure defends]
+[One-sentence conclusion this figure proves]
 
 ## Data source
 - File: [path or description]
@@ -285,7 +285,7 @@ This file serves multiple purposes:
 | Matrix data | Heatmap (viridis/RdBu_r) | 3D surface, rainbow colormap |
 | Composition/stacking | Stacked bar / treemap | **Pie chart** |
 
-See Step 2 for the full decision framework, "same data different claim" examples, and split criteria.
+See Step 2 for the full decision framework, "same data different conclusion" examples, and split criteria.
 
 ## Five hard rules
 
@@ -380,7 +380,7 @@ When the user describes a research theme, manuscript, or dataset and asks to "pl
 
 User provides:
 - Research question or manuscript title
-- Key findings / claims (or data to derive them from)
+- Key findings / conclusions (or data to derive them from)
 - Target journal (optional but helpful)
 
 ### Output
@@ -391,7 +391,7 @@ A figure plan document with one entry per figure:
 ## Figure Plan — [manuscript title]
 
 ### Figure 1: [short title]
-- **Core conclusion**: [one-sentence claim]
+- **Core conclusion**: [one-sentence conclusion]
 - **Archetype**: [quantitative grid / schematic-led / image plate / asymmetric]
 - **Panels**:
   - a: [content] — evidence role: [hero / validation / control]
@@ -407,7 +407,7 @@ A figure plan document with one entry per figure:
 
 ### Planning rules (from figure-contract.md)
 
-1. **One figure, one claim**. If a panel doesn't defend the claim, drop it.
+1. **One figure, one conclusion**. If a panel doesn't defend the conclusion, drop it.
 2. **Panel ordering**: system → main effect → mechanism → quant → robustness.
 3. **Visual vocabulary**: Figure 1 establishes colors, symbols, scale. Reuse throughout.
 4. **Evidence hierarchy**: hero panel gets the most space; controls are visually quieter.

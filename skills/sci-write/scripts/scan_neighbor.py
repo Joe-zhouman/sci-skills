@@ -35,12 +35,12 @@ def parse_paper_plan(plan_path: Path) -> dict[str, dict]:
 
     约定每个图条目是一个二级标题下的 bullet 列表：
         ## Figure fig1
-        - topic: ...
+        - conclusion: ...
         - claim: ...
         - status: pending | drawn | written
         - report-ref: ...
 
-    返回 {fig_id: {topic, claim, status, report-ref}}。
+    返回 {fig_id: {conclusion, claim, status, report-ref}}。
     缺失字段给空字符串/None。plan 不存在返回 {}。
     """
     if not plan_path.exists():
@@ -55,7 +55,7 @@ def parse_paper_plan(plan_path: Path) -> dict[str, dict]:
         fig_id = blocks[i].strip()
         body = blocks[i + 1] if i + 1 < len(blocks) else ""
         entry: dict[str, str | None] = {
-            "topic": None,
+            "conclusion": None,
             "claim": None,
             "status": None,
             "report-ref": None,

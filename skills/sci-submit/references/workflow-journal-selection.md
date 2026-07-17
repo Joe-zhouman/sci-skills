@@ -6,9 +6,10 @@
 
 1. **`sci-skills/sci-submit/hard-constraints.md`** → 白名单、黑名单、分区/IF 下限、截止时间 → 第一筛选条件
 2. **`sci-skills/sci-submit/manuscript-meta.md`** → 标题、摘要、Keywords → 搜索关键词
-3. **`sci-skills/sci-submit/journal-shortlist.md`**（如已有）→ 当前候选状态
-4. **`sci-skills/sci-submit/submit-history.md`**（如已有）→ 哪些期刊已经投过了、结果如何
-5. **`manuscript-meta.md` → Cover Letter Cheat Sheet** → 用户列的要点（背景钩子 + 核心发现）
+3. **`sci-skills/sci-write/claim.md`**（有就读）→ Journal ambition 预估 → 给选刊一个起点（"你觉得这篇够 Nature 吗"——数据驱动阶段已经做过文献对标了）
+4. **`sci-skills/sci-submit/journal-shortlist.md`**（如已有）→ 当前候选状态
+5. **`sci-skills/sci-submit/submit-history.md`**（如已有）→ 哪些期刊已经投过了、结果如何
+6. **`manuscript-meta.md` → Cover Letter Cheat Sheet** → 用户列的要点（背景钩子 + 核心发现）
 
 ## 两种入口
 

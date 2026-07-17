@@ -298,18 +298,6 @@ This skill does not do these things:
 | Response to reviewers | Not yet covered |
 | Literature search / Introduction drafting | narrative writing stage; polish here after drafting |
 
-## Decoupling self-check
-
-Run after any change to this skill:
-
-```bash
-grep -rn "from sci-write\|import sci-write\|sci_write\." skills/sci-polish/   # must be empty
-grep -rn "from sci-draw\|import sci-draw\|sci_draw\." skills/sci-polish/     # must be empty
-grep -rni "nature-writing\|nature_writing" skills/sci-polish/                # must be empty
-```
-
-Reading files is allowed; importing code or assuming co-presence is a leak.
-
 ## Privacy
 
 Do not disclose private paths, filenames, or unpublished manuscript content in
