@@ -90,11 +90,11 @@ Each step depends on the output of the previous one.
 Before generating any code, establish the contract (`references/figure-contract.md`):
 
 1. **Core conclusion**: one-sentence conclusion the figure must prove
-2. **Evidence chain**: map each planned panel to the conclusion; drop panels that don't carry a unique piece of evidence
-3. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`. See `references/nature-2026-observations.md` for archetype examples from published papers.
+2. **Panel plan**: what panels are needed to prove this conclusion, and why each one earns its place. A conclusion may need one panel or many — depends on how many sides of the story need showing. Propose a layout, then **stop and ask the human**: "Does this panel plan make sense? Too many? Too few? Would your target journal expect this presentation?" Panel count is a human decision——the agent proposes, the human decides.
+3. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`.
 4. **Journal/export constraints**: final dimensions, DPI, source data traceability
 
-The highest-priority rule: **the chart serves the scientific logic**. Aesthetic polish, template matching, and complex layout are subordinate to making the core conclusion clear.
+The highest-priority rule: **the chart serves the scientific logic**. Every panel must pull weight toward the conclusion. If a panel is decorative rather than necessary, cut it. If the conclusion needs another angle to land, add one.
 
 _why_ **Same data, different conclusions = different charts.** Without a conclusion, chart selection is blind — you pick based on data shape alone, which produces correct-looking figures that argue nothing. The contract forces you to answer "what must this figure prove?" before touching a single plot. Every subsequent step (chart type, panel layout, statistical annotation) traces back to this answer. Skip it, and you build a figure that is technically competent but rhetorically empty.
 
