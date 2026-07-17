@@ -34,6 +34,7 @@ official manuscript.
       fig1-reading.md            ← claim-vs-figure consistency check (Step 3)
       method.md results.md       ← md DRAFTS of the three sections
       conclusion.md                (content carriers; human moves into manuscript/v1/tex/ later)
+      sup-list.md                ← SI parking list (accumulated during writing, assembled at export)
       intro.md discussion.md     ← narrative sections (drafted externally, not by this skill)
       abstract.md                  same directory, different stage
 ```
@@ -161,7 +162,8 @@ wrong, every section is waste. If the claim isn't settled, don't draft.**
    ```
 
    两张图的 conclusion 相同？→ 合并或砍一张。列不出 claim？→ 砍。
-   列得出来但牵强？→ Supplementary。
+   列得出来但牵强？→ 不删——**加到 `sup-list.md` 的"补充图"清单**。砍掉的方法细节
+   → 加到"补充方法"清单。见 `references/sup-discipline.md`。
 
 4. Add a `## Sections` block.
 
@@ -257,7 +259,9 @@ If a paragraph can't answer Role in claim → it doesn't belong in Method.
 
 **Methods paper vs. non-methods paper:**
 - Non-methods paper: Method is support. Keep it lean — enough to reproduce, no more.
-- Methods paper: Method IS part of the claim. Every design choice needs motivation + advantage over alternatives.
+  Verbose details cut from main text → **add to `sup-list.md` under "补充方法"**.
+- Methods paper: Method IS part of the claim. Every design choice needs motivation +
+  advantage over alternatives.
 
 **Data sources:**
 - Data description from `data-profile.json` (N, per-group n, variables, missingness).
@@ -310,6 +314,7 @@ Detail and the why in `references/neighbor-contract.md`.
 | `references/writing-discipline.md` | Before drafting any section (confirmation gate, verb calibration, citation protocol, output format) |
 | `references/figure-reading.md` | At Step 3 (image-understanding capability for audit, audit prompt, figN-reading schema, claim-correction handling) |
 | `references/section-templates.md` | At Steps 4–5 (Method/Results/Conclusion structure + per-paragraph jobs + material source) |
+| `references/sup-discipline.md` | When parking rejected content — figures, method details, overflow tables. Loads sup-list.md. |
 | `references/neighbor-contract.md` | Whenever reading figure-warehouse files (field mapping, contract-gap handling, decoupling self-check) |
 
 ## Privacy

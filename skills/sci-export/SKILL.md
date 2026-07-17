@@ -70,9 +70,24 @@ cd manuscript/vN/tex && make
 
 编译不过 → 报错定位 → 修 → 重新编译。最多三轮。三轮不过 → 把编译错误列给人，人工修。
 
-### Step 3：编译通过后，提醒人
+### Step 3：编译通过后，组装 SI
 
-> "md 内容已搬到 `manuscript/vN/tex/`，编译通过。接下来的活是你的：Zotero 插正式引用、调格式、补图表文件。润色时用 polish skill。"
+读 `sci-skills/sci-write/sup-list.md`。如果空 → 跳过。如果有内容 → 按以下顺序组装
+`manuscript/vN/tex/sup.tex`（或追加到已有 `sup.tex`）：
+
+1. Supplementary Figures（每图一页，caption 从 `figN-report.md` 的 Core conclusion）
+2. Supplementary Tables
+3. Supplementary Methods（从 sup-list 的"补充方法"逐条展开成段落）
+4. Supplementary Discussion（极少——仅当 sup-list 里有）
+5. Supplementary References
+
+重新编译 `make`，确认通过。
+
+见 `skills/sci-write/references/sup-discipline.md` 了解 SI 组装的完整规则。
+
+### Step 4：提醒人
+
+> "md 内容已搬到 `manuscript/vN/tex/`，编译通过。SI 也已组装（如有）。接下来的活是你的：Zotero 插正式引用、调格式、补图表文件。润色时用 polish skill。"
 
 ## Mode 2: tex → docx
 
