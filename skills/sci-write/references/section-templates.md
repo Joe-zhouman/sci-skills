@@ -43,35 +43,38 @@
 
 ## Results
 
-**目的**：报告观察。每段一个 claim，claim 必挂 evidence（图/统计）。
+**目的**：一块一块地构建 claim 的证据。每段 = 一张图的结论 + 这个结论在 claim 里的角色。
 
-**结构（evidence ladder，由弱到强排列段落）**：
+**写之前先做 claim→figure 映射**（不是每篇论文都需要全部 rung——只列你有的）：
 
-1. **系统/工作流验证**（若有）— 证明你的系统/流程跑通了。
-2. **主结果** — 论文的头条发现。最重要的图放这。
-3. **基线对照** — 和已有方法/对照比。
-4. **消融/机制** — 拆解为什么 work、哪个组件关键。
-5. **泛化/应用**（若有）— 换数据集/场景还成立吗。
-6. **压力测试/失败模式** — 边界在哪、什么时候不 work。
+```
+claim.md: In [system], we show [advance] using [approach], supported by [evidence].
 
-不是所有论文都有全部 6 级。按图的实际 evidence 角色排。
+figX: [这个图证明了什么 conclusion] → 支撑 claim 的哪一步？
+```
+
+列不出第二列的图 → 不进 Results。
 
 **每段模板**：
+
 ```
-[Topic sentence: 本段 claim，过去时]
-我们观察到 [具体数据/现象，引用 figN + 统计量]，[对比/趋势]。
-[第二句：进一步细节或对照]。
-[Evidence 句：图/统计指向]。Fig N, [panel].
+[Topic sentence: 本段 conclusion，过去时]
+我们观察到 [具体数据/现象，引用 figN + 统计量]。
+[对照/细节——跟什么比、在什么条件下]。
+This [supports/demonstrates/establishes] [claim 的哪一环节]。
+Fig N, [panel].
 ```
 
-**素材**:
-- claim ← `figN-report.md` 的 `Core conclusion`（以 `figN-reading.md` 的修正版为准）
+**关键区别**：Topic sentence 不是"we observed X"——那是细述句。Topic sentence 是"X was Y"——图的结论本身。
+
+**素材**：
+- conclusion ← `figN-report.md` 的 `Core conclusion`（以 `figN-reading.md` 的修正版为准）
 - 具体观察 ← `figN-report.md` 的 `Key findings`
 - 统计量 ← `figN-report.md` 的 `Statistical methods`
 
-**动词校准**: 主结果用 show/demonstrate；趋势级用 suggest/indicate。机制推测和文献对比不在此（那是 Discussion 的事）。
+**动词校准**: 主结果用 show/demonstrate；趋势级用 suggest/indicate。may/could 不进 Results——那是 Discussion 的动词。
 
-**Results 不做**: 不解释为什么；不引文献对比；不混 `may reflect` 这类解释语法。Report observations, don't interpret them.
+**Results 不做**: 不解释为什么（Discussion）；不引文献对比（Discussion）；不混解释语法。
 
 ## Conclusion
 

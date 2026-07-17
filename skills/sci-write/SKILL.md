@@ -205,11 +205,44 @@ A figure whose conclusion and visual don't match will mislead every reader — c
 
 ### Step 4 — Write Results
 
-1. Read each `figN-report.md` (claim/findings/stats) + `figN-reading.md` (corrected claim wins if there's a correction).
-2. Draft by evidence ladder: system validation → main result → baseline → ablation → stress test. Not every paper has all rungs; order by each figure's evidence role.
-3. Every claim hangs on evidence (figure + statistic). Calibrate verbs to evidence strength (`show`/`demonstrate` for direct main results, `suggest`/`indicate` for trends, `may`/`could` reserved for Discussion).
-4. Run the **confirmation gate** (writing-discipline ref) before full prose: echo the one-sentence argument + key terms + assumptions; get human confirmation.
-5. Write `results.md` (content draft in `sci-write/`, not the manuscript).
+1. Read `claim.md`. Then read each `figN-report.md` (conclusion/findings/stats) +
+   `figN-reading.md` (corrected conclusion wins). **Sort figures by their role
+   in the claim, not by convention.**
+
+2. Map each figure to how it builds toward the one-sentence argument:
+
+   ```
+   claim.md: In [system], we show [advance] using [approach], supported by [evidence].
+
+   fig1 (system validation): proves the platform/method works at all       → 1st rung
+   fig2 (main result):     the headliner — which rung of the claim?         → anchor
+   fig3 (baseline):        proves this isn't trivially achievable otherwise → stakes
+   fig4 (mechanism):        proves it's not a fluke — why it works           → depth
+   fig5 (stress test):     proves it doesn't break under [conditions]       → boundary
+   ```
+
+   Drop any figure whose role in the claim can't be stated in one sentence.
+   Not every paper has all rungs — but every figure that stays has to earn its place.
+
+3. Draft paragraph by paragraph. Each paragraph:
+
+   ```
+   [Topic sentence: what this figure's conclusion means for the claim]
+   We observed [specific data/phenomenon, citing figN + statistic].
+   [Context/comparison detail].
+   This supports the claim by [specific role in the one-sentence argument].
+   Fig N, [panel].
+   ```
+
+   The topic sentence is not "we observed X" — that's for the detail line.
+   The topic sentence is "X was Y" — the conclusion the figure defends.
+
+4. **Calibrate verbs to evidence strength** (`show`/`demonstrate` for direct main
+   results, `suggest`/`indicate` for trends). Never put `may`/`could` in Results —
+   those are Discussion verbs.
+
+5. Run the **confirmation gate**: echo the claim → each figure's role → each
+   paragraph's topic sentence as a chain. Get human confirmation. Write `results.md`.
 
 ### Step 5 — Write Method + Conclusion
 
