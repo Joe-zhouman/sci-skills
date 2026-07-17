@@ -83,8 +83,6 @@
 
 **Conclusion 不做**: 不复述 Results 细节；不引入新机制；不出现新引用。
 
-> 统一写法：第一段为 Conclusion，后面写 Discussion。这是几乎所有期刊的公因数。
-
 ---
 
 ## 章节间一致性（写完本 skill 的三章后扫一遍）

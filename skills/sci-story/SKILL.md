@@ -196,7 +196,17 @@ Run the confirmation gate: echo the compressed spine. Get human confirmation.
 
 Write `abstract.md`.
 
-### Step 5 — Self-checks
+### Step 5 — Keywords
+
+From the abstract and discussion, extract 5-8 keywords. Rules:
+- Distinct from title words — keywords are supplementary, not a copy
+- Use established field terminology — what terms would a researcher search for to find this paper?
+- No abbreviations unless universally recognized
+- Semicolon-separated, sentence case
+
+Write to the end of `abstract.md` under `## Keywords`.
+
+### Step 6 — Self-checks
 
 Run both checks before showing the human. Fix issues, don't just flag.
 
@@ -230,7 +240,7 @@ Intro 提了 gap/bottleneck         →   Discussion/Present study 填了吗？
 
 **修完自检之后**再进 Step 6。
 
-### Step 6 — Human review
+### Step 7 — Human review
 
 **Mandatory. Do not skip.**
 
@@ -240,7 +250,7 @@ Ask explicitly: "Do intro/discussion/abstract look right? Any coherence issues?"
 
 The author owns the argument. Revisions are targeted, not full rewrites.
 
-### Step 7 — Commit
+### Step 8 — Commit
 
 After the human approves:
 
