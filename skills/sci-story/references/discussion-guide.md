@@ -7,13 +7,9 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 
 ## 结构
 
-### 段落 1: Conclusion — 贡献声明（不是解释，是陈述）
+### 段落 0: Conclusion（从 sci-write 融合，一字不改）
 
-- job: 把论文的核心贡献钉死。不是 Discussion 的开场白——是这篇论文的终局答案。
-- 写法: "This work demonstrates [核心贡献]. The decisive evidence is [figN / 统计量]. A boundary is [局限]."
-- 三句话：贡献声明 + 决定性证据 + 边界。不展开——展开留给后面的 Discussion 段。
-- 误写: 写成 mini-Discussion（"this suggests... may indicate... could mean..."）——Conclusion 段不推测，只陈述。
-- 误写: 写成复述 Results——不是"我们发现 X 上升了 Y%"，是"我们提供了 X 的证据"。
+sci-write 已经写了 `conclusion.md`——贡献声明 + 决定性证据 + 边界。Discussion 的第一段原封不动搬过来，不重写、不展开、不改成解释语气。这是几乎所有期刊的公因数。
 
 ### 段落 2: Opening — 主发现的解释（不复述 Results）
 

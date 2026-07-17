@@ -29,7 +29,7 @@
 
 Introduction、Discussion（含 Conclusion）、Abstract 写不好全像一个东西——都是"这篇论文做了什么"的不同表述。根本原因是没给每个分配独立功能。
 
-统一写法：**Discussion 第一段为 Conclusion，后面写 Discussion。** 这是几乎所有期刊的公因数。Conclusion 段三句话收口——贡献声明 + 决定性证据 + 边界。不推测、不展开。
+统一写法：**Discussion 第一段融合 sci-write 的 Conclusion，一字不改。后面写 Discussion。** 这是几乎所有期刊的公因数。sci-write 产出 Conclusion，sci-story 融合进 Discussion，不重写。
 
 | | 服务谁的什么需求 | 问什么 | 不应该是什么 |
 |---|---|---|---|

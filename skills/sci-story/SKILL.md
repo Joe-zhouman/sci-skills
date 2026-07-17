@@ -129,23 +129,26 @@ can actually support. Come back with `claim.md`."
 **Stop. Show the human.** "This is the paper's argument from `claim.md`. Still
 right?" If the human changes it, update `claim.md` before proceeding.
 
-### Step 2 — Draft Discussion + Conclusion first
+### Step 2 — Draft Discussion
 
 Discussion anchors interpretation. Write it first so Introduction knows exactly
-what narrative arc it must set up. **First paragraph is Conclusion**, rest is Discussion —
-this is the common denominator across almost all journals.
+what narrative arc it must set up.
 
-Load `references/discussion-guide.md`. Structure:
+**First paragraph: read `conclusion.md` and fuse it in.** sci-write already wrote
+the Conclusion — contribution statement + decisive evidence + boundary. Don't
+rewrite it. Take it as-is, merge it as the first paragraph of Discussion. This
+is the common denominator across almost all journals.
 
-1. **Conclusion** — contribution statement (not interpretation). Three sentences:
-   what we demonstrated + decisive evidence + boundary. "This work demonstrates... The decisive evidence is... A boundary is..."
+Load `references/discussion-guide.md`. Structure after the fused Conclusion:
+
+1. **Conclusion (from sci-write)** — contribution statement + decisive evidence + boundary. As-is, don't rewrite, don't expand, don't turn into interpretation.
 2. **Opening** — "Our results show [contribution]. This means [interpretation]."
 3. **Mechanism** — why this result? Plausible mechanism, hedged. Address rival explanations.
 4. **Literature comparison** — align/contrast with prior work. Real-DOI placeholders.
 5. **Limitations** — evidence boundaries. Specific, not generic.
 6. **Implications** — bounded significance statement.
 
-Before writing full prose, run the **confirmation gate**: echo the Conclusion paragraph
+Before writing full prose, run the **confirmation gate**: echo the fused Conclusion
 + Discussion's one-paragraph argument + key interpretations. Get human confirmation.
 Write `discussion.md`.
 
