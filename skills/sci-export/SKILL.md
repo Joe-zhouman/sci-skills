@@ -77,10 +77,9 @@ cd manuscript/vN/tex && make
 
 1. Supplementary Figures（每图一页，caption 从 `figN-report.md` 的 Core conclusion）
 2. Supplementary Tables
-3. Supplementary Note（Results 砍下来的文字结论段落——每段一个被砍结论，转独立叙述）
-4. Supplementary Methods（从 sup-list 的"补充方法"逐条展开成段落）
-5. Supplementary Discussion（极少——仅当 sup-list 里有）
-6. Supplementary References
+3. Supplementary Methods（从 sup-list 的"补充方法"逐条展开成段落）
+4. Supplementary Discussion（极少——仅当 sup-list 里有）
+5. Supplementary References
 
 重新编译 `make`，确认通过。
 
