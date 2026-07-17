@@ -78,14 +78,14 @@ sci-story 目前只覆盖 Research。
 
 ## Title
 
-**四种形状，按意图选：**
+**Title 是 claim 的最短版本。** Abstract 压缩了论文；标题压缩了 claim。写标题之前读 `claim.md`——标题的一句子论证必须和它一致，不能漂移。
 
-1. **名词短语、方法主导**（最常见）：*AlphaFold prediction of structural ensembles of disordered proteins*
-2. **陈述句、卖点是发现**：*Dendrites endow artificial neural networks with accurate, robust and parameter-efficient learning*
-3. **`System name: function` 冒号式**：*CodonTransformer: a multispecies codon optimizer...*
-4. **Gerund/question**（benchmark/Perspective 专用）：*Benchmarking large language models for...*
+**四种形状，按 claim 的类型选：**
 
-**选哪个不是你想用哪个——是论文的论证最适合哪个。** 主贡献是方法 → 形状 1。主贡献是发现 → 形状 2。主贡献是一个工具/系统 → 形状 3。
+1. **名词短语、方法主导**（最常见）：claim 是方法 → *AlphaFold prediction of structural ensembles of disordered proteins*
+2. **陈述句、卖点是发现**：claim 是发现 → *Dendrites endow artificial neural networks with accurate, robust and parameter-efficient learning*
+3. **`System name: function` 冒号式**：claim 是工具 → *CodonTransformer: a multispecies codon optimizer...*
+4. **Gerund/question**（benchmark/Perspective 专用）：claim 是标准/比较 → *Benchmarking large language models for...*
 
 **硬规则：**
 
@@ -96,4 +96,4 @@ sci-story 目前只覆盖 Research。
 - 不只是口号——标题的 claim 数据撑得住才放。
 - Grant 式（*Toward …*, *A study of …*）、过度广泛（*A new era of …*）、问句（除非论文真的回答了这个问题）——全砍。
 
-**写完自检：** Abstract 写完后回看标题——标题和 Abstract 的 claim 一致吗？标题是不是比 Abstract 更保守（好）还是更夸张（坏）？不一致 → 改标题，不要改 Abstract。
+**写完自检：** 标题 ↔ claim.md——同一个 argument？标题 ↔ Abstract——标题比 Abstract 更保守（好）还是更夸张（坏）？不一致 → 改标题，不要改 claim 和 Abstract。标题比 Abstract 更保守是对的——Abstract 具体，标题精准。

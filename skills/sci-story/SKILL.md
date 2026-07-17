@@ -202,24 +202,30 @@ Write `abstract.md`.
 
 ### Step 5 — Title
 
-Load `references/top-journal-conventions.md` → Title. **Title is the last thing you finalize.** Abstract and Discussion are stable, you know exactly what the paper argues — now name it precisely.
+**Title is the shortest version of the claim.** Abstract compresses the paper;
+the title compresses the claim. Read `claim.md` — the title must align with
+the one-sentence argument, not drift from it.
 
-Pick one of four shapes based on what the paper's main contribution IS:
-1. **Method-led noun phrase** — the contribution is a method
-2. **Declarative finding** — the contribution is a discovery
-3. **`System: function` colon form** — the contribution is a tool
+Load `references/top-journal-conventions.md` → Title. **Title is the last
+thing you finalize.** Abstract and Discussion are stable, now name it.
+
+Pick one of four shapes based on what the claim IS:
+1. **Method-led noun phrase** — the claim is a method
+2. **Declarative finding** — the claim is a discovery
+3. **`System: function` colon form** — the claim is a tool
 4. **Gerund/question** — benchmark/Perspective only
 
-Generate 3-5 candidates spanning the shape that fits. Mark the most defensible one.
+Generate 3-5 candidates. Mark the most defensible one.
 
 **Hard rules:**
 - No numbers or results — those go in the Abstract.
 - One evaluative adjective max: *robust, generalizable, data-driven.* Not *novel, advanced, powerful.*
 - Searchable: would a researcher typing keywords find this title?
-- Defensible: every word in the title must be backed by data in the manuscript.
+- Defensible: every word must be backed by data in the manuscript.
 - Not grant-style (*Toward...*, *A study of...*) or overbroad (*A new era of...*).
 
-**Self-check:** read the Abstract and the title side by side. Title more conservative than Abstract → good. Title more exaggerated → rewrite the title.
+**Self-check:** Title ↔ claim.md — same argument? Title ↔ Abstract —
+title more conservative than Abstract → good, more exaggerated → rewrite.
 
 Write to `abstract.md` under `## Title`.
 
