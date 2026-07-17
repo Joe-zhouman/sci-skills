@@ -265,8 +265,12 @@ If a paragraph can't answer Role in claim → it doesn't belong in Method.
 - Don't fabricate "standard practices" citations. If a method needs a reference, use Real-DOI placeholders.
 - Write `method.md`.
 
-**Conclusion** (short, from findings):
-- Contribution + one-line evidence + one-line limitation + one-line bounded impact. No new data, citations, or mechanisms not already in Discussion.
+**Conclusion** (from claim.md, short):
+- Read `claim.md` → one-sentence argument, gap, evidence baseline, boundary.
+- **Contribution** — restate the one-sentence argument as a declaration.
+- **Decisive evidence** — the strongest piece of evidence from the evidence baseline.
+- **Boundary** — restate from claim.md, not a new limitation.
+- No new data, citations, or mechanisms. Conclusion is claim.md in paragraph form.
 - Write `conclusion.md`.
 
 Method's verbatim rule: statistics are facts, prose is narrative — never let narrative instinct alter a number or test name.

@@ -61,6 +61,9 @@ Every session starts here:
    have been drafted in the writing stage):
 
    From `../sci-skills/sci-write/`:
+   - `claim.md` — **the canonical claim.** The one-sentence argument, gap, evidence
+     baseline, and boundary. This is the non-negotiable anchor——润色可以改措辞，
+     但不能改 claim。Read it first.
    - `terminology-ledger.md` — **co-owned file.** The canonical term ledger
      produced by the writing stage (or an earlier polish round). Read it; enforce it.
      Extend it after polish for any new constraints discovered.
@@ -194,7 +197,10 @@ Apply polish in priority order, matching the diagnosis hierarchy:
 
 Load only the reference files needed for this job. Don't load everything at once.
 
-**Claim-preservation rule:** when editing prose that carries a claim — flag if the edit would change what is claimed, verb strength, or limitation boundary. Allow wording/grammar fixes. When in doubt, flag.
+**Claim-preservation rule:** every editorial change must be checked against
+`claim.md`. If the edit would change what is claimed, verb strength, or
+limitation boundary → flag. Allow wording/grammar fixes. When in doubt,
+read `claim.md` again and compare.
 
 **For Chinese-to-English (zh-to-en):** extract core propositions first,
 reconstruct logical links, then apply English rules. Do not translate
