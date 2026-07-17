@@ -90,46 +90,30 @@ Each step depends on the output of the previous one.
 Before generating any code, establish the contract (`references/figure-contract.md`):
 
 1. **Core conclusion**: one-sentence conclusion the figure must prove
-2. **Panel plan**: what panels are needed to prove this conclusion, and why each one earns its place. A conclusion may need one panel or many — depends on how many sides of the story need showing. Propose a layout, then **stop and ask the human**: "Does this panel plan make sense? Too many? Too few? Would your target journal expect this presentation?" Panel count is a human decision——the agent proposes, the human decides.
-3. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`.
-4. **Journal/export constraints**: final dimensions, DPI, source data traceability
-
-The highest-priority rule: **the chart serves the scientific logic**. Every panel must pull weight toward the conclusion. If a panel is decorative rather than necessary, cut it. If the conclusion needs another angle to land, add one.
-
-_why_ **Same data, different conclusions = different charts.** Without a conclusion, chart selection is blind — you pick based on data shape alone, which produces correct-looking figures that argue nothing. The contract forces you to answer "what must this figure prove?" before touching a single plot. Every subsequent step (chart type, panel layout, statistical annotation) traces back to this answer. Skip it, and you build a figure that is technically competent but rhetorically empty.
+2. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`.
+3. **Journal/export constraints**: final dimensions, DPI, source data traceability
 
 If the user hasn't stated the conclusion, ask: "What should this figure convince the reader of?" or read from paper-plan's `conclusion` field.
 
-**Start the process log**: create `sci-skills/sci-draw/<fig-name>-description.md` as a scratch file. Write down the contract decisions above (conclusion, evidence chain, archetype, journal constraints). This file accumulates raw notes through Steps 1-6 — decisions, data findings, rationale, issues encountered. At Step 7, it gets distilled into a clean report at `sci-skills/sci-draw/<fig-name>-report.md`.
+**Start the process log**: create `sci-skills/sci-draw/<fig-name>-description.md` as a scratch file. Write down the contract decisions (conclusion, archetype, journal constraints). This file accumulates raw notes through Steps 1-6 — decisions, data findings, rationale, issues encountered. At Step 7, it gets distilled into a clean report at `sci-skills/sci-draw/<fig-name>-report.md`.
 
-### Step 1: Explore data
+### Step 1: Explore data + plan panels
 
-Understand the data before choosing a chart. The goal is to answer key questions; **how** you answer them depends on the data, not the other way around.
+Understand the data first. Before deciding how many panels, know what you have.
 
-**What you must know before Step 2:**
+1. **Profile the data** — same as old Step 1 (column semantics, sample sizes, distributions, dimensionality). Run `profile_data.py` or ask the user.
+2. **List what angles the data can support.** Given the conclusion from Step 0, what evidence vectors does the data offer? Each potential panel = one angle.
 
-- Column semantics: which are continuous, categorical, datetime, or just IDs/text?
-- Sample sizes: total N, per-group n, any group with n < 10?
-- Distribution shape: highly skewed? 跨量级? Outliers?
-- Dimensionality: how many grouping variables? Total combination count > 12?
+   ```
+   数据能给出几个角度的证据？
+   - [角度 1] — 从 [变量/组别] 看
+   - [角度 2] — 从 [另一个变量/对照] 看
+   - [角度 3] — ...
+   ```
 
-**How to get answers — pick based on data complexity, not habit:**
+3. **Draft a panel plan.** From the angle list, propose which panels the figure needs. Mark which is the hero panel.
 
-- **User already knows their data**: ask them to confirm the facts above. Don't waste time on automation that adds no insight.
-- **Single clean CSV/Excel**: `scripts/profile_data.py` gives a quick summary — but **manually verify** column type classifications. The script guesses; you confirm. See `references/data_profiling.md` for interpreting the output.
-- **Multi-source, nested, or messy data**: inspect it first. Read a sample, check dtypes, ask the user about semantics. Don't force irregular data into a CSV-shaped script.
-
-**Mandatory human checks (don't delegate to tools):**
-- Column types correct? (numeric IDs misclassified as ordinal is a classic trap)
-- Any per-group n < 10? → small-sample rules activate at Step 2
-- Any highly skewed or跨量级 variable? → log axis or non-parametric chart needed
-- Too many dimensions for one figure? → split, don't cram
-
-The profile script is a convenience, not an authority. You know your data better than any automated tool — the tool's output is a draft for your review, not a verdict.
-
-_why_ **Data facts drive chart choice, not the reverse.** The most common plotting mistake isn't a coding error — it's fitting data into a preconceived chart type. "I want a bar chart" before looking at n=5 per group with a skewed distribution is the root of most reviewer rejections. Exploring first reverses the decision flow: data facts → chart choice, not chart preference → forced data. The human checks are mandatory because only you know that column 3 is a treatment group, not a continuous variable — no script can infer semantics from numbers alone.
-
-**Record in `sci-skills/sci-draw/<fig-name>-description.md`**: data source, per-group n, key data features (skew, outliers, dimensionality), and any type corrections you made.
+   **Stop. Ask the human:** "Here's what the data can show and my proposed panel layout. Too many? Too few? Would your target journal expect this?" Panel count is a human decision — data tells you what's possible, the human tells you what's right for this paper.
 
 ### Step 2: Select chart
 

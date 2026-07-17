@@ -15,25 +15,14 @@ Create a short contract in working notes or in the response:
 
 ```text
 Core conclusion:
-Panel plan: (how many, what each shows, why each earns its place)
 Figure archetype:
 Target journal/output:
 Backend: Python or R
 Final size:
-Evidence hierarchy:
-  hero panel:
-  supporting panels:
 Statistics needed:
 ```
 
-**Panel plan comes before code.** A conclusion may need one panel or many — depends on how many sides of the story need showing. Agent proposes, human confirms. Add a panel only when removing it would weaken the conclusion. Remove a panel that doesn't pull its weight. Panel count is a human decision — user preference and journal convention both matter here.
-Source data needed:
-Image-integrity notes:
-Reviewer risk:
-```
-
-Do not start from a favorite template. Start from the conclusion, then choose the
-minimum set of panels that make the conclusion clear and defensible.
+Panel plan comes after exploring the data (Step 1). Start from the conclusion, then choose the minimum set of panels that make the conclusion clear and defensible.
 
 ## Core conclusion rules
 
