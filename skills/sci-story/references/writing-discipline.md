@@ -133,6 +133,12 @@ Discussion 的机制推测必须配弱动词——这是推测，不是直接证
 成稿前扫一遍：`first` `unique` `unprecedented` `comprehensive` `complete` `always` `never` `revolutionary`。
 证据真支持才留，否则改成有边界的 claim 或删掉。
 
+**`significantly` 不出现在结果句。** Nat Comms 2025 语料 0 次。用 notably / substantially / considerably 或直接给数字。Hedge（may / suggest / likely）只在意义句中用，不在结果句中用。
+
+**数字是 absolute + relative + direction。** 不说 "improved performance"——说 "from 323.4 to 297.3, an improvement of 8.8%"。三个元素缺一不可。
+
+**过渡词频率（Nat Comms 2025）：** `However`（转折/开 gap）是主力。`Furthermore` 比 `Moreover` 常用 5.5x。`Notably/Interestingly` 标记关键发现，不是每段一个。`Overall/In summary` 收束板块。
+
 ## 输出格式（每章节落盘）
 
 每章节落盘时附简短 notes：

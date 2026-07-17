@@ -155,6 +155,9 @@ Write `discussion.md`.
 ### Step 3 — Draft Introduction
 
 Load `references/introduction-guide.md` and `references/literature-search.md`.
+Also load `references/top-journal-conventions.md` → Introduction: hook forms,
+gap signal words, explicit "why this system", contribution sentence patterns.
+
 Introduction is a **two-stage funnel**, not a single five-layer:
 
 **Stage 1 — Domain-level** ("why this direction matters"):
@@ -184,8 +187,9 @@ confirmation. Write `intro.md`.
 
 ### Step 4 — Draft Abstract
 
-Load `references/abstract-guide.md`. Abstract is a mini-paper, written last when
-Discussion and Introduction are stable.
+Load `references/abstract-guide.md` and `references/top-journal-conventions.md` →
+Abstract: five moves, `However` gap hinge, one hard number, bounded significance.
+Abstract is a mini-paper, written last when Discussion and Introduction are stable.
 
 1. Compress the spine into one tight paragraph.
 2. Choose template variant (A/B/C) based on the paper's argument structure.
@@ -290,6 +294,7 @@ Runs around every section draft. Detail in `references/writing-discipline.md`:
 | File | Open when |
 |---|---|
 | `references/writing-discipline.md` | Before drafting any section — confirmation gate, coherence rules, verb calibration, citation protocol |
+| `references/top-journal-conventions.md` | Before drafting Introduction and Abstract — hook forms, gap signals, sentence rhythms, tense, transition frequencies |
 | `references/literature-search.md` | At Steps 2-3 (Discussion and Introduction) — academic search tool priority, journal quality, layer-by-layer citation requirements |
 | `references/discussion-guide.md` | At Step 2 — default structure, coherence check, syntax, failure modes |
 | `references/introduction-guide.md` | At Step 3 — funnel structure, paragraph jobs, drafting rules, Intro-Discussion lock chain |
