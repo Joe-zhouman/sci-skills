@@ -200,17 +200,40 @@ Run the confirmation gate: echo the compressed spine. Get human confirmation.
 
 Write `abstract.md`.
 
-### Step 5 — Keywords
+### Step 5 — Title
 
-From the abstract and discussion, extract 5-8 keywords. Rules:
+Load `references/top-journal-conventions.md` → Title. **Title is the last thing you finalize.** Abstract and Discussion are stable, you know exactly what the paper argues — now name it precisely.
+
+Pick one of four shapes based on what the paper's main contribution IS:
+1. **Method-led noun phrase** — the contribution is a method
+2. **Declarative finding** — the contribution is a discovery
+3. **`System: function` colon form** — the contribution is a tool
+4. **Gerund/question** — benchmark/Perspective only
+
+Generate 3-5 candidates spanning the shape that fits. Mark the most defensible one.
+
+**Hard rules:**
+- No numbers or results — those go in the Abstract.
+- One evaluative adjective max: *robust, generalizable, data-driven.* Not *novel, advanced, powerful.*
+- Searchable: would a researcher typing keywords find this title?
+- Defensible: every word in the title must be backed by data in the manuscript.
+- Not grant-style (*Toward...*, *A study of...*) or overbroad (*A new era of...*).
+
+**Self-check:** read the Abstract and the title side by side. Title more conservative than Abstract → good. Title more exaggerated → rewrite the title.
+
+Write to `abstract.md` under `## Title`.
+
+### Step 6 — Keywords
+
+From the abstract and title, extract 5-8 keywords. Rules:
 - Distinct from title words — keywords are supplementary, not a copy
-- Use established field terminology — what terms would a researcher search for to find this paper?
+- Use established field terminology
 - No abbreviations unless universally recognized
 - Semicolon-separated, sentence case
 
 Write to the end of `abstract.md` under `## Keywords`.
 
-### Step 6 — Self-checks
+### Step 7 — Self-checks
 
 Run both checks before showing the human. Fix issues, don't just flag.
 
@@ -244,7 +267,7 @@ Intro 提了 gap/bottleneck         →   Discussion/Present study 填了吗？
 
 **修完自检之后**再进 Step 6。
 
-### Step 7 — Human review
+### Step 8 — Human review
 
 **Mandatory. Do not skip.**
 
@@ -254,7 +277,7 @@ Ask explicitly: "Do intro/discussion/abstract look right? Any coherence issues?"
 
 The author owns the argument. Revisions are targeted, not full rewrites.
 
-### Step 8 — Commit
+### Step 9 — Commit
 
 After the human approves:
 

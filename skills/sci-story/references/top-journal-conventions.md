@@ -75,3 +75,25 @@ Moreover     4
 | 收口 | Discussion + limits | Conclusions + governance | roadmap | call to action |
 
 sci-story 目前只覆盖 Research。
+
+## Title
+
+**四种形状，按意图选：**
+
+1. **名词短语、方法主导**（最常见）：*AlphaFold prediction of structural ensembles of disordered proteins*
+2. **陈述句、卖点是发现**：*Dendrites endow artificial neural networks with accurate, robust and parameter-efficient learning*
+3. **`System name: function` 冒号式**：*CodonTransformer: a multispecies codon optimizer...*
+4. **Gerund/question**（benchmark/Perspective 专用）：*Benchmarking large language models for...*
+
+**选哪个不是你想用哪个——是论文的论证最适合哪个。** 主贡献是方法 → 形状 1。主贡献是发现 → 形状 2。主贡献是一个工具/系统 → 形状 3。
+
+**硬规则：**
+
+- 标题不放数字或结果——把数字留给 Abstract。
+- 一个限定性形容词预载 claim：*robust*, *generalizable*, *data-driven*。不要 *novel*, *advanced*, *powerful*, *green*, *efficient*——空洞。
+- 介词短语链承载"什么 + 怎么 + 在哪"：*...discovery and engineering **with** deep learning **using** CataPro*。
+- 能检索——放领域术语。同一个研究员搜关键词能找到这篇论文吗？
+- 不只是口号——标题的 claim 数据撑得住才放。
+- Grant 式（*Toward …*, *A study of …*）、过度广泛（*A new era of …*）、问句（除非论文真的回答了这个问题）——全砍。
+
+**写完自检：** Abstract 写完后回看标题——标题和 Abstract 的 claim 一致吗？标题是不是比 Abstract 更保守（好）还是更夸张（坏）？不一致 → 改标题，不要改 Abstract。
