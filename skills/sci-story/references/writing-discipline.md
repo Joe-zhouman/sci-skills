@@ -29,6 +29,8 @@
 
 Introduction、Discussion（含 Conclusion）、Abstract 写不好全像一个东西——都是"这篇论文做了什么"的不同表述。根本原因是没给每个分配独立功能。
 
+**这些模板都是按 full research article 设计的——先写完整版，再根据期刊要求压缩。** 完整版 → 压缩，不是一开始就写压缩版。Letter / Brief Communication 等变体只是 full article 砍字数后的结果，已有的论证链和结构不用变，砍掉水词、合并段落即可。
+
 统一写法：**Discussion 第一段融合 sci-write 的 Conclusion，一字不改。后面写 Discussion。** 这是几乎所有期刊的公因数。sci-write 产出 Conclusion，sci-story 融合进 Discussion，不重写。
 
 | | 服务谁的什么需求 | 问什么 | 不应该是什么 |
