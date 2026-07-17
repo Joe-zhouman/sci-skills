@@ -81,6 +81,18 @@ cd manuscript/vN/tex && make
 4. Supplementary Discussion（极少——仅当 sup-list 里有）
 5. Supplementary References
 
+**组装后——交叉引用检测：** 每个 SI 条目必须在正文里有对应的引用。扫一遍所有 SI 标签和正文 tex，列出对照表：
+
+```
+SI item                → main tex 引用？
+Fig S1                 → ✓ \ref{fig:S1} in results.tex
+Fig S2                 → ✗  未引用
+Table S1               → ✓ \ref{tab:S1} in method.tex
+Supp Method: Protocol  → ✗  未引用
+```
+
+**✗ 的项目 → 两种处理：** 要么在正文合适位置插入 `\ref{}`，要么从 SI 删除该条目。不留没人引的 SI。没有正文引用的 SI 是悬空内容——审稿人会问"为什么放这？正文没提？"
+
 重新编译 `make`，确认通过。
 
 见 `skills/sci-write/references/sup-discipline.md` 了解 SI 组装的完整规则。
