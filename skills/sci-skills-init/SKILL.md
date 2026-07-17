@@ -27,6 +27,7 @@ procedures, references, and guardrails that prevent specific failures.
 | 写引言 / 写讨论 / 写摘要 / write introduction / discussion / abstract | `sci-story` |
 | 润色 / polish / revise paragraph / proofread / 翻译 / 排版 / LaTeX layout | `sci-polish` |
 | 投稿 / submit / cover letter / 选期刊 / 被拒转投 / 投稿追踪 | `sci-submit` |
+| 导出 / export / md转tex / tex转Word / md→tex / tex→docx | `sci-export` |
 | 初始化 / init / 建目录 / scaffold / checkup / 迁移老项目 | (this skill) |
 
 ## Layout it builds
