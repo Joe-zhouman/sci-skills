@@ -84,6 +84,11 @@
 
 **Conclusion 不做**: 不复述 Results 细节；不引入新机制（机制解释是 Discussion 的事）；不出现新引用（引用都在前章已出现）。
 
+**按期刊策略：**
+- 要求独立 Conclusion → 写短，不重复 Discussion。四句收口。
+- Discussion + Conclusion 合并 → Discussion 尾部三句：contribution statement + decisive evidence + boundary。不另起一节。
+- 不要求 Conclusion → 不写。Discussion 尾段已经自然收口的，塞一个等于让读者读同样东西两遍。
+
 ---
 
 ## 章节间一致性（写完本 skill 的三章后扫一遍）
