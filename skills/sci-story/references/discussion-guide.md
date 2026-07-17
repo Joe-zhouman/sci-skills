@@ -7,9 +7,9 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 
 ## 结构
 
-### 段落 0: Conclusion（从 sci-write 融合，一字不改）
+### 段落 1: Conclusion
 
-sci-write 已经写了 `conclusion.md`——贡献声明 + 决定性证据 + 边界。Discussion 的第一段原封不动搬过来，不重写、不展开、不改成解释语气。这是几乎所有期刊的公因数。
+sci-write 已经有了 `conclusion.md`——贡献声明 + 决定性证据 + 边界。Discussion 的第一段原封不动搬过来，不重写、不展开、不改成解释语气。这是几乎所有期刊的公因数。
 
 ### 段落 2: Opening — 主发现的解释（不复述 Results）
 

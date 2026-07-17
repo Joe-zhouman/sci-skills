@@ -78,17 +78,31 @@ AND DT=(Review)
 - 无 DOI 但有 arXiv ID 且引用少 → 不采纳（除非 arXiv 已被正式期刊接收且有 DOI）。
 - 无 DOI、无 arXiv、只有标题 → 搜索验证是否存在、哪个期刊。搜不到 → 不采纳。
 
-## 输出：文献待填清单
+## 输出：统一为 BibTeX
 
-不用 BibTeX——BibTeX 无 DOI 字段、agent 无法辨识、不能完美继承。
+所有渠道搜到的文献，最终统一为 BibTeX 格式落盘。方便用户通过 Zotero、JabRef、Mendeley 等文献管理软件直接导入——不需要手动逐条输入。
 
-搜完/人给完结果后，给用户一个最简单的列表，不预填——用户能填一条就算成功：
+搜完/人给完结果后，给用户一个 BibTeX 文件和一个简单的待确认清单：
+
+```bibtex
+@article{smith2024,
+  title   = {Title goes here},
+  author  = {Smith, J. and Jones, A.},
+  journal = {Nature},
+  volume  = {628},
+  pages   = {123--130},
+  year    = {2024},
+  doi     = {10.1038/s41586-024-00001-x},
+}
+```
 
 ```markdown
-- [ ] 标题 / 作者. 期刊, 年 / DOI / 用于 Intro 哪一层？
-- [ ] 标题 / 作者. 期刊, 年 / DOI / 用于 Intro 哪一层？
-- [ ] 标题 / 作者. 期刊, 年 / DOI / 用于 Intro 哪一层？
+- [ ] Smith 2024 Nature — Layer 1 OK
+- [ ] Jones 2023 Science — Layer 1 OK
+- [ ] Wang 2022 ACS Nano — Layer 3 OK
 ```
+
+BibTeX 能填多少填多少——DOI 和 title 是底线。用户确认后在 Zotero 里一键导入。
 
 ## 通用搜索
 
@@ -100,11 +114,11 @@ AND DT=(Review)
 
 ### Layer 1：大背景
 
-至少三篇独立来源从不同角度合力支撑。Q1 / 一区优先。
+至少三篇独立来源从不同角度合力支撑。Q1 / 一区二区优先。
 
 ### Layer 2：小背景 + 现状
 
-筛选标准：是否代表当前最佳实践？Q1 / 一区优先。
+筛选标准：是否代表当前最佳实践？Q1 / 一区二区优先。
 
 ### Layer 3：Prior work
 
