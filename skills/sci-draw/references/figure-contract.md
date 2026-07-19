@@ -16,20 +16,27 @@ Create a short contract in working notes or in the response:
 ```text
 Core conclusion:
 Figure archetype:
+Evidence hierarchy:
+  hero evidence:
+  validation evidence:
+  controls/robustness:
 Target journal/output:
-Backend: Python or R
+Backend: Python
 Final size:
+Panel map:
+  a: [evidence role]
+  b: [evidence role]
+  c: ...
 Statistics needed:
 ```
 
-Panel plan comes after exploring the data (Step 1). Start from the conclusion, then choose the minimum set of panels that make the conclusion clear and defensible.
+Panel plan comes from the evidence chain (Step 1). Start from the conclusion, then enumerate the complete evidence chain: system → main effect → mechanism → quantification → robustness. Each evidence type that the data can support becomes a panel. Do not prune before the human sees the full chain.
 
 ## Core conclusion rules
 
 - The core conclusion should be one sentence with a verb: "Treatment X reduces
   Y by restoring Z", not "Treatment results".
-- Every panel must answer a unique question. If covering a panel would not weaken
-  the argument, remove or merge it.
+- Every panel must answer a unique question. If two panels answer the same question with the same data, merge them. But if covering a panel would leave a gap in the evidence chain (no system overview, no quantification, no robustness check), keep it — a reviewer will ask.
 - Separate primary evidence from supporting evidence. The primary evidence gets
   the hero panel or the clearest axis; controls and robustness panels should be
   visually quieter.
@@ -38,12 +45,12 @@ Panel plan comes after exploring the data (Step 1). Start from the conclusion, t
 
 ## Archetype selection
 
-| Archetype | Use when | Hero panel | Supporting panels |
-|---|---|---|---|
-| `quantitative grid` | The claim is mainly numerical comparison | Optional; often a dominant summary metric | Shared axes, aligned scales, compact legends |
-| `schematic-led composite` | A workflow, mechanism, device, or experimental design must be understood first | Left or top schematic, 35-60% of area | 2-4 quantitative validation panels |
-| `image plate + quant` | Microscopy, imaging, histology, spatial overlays, segmentation, or blots lead the evidence | Image plate or representative image | Scale bars, overlays, crops, quantification |
-| `asymmetric mixed-modality figure` | The figure combines schematic, raster images, heatmaps, and quantitative plots | One panel spans rows/columns | Smaller panels ranked by evidence value |
+| Archetype | Use when | Typical panels | Hero panel | Supporting panels |
+|---|---|---|---|---|
+| `quantitative grid` | The claim is mainly numerical comparison | 4-8 | Optional; often a dominant summary metric | Shared axes, aligned scales, compact legends |
+| `schematic-led composite` | A workflow, mechanism, device, or experimental design must be understood first | 4-7 | Left or top schematic, 35-60% of area | 3-5 quantitative validation panels, real-world photo if scale validation needed |
+| `image plate + quant` | Microscopy, imaging, histology, spatial overlays, segmentation, or blots lead the evidence | 5-8 | Image plate or representative image | Scale bars, channel overlays, crops, quantification, controls |
+| `asymmetric mixed-modality figure` | The figure combines schematic, raster images, heatmaps, and quantitative plots | 5-8 | One panel spans rows/columns | Smaller panels ranked by evidence value, irregular grid |
 
 ## Panel logic
 
@@ -79,3 +86,4 @@ Before finalizing, ask what a skeptical reviewer would challenge:
 - Are representative images quantified and traceable to raw files?
 - Are image adjustments global and documented?
 - Could the same conclusion be made from fewer panels?
+- Could a reviewer ask for evidence that's missing from the figure?

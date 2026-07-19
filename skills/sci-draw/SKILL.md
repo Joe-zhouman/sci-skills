@@ -90,8 +90,17 @@ Each step depends on the output of the previous one.
 Before generating any code, establish the contract (`references/figure-contract.md`):
 
 1. **Core conclusion**: one-sentence conclusion the figure must prove
-2. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`.
-3. **Journal/export constraints**: final dimensions, DPI, source data traceability
+2. **Evidence chain**: what evidence types are needed to defend this conclusion? Each type = a candidate panel. Think in terms of the argument, not the data columns:
+   - **System/overview** — what is the experimental system, cohort, or design?
+   - **Main effect** — what is the primary comparison or discovery?
+   - **Mechanism/localization** — how or where does the effect operate?
+   - **Quantification** — how large is the effect? Representative image quantified?
+   - **Robustness/controls** — does the effect hold under alternative conditions?
+   - **Subgroup/sensitivity** — any nuance worth showing (optional)?
+3. **Archetype**: classify as `quantitative grid`, `schematic-led composite`, `image plate + quant`, or `asymmetric mixed-modality figure`. The archetype sets the panel count expectation — see `references/figure-contract.md`.
+4. **Journal/export constraints**: final dimensions, DPI, source data traceability
+
+_why_ **Evidence chain before panels.** Starting from data columns ("I have group, treatment, value") produces 2-3 panels that mirror the input. Starting from evidence types ("I need to show the system, the main effect, and that it's robust") produces 5-7 panels that mirror the argument. Data tells you what's possible; the evidence chain tells you what's necessary.
 
 If the user hasn't stated the conclusion, ask: "What should this figure convince the reader of?" or read from paper-plan's `conclusion` field.
 
@@ -99,21 +108,31 @@ If the user hasn't stated the conclusion, ask: "What should this figure convince
 
 ### Step 1: Explore data + plan panels
 
-Understand the data first. Before deciding how many panels, know what you have.
+Understand the data first. Then build the evidence chain — panels come from the argument, not from the data columns.
 
-1. **Profile the data** — same as old Step 1 (column semantics, sample sizes, distributions, dimensionality). Run `profile_data.py` or ask the user.
-2. **List what angles the data can support.** Given the conclusion from Step 0, what evidence vectors does the data offer? Each potential panel = one angle.
+1. **Profile the data** — column semantics, sample sizes, distributions, dimensionality. Run `profile_data.py` or ask the user.
+
+2. **Build the evidence chain from the conclusion.** For each evidence type from Step 0, ask: can the data support this? What specific variable/comparison would serve as the evidence? Be exhaustive — the goal is to find all defensible evidence vectors, not the minimum.
 
    ```
-   数据能给出几个角度的证据？
-   - [角度 1] — 从 [变量/组别] 看
-   - [角度 2] — 从 [另一个变量/对照] 看
-   - [角度 3] — ...
+   Evidence chain for: [core conclusion]
+   - System/overview — [specific variable or view that establishes the system]
+   - Main effect — [primary comparison that shows the effect]
+   - Mechanism — [how/where does it work?]
+   - Quantification — [how large? representative image quantified?]
+   - Robustness — [alternative condition, control group, sensitivity check]
+   - Subgroup/sensitivity — [optional: any nuance worth showing?]
    ```
 
-3. **Draft a panel plan.** From the angle list, propose which panels the figure needs. Mark which is the hero panel.
+   Each evidence type that the data can support becomes a panel. If the data can't support a type (e.g., no mechanism data), skip it — but note the gap so the user can decide.
 
-   **Stop. Ask the human:** "Here's what the data can show and my proposed panel layout. Too many? Too few? Would your target journal expect this?" Panel count is a human decision — data tells you what's possible, the human tells you what's right for this paper.
+   _why_ **Argument-first, not data-first.** Starting from data columns ("I have group, treatment, value") produces 2-3 panels that mirror the input file. Starting from the evidence chain ("I need to prove this claim, what evidence does that require?") produces 5-7 panels that mirror the argument. A reviewer evaluates the argument, not the data schema.
+
+3. **Draft a panel plan.** Assign each evidence type to a panel. Mark the hero panel. Use the archetype from Step 0 to guide the layout. For archetype-specific panel counts, see `references/figure-contract.md`. For concrete multi-panel layout templates (clinical cascade, comparison grid, longitudinal, dose-response, genomics, multi-group) with exact panel arrangements, see `references/nature-observations.md`.
+
+   **Stop. Ask the human:** "Here's the evidence chain and proposed panel layout. Any evidence missing that you'd want a reviewer to see?" The question frames toward completeness — the default answer should be "looks good," not "remove panel c."
+
+   _why_ **Ask about gaps, not excess.** Asking "Too many?" signals that panels are costly and should be pruned. Asking "Any missing evidence?" signals that completeness is the goal. The human can still say "drop panel d, it's a distraction" — but they won't prune by default.
 
 ### Step 2: Select chart
 
@@ -132,12 +151,14 @@ Understand the data first. Before deciding how many panels, know what you have.
 
 **Same data, different conclusions = different charts.** Example: 30 subjects × 2 drugs × 5 timepoints. "Drug A is faster than B overall" → boxplot pooling all timepoints. "A and B diverge most at t=3" → line chart with error bands over time. "Subject variability is large" → spaghetti plot with individual lines. The data is identical; the chart changes because the argument changes.
 
-**When to split, not cram:**
-- Grouping combinations > 12 → too many visual channels exhausted
-- x-axis labels > 8 → 45° rotation means the figure is too crowded
-- Legend items > 6 → exceeds short-term memory; reader can't track
-- y-axis spans multiple orders of magnitude and can't use log → split by magnitude
-- The figure wants to make two independent conclusions → two figures
+**Complexity → compose, don't split:**
+- Grouping combinations > 12 → use multiple panels, each showing a coherent subset
+- x-axis labels > 8 → use faceted multi-panel layout instead of angled labels
+- Legend items > 6 → use direct labels or one shared legend strip across panels
+- y-axis spans multiple orders of magnitude → use separate panels with different scales
+- The figure wants to make two independent conclusions → **two figures** (this is the only true split case)
+
+_why_ **Complexity is why multi-panel figures exist.** A 6-panel figure that exhaustively proves one conclusion is stronger than two 3-panel figures that each feel incomplete. The point of panels is to digest complexity within one argument, not to avoid it. Split only when the conclusions diverge — not when the data is rich.
 
 **Give**: recommendation + brief reason + 1-2 alternatives. If the user's choice doesn't fit the data (e.g., n=5 mean bar), explain why and offer the better option (see "Active interception" below). For deeper examples and edge cases, see `references/chart_selection.md`.
 
@@ -163,7 +184,7 @@ _why_ **Matplotlib renders text in absolute points.** If you plot at default siz
 
 Write the plotting script and save it as `sci-skills/sci-draw/<fig-name>.py`. This is the reproducible source — anyone (including your future self) should be able to run it and regenerate the figure.
 
-Follow `references/plot_recipes.md` for chart-specific recipes. For design rationale (color semantics, typography, multi-panel architecture) see `references/design-theory.md`. For palette constants and helper signatures see `references/api.md`. For specialized chart types see `references/chart-types.md`. Additional patterns in `references/common-patterns.md` and `references/tutorials.md`.
+Follow `references/plot_recipes.md` for chart-specific recipes. For design rationale (color semantics, typography, multi-panel architecture) see `references/design-theory.md`. For palette constants and helper signatures see `references/api.md`. For specialized chart types see `references/chart-types.md`. For real journal page layout patterns see `references/nature-observations.md`. Additional patterns in `references/common-patterns.md` and `references/tutorials.md`.
 
 Mandatory while plotting:
 - `figsize=(target_width, target_height)` in inches — set final size directly
@@ -377,10 +398,18 @@ A figure plan document with one entry per figure:
 ### Figure 1: [short title]
 - **Core conclusion**: [one-sentence conclusion]
 - **Archetype**: [quantitative grid / schematic-led / image plate / asymmetric]
+- **Evidence chain**:
+  - System/overview → panel a
+  - Main effect → panel b
+  - Mechanism → panel c
+  - Quantification → panel d
+  - Robustness → panel e
 - **Panels**:
   - a: [content] — evidence role: [hero / validation / control]
   - b: [content] — evidence role: [...]
   - c: [content] — evidence role: [...]
+  - d: [content] — evidence role: [...]
+  - e: [content] — evidence role: [...]
 - **Data source**: [file/description]
 - **Statistics**: [test, n, error type]
 - **Journal spec**: [size, format]
