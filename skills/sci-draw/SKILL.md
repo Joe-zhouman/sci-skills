@@ -188,10 +188,11 @@ Follow `references/plot_recipes.md` for chart-specific recipes. For design ratio
 
 Mandatory while plotting:
 - `figsize=(target_width, target_height)` in inches — set final size directly
+- **Multi-panel → use `fig.add_gridspec()` with explicit `hspace`/`wspace`** — never `plt.subplots()` for 2+ panels. See `references/design-theory.md` § GridSpec layout for spacing defaults per layout type. Spans use slice notation: `gs[0:2, 0:2]` for 2×2 hero panel
 - Use `seaborn.color_palette('colorblind')` or Okabe-Ito + redundant encoding (different line styles / markers)
 - Error bars / shadows must declare SD / SEM / 95% CI + n in legend
 
-_why_ **Three rejection causes, three hard rules.** (1) Scaling a figure in Word after export shrinks 9pt fonts to 4.5pt — the #1 journal desk-rejection cause. (2) Red-green-only encoding has zero meaning for ~8% of male readers; redundant encoding (color + marker + line style) costs one line of code and loses no one. (3) SD and SEM differ by √n — omitting the error bar type in the legend invites the reviewer to assume the wrong one, which can reverse a conclusion.
+_why_ **Four hard rules.** (1) Scaling a figure in Word after export shrinks 9pt fonts to 4.5pt — the #1 journal desk-rejection cause. (2) `plt.subplots()` uses default `wspace=0.2` (fraction of axes width) — on a 7.2-inch 3-column figure that's ~0.5-inch gaps between panels, and it can't do asymmetric spanning at all. GridSpec with explicit hspace/wspace + tight_layout(pad=0.3) produces tight, professional gutters. (3) Red-green-only encoding has zero meaning for ~8% of male readers; redundant encoding costs one line of code and loses no one. (4) SD and SEM differ by √n — omitting the error bar type invites the reviewer to assume the wrong one.
 
 **Record**: statistical test used, correction method, error bar type (SD/SEM/CI), n, significance annotations (*, **, *** definitions).
 

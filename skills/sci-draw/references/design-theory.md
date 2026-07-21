@@ -172,7 +172,75 @@ colors = [(color[0], color[1], color[2], a) for a in alphas]
 
 **Rule**: Width ≈ 3–4× height for comparison bars; prevents vertical crowding and allows left-to-right narrative reading.
 
-### Dedicated legend panel
+### GridSpec layout — mandatory for multi-panel figures
+
+**Never use `plt.subplots()` for multi-panel figures.** Use `fig.add_gridspec()` instead.
+It gives explicit control over inter-panel spacing and supports asymmetric spanning (e.g., one
+panel occupying 2×2 cells in a 3×3 grid).
+
+```python
+from matplotlib import gridspec
+
+fig = plt.figure(figsize=(7.2, 6.0))
+
+# Always set hspace and wspace — these control the gaps between panels.
+# Tight defaults: hspace=0.15, wspace=0.15 for standard layouts.
+# Dense image grids: hspace=0.04-0.08, wspace=0.04-0.08.
+gs = fig.add_gridspec(3, 3, hspace=0.15, wspace=0.15)
+
+# Equal panels: simple row/col indexing
+ax_a = fig.add_subplot(gs[0, 0])
+ax_b = fig.add_subplot(gs[0, 1])
+ax_c = fig.add_subplot(gs[0, 2])
+# ...
+
+# Spanning: use slice notation. gs[row_start:row_end, col_start:col_end]
+ax_hero = fig.add_subplot(gs[0:2, 0:2])  # 2×2 hero panel
+```
+
+**hspace/wspace defaults by layout type:**
+
+| Layout | hspace (vertical gap) | wspace (horizontal gap) |
+|---|---|---|
+| Standard 3×3 quantitative grid | 0.12–0.18 | 0.12–0.18 |
+| Dense image plate / heatmap matrix | 0.04–0.08 | 0.04–0.08 |
+| Asymmetric hero + support | 0.15–0.25 | 0.15–0.28 |
+| Clinical triptych (3-row) | 0.20–0.30 | 0.20–0.32 |
+| Schematic-led (hero top + quant bottom) | 0.15–0.20 | 0.20–0.30 |
+
+**Height and width ratios for asymmetric layouts:**
+
+```python
+# Hero schematic takes 50-60% of vertical space
+gs = fig.add_gridspec(2, 4,
+    height_ratios=[2.2, 1.0],   # top row 2.2× taller than bottom
+    hspace=0.18, wspace=0.28,
+)
+
+# Multi-row with mixed importance
+gs = fig.add_gridspec(3, 4,
+    height_ratios=[1.0, 1.35, 0.8],  # middle row tallest
+    hspace=0.25, wspace=0.28,
+)
+```
+
+**Why not `plt.subplots()`?** `plt.subplots()` creates a uniform grid with default
+`wspace=0.2` (as fraction of average axes width) — on a 7.2-inch figure with 3 columns,
+that's ~0.5 inches of horizontal gap. It also doesn't support spanning. `add_gridspec`
+with explicit `hspace`/`wspace` (as fraction of font size) gives consistent gaps
+regardless of figure dimensions.
+
+**After GridSpec + plotting, call `finalize_figure(fig)`** from `layout_tools.py`
+to clean edge margins. Do NOT call `tight_layout(pad=2)` — the large pad value
+blows out inter-panel spacing. Use `finalize_figure(fig)` which defaults to
+`tight_layout(pad=0.3, h_pad=0.08, w_pad=0.08)`. If you must call tight_layout
+manually: `fig.tight_layout(pad=0.3, h_pad=0.08, w_pad=0.08)`.
+
+_why_ **GridSpec hspace/wspace and tight_layout interact correctly when hspace/wspace
+are set first.** GridSpec's hspace/wspace serve as the initial constraint; tight_layout's
+h_pad/w_pad are the final adjustment. Together they produce tight, readable layouts.
+Without explicit GridSpec hspace/wspace, tight_layout starts from matplotlib's generous
+defaults and can't fully recover.
 For multi-axis figures, the **last subplot is legend-only**:
 ```python
 ax_legend = fig.add_subplot(1, n+1, n+1)
@@ -444,5 +512,5 @@ To match Nature publication standards:
 - [ ] Y-limits tightened to data range (not 0–100 when values are 80–95)
 - [ ] X-ticks hidden when methods are named in legend
 - [ ] Legend in dedicated panel or `frameon=False`
-- [ ] `tight_layout(pad=2)` before save
+- [ ] `tight_layout(pad=0.3, h_pad=0.08, w_pad=0.08)` before save — or use `finalize_figure(fig)` from layout_tools.py
 - [ ] `plt.close(fig)` after save

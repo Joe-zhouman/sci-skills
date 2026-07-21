@@ -157,39 +157,46 @@ def add_panel_labels(
     return placed
 
 
-def finalize_figure(fig, prefer: str = "constrained", verbose: bool = False) -> str:
+def finalize_figure(fig, prefer: str = "tight", h_pad: float = 0.08, w_pad: float = 0.08, pad: float = 0.3, verbose: bool = False) -> str:
     """
-    出图前兜底理顺版面：减少标题/轴标签被裁、图例压数据、子图互相重叠。
+    Adjust subplot layout and trim figure whitespace before export.
 
-    优先用 constrained_layout（matplotlib 自适应排版引擎），失败再回退
-    tight_layout，都失败则不动。**建议先调本函数再 add_panel_labels**——
-    版面定下来后子图位置才稳定。
+    Prefers ``tight_layout`` with explicit h_pad/w_pad (tighter inter-panel spacing).
+    Falls back to ``constrained_layout`` only when ``tight_layout`` fails.
+    ``constrained_layout`` is NOT the default because it handles GridSpec spans poorly
+    and often produces uneven gaps in asymmetric layouts.
 
     Args:
-        fig: matplotlib Figure。
-        prefer: 'constrained'（默认）| 'tight'。
-        verbose: True 时打印实际采用的策略。
+        fig: matplotlib Figure.
+        prefer: 'tight' (default) | 'constrained'.
+        h_pad: vertical padding between subplots, as a fraction of font size.
+               Default 0.08 — tight but keeps axis labels from colliding.
+        w_pad: horizontal padding between subplots, as a fraction of font size.
+               Default 0.08.
+        pad: padding between figure edge and subplot edges.
+             Default 0.3 — minimal margin, just enough for panel labels.
+        verbose: True prints the actual strategy used.
 
     Returns:
-        实际采用的策略：'constrained' | 'tight' | 'none'。
+        Actual strategy used: 'tight' | 'constrained' | 'none'.
     """
     used = "none"
     if prefer == "constrained":
         try:
             fig.set_layout_engine("constrained")
-            fig.canvas.draw()   # 触发一次布局计算，让子图位置落定
+            fig.canvas.draw()
             used = "constrained"
         except Exception:
             used = "none"
     if used == "none":
         try:
             with _suppress_tight_warnings():
-                fig.tight_layout()
+                fig.tight_layout(pad=pad, h_pad=h_pad, w_pad=w_pad)
             used = "tight"
         except Exception:
             used = "none"
     if verbose:
-        print(f"[layout_tools] finalize_figure -> {used}")
+        print(f"[layout_tools] finalize_figure -> {used} (h_pad={h_pad}, w_pad={w_pad}, pad={pad})")
     return used
 
 

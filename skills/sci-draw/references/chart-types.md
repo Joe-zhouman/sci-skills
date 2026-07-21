@@ -242,14 +242,36 @@ for i, val in enumerate(values):
 from matplotlib import gridspec
 
 # 2-row, 4-column layout
-fig = plt.figure(figsize=(36, 12))
-gs = gridspec.GridSpec(2, 4)
+fig = plt.figure(figsize=(7.2, 5.0))
+gs = gridspec.GridSpec(2, 4, hspace=0.15, wspace=0.15)
 
 ax_top_left  = fig.add_subplot(gs[0, 0])
 ax_top_right = fig.add_subplot(gs[0, 1:3])   # span columns 1-2
 ax_legend    = fig.add_subplot(gs[0, 3])     # legend panel
 ax_bottom    = fig.add_subplot(gs[1, :])     # full-width bottom
 ```
+
+**Always set `hspace` and `wspace`** — these control the gaps between panels. Without them,
+matplotlib defaults to ~0.5-inch gaps on a 7.2-inch figure. Tight defaults: `hspace=0.15,
+wspace=0.15`. Dense image grids: `hspace=0.04, wspace=0.04`.
+
+For asymmetric layouts, use `fig.add_gridspec()` instead of `gridspec.GridSpec()` —
+it supports `height_ratios` and `width_ratios`:
+
+```python
+fig = plt.figure(figsize=(7.2, 6.0))
+gs = fig.add_gridspec(2, 4,
+    height_ratios=[2.2, 1.0],   # top row gets 2.2× the height
+    hspace=0.18, wspace=0.28,
+)
+ax_hero = fig.add_subplot(gs[0, :])     # full-width hero panel
+ax_b = fig.add_subplot(gs[1, 0])
+ax_c = fig.add_subplot(gs[1, 1:3])
+ax_d = fig.add_subplot(gs[1, 3])
+```
+
+After plotting, call `finalize_figure(fig)` from `layout_tools.py` — it applies
+`tight_layout(pad=0.3, h_pad=0.08, w_pad=0.08)` for clean edge margins.
 
 ---
 
