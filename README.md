@@ -74,13 +74,13 @@ skills can consume them. The family is the CI/CD layer for research outputs.
 
 | Skill | Does | Human gates |
 |---|---|---|
-| [sci-skills-init](skills/sci-skills-init/) | Scaffold workspace, write contracts, audit layout, migrate external files | Every migration destination confirmed |
-| [sci-draw](skills/sci-draw/) | Publication-quality figures + structured figure reports | Panel plan approved before drawing |
-| [sci-write](skills/sci-write/) | Method / Results / Conclusion from figures + data. Claim-vs-figure consistency. | claim.md confirmed; paper-plan confirmed; figure-reading check |
-| [sci-story](skills/sci-story/) | Introduction (two-stage funnel) / Discussion (+ fused conclusion) / Abstract / Title / Keywords. Literature search. | Claim read & confirmed; confirmation gate per section; self-checks |
-| [sci-polish](skills/sci-polish/) | Polish tex prose directly. Git as audit trail. AI-prose anti-patterns. | Git diff review |
-| [sci-export](skills/sci-export/) | md→tex (drafted content → manuscript). tex→docx (pandoc). SI assembly + cross-ref check. | Template choice confirmed |
-| [sci-submit](skills/sci-submit/) | Hard constraints → journal selection → cover letters → rejection handling → submission tracking | Hard constraints collected; cover letter per paragraph confirmed |
+| [article-init](sci-skills/skills/article-init/) | Scaffold workspace, write contracts, audit layout, migrate external files | Every migration destination confirmed |
+| [sci-draw](sci-skills/skills/sci-draw/) | Publication-quality figures + structured figure reports | Panel plan approved before drawing |
+| [sci-write](sci-skills-article/skills/sci-write/) | Method / Results / Conclusion from figures + data. Claim-vs-figure consistency. | claim.md confirmed; paper-plan confirmed; figure-reading check |
+| [sci-story](sci-skills-article/skills/sci-story/) | Introduction (two-stage funnel) / Discussion (+ fused conclusion) / Abstract / Title / Keywords. Literature search. | Claim read & confirmed; confirmation gate per section; self-checks |
+| [sci-polish](sci-skills-article/skills/sci-polish/) | Polish tex prose directly. Git as audit trail. AI-prose anti-patterns. | Git diff review |
+| [sci-export](sci-skills-article/skills/sci-export/) | md→tex (drafted content → manuscript). tex→docx (pandoc). SI assembly + cross-ref check. | Template choice confirmed |
+| [sci-submit](sci-skills-article/skills/sci-submit/) | Hard constraints → journal selection → cover letters → rejection handling → submission tracking | Hard constraints collected; cover letter per paragraph confirmed |
 
 ## Pipeline
 

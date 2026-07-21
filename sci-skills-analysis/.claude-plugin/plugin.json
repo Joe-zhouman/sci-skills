@@ -1,0 +1,13 @@
+{
+  "name": "sci-skills-analysis",
+  "description": "sci-skills data-analysis family — processing experimental data (XPS, Raman, etc.) into publication-ready figures and tables. Skeleton; skills forthcoming. Claude Code only.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Joe-zhouman",
+    "email": "joe_zm@foxmail.com"
+  },
+  "homepage": "https://github.com/Joe-zhouman/sci-skills",
+  "repository": "https://github.com/Joe-zhouman/sci-skills",
+  "license": "MIT",
+  "keywords": ["skills", "research", "data-analysis", "XPS", "Raman", "sci-skills"]
+}

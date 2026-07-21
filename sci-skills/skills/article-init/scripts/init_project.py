@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """init_project.py — sci-skills 家族项目初始化 / 体检。
 
-手动触发的厚编排入口 sci-skills-init 的执行载体。一次性干完就退：
+手动触发的厚编排入口 article-init 的执行载体。一次性干完就退：
 不持续运行、不自动推进日常图→文流程（那是人手动用各执行 skill）。
 
 两个子命令（都只做确定性机械活）:

@@ -50,13 +50,13 @@ claim 校准。paper-plan 确认。图义核查。每节确认门。自检后才
 
 | Skill | 做什么 | 人在哪介入 |
 |---|---|---|
-| [sci-skills-init](skills/sci-skills-init/) | 搭骨架、写契约、审计布局、迁移外部文件 | 每次迁移目的地确认 |
-| [sci-draw](skills/sci-draw/) | 投稿级科研数据图 + 结构化图报告 | 面板方案确定后再画 |
-| [sci-write](skills/sci-write/) | Method / Results / Conclusion。图义核查。 | claim.md 确认；paper-plan 确认；图义核查 |
-| [sci-story](skills/sci-story/) | Introduction (两段漏斗) / Discussion (融合 Conclusion) / Abstract / Title / Keywords。文献搜索。 | Claim 读取确认；每节确认门；自检 |
-| [sci-polish](skills/sci-polish/) | 直接润色 tex。git 即审计。AI 文风反模式。 | git diff 审查 |
-| [sci-export](skills/sci-export/) | md→tex (草稿 → 正文)。tex→docx (pandoc)。SI 组装 + 交叉引用检测。 | 模板选择确认 |
-| [sci-submit](skills/sci-submit/) | 硬约束 → 选刊 → 封面信 → 被拒转投 → 投稿追踪 | 硬约束采集；封面信逐段确认 |
+| [article-init](sci-skills/skills/article-init/) | 搭骨架、写契约、审计布局、迁移外部文件 | 每次迁移目的地确认 |
+| [sci-draw](sci-skills/skills/sci-draw/) | 投稿级科研数据图 + 结构化图报告 | 面板方案确定后再画 |
+| [sci-write](sci-skills-article/skills/sci-write/) | Method / Results / Conclusion。图义核查。 | claim.md 确认；paper-plan 确认；图义核查 |
+| [sci-story](sci-skills-article/skills/sci-story/) | Introduction (两段漏斗) / Discussion (融合 Conclusion) / Abstract / Title / Keywords。文献搜索。 | Claim 读取确认；每节确认门；自检 |
+| [sci-polish](sci-skills-article/skills/sci-polish/) | 直接润色 tex。git 即审计。AI 文风反模式。 | git diff 审查 |
+| [sci-export](sci-skills-article/skills/sci-export/) | md→tex (草稿 → 正文)。tex→docx (pandoc)。SI 组装 + 交叉引用检测。 | 模板选择确认 |
+| [sci-submit](sci-skills-article/skills/sci-submit/) | 硬约束 → 选刊 → 封面信 → 被拒转投 → 投稿追踪 | 硬约束采集；封面信逐段确认 |
 
 ## 管线
 

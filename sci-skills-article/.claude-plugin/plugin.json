@@ -1,0 +1,13 @@
+{
+  "name": "sci-skills-article",
+  "description": "sci-skills article family — the writing chain: sci-story, sci-write, sci-polish, sci-export, sci-submit. Claude Code only.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Joe-zhouman",
+    "email": "joe_zm@foxmail.com"
+  },
+  "homepage": "https://github.com/Joe-zhouman/sci-skills",
+  "repository": "https://github.com/Joe-zhouman/sci-skills",
+  "license": "MIT",
+  "keywords": ["skills", "research", "academic-writing", "submission", "sci-skills"]
+}

@@ -1,4 +1,4 @@
-# sci-skills-init tests
+# article-init tests
 
 Test plan (to be run via skill-creator-plus Test loop before deployment):
 

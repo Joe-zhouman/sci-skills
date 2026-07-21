@@ -1,12 +1,12 @@
 ---
-name: sci-skills-init
+name: article-init
 description: >-
   科研项目初始化 / Research project init — scaffold manuscript/ + sci-skills/ skeleton,
   write directory contracts, audit layout, migrate legacy files. 纯手动，不自动触发。
   Manual only. 不画图不写文不投稿 / Does not draw, write, or submit.
 ---
 
-# sci-skills-init
+# article-init
 
 Manual scaffold + audit tool. Run once, exit. It builds the directory skeleton
 and the directory contracts; it does not stay running and does not advance the
