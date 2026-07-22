@@ -1,0 +1,24 @@
+[project]
+name = "sci-skills"
+version = "0.1.0"
+description = "sci-skills plugin families — research writing, data visualization, and experimental data analysis. Provides the shared Python env the bundled skill scripts run in."
+requires-python = ">=3.11"
+license = "MIT"
+readme = "README.md"
+# Not published to PyPI — this is an application project whose env the
+# bundled skill scripts run in. `uv sync` (or `uv run`) recreates it.
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "pandas",
+    "pyarrow",          # read the NIST XPS parquet asset shipped in xps/assets/
+    "seaborn",          # sci-draw (sci-skills) statistical plots
+    "python-dateutil",  # sci-skills-article
+    "lmfit",            # xps peak fitting (fit_peaks.py, find_peaks.py)
+    "lmfitxps",         # xps background models — Shirley/Tougaard (replaces hand-written)
+]
+
+[tool.uv]
+# Managed application env; not packaged for distribution.
+package = false

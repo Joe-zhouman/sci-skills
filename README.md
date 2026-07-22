@@ -107,6 +107,20 @@ claim.md ──────────── the central contract (sci-write St
 | [`v1`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/v1) | **Stable** — bug fixes only, no breaking changes | `git clone -b v1 git@gitcode.com:Joe-zhouman/sci-skills.git` |
 | [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Bleeding edge — latest features, may shift | `git clone -b master git@gitcode.com:Joe-zhouman/sci-skills.git` |
 
+After cloning, run the installer — it symlinks the three plugin families into `~/.claude/skills/` **and** sets up the Python env:
+
+```bash
+bash install.sh
+```
+
+The installer calls `uv sync` to create `.venv/` from the repo-root `pyproject.toml` (deps: numpy, scipy, matplotlib, pandas, lmfit, lmfitxps, pyarrow, …). Skill scripts self-activate this env via a transparent launcher — agents just run `python scripts/foo.py`, no `uv run` needed. If `uv` isn't installed, the installer warns and skips env setup (install uv: <https://docs.astral.sh/uv/>, then re-run `bash install.sh`).
+
+Rebuild the env later (e.g. after `git pull` changed deps):
+
+```bash
+uv sync
+```
+
 ## Development
 
 Every skill follows [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus).

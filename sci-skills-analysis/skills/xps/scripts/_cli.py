@@ -13,6 +13,59 @@ import argparse
 import os
 from typing import Any
 
+
+def _ensure_uv_env() -> None:
+    """Transparent env launcher.
+
+    The skill scripts run in the repo-root uv env (.venv/). An agent invoking
+    `python scripts/foo.py` with any interpreter is silently re-execed under
+    .venv/bin/python so imports (lmfitxps etc.) resolve — no `uv run` needed,
+    no path assumptions (works via symlink or real path). Idempotent via the
+    SCI_SKILLS_VENV marker so it never re-exec loops.
+
+    Walks up from this file to find a pyproject.toml; the .venv lives next to
+    it. If no .venv exists, falls through silently (dev/CI may use another env
+    or have deps on PATH).
+    """
+    if os.environ.get("SCI_SKILLS_VENV") == "1":
+        return  # already in the managed env (or chose not to); don't loop
+
+    here = os.path.dirname(os.path.abspath(__file__))
+    root = None
+    cur = here
+    for _ in range(10):  # scripts/ is a few levels under repo root
+        if os.path.exists(os.path.join(cur, "pyproject.toml")):
+            root = cur
+            break
+        parent = os.path.dirname(cur)
+        if parent == cur:
+            break
+        cur = parent
+
+    if root is None:
+        return  # not running from a checkout; trust whatever env invoked us
+
+    venv_python = os.path.join(root, ".venv", "bin", "python")
+    if not os.path.exists(venv_python):
+        return  # no managed env; trust the caller's interpreter
+
+    if os.path.abspath(sys.executable) == os.path.abspath(venv_python):
+        return  # already the right interpreter
+
+    # Only re-exec for the realistic form: `python <script.py> [args]`. The
+    # `-c`/`-m`/stdin forms can't be reconstructed for execv without re-parsing
+    # CPython's own argv handling, so skip them — agents invoke scripts as
+    # files, and dev tests can use `uv run` or the .venv python directly.
+    if not sys.argv or not os.path.exists(sys.argv[0]):
+        return
+
+    # Re-exec under the managed env. Preserve argv and cwd.
+    os.environ["SCI_SKILLS_VENV"] = "1"
+    os.execv(venv_python, [venv_python] + sys.argv)
+
+
+_ensure_uv_env()
+
 # A downstream consumer closing the pipe (e.g. `... | head`) is normal —
 # exit silently on SIGPIPE/BrokenPipeError instead of dumping a traceback.
 try:

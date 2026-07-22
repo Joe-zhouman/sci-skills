@@ -21,25 +21,19 @@ from _cli import eprint, die, write_output, add_format_arg, load_json
 
 def _shirley(energies: list[float], counts: list[float],
              e_start: float, e_end: float) -> list[float]:
-    """
-    Iterative Shirley background.
+    """Shirley background via lmfitxps.
 
-    Anchored at both region endpoints (S = I at E_high and E_low); curves
-    based on the integrated peak area above the current background:
-
-      S(E) = I(E_high) + (I(E_low) - I(E_high)) · ∫_{E_high}^{E} (I - S) dE'
-                                              / ∫_{E_high}^{E_low} (I - S) dE'
-
-    so S(E_high) = I(E_high) and S(E_low) = I(E_low). The integral runs from
-    the high-BE end toward the low-BE end — i.e. along increasing index, since
-    XPS data is stored high BE → low BE (i0 < i1 in index space).
+    Iterative S-curve anchored at both region endpoints. Computed only on the
+    region slice; outside it the background is held constant at the high-BE
+    endpoint value (fitting is region-bounded). XPS data is high→low BE
+    (descending), which is exactly the axis orientation lmfitxps expects.
     """
     import numpy as np
+    from lmfitxps.backgrounds import shirley_calculate
 
     x = np.array(energies, dtype=float)
     y = np.array(counts, dtype=float)
 
-    # XPS data goes high BE → low BE; e_start should be the higher BE endpoint.
     if e_start < e_end:
         e_start, e_end = e_end, e_start
 
@@ -54,54 +48,31 @@ def _shirley(energies: list[float], counts: list[float],
         })
         sys.exit(1)
 
-    i0, i1 = indices[0], indices[-1]  # i0 = high-BE end, i1 = low-BE end
-
+    i0, i1 = indices[0], indices[-1]
     xr = x[i0:i1 + 1]
     yr = y[i0:i1 + 1]
-    dx = np.abs(np.diff(xr))
-    bg_reg = np.full_like(yr, yr[0])  # init at high-BE endpoint value
 
-    for _ in range(100):
-        above = np.maximum(yr - bg_reg, 0.0)
-        # Cumulative trapezoidal integral from the high-BE end (index 0,
-        # integral = 0) toward the low-BE end (integral = total peak area).
-        trap = 0.5 * (above[:-1] + above[1:]) * dx
-        integral = np.concatenate(([0.0], np.cumsum(trap)))
-        total = integral[-1]
-        if abs(total) < 1e-15:
-            break  # nothing above background — peak absent, keep flat init
+    # lmfitxps default maxit=10 is too low for many spectra; raise it.
+    bg_reg = shirley_calculate(xr, yr, maxit=100)
 
-        new_bg = yr[0] + (yr[-1] - yr[0]) * integral / total
-        delta = np.max(np.abs(new_bg - bg_reg))
-        bg_reg = new_bg
-        if delta < 1e-6:
-            break
-
-    # Full-length background: Shirley curve inside the region, held constant
-    # at the high-BE endpoint value outside it (fitting is region-bounded).
-    bg = np.full(len(x), yr[0])
+    # Full-length: Shirley inside region, constant (high-BE value) outside.
+    bg = np.full(len(x), float(yr[0]))
     bg[i0:i1 + 1] = bg_reg
     return bg.tolist()
 
 
 def _tougaard(energies: list[float], counts: list[float],
               e_start: float, e_end: float) -> list[float]:
-    """
-    Tougaard background via FFT convolution with universal cross-section.
+    """Tougaard background via lmfitxps (textbook 4-PIESCS, universal params).
 
-    The Tougaard background is:
-
-      B(E) ∝ ∫_{E}^{∞} I(E') · K(E' - E) dE'
-
-    where the universal cross-section kernel is:
-
-      K(T) = B·T / (C + T²)²
-
-    Uses B=2866 eV², C=1643 eV² (Tougaard universal parameters).
-    Convolution via FFT for O(N log N) performance; scaling to endpoints.
+    Anchors at the high-BE endpoint (index 0 of the descending region) by
+    iteratively varying the B scaling parameter; the low-BE endpoint floats
+    to whatever the cross-section convolution produces — this is the correct
+    physical Tougaard, NOT a both-endpoint-anchored Shirley lookalike. B<0 in
+    the result means the data is outside Tougaard's applicability (report it).
     """
     import numpy as np
-    from scipy.signal import fftconvolve
+    from lmfitxps.backgrounds import tougaard_calculate
 
     x = np.array(energies, dtype=float)
     y = np.array(counts, dtype=float)
@@ -120,51 +91,23 @@ def _tougaard(energies: list[float], counts: list[float],
         sys.exit(1)
 
     i0, i1 = indices[0], indices[-1]
+    xr = x[i0:i1 + 1]
+    yr = y[i0:i1 + 1]
 
-    B, C = 2866.0, 1643.0
+    # tougaard_calculate returns (background_array, optimized_B).
+    bg_reg, b_scale = tougaard_calculate(xr, yr, maxit=100)
 
-    # Build energy loss grid for convolution
-    # XPS convention: x is binding energy, high→low
-    # Kinetic energy loss T = E' - E where E' > E (lower BE = higher KE)
-    # On our reversed x-axis: T = x[j] - x[i] for j > i (x[j] < x[i], meaning higher KE)
-    # We work on the kinetic energy scale: KE = hν - BE
-    # T = KE' - KE = (hν - x') - (hν - x) = x - x' for higher KE (x' < x)
-    # So T = x[higher_ke] - x[lower_ke] is positive when we think of x reversed
+    if b_scale < 0:
+        eprint({
+            "type": "fit_warning", "subtype": "tougaard_nonphysical_b",
+            "message": f"Tougaard B = {b_scale:.1f} is negative — the data is "
+                       f"outside Tougaard's applicability (rising low-BE tail, "
+                       f"or region endpoints not in a true background). "
+                       f"Result is unphysical; try Shirley or linear."
+        })
 
-    dx = np.median(np.abs(np.diff(x)))  # uniform step size
-
-    # Energy loss grid: 0 to full range, at data step size
-    T_max = abs(max(x) - min(x))
-    n_T = len(x)
-    T = np.linspace(0, T_max, n_T)
-
-    # Universal cross-section kernel
-    kernel = B * T / (C + T**2)**2
-    kernel[0] = 0.0  # K(0) = 0
-
-    # Convolve spectrum (reversed so high KE = low BE is first) with kernel
-    # We need ∫ I(E+T) · K(T) dT  for fixed E, integrating T from 0 to ∞
-    # In practice: reverse energy axis, convolve, reverse back
-    y_rev = y[i0:i1+1][::-1]  # now in KE order (low→high)
-    bg_rev = fftconvolve(y_rev, kernel[:len(y_rev)], mode='full')[:len(y_rev)] * dx
-
-    # Normalize: scale so B(E₀) = I(E₀) at high-BE endpoint
-    bg_region = bg_rev[::-1]  # back to BE order (high→low)
-
-    # Match the high-BE endpoint
-    if abs(bg_region[0]) > 1e-15:
-        bg_region = bg_region * (y[i0] / bg_region[0])
-
-    # Fill into full array
-    bg = np.full(len(x), y[i0])
-    bg[i0:i1+1] = bg_region
-
-    # Linear taper outside fitting region to data values
-    if i1 + 1 < len(x):
-        bg[i1+1:] = y[i1+1:]
-    if i0 > 0:
-        bg[:i0] = y[:i0]
-
+    bg = np.full(len(x), float(yr[0]))
+    bg[i0:i1 + 1] = bg_reg
     return bg.tolist()
 
 
@@ -180,8 +123,14 @@ def _linear(energies: list[float], counts: list[float],
     i_start = np.argmin(np.abs(x - e_start))
     i_end = np.argmin(np.abs(x - e_end))
 
-    bg = np.interp(x, [x[i_start], x[i_end]], [y[i_start], y[i_end]])
-    # Outside the region, hold constant
+    # np.interp requires xp ascending. XPS data is high→low BE (descending),
+    # so sort the two anchor points by energy before interpolating.
+    xp = [x[i_start], x[i_end]]
+    fp = [y[i_start], y[i_end]]
+    order = np.argsort(xp)
+    bg = np.interp(x, np.array(xp)[order], np.array(fp)[order])
+
+    # Outside the region, hold constant at the nearer endpoint value
     if i_start < i_end:
         bg[:i_start] = y[i_start]
         bg[i_end:] = y[i_end]

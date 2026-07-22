@@ -68,9 +68,24 @@ for fam in "${FAMILIES[@]}"; do
   echo "[plugin]  $LINK -> $SRC"
 done
 
+# --- Python env for bundled scripts (XPS analysis etc.) ---
+# A pyproject.toml at repo root declares the deps the skill scripts run in.
+# `uv sync` creates .venv/ and installs them; scripts self-activate it via a
+# transparent launcher in _cli.py (re-exec under .venv), so agents just call
+# `python scripts/foo.py` with no env bookkeeping.
+if command -v uv >/dev/null 2>&1; then
+  echo "[env]     uv found — syncing .venv from pyproject.toml"
+  ( cd "$REPO_ROOT" && uv sync ) || echo "  WARNING: uv sync failed — scripts will fall back to the caller's interpreter (deps may be missing). Install uv: https://docs.astral.sh/uv/"
+else
+  echo "[env]     uv NOT found — skipping .venv setup." >&2
+  echo "          Skill scripts self-activate .venv when present; without uv they fall back to the caller's interpreter." >&2
+  echo "          Install uv (recommended):  https://docs.astral.sh/uv/" >&2
+  echo "          Then re-run:  bash install.sh" >&2
+fi
+
 echo
 echo "Done. To activate:"
 echo "  1. Start a NEW Claude Code session (skills load at session start)."
 echo "  2. Verify plugins:  /skills   (should list the three families above)"
 echo
-echo "Update later: git pull && bash install.sh   (re-running repoints symlinks)"
+echo "Update later: git pull && bash install.sh   (re-running repoints symlinks + re-syncs env)"

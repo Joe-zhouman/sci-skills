@@ -5,6 +5,7 @@ __pycache__/
 *.egg
 venv/
 sensor_venv/
+.venv/
 
 # IDE / editor
 .vscode/
