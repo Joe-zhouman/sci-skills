@@ -59,27 +59,35 @@ def _detect_peaks(energies: np.ndarray, counts_sub: np.ndarray,
     peaks_idx = np.sort(peaks_idx)
 
     candidates = []
-    for idx in peaks_idx:
-        center = energies[idx]
-        # Estimate sigma from peak width at half max
-        half_max = y[idx] * 0.5 + (1.0 - y.max())
-        # Find left and right half-max crossings
+    # counts_sub is the raw background-subtracted intensity; use it for FWHM
+    # (scipy.signal.find_peaks ran on the normalized y only to LOCATE peaks).
+    cs = counts_sub
+    base = cs.min()
+    prominence_arr = props.get('prominences', [])
+
+    for k, idx in enumerate(peaks_idx):
+        center = float(energies[idx])
+        amplitude = float(cs[idx])
+
+        # FWHM via half-max crossings on the raw (un-normalized) counts, so
+        # the height and threshold are in the same units.
+        half = base + (cs[idx] - base) * 0.5
         left = idx
-        right = idx
-        while left > 0 and y[left] * counts_sub.max() > counts_sub[idx] * 0.5:
+        while left > 0 and cs[left] > half:
             left -= 1
-        while right < len(y) - 1 and y[right] * counts_sub.max() > counts_sub[idx] * 0.5:
+        right = idx
+        while right < len(cs) - 1 and cs[right] > half:
             right += 1
         fwhm_est = abs(energies[right] - energies[left])
         sigma = max(0.2, min(fwhm_est / 2.355, max_fwhm / 2.355))
-        amplitude = float(counts_sub[idx])
+
+        prom = float(prominence_arr[k]) if k < len(prominence_arr) else 0.0
 
         candidates.append({
-            "center": float(center),
+            "center": center,
             "sigma": round(sigma, 3),
             "amplitude": round(amplitude, 1),
-            "prominence": round(float(props.get('prominences', [0])[0]
-                                    if len(props.get('prominences', [])) > 0 else 0), 4),
+            "prominence": round(prom, 4),
         })
 
     return candidates

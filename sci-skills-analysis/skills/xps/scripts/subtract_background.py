@@ -24,19 +24,22 @@ def _shirley(energies: list[float], counts: list[float],
     """
     Iterative Shirley background.
 
-    S(E) = S(E₀) + k × ∫_{E}^{E₀} max(I(E') - S(E'), 0) dE'
+    Anchored at both region endpoints (S = I at E_high and E_low); curves
+    based on the integrated peak area above the current background:
 
-    where k is chosen so S(E₁) = I(E₁) at the far endpoint.
-    Integration is from the high-BE side (E₀) down to the low-BE side (E₁).
+      S(E) = I(E_high) + (I(E_low) - I(E_high)) · ∫_{E_high}^{E} (I - S) dE'
+                                              / ∫_{E_high}^{E_low} (I - S) dE'
+
+    so S(E_high) = I(E_high) and S(E_low) = I(E_low). The integral runs from
+    the high-BE end toward the low-BE end — i.e. along increasing index, since
+    XPS data is stored high BE → low BE (i0 < i1 in index space).
     """
     import numpy as np
 
     x = np.array(energies, dtype=float)
     y = np.array(counts, dtype=float)
 
-    # Find indices for the region
-    # XPS data typically goes high BE → low BE
-    # e_start should be the higher BE endpoint, e_end the lower
+    # XPS data goes high BE → low BE; e_start should be the higher BE endpoint.
     if e_start < e_end:
         e_start, e_end = e_end, e_start
 
@@ -51,37 +54,33 @@ def _shirley(energies: list[float], counts: list[float],
         })
         sys.exit(1)
 
-    i0, i1 = indices[0], indices[-1]
+    i0, i1 = indices[0], indices[-1]  # i0 = high-BE end, i1 = low-BE end
 
-    # Initial background: constant at right-endpoint value
-    bg = np.full(len(x), y[i0])
+    xr = x[i0:i1 + 1]
+    yr = y[i0:i1 + 1]
+    dx = np.abs(np.diff(xr))
+    bg_reg = np.full_like(yr, yr[0])  # init at high-BE endpoint value
 
-    for iteration in range(100):
-        # Intensity above background (clamp to >= 0)
-        above = np.maximum(y - bg, 0.0)
+    for _ in range(100):
+        above = np.maximum(yr - bg_reg, 0.0)
+        # Cumulative trapezoidal integral from the high-BE end (index 0,
+        # integral = 0) toward the low-BE end (integral = total peak area).
+        trap = 0.5 * (above[:-1] + above[1:]) * dx
+        integral = np.concatenate(([0.0], np.cumsum(trap)))
+        total = integral[-1]
+        if abs(total) < 1e-15:
+            break  # nothing above background — peak absent, keep flat init
 
-        # Integrate from right (high BE, i0) to left (low BE, i1)
-        # Cumulative trapezoidal integral: ∫_{i}^{i0} above(E') dE'
-        integral = np.zeros(len(x))
-        for i in range(i0 - 1, i1 - 1, -1):
-            dx = abs(x[i + 1] - x[i])
-            integral[i] = integral[i + 1] + 0.5 * (above[i] + above[i + 1]) * dx
-
-        # Normalize: k × (integral[i] - integral[i1]) + y[i1]
-        # So that bg[i1] = y[i1] and bg[i0] = y[i0]
-        denom = integral[i0] - integral[i1]
-        if abs(denom) < 1e-15:
-            break
-
-        scale = (y[i0] - y[i1]) / denom
-        new_bg = y[i1] + scale * (integral - integral[i1])
-
-        # Check convergence
-        delta = np.max(np.abs(new_bg - bg))
-        bg = new_bg
+        new_bg = yr[0] + (yr[-1] - yr[0]) * integral / total
+        delta = np.max(np.abs(new_bg - bg_reg))
+        bg_reg = new_bg
         if delta < 1e-6:
             break
 
+    # Full-length background: Shirley curve inside the region, held constant
+    # at the high-BE endpoint value outside it (fitting is region-bounded).
+    bg = np.full(len(x), yr[0])
+    bg[i0:i1 + 1] = bg_reg
     return bg.tolist()
 
 

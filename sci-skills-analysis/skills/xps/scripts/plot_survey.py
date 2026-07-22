@@ -37,7 +37,7 @@ def plot_survey(data: dict, out_path: str, title: str | None = None,
             pos = ann.get("position", 0)
             label = ann.get("label", "")
             if min(energies) <= pos <= max(energies):
-                ax.axvline(x=pos, color="C44E52", linestyle="--",
+                ax.axvline(x=pos, color="#C44E52", linestyle="--",
                            linewidth=0.6, alpha=0.5)
                 y_max = max(counts)
                 ax.text(pos, y_max * 0.9, label, fontsize=7, rotation=90,
