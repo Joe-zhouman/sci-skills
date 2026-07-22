@@ -1,0 +1,3 @@
+# Ignore all raw data files — these are large and not source code
+*
+!.gitignore
