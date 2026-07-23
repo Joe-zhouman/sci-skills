@@ -164,12 +164,14 @@ shared files between typeset/export and the upstream skills.
 ## Open questions (resolve at implementation time)
 
 - Does sci-story currently output md or tex? (Not read during this pass.)
-  Confirm and align with D1.
+  Confirm and align with D1. → **RESOLVED (batch 1):** sci-story now writes tex.
 - Exact name for the new docx format spec and where it lives
-  (`sci-export/references/docx-format.md`?).
+  (`sci-export/references/docx-format.md`?). → **RESOLVED (batch 3):** lives at
+  `sci-export/references/docx-format.md` (stub created; full spec deferred until
+  the user designs the standard docx template).
 - Whether sci-typeset should own compile-to-PDF, or if that's a shared
   script. (Leaning: typeset owns it, since "typeset" implies producing the
-  formatted PDF.)
+  formatted PDF.) → **RESOLVED (batch 2):** sci-typeset owns compile-to-PDF.
 - **sci-revise design is deferred.** A revision-round skill is planned but its
   workflow is not designed yet — the user will do one real revision pass first
   to understand the flow, then design it. Do not spec it speculatively.

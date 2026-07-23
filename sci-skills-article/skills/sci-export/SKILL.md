@@ -1,149 +1,197 @@
 ---
 name: sci-export
 description: >-
-  导出 / Export — convert drafted content into manuscript tex, and polished manuscript
-  into Word (DOCX) for collaborators. Manual only. 手动触发。md→tex, tex→docx.
+  导出 / Export — move finalized manuscript tex into a target journal template
+  (optional), and/or convert tex to Word (DOCX) for collaborators (optional).
+  Manual only, both modes optional — "your paper your way" means many first
+  submissions need neither. At template-move time, decides float strategy per
+  the target journal's convention (floats at end / inline / two-phase) using the
+  journal-orientation reference. Does NOT write prose (sci-polish), does NOT
+  typeset for readability (sci-typeset), does NOT assemble SI (sci-write's
+  by-product), does NOT do md→tex (drafts are tex from the start now). Triggers
+  on: 导出, export, 搬模板, 换期刊模板, tex转Word, tex→docx, 转docx, submit to
+  journal template.
 ---
 
 # sci-export
 
-Two export modes. Both manual — the human decides when content is ready to move.
+Two export modes, **both optional and manual**. The finalized tex in
+`manuscript/vN/tex/` is the source of truth; this skill produces *external*
+artifacts (a journal-specific tex copy, or a docx) — it does not modify the
+source manuscript.
+
+**Why both optional:** most journals accept "your paper your way" for first
+submission — the manuscript as written (on our template, typeset by
+sci-typeset) is enough. You reach for this skill when (a) a journal's
+production system requires their template, or (b) a collaborator needs Word.
+Revision rounds (`manuscript/rN/`) often need a template move; first drafts
+often don't.
+
+## What this skill does NOT do (after re-scope)
+
+- **No md→tex conversion.** Drafts are tex from the start (sci-write / sci-story
+  write `.tex` directly into `manuscript/vN/tex/sections/`). The old Mode 1
+  (搬运 md 草稿 → tex) is retired.
+- **No SI assembly.** SI is sci-write's by-product — it writes
+  `manuscript/vN/tex/si.tex` alongside results/method. This skill doesn't
+  assemble SI; it may *carry* SI into a target template, but doesn't create it.
+- **No prose editing, no readability typesetting.** Route those to sci-polish
+  and sci-typeset respectively. This skill only moves/converts finalized tex.
 
 ## Layout & boundaries
 
 ```
 <project-root>/
-  manuscript/
-    v1/tex/             ← TARGET: md→tex writes here (sections/ + main.tex)
-  sci-skills/
-    sci-write/          ← SOURCE: md drafts (intro, discussion, abstract, method, results, conclusion)
-  templates/main/       ← READ-ONLY: reference tex blueprint (structure, preamble, Makefile)
+  manuscript/vN/tex/         ← SOURCE: finalized tex (read-only for this skill)
+  manuscript/vN/tex/template-move/   ← TARGET (Mode A): journal-specific tex copy
+  manuscript/vN/manuscript.docx     ← TARGET (Mode B): Word output
+  templates/main/          ← READ-ONLY: our reference tex blueprint
+  sci-skills/sci-typeset/references/latex-layout.md  ← READ: float-strategy reference (export-scope sections)
 ```
 
-- **Reads `sci-skills/sci-write/`** — md content drafts.
-- **Reads `templates/main/`** — reference tex structure, not a mandatory template.
-- **Writes to `manuscript/vN/tex/`** — the human tells you which round (v1 default).
-- **Does not write to `sci-skills/`.** Output goes to the manuscript, not to intermediate storage.
-- **Does not import code.**
+- **Reads `manuscript/vN/tex/` (read-only).** The finalized manuscript is the source; this skill does not edit it.
+- **Writes to a copy, not the source.** Mode A writes to
+  `manuscript/vN/tex/template-move/` (or a user-named dir) — never overwrites the
+  finalized tex. Mode B writes `manuscript/vN/manuscript.docx`.
+- **Reads `templates/main/`** as our reference blueprint, and the target journal's
+  template when the user provides one.
+- **Does not import code. Does not write prose. Does not assemble SI.**
 
 ## Startup
 
-1. **Which mode?** Ask: "Export md drafts into manuscript tex, or convert polished tex to Word?"
-2. **Which round?** Check `manuscript/v1/`, `manuscript/r1/` etc. Default: `v1`.
-3. **Which content?** Read `sci-skills/sci-write/` — which md files exist? Skip what's not there.
-4. **Which template?** Read `templates/main/tex/` as reference. Ask user: "Use this as template, or do you have your own?"
+1. **Which mode (if either)?** Ask: "Move into a journal template, convert to
+   Word, both, or neither? Reminder — most first submissions don't need a
+   template move (your-paper-your-way)."
+2. **Which round?** `manuscript/v1/` (default) or `manuscript/rN/` (revision).
+3. **For Mode A: which target journal?** This determines float strategy. Load
+   `sci-skills/sci-typeset/references/latex-layout.md` — read the
+   **export-scope** sections only (§ Complete journal reference, § Strategy
+   summary, § Float at end, § Traditional inline float placement). The scope
+   note at the top of that file partitions which sections are export's.
+4. **For Mode A: which template?** Does the user have the target journal's
+   template, or build from `templates/main/` and adapt?
 
-## Mode 1: md → tex
+## Mode A: move into a target journal template (optional)
 
-Transfer drafted content from `sci-skills/sci-write/` into `manuscript/vN/tex/`.
+Produce a journal-specific tex copy. The finalized tex stays untouched; this
+writes to a copy.
 
-### Step 0：选择策略
+### Step 0 — Identify float strategy
 
-两种策略，问用户选哪个：
+From the target journal family (see latex-layout.md export-scope sections),
+determine the float strategy:
 
-| 策略 | 做法 | 适合 |
+| Strategy | What it means | Journals |
 |---|---|---|
-| **模板嵌入** | 复制 `templates/main/tex/` 到 `manuscript/vN/tex/`，把 md 内容按段落嵌入各 tex section 文件 | 从头建的稿 |
-| **增量填充** | `manuscript/vN/tex/` 已有骨架，只把 md 对应段落写进已有的 tex 文件 | 已有 tex template、只需补内容 |
+| Floats at END | figures/tables in a `Figures` section at document end, not inline | Science 系, Nature 系 (old), PNAS, Cell 系, BMC 系, Frontiers |
+| Inline | floats near first citation, default `[tbp]` | ACS, RSC, Elsevier (non-Cell), OUP, AIP, MDPI, T&F |
+| Two-phase | inline for review, move to end at acceptance | Wiley 系 |
+| IEEE strict | `[!t]` only, no `[h]`/`[b]` | IEEE |
 
-### Step 1：按章节搬运
+This is the **journal-orientation decision** — it lives here, not in
+sci-typeset (which only does readability on our template). Record the chosen
+strategy; it drives Step 1.
 
-| md 来源 | tex 目标 | 怎么搬 |
-|---|---|---|
-| `intro.md` | `tex/sections/introduction.tex` | 全文搬。Introduction 已经是漏斗结构，不需要拆。 |
-| `method.md` | `tex/sections/method.tex` | 全文搬。Method 的三段式（motivation/mechanism/role）直接对应 tex 结构。 |
-| `results.md` | `tex/sections/results.tex` | 按段落拆——每张图一个 subsection。段落首句做 subsection title。 |
-| `discussion.md` | `tex/sections/discussion.tex` | 全文搬。第一段已经是 Conclusion，不重复搬。 |
-| `abstract.md` | `tex/sections/abstract.tex` | 全文搬，加 `\begin{abstract}` / `\end{abstract}`。 |
-| `conclusion.md` | 不单独搬 | Discussion 第一段已融合——不重复搬 `conclusion.md`。 |
+### Step 1 — Copy + adapt
 
-**搬运纪律：**
-- 把 md 的 markdown 语法转为 LaTeX：`**bold**` → `\textbf{bold}`，`*italic*` → `\textit{italic}`，`Fig N` → `Figure~\ref{fig:figN}`，`[DOI: ...]` → `\cite{key}`（留 placeholder，实际的 bib key 让人填）。
-- `\ref{fig:figN}` 的 figN 从 `paper-plan.md` 的图编号取。
-- 统计数字不改、术语不改、claim 不改——这是搬运，不是改写。
+1. Copy `manuscript/vN/tex/` → `manuscript/vN/tex/template-move/` (or user-named).
+   **Never edit the source `manuscript/vN/tex/`** — the copy is the working surface.
+2. Apply the float strategy from Step 0 to the copy:
+   - Floats-at-end: gather all `\begin{figure}`/`\begin{table}` into a trailing
+     `Figures`/`Tables` section, remove inline placement, rewire `\ref` (labels
+     unchanged).
+   - Inline: ensure specifiers match the journal family (e.g. IEEE `[!t]` only).
+   - Two-phase: leave inline for now; flag that end-move happens at acceptance.
+3. Swap the preamble/class to the target journal's template if the user provided
+   one; otherwise adapt `templates/main/` preamble.
 
-### Step 2：编译
+### Step 2 — Compile the copy
 
 ```bash
-cd manuscript/vN/tex && make
+cd manuscript/vN/tex/template-move && make   # or the journal template's build
 ```
 
-编译不过 → 报错定位 → 修 → 重新编译。最多三轮。三轮不过 → 把编译错误列给人，人工修。
+Compile errors from the template swap → fix in the copy (not the source). Max 3
+rounds; beyond that, list errors for the human.
 
-### Step 3：编译通过后，组装 SI
+### Step 3 — Verify cross-refs + floats
 
-读 `sci-skills/sci-write/sup-list.md`。如果空 → 跳过。如果有内容 → 按以下顺序组装
-`manuscript/vN/tex/si.tex`（或追加到已有 `si.tex`）：
+Open the compiled PDF. Every `\ref{fig:...}`/`\ref{tab:...}` resolves? Floats in
+the right place per the strategy? SI (`si.tex`) carried over and still referenced?
 
-1. Supplementary Figures（每图一页，caption 从 `figN-report.md` 的 Core conclusion）
-2. Supplementary Tables
-3. Supplementary Methods（从 sup-list 的"补充方法"逐条展开成段落）
-4. Supplementary Discussion（极少——仅当 sup-list 里有）
-5. Supplementary References
+### Step 4 — Remind the human
 
-**组装后——交叉引用检测：** 每个 SI 条目必须在正文里有对应的引用。扫一遍所有 SI 标签和正文 tex，列出对照表：
+> "Journal-specific tex copy is at `manuscript/vN/tex/template-move/`. The
+> finalized source at `manuscript/vN/tex/` is untouched. Float strategy: [chosen].
+> Next is yours: Zotero-insert real citations, attach figure files the journal
+> requires, final visual check."
 
-```
-SI item                → main tex 引用？
-Fig S1                 → ✓ \ref{fig:S1} in results.tex
-Fig S2                 → ✗  未引用
-Table S1               → ✓ \ref{tab:S1} in method.tex
-Supp Method: Protocol  → ✗  未引用
-```
+## Mode B: tex → docx (optional)
 
-**✗ 的项目 → 两种处理：** 要么在正文合适位置插入 `\ref{}`，要么从 SI 删除该条目。不留没人引的 SI。没有正文引用的 SI 是悬空内容——审稿人会问"为什么放这？正文没提？"
+Convert the finalized tex to Word for collaborators. Uses **pandoc + our
+reference docx + rules** — not bare `pandoc main.tex -o out.docx` (default
+output is poorly formatted). Our rules live in `references/docx-format.md`.
 
-重新编译 `make`，确认通过。
+### Prerequisite
 
-见 `skills/sci-write/references/sup-discipline.md` 了解 SI 组装的完整规则。
+`manuscript/vN/tex/` must compile (PDF generates). If it doesn't, the docx will
+be broken too — fix the tex first (route to sci-polish / sci-typeset).
 
-### Step 4：提醒人
-
-> "md 内容已搬到 `manuscript/vN/tex/`，编译通过。SI 也已组装（如有）。接下来的活是你的：Zotero 插正式引用、调格式、补图表文件。润色时用 polish skill。"
-
-## Mode 2: tex → docx
-
-Convert polished manuscript tex to Word for collaborators who don't use LaTeX.
-
-### 前置
-
-`manuscript/vN/tex/` 必须编译通过（PDF 能生成）。不通过 → 先修。
-
-### 转换
+### Convert
 
 ```bash
 pandoc manuscript/vN/tex/main.tex \
   -o manuscript/vN/manuscript.docx \
   --from=latex \
   --to=docx \
+  --reference-doc=references/docx-reference.docx \
   --bibliography=manuscript/vN/tex/bibliography.bib \
   --citeproc \
   --resource-path=manuscript/vN/figures/
 ```
 
-pandoc 不可用 → 提醒安装：`conda install pandoc` 或 `apt install pandoc`。
+- `--reference-doc` points at our reference docx (defines styles: heading sizes,
+  fonts, margins, caption style). This is how we impose our format instead of
+  accepting pandoc defaults. See `references/docx-format.md` for how to build /
+  maintain the reference docx.
+- If the reference docx or `docx-format.md` doesn't exist yet, fall back to bare
+  pandoc and flag to the user: "docx is machine-converted with default
+  formatting; the standard reference docx isn't set up — see
+  `references/docx-format.md` (TODO)."
 
-### 转换后检查
+### Post-convert check
 
-打开 `manuscript/vN/manuscript.docx`，快速扫一遍：
-- 标题和作者在不在？
-- 图有没有丢？
-- 引用有没有变成问号？
-- 公式有没有烂掉？
+Open `manuscript/vN/manuscript.docx`:
+- Title and authors present?
+- Figures present (not dropped)?
+- Citations rendered (not `?`)?
+- Equations intact?
+- Styles match our reference docx (heading sizes, etc.)?
 
-有问题 → 标注，输出时告诉用户。没大问题 → 这就是可以发给合作者的初稿。
+Issues → note them in the output to the user.
 
-### 提醒
+### Remind
 
-> "Word 初稿在 `manuscript/vN/manuscript.docx`。这是机器转换的，格式需要人工调。不要把 docx 当最终稿——最终稿永远在 tex。"
+> "Word draft at `manuscript/vN/manuscript.docx`. This is for collaborators;
+> the tex remains the source of truth. Don't treat docx as the final manuscript."
 
 ## Boundaries
 
-- **不润色。** 搬运过程中不改进语言——那是 polishing stage 的活。
-- **不画图。** 不生成新 figure，不调整 figure 内容。
-- **不插正式引用。** DOI placeholder 保持 placeholder 格式——Zotero 插入是人的活。
-- **不写内容。** 只搬已有 md，不新写任何段落。
+- **Does not write prose.** No wording/claim/terminology changes — route to sci-polish.
+- **Does not do readability typesetting.** Loose pages, stranded headings → sci-typeset.
+- **Does not assemble SI.** SI is sci-write's by-product; this skill only carries it.
+- **Does not do md→tex.** Drafts are tex from the start.
+- **Does not modify the finalized source.** Writes to a copy (Mode A) or a new file (Mode B).
+
+## Reference index
+
+| File | Open when |
+|---|---|
+| `references/docx-format.md` | Mode B — how to build/maintain the reference docx, the style rules pandoc defaults don't give us. *(Currently a stub/TODO — the standard docx template is not yet designed.)* |
+| `../sci-typeset/references/latex-layout.md` | Mode A — read the **export-scope** sections only (journal float strategy). The scope note at the top partitions which sections are export's vs typeset's. |
 
 ## Privacy
 
-不在 tex 文件和 docx 文件里泄漏私人本地路径。
+Don't leak private paths or unpublished content in the docx, the template-move
+copy, or user-facing output. The docx is meant for collaborators — scrub any
+private path comments from tex before converting.
