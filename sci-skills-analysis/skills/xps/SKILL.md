@@ -316,18 +316,29 @@ python scripts/quantify.py -f si2p/fit.json n1s/fit.json \
 ```bash
 python scripts/plot_region.py -d bg.json -f fit.json -o fit.png
 ```
+**迭代阶段只出 PNG**——够看残差、够判断拟合质量就行。每轮必出，出完立刻看。
+
 回归 claim 判断：①包络线和原始数据重合好吗？②目标化学态的峰位强度说得过去吗？③峰面积比例支撑故事吗（claim 是"Si₃N₄ 为主"→ Si₃N₄ 面积是否真最大？面积随基线变，支撑不住就换基线看是否反转）？④和 NIST 比偏移合理吗？
 
-不对就回去调（校准偏移 / 换基线 / 端点 / 峰数+约束）重拟合再出图。**每轮把 peaks.json 和 fit.json 复制到 `rounds/peaks_rN.json` 和 `rounds/fit_rN.json`。** 每轮动机是"让数据更好服务 claim"——不是拟合器给你什么就接受什么。
+不对就回去调（校准偏移 / 换基线 / 端点 / 峰数+约束）重拟合再出 PNG。**每轮把 peaks.json 和 fit.json 复制到 `rounds/peaks_rN.json` 和 `rounds/fit_rN.json`。** 每轮动机是"让数据更好服务 claim"——不是拟合器给你什么就接受什么。
 
 ---
 
 ## 第三阶段：收尾 —— 一张图 + 一个故事 + 可复现脚本
 
-### 3.1 出图
-**单谱探索图**（迭代每轮必出）：`python scripts/plot_region.py -d bg.json -f fit.json -o fit_<label>.png`。扁平宽幅（7"×2.8"），数据散点+基线虚线+组分填充+包络+峰位标注。参数不放在图上（脚本返回 JSON，agent 呈现给用户，图保持干净）。
+### 3.1 最终出图（三个产物，一个都不能少）
 
-**对比叙事图**（组会/生成物 vs 反应物）：
+迭代阶段只要 PNG（§2.5），**最终版必须出全套**：
+
+| 产物 | 格式 | 干什么用 |
+|---|---|---|
+| 矢量图 | `fit_<label>.pdf` | **拖进 Origin 解组后每个元素都能编辑**（字体/颜色/线型/标注） |
+| 位图预览 | `fit_<label>.png` | 组会/幻灯片直接贴 |
+| 数据列 | `fit_<label>.csv` | x, y_raw, y1..yN, yf — **拖进 Origin 自己重画**（数据齐全，完全掌控） |
+
+这三个文件由 §3.4 的可复现脚本一次性生成。不需要再跑 `export_result.py`——那个脚本的主要用途是中间阶段的 JSON 导出（给 sci-draw 组图），最终版的 CSV 由可复现脚本统一出。
+
+**对比叙事图**（组会/生成物 vs 反应物，可选）：
 ```bash
 python scripts/plot_compare.py -f fit_before.json fit_after.json -l "before" "after" \
   -d bg_before.json bg_after.json -o cmp.png                  # 上下堆叠 offset，同物种同色
@@ -338,9 +349,10 @@ python scripts/plot_multi_region.py -r si2p_fit.json n1s_fit.json -o overview.pn
 最终产物——claim、各 region 发现、evidence 印证、局限性汇总。**模板见 `references/report-template.md`**（结构：数据与方法 → 各区域结果表 → 与其他表征印证 → 局限性 → 结论回 claim）。原子%数据来自 §2.4.1 的定量结果。
 
 ### 3.3 导出 + 更新 state.json
+
+三个核心产物由 §3.4 的可复现脚本出。额外需要 JSON 导出（给 sci-draw 组图）时：
 ```bash
-python scripts/export_result.py -f fit.json -o fit_<label>.csv -F csv   # CSV：x,y_raw,y1..,yf 各列齐全（拖进 Origin 重绘）
-python scripts/export_result.py -f fit.json -o fit_<label>.json -F json  # JSON：给 sci-draw 组图
+python scripts/export_result.py -f fit.json -o fit_<label>.json -F json  # JSON：给 sci-draw
 ```
 **最后一步：推进 region 状态到 done**（`set-region` 自动刷新 `updated`）：
 ```bash
