@@ -39,7 +39,9 @@ MANUSCRIPT_DIR_NAME = "manuscript"
 
 # 预建的兄弟 skill 子目录（与仓库 skills/ 下的 skill 对齐）。
 # 列表随 skill 成熟度演化——只预建需要自己输出目录的 skill。
-# sci-polish 不预建：它直接在 manuscript/ 里改 tex 文件，零落盘。
+# sci-polish / sci-typeset 不预建：它们直接在 manuscript/ 里改 tex 文件，零落盘。
+# sci-story / sci-export 也不预建：sci-story 读 sci-write 的笔记 + 写 tex 进 manuscript/；
+#   sci-export 只读 manuscript/ 写副本。二者无独立产物目录。
 BROTHER_SKILLS = ["sci-draw", "sci-write", "sci-submit"]
 
 # 每个子目录的契约文件内容（CONTRACT.md，点开头=隐藏，给人看，也帮 git 跟踪空目录）。
@@ -88,39 +90,43 @@ SKILL_DIR_CONTRACTS: dict[str, str] = {
 ## 谁读它
 sci-write（读 report 写正文、读 png 做图义核查）；人（看图、改图）。
 """,
-    "sci-write": """# sci-write/ — 写作产物（data-driven manuscript）
+    "sci-write": """# sci-write/ — 写作工作笔记（working notes only）
 
-> **这份文件是契约（contract）。** 本目录的产物（paper-plan / data-profile /
-> figN-reading / 四章正文）按下面的 schema 落盘。任何读这些文件的 agent/skill
-> 按此 schema 解析；任何产这些文件的（当前是 sci-write，未来可能是别的）按此 schema 产出。
+> **这份文件是契约（contract）。** 本目录只放**过程元数据**（working notes），
+> 不放正文产物。正文 tex 直接写进 `../../manuscript/vN/tex/`，从不落在这里。
 
 ## 这个文件夹是什么
-sci-write skill 的家。存放数据驱动的写作产物：论文规划接力棒、数据画像、
-图义核查记录、四个数据驱动章节（Method/Results/Discussion/Conclusion）的正文。
+sci-write skill 的**工作笔记区**。存放写作过程中产生的过程元数据：
+论文规划接力棒、数据画像、图义核查记录、SI 停车单、术语账本。这些文件**不是正文**，
+永远不进 tex，永不成为论文的一部分——它们是写正文时用的脚手架。
 
 ## 有什么用
-- 承载"数据 → 图 → 正文"流水线的**写作阶段**全部输出。
+- 承载"数据 → 图 → 正文"流水线的**写作阶段过程状态**。
 - `paper-plan.md` 是跨 session 的接力棒，记录哪张图画了没、哪节写了没。
-- Introduction/Abstract/Keyword **不在这里**（它们标 `external`，由别的模式续写，
-  读这里的文件作为输入）。
+- `terminology-ledger.md` 是 sci-write / sci-story / sci-polish **三方共写**的术语账本。
 
-## 文件清单
-- `paper-plan.md` — **接力棒**。图清单（每图 conclusion/claim/data-source/status）+ 章节进度。
-  sci-write Step 1 起草、人确认后落盘；后续每次回来先读它。
-- `data-profile.json` — 数据画像。Step 0 由 sci-write 调 profile_data 产出，喂给 Method。
-- `figN-reading.md` — 每张图的图义核查记录。Step 3 产出（识图能力的独立读者描述 vs claim 对照）。
-- `method.md|tex` / `results.md|tex` / `discussion.md|tex` / `conclusion.md|tex`
-  — 四个数据驱动章节。格式（md/tex）每次写前问人。
+## 文件清单（全是 working notes，非正文）
+- `claim.md` — 一句论证 + 证据基线（Step 0，人确认后落盘）。全文的合同。
+- `paper-plan.md` — **接力棒**。图清单 + 章节进度。每次回来先读它。
+- `data-profile.json` — 数据画像（Step 0 调 profile_data 产出，喂给 Method）。
+- `figN-reading.md` — 图义核查记录（Step 3，识图能力独立描述 vs claim 对照）。
+- `sup-list.md` — SI 停车单（被砍的图/方法细节/overflow 表格，攒着喂给 si.tex）。
+- `terminology-ledger.md` — 术语账本（与 sci-story / sci-polish 共写）。
+
+## 正文 tex 在哪（不在本目录）
+Method/Results/Conclusion 的 tex **直接写进 `../../manuscript/vN/tex/sections/`**：
+`method.tex` / `results.tex` / `conclusion.tex`。SI 是写作副产品，写进
+`../../manuscript/vN/tex/si.tex`（或 `si/`）。**本目录永远不放 tex 正文。**
 
 ## 产物怎么进来
-- **本 skill 自己产**：paper-plan / data-profile / figN-reading / 四章正文，全由 sci-write 写。
+- **本 skill 自己产**：上面清单里的 working notes，全由 sci-write 写。
 - **从图仓库读**（不复制进来）：sci-write 读 `../sci-draw/figN-report.md` 和 `figN.png`，
-  但**不把它们复制进本目录**——图仓库是图的唯一存放点，避免双份不同步。
-- **人手动**：人可以直接编辑这里的任何 md/tex（修订、补术语）。
+  但**不复制进来**——图仓库是图的唯一存放点。
+- **人手动**：人可以直接编辑这里的 notes（补术语、改 claim）。
 
 ## 谁读它
-人（读/改正文）；未来的润色/投稿 skill（读正文做后续）；external 章节续写者
-（读 paper-plan + 四章作为 Introduction/Abstract 的输入）。
+人（读/改 notes）；sci-story（读 paper-plan + claim + 四章 tex 作为引言/讨论的输入）；
+sci-polish（读术语账本）；submission 阶段（读 claim 定期刊层级）。
 """,
     "sci-submit": """# sci-submit/ — 投稿产物（submission）
 
@@ -143,27 +149,12 @@ workflow-tracking 记录等。
 
 ## 产物怎么进来
 - **本 skill 自己产**：sci-submit 生成 cover letter / response 等。
-- **从 sci-write 读**（不复制）：读 `../sci-write/` 的正文了解论文内容，但正文不复制进来。
+- **从 manuscript/ 读**（不复制）：读 `../../manuscript/v1/`（或当前轮 rN/）的定稿 tex
+  提取核心发现/元数据打包投稿，但正文不复制进来——manuscript/ 是正文唯一存放点。
 - **人手动**：投稿追踪、期刊反馈等人工内容。
 
 ## 谁读它
 人；本 skill 在设计中，文件清单会随设计确定后回填。
-""",
-    "sci-polish": """# sci-polish/ — 润色（预留，策略待定）
-
-## 这个文件夹是什么
-**预留目录**。sci-polish skill 还在设计中，本文件**不预设其策略**。
-
-## 当前状态
-- sci-polish 落盘策略未定（可能直接在 sci-write/ 正文上改 + 靠 git 留痕，
-  也可能独立落盘——等你设计确定）。
-- 在策略定之前，这个目录可以忽略或删除。
-
-## 等策略定后
-- 回填本文件（这个目录是什么 / 有什么用 / 产物怎么进来）。
-- 若决定不占独立目录，删掉本目录即可。
-
-Owner: sci-polish（设计确定后）。
 """,
 }
 
@@ -174,7 +165,8 @@ MANUSCRIPT_CONTRACT = """# manuscript/ — 正式正文（the manuscript, first-
 
 > **这份文件是契约（contract）。** 本目录是项目的**唯一正式正文**，按**审稿轮次**
 > 组织。所有 skill 读它、写它，但都不"拥有"它——正文比任何 skill 都大。具体 tex 模板、
-> 期刊样式由用户决定，init 不预填任何模板内容。
+> 期刊样式由用户决定，init 不预填任何模板内容，**也不预设任何 float/layout 取向**——
+> 排版取向在 typeset/export 阶段才引入。
 
 ## 目录结构（v/r 轮次制）
 
@@ -182,7 +174,12 @@ MANUSCRIPT_CONTRACT = """# manuscript/ — 正式正文（the manuscript, first-
 manuscript/
   CONTRACT.md              ← 本契约
   v1/                     ← 初版（首投的那套稿，一套投多刊）
-    tex/ figures/ ref/    ← 用户决定具体内容/模板
+    tex/                  ← 正文源（sci-write / sci-story 直接写 tex 进来）
+      sections/           ← 分章节 tex（method/results/conclusion/intro/discussion/abstract/...）
+      main.tex            ← preamble + \\input 把各章节织起来
+      si.tex (或 si/)     ← Supplementary Information（sci-write 的副产品）
+      bibliography.bib    ← 参考文献
+    figures/              ← 正文的图（从 ../sci-skills/sci-draw/ 复制来，自含可编译）
     (submission/)         ← 编译出的提交版（可选）
   r1/                     ← 第一轮修回（审稿意见到了，改这一轮）
     tex/                  ← 改后的稿（在 v1 基础上改）
@@ -210,7 +207,7 @@ manuscript/
 ## 什么时候建 r1/r2
 
 init **只建 v1/**，不预建 r1/r2。rN 在**真到了那轮 revision 时**由人（或未来的
-sci-response skill）建——因为没有审稿意见就建空 r1 没意义。建 rN 时照上面的结构。
+sci-revise skill）建——因为没有审稿意见就建空 r1 没意义。建 rN 时照上面的结构。
 
 ## 为什么在项目根、不在 sci-skills/ 下
 
@@ -220,7 +217,11 @@ sci-response skill）建——因为没有审稿意见就建空 r1 没意义。�
 ## 放什么（用户决定具体形式）
 
 常见 LaTeX 项目（仅供参考，**不强制**；仓库 `templates/main/` 有成熟蓝本可复制）：
-- `tex/main.tex` / `tex/sup.tex` — 正文源 + 补充材料
+- `tex/main.tex` — preamble + `\\input` 织起各章节（main.tex 用 `\\input{sections/method}` 织入分章）
+- `tex/sections/*.tex` — 各章节正文（sci-write / sci-story 直接写进这里）
+- `tex/si.tex`（或 `tex/si/`）— Supplementary Information（sci-write 副产品）
+  - 蓝本 `templates/main/tex/sup.tex` 文件名仍叫 `sup.tex`——那是历史命名，语义同 si。
+    新项目用 `si.tex`；复用蓝本时按蓝本名即可，不影响合同。
 - `figures/figN.png` — 正文的图（从 `../sci-skills/sci-draw/` 复制来，保证正文项目自含可独立编译）
 - `ref/bibliography.bib` — 参考文献（用户用 Zotero/Endnote 维护，最终插入是人的活）
 - `Makefile` / `.gitignore` — 编译链 + 忽略中间产物（可选）
@@ -230,15 +231,21 @@ sci-response skill）建——因为没有审稿意见就建空 r1 没意义。�
 
 ## 谁读它 / 谁写它
 
-- **sci-submit**：读 v1/（或当前轮 rN/）提"核心发现/元数据/打包投稿"。它正文的唯一上游。
-- **sci-response**（未来）：建 rN/，在正文上留痕改、产 Response、revision cover letter。
-- **人**：从 `../sci-skills/sci-write/` 的 md 草稿把内容搬进 v1/tex/（搬运是人的活，
-  或未来由独立的 md→tex skill 做）。Zotero 插文献、改 tex 形式、换模板，都是人的活。
-- **init**：只建 `manuscript/` + `v1/` + 本契约，不写任何 tex 内容。
+- **sci-write**：直接写 Method/Results/Conclusion tex 进 `v1/tex/sections/`，
+  副产品 SI 进 `v1/tex/si.tex`。**没有 md 草稿中间层**——tex 从一开始就写在这里。
+- **sci-story**：直接写 Introduction/Discussion/Abstract/Keywords tex 进 `v1/tex/sections/`。
+- **sci-polish**：直接在 `v1/tex/sections/*.tex` 上改措辞、claim、术语（git 留痕）。
+- **sci-typeset**：直接在 `v1/tex/` 上改排版可读性（loose page / stranded heading / 表太宽）。
+- **sci-export**：**只读不写源**——把定稿 tex 复制进 `v1/tex/template-move/` 搬期刊模板，
+  或生成 `v1/manuscript.docx`。源 `v1/tex/` 对它是只读。
+- **sci-submit**：读 v1/（或当前轮 rN/）提"核心发现/元数据/打包投稿"。
+- **人**：Zotero 插文献、改 tex 形式、换模板，都是人的活。修订轮 rN 的设计待
+  sci-revise skill 设计后补。
+- **init**：只建 `manuscript/` + `v1/` + 本契约，不写任何 tex 内容，不预设排版取向。
 
 ## 不放什么
 
-- 不放 sci-write 的 md 草稿（中间产物，留在 `../sci-skills/sci-write/`，内容载体，形式不重要）
+- 不放 sci-write 的 working notes（claim/paper-plan/figN-reading 等，留 `../sci-skills/sci-write/`）
 - 不放画图中间产物（留在 `../sci-skills/sci-draw/`，只把成品图复制进 figures/）
 - 不放投稿产物（cover letter/history 等留在 `../sci-skills/sci-submit/`）
 - 不按期刊分顶层目录（期刊维度归 submit-history）

@@ -72,29 +72,59 @@ directory contract is honored.
 
 | Directory | Role | Key contract file | Producer | Consumer |
 |---|---|---|---|---|
-| `manuscript/` | official manuscript (first-class) | v1/rN round dirs + tex/figures/ref | human (or future md→tex skill) | sci-submit, sci-response |
+| `manuscript/` | official manuscript (first-class) | v1/rN round dirs + tex/figures/ref | sci-write, sci-story, sci-polish, sci-typeset (all write tex here) | sci-submit, sci-export (read-only) |
 | `sci-draw/` | figure warehouse (neutral) | `figN-report.md` (6 sections) + `figN.png` | any source (skill/manual/copy) | sci-write, human (copies into manuscript/figures/) |
-| `sci-write/` | writing intermediate products | `paper-plan.md`, `data-profile.json`, `figN-reading.md`, md drafts | sci-write | human (moves content into manuscript/tex/) |
+| `sci-write/` | writing working notes (process metadata only) | `paper-plan.md`, `data-profile.json`, `figN-reading.md`, `claim.md`, `terminology-ledger.md` | sci-write (notes); tex goes straight to manuscript/ | sci-story, sci-polish, sci-submit |
 | `sci-submit/` | submission products | (filled in once design settles) | sci-submit | human |
+
+`sci-story`, `sci-polish`, `sci-typeset`, `sci-export` have **no pre-built directory**
+under `sci-skills/` — they write tex directly into `manuscript/` (story/polish/typeset)
+or only read `manuscript/` (export). They are not in the `BROTHER_SKILLS` list.
 
 ## Cross-directory data flow
 
 Skills do **not** copy each other's products (avoids divergent duplicates). They
 read neighbors:
 
-- sci-write reads `../sci-draw/figN-report.md` and `figN.png`, but does **not**
-  copy them into `sci-write/`. sci-write only produces md drafts (content
-  carriers); it does **not** touch `manuscript/` — moving content into
-  `manuscript/v1/tex/` is the human's job (or a future md→tex skill).
-- sci-submit reads `../manuscript/` to extract findings/metadata/pack, but does
-  **not** copy the manuscript into `sci-submit/`. The manuscript is its sole
-  upstream (it does not read sci-write/'s drafts — the manuscript is the
+- **sci-write** writes tex **directly into `manuscript/vN/tex/sections/`**
+  (method/results/conclusion.tex) and `manuscript/vN/tex/si.tex` (SI by-product).
+  It reads `../sci-draw/figN-report.md` + `figN.png` but does **not** copy them
+  into `sci-write/` — the figure warehouse is the single home for figures.
+  `sci-skills/sci-write/` holds only **working notes** (claim, paper-plan,
+  data-profile, figN-reading, sup-list, terminology-ledger) — process metadata,
+  never tex. **There is no md→tex conversion step and no md→manuscript move.**
+- **sci-story** writes Introduction/Discussion/Abstract/Keywords tex **directly
+  into `manuscript/vN/tex/sections/`**. It reads sci-write's working notes
+  (`claim.md`, `paper-plan.md`) + sci-write's tex (`results.tex`, `method.tex`)
+  as input. No separate directory.
+- **sci-polish** edits `manuscript/vN/tex/sections/*.tex` in place — prose only
+  (wording, claim, terminology). git history is the audit trail. No separate
+  directory; co-owns `sci-skills/sci-write/terminology-ledger.md` with sci-write
+  and sci-story.
+- **sci-typeset** edits `manuscript/vN/tex/` in place — readability typesetting
+  only (loose pages, stranded headings, oversized tables). Compiles to PDF.
+  No separate directory.
+- **sci-export** reads `manuscript/vN/tex/` **read-only** and writes to a **copy**
+  (`manuscript/vN/tex/template-move/` for journal-template move) or a new file
+  (`manuscript/vN/manuscript.docx` for tex→docx). Never edits the source.
+  Float strategy (end/inline/two-phase/IEEE-strict) is decided here per journal
+  convention — not preset at write/story/polish time.
+- **sci-submit** reads `../manuscript/` to extract findings/metadata/pack, but
+  does **not** copy the manuscript into `sci-submit/`. The manuscript is its sole
+  upstream (it does not read sci-write/'s working notes — the manuscript is the
   source of truth).
 - The human **copies** finished figures from `../sci-skills/sci-draw/` into
   `manuscript/v1/figures/` (copy, not symlink — symlinks break across machines
   and when packaging) so the manuscript project is self-contained and compiles.
-- `manuscript/` is the single home for the official manuscript; `sci-draw/` is
-  the source figure warehouse; `sci-write/` is the draft/intermediate zone.
+- `manuscript/` is the single home for the official manuscript and its tex;
+  `sci-draw/` is the source figure warehouse; `sci-write/` is the working-notes
+  zone (process metadata only — tex lives in manuscript/).
+
+Data flow is **one-directional** downstream of polish:
+`write/story → polish → typeset → export`. typeset and export do **not** write
+back — they consume the finalized tex and produce a formatted artifact. The only
+bidirectionally shared file is `sci-skills/sci-write/terminology-ledger.md`
+(co-owned by write/story/polish).
 
 Each skill minds its own dir, reads neighbors, writes its own. This is the
 material basis of "read neighbors, don't orchestrate."
@@ -102,17 +132,31 @@ material basis of "read neighbors, don't orchestrate."
 ## Naming conventions
 
 - Figures: `fig1`, `fig2`, ... (`figN` prefix across .py/.md/.pdf/.png/-description.md).
-- Writing sections: `method` / `results` / `discussion` / `conclusion` (md drafts in sci-write/).
-- Intermediate products: `data-profile.json`, `paper-plan.md`, `figN-reading.md` — fixed names, recognized across skills.
+- Writing sections: `method` / `results` / `conclusion` (data-driven, by sci-write)
+  + `intro` / `discussion` / `abstract` / `keywords` (narrative, by sci-story).
+  All are `.tex` files in `manuscript/vN/tex/sections/` — no md drafts anymore.
+- SI: `si.tex` (or `si/` subdir) in `manuscript/vN/tex/`. The reference blueprint
+  `templates/main/tex/sup.tex` keeps the legacy `sup.tex` name — semantically
+  the same; new projects use `si.tex`, blueprint copy keeps `sup.tex`.
+- Working notes: `claim.md`, `paper-plan.md`, `data-profile.json`, `figN-reading.md`,
+  `sup-list.md`, `terminology-ledger.md` — fixed names in `sci-skills/sci-write/`,
+  recognized across skills.
 
 ## Evolution rules
 
-- **Add a new sibling skill**: add it to `BROTHER_SKILLS` + `SKILL_DIR_GUIDES`
-  in `scripts/init_project.py`, write its `CONTRACT.md` contract. Next `init`
-  pre-builds its dir. Only add skills whose design is settled.
-- **Change a directory's contract**: edit its `CONTRACT.md`. All skills honoring
-  the contract adapt automatically (they read the contract, not implementations).
-- **sci-polish**: strategy TBD, dir not pre-built. Add it + its contract once decided.
+- **Add a new sibling skill**: add it to `BROTHER_SKILLS` +
+  `SKILL_DIR_CONTRACTS` in `scripts/init_project.py`, write its `CONTRACT.md`
+  contract. Next `init` pre-builds its dir. Only add skills whose design is
+  settled **and** that need their own output directory. Skills that write
+  directly into `manuscript/` (sci-story, sci-polish, sci-typeset) or only read
+  `manuscript/` (sci-export) do **not** get a pre-built dir.
+- **Change a directory's contract**: edit its `CONTRACT.md` (the text in
+  `SKILL_DIR_CONTRACTS` / `MANUSCRIPT_CONTRACT` in `init_project.py`; existing
+  projects get it retroactively on next `init` since the script fills missing
+  contracts). All skills honoring the contract adapt automatically.
+- **sci-revise**: design deferred. A revision-round skill is planned but its
+  workflow is not designed yet — the user will do one real revision pass first,
+  then design it. Do not spec it speculatively.
 
 ## Decoupling self-check
 

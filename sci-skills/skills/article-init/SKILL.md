@@ -106,7 +106,7 @@ The script never moves user files. Determinism belongs to the script (init/check
 
 ## Sibling dirs
 
-Pre-built (design settled): `sci-draw`, `sci-write`, `sci-submit`. `sci-polish` and `sci-typeset` are not pre-built (zero output dir — both edit manuscript tex directly).
+Pre-built (design settled, own output dirs): `sci-draw`, `sci-write`, `sci-submit`. Not pre-built: `sci-story`, `sci-polish`, `sci-typeset` (write tex directly into `manuscript/`, zero own output dir), and `sci-export` (reads `manuscript/` read-only, writes a copy — no own output dir).
 
 ## Privacy
 

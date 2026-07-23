@@ -1,8 +1,9 @@
 # Article skill redesign — design note
 
-Status: **design aligned, not yet implemented.** Recorded 2026-07-24.
-This documents a planned refactor of the article skill family. Do not treat the
-current SKILL.md files as matching this design until the refactor is done.
+Status: **implemented (batches 1–4).** Recorded 2026-07-24; implemented 2026-07-23.
+This documents a refactor of the article skill family. D1–D5 and migration
+tasks 1–7 are done; the SKILL.md files now match this design. Deferred items
+(docx standard template, sci-revise skill) are tracked in Open questions.
 
 ## Motivation
 
@@ -160,6 +161,17 @@ shared files between typeset/export and the upstream skills.
    orientation. Layout orientation is introduced at typeset/export time.
    Confirm the scaffold writes tex section stubs directly into
    `manuscript/vN/tex/` (aligned with D5), not into `sci-skills/sci-write/`.
+   → **RESOLVED (batch 4):** MANUSCRIPT_CONTRACT now states init does not
+   preset float/layout orientation and describes tex-direct authoring
+   (sci-write/sci-story write tex into `manuscript/vN/tex/sections/`); the
+   sci-write CONTRACT is rewritten as working-notes-only (no tex lands there);
+   sci-submit CONTRACT reads manuscript/ (not sci-write notes); the dead
+   sci-polish CONTRACT entry is removed; family-layout.md's data-flow,
+   naming, and evolution sections updated for the tex-direct model.
+   `templates/main/tex/sup.tex` keeps its legacy name (deep blast radius:
+   Makefile + naturetex.sty `supp` toggle + ref_converter.py hardcode + all
+   `sup.` labels) — new projects use `si.tex`, blueprint copies keep `sup.tex`;
+   the contract notes both are the same thing.
 
 ## Open questions (resolve at implementation time)
 
