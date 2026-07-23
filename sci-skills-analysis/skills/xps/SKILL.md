@@ -348,7 +348,18 @@ python scripts/state.py set-region "<label>" --status done
 ```
 
 ### 3.4 生成可复现脚本
-把加载+校准+基线+拟合+出图+导出写成独立脚本 `<dir>/fit_<label>.py`，跑一遍重现相同结果。
+
+**脚本不自调用 skill 的任何 py 文件——它只依赖 `fit.json` + `lmfit`。** Skill 会更新，但你的脚本永远能跑。
+
+核心逻辑（写在 `<dir>/fit_<label>.py`）：
+1. 从 `fit.json` 读 `energies`、`peaks[]`（center/sigma/amplitude/fraction）、`peak_function`
+2. 用 `lmfit` 重建模型、设参数到拟合结果的值
+3. `model.eval()` 求值 → 得 envelope + components
+4. `matplotlib` 出图
+
+不需要重跑校准、基线扣除、拟合——那些结果已经在 `fit.json` 里了。复现的意思是"同样的参数 → 同样的线和组分"，不是"重跑整个 pipeline"。
+
+脚本模板见 `references/reproducible-script-template.py`。生成时把模板复制到 `<dir>/fit_<label>.py`，填入 `fit.json` 路径和 `region_label` 即可。跑完验证：生成的图跟 `fit_<label>.png` 一致。
 
 ---
 
