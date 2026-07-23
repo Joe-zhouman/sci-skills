@@ -29,3 +29,8 @@
 ## 基体效应（结合能不是绝对的）
 
 XPS 结合能不是绝对的——基体效应（matrix effects）可以让同一化学态在不同材料中偏移 0.5–1.0 eV。查 NIST 时找与你的样品体系最接近的，别直接套用无关体系的 BE。这也是校准要结合已知化学态、而非只看一个孤立峰的原因。
+
+## 更新路径
+
+- 内标 BE 值以 NIST SRD 20 为准：<https://srdata.nist.gov/xps/> ——脚本 `lookup_be.py` 可直接查，但表中值是文献共识，稳定不变
+- Gengenbach (2022) C 1s 校准批评见原始论文：Gengenbach et al., *Appl. Surf. Sci.* 606, 154855 — 后续如有更新的 ISO/ASTM 校准标准，以此论文的引用链为准

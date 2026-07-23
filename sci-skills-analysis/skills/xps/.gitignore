@@ -1,0 +1,4 @@
+# Reference papers (PDFs) and their extracted text (PDF→MD).
+# Locally available for data extraction, not redistributable.
+# Extract facts (parameter tables, formulas) into references/*.md with DOI citations.
+/_papers/

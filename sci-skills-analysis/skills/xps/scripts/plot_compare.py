@@ -25,18 +25,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from _cli import eprint, add_format_arg, load_json
-
-PEAK_COLORS = [
-    "#C44E52", "#4C72B0", "#55A868", "#C48A3F",
-    "#8172B2", "#64B4CD", "#CCB974", "#8C8C8C",
-]
-
-
-def _build_color_map(all_species: list[str]) -> dict[str, str]:
-    """Assign consistent colors to species across all panels."""
-    # Sort so the same species always gets the same color
-    unique = list(dict.fromkeys(all_species))  # preserve order, deduplicate
-    return {s: PEAK_COLORS[i % len(PEAK_COLORS)] for i, s in enumerate(unique)}
+from _plot import draw_spectrum, build_color_map, save_both
 
 
 def plot_compare(spectra: list[dict], out_path: str,
@@ -80,7 +69,7 @@ def plot_compare(spectra: list[dict], out_path: str,
 
         loaded.append(result)
 
-    color_map = _build_color_map(all_species)
+    color_map = build_color_map(all_species)
     n = len(loaded)
 
     fig = plt.figure(figsize=(7, 2.2 * n))
@@ -88,55 +77,11 @@ def plot_compare(spectra: list[dict], out_path: str,
 
     for idx, spec in enumerate(loaded):
         ax = fig.add_subplot(gs[idx])
-        energies = spec["energies"]
-        bg = spec["bg"]
 
-        # Raw data
-        if "counts_raw" in spec:
-            ax.plot(energies, spec["counts_raw"], ".",
-                    color="0.35", markersize=2.5, alpha=0.6, zorder=1)
-
-        # Background
-        if bg is not None:
-            ax.plot(energies, bg, "--", color="0.45", linewidth=0.6, zorder=2)
-
-        # Component peaks
-        for pk in spec["peaks"]:
-            prefix = pk["prefix"]
-            color = color_map[pk["label"]]
-            if prefix in spec["components"]:
-                comp_y = np.array(spec["components"][prefix])
-                if bg is not None:
-                    comp_y = comp_y + bg
-                baseline = bg if bg is not None else np.zeros_like(energies)
-                ax.fill_between(energies, baseline, comp_y,
-                                alpha=0.25, color=color, linewidth=0, zorder=3)
-                ax.plot(energies, comp_y, color=color, linewidth=0.7, zorder=4)
-
-        # Envelope
-        env = spec["envelope"] + bg if bg is not None else spec["envelope"]
-        ax.plot(energies, env, "-", color="0.15", linewidth=1.0, zorder=5)
-
-        # Species labels — find components that are prominent enough to label
-        # Label at the peak of each component, but only if its max > 15% of envelope max
-        env_max = np.max(env)
-        for pk in spec["peaks"]:
-            prefix = pk["prefix"]
-            color = color_map[pk["label"]]
-            if prefix in spec["components"]:
-                comp_y = np.array(spec["components"][prefix])
-                if bg is not None:
-                    comp_y = comp_y + bg
-                if np.max(comp_y - (bg if bg is not None else 0)) < 0.10 * env_max:
-                    continue  # skip tiny components
-                center_idx = np.argmax(comp_y)
-                cx, cy = energies[center_idx], comp_y[center_idx]
-                ax.annotate(
-                    pk["label"],
-                    xy=(cx, cy), fontsize=8.5, color=color, fontweight="bold",
-                    ha="center", va="bottom",
-                    xytext=(0, 5), textcoords="offset points",
-                )
+        # Shared spectrum stack — color_map keeps species colors consistent across panels.
+        draw_spectrum(ax, spec["energies"], spec.get("counts_raw"), spec["bg"],
+                      spec["envelope"], spec["peaks"], spec["components"],
+                      color_map=color_map)
 
         # Sample label on the right
         ax.text(0.98, 0.92, spec["label"], transform=ax.transAxes,
@@ -144,7 +89,7 @@ def plot_compare(spectra: list[dict], out_path: str,
                 bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
                           edgecolor="0.7", alpha=0.85))
 
-        ax.set_xlim(max(energies), min(energies))
+        ax.set_xlim(max(spec["energies"]), min(spec["energies"]))
         ax.set_ylabel("Intensity", fontsize=8)
         ax.tick_params(labelsize=7)
         # Remove y ticks for offset comparison
@@ -159,10 +104,8 @@ def plot_compare(spectra: list[dict], out_path: str,
         fig.suptitle(title, fontsize=12, y=0.995, fontweight="bold")
 
     fig.tight_layout(pad=0.5)
-
     base = out_path.rsplit(".", 1)[0] if "." in out_path else out_path
-    fig.savefig(f"{base}.pdf", dpi=150, bbox_inches="tight")
-    fig.savefig(f"{base}.png", dpi=150, bbox_inches="tight")
+    save_both(fig, base)
     plt.close(fig)
 
     # Return fit summaries for terminal printing

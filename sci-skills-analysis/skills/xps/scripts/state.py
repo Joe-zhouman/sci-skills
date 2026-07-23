@@ -12,6 +12,7 @@ Subcommands:
   add-evidence  Copy an external file into evidence/ and append to state.evidence.
   set-region    Create a region subdir and/or advance its status
                 (explored → fitting → done).
+  set-rsf       Record RSF source for atom% quantification (user / scofield).
 
 report.md is NOT generated here — that's narrative, the LLM's job per
 references/report-template.md. This script only keeps the structured state
@@ -44,6 +45,7 @@ def _empty_state() -> dict:
         "claim": "",
         "created": date.today().isoformat(),
         "updated": date.today().isoformat(),
+        "rsf": None,
         "evidence": [],
         "regions": [],
         "comparisons": [],
@@ -127,6 +129,7 @@ def cmd_status(args) -> dict:
         "action": "status",
         "workdir": WORKDIR,
         "claim": state.get("claim", "") or "(not set)",
+        "rsf": _summarize_rsf(state.get("rsf")),
         "n_evidence": len(state.get("evidence", [])),
         "evidence_techniques": [e.get("technique", "?")
                                  for e in state.get("evidence", [])],
@@ -142,6 +145,8 @@ def _suggest_next(state: dict) -> list[str]:
     steps = []
     if not state.get("claim"):
         steps.append("claim not set — ask the user what XPS should prove (Step 0)")
+    if not state.get("rsf"):
+        steps.append("RSF not set — ask the user if they have instrument RSF table; if not, fall back to Scofield (Step 0)")
     regions = state.get("regions", [])
     if not regions:
         steps.append("no regions loaded — load data + run find_peaks (Phase 1)")
@@ -153,6 +158,46 @@ def _suggest_next(state: dict) -> list[str]:
     if regions and all(r.get("status") == "done" for r in regions):
         steps.append("all regions done — generate report.md (Phase 3)")
     return steps
+
+
+def _summarize_rsf(rsf: dict | None) -> dict:
+    if not rsf:
+        return {"status": "not_set"}
+    return {
+        "status": rsf.get("source", "?"),
+        "source": rsf.get("source", "?"),
+        "file": rsf.get("file"),
+        "notes": rsf.get("notes", ""),
+    }
+
+
+def cmd_set_rsf(args) -> dict:
+    """Record RSF source in state.json."""
+    state = _load_state()
+    rsf = {"source": args.source, "file": None, "notes": args.notes or ""}
+
+    if args.file:
+        src = args.file
+        if not os.path.exists(src):
+            die({
+                "type": "io_error", "subtype": "file_not_found",
+                "param": "file",
+                "message": f"RSF file not found: {src}",
+                "hint": "check the path",
+            })
+        # copy RSF file into workdir for persistence
+        rsf_dir = os.path.join(WORKDIR, "user_rsf")
+        if not os.path.exists(rsf_dir):
+            os.makedirs(rsf_dir)
+        name = os.path.basename(src)
+        dest = os.path.join(rsf_dir, name)
+        if os.path.abspath(src) != os.path.abspath(dest):
+            shutil.copy2(src, dest)
+        rsf["file"] = os.path.relpath(dest, WORKDIR)
+
+    state["rsf"] = rsf
+    _save_state(state)
+    return {"action": "set-rsf", "rsf": state["rsf"]}
 
 
 def cmd_add_evidence(args) -> dict:
@@ -292,6 +337,17 @@ def main():
                        help="allow status regression (e.g. re-open a done region)")
     p_reg.set_defaults(func=cmd_set_region)
     add_format_arg(p_reg)
+
+    p_rsf = sub.add_parser("set-rsf", help="record RSF source for atom% quantification")
+    p_rsf.add_argument("--source", "-s", required=True,
+                       choices=["user", "scofield"],
+                       help="RSF source: 'user' for instrument-provided, 'scofield' for theoretical fallback")
+    p_rsf.add_argument("--file", "-f", default=None,
+                       help="path to user-provided RSF table (copied into workdir)")
+    p_rsf.add_argument("--notes", default=None,
+                       help="e.g. 'Thermo Avantage default RSF for K-Alpha'")
+    p_rsf.set_defaults(func=cmd_set_rsf)
+    add_format_arg(p_rsf)
 
     args = parser.parse_args()
     result = args.func(args)

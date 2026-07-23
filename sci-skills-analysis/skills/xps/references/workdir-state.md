@@ -4,14 +4,15 @@
 
 ## state.py —— state.json 的唯一管理者
 
-state.json **不手写编辑**。`scripts/state.py` 四个子命令覆盖所有操作：
+state.json **不手写编辑**。`scripts/state.py` 五个子命令覆盖所有操作：
 
 | 子命令 | 干什么 |
 |---|---|
 | `state.py init` | 建工作目录树 + 空 state.json（幂等：已存在不动） |
-| `state.py status` | 读 state.json，报告 region 进度 + evidence + 下一步建议 |
+| `state.py status` | 读 state.json，报告 region 进度 + evidence + RSF 状态 + 下一步建议 |
 | `state.py set-region <label> --status <s>` | 建 region 子目录 + 推进状态（explored→fitting→done，不可逆除非 `--force`） |
 | `state.py add-evidence <file> -t <tech> -d <desc> -n <name>` | 复制文件到 evidence/ + 追加到 state.evidence |
+| `state.py set-rsf --source <user\|scofield> [--file <path>]` | 记录 RSF 来源；user 模式下复制 RSF 文件到 workdir |
 
 工作目录固定 `<cwd>/sci-skills/sci-analysis/xps/`。原子写（temp+rename），崩了不会写坏 state.json。`status` 的 `next_steps` 是启发式提示（claim 缺没、region 卡哪、是否该收尾），非强制——你判断。
 
@@ -24,6 +25,11 @@ report.md 不由 state.py 生成——那是叙事，你按 `references/report-t
   "claim": "证明改性后 Si₃N₄ 成为主要相，Si⁰ 减少",
   "created": "2026-07-22",
   "updated": "2026-07-22",
+  "rsf": {
+    "source": "scofield",
+    "file": null,
+    "notes": "用户没有仪器 RSF，使用理论 Scofield 值"
+  },
   "evidence": [
     {
       "technique": "XRD",
@@ -55,6 +61,7 @@ report.md 不由 state.py 生成——那是叙事，你按 `references/report-t
 ## 字段
 
 - `claim` — 整个分析的叙事核心。每次修改就回到第二阶段重新审视。
+- `rsf` — RSF 来源。`{"source": "user", "file": "user_rsf/…csv"}` 或 `{"source": "scofield", "file": null}`。Step 0 问完立刻 set-rsf 落盘。`null` = 还没问。`quantify.py --rsf-source auto` 读这里决定用哪套。
 - `evidence` — 其他表征手段列表，空数组 = 没有。**每次用户提到新证据，主动追加。**
 - `regions` — 已加载/已开始分析的光谱区域。status: `explored` → `fitting` → `done`。
 - `comparisons` — 对比图，跨 region 引用。

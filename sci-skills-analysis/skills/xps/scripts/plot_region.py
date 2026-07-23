@@ -16,11 +16,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from _cli import eprint, add_format_arg, load_json
-
-PEAK_COLORS = [
-    "#C44E52", "#4C72B0", "#55A868", "#C48A3F",
-    "#8172B2", "#64B4CD", "#CCB974", "#8C8C8C",
-]
+from _plot import draw_spectrum, save_both
 
 
 def plot_region(fit_result: dict, out_path: str, title: str | None = None):
@@ -34,50 +30,7 @@ def plot_region(fit_result: dict, out_path: str, title: str | None = None):
     # Flat single panel — wide, not tall
     fig, ax = plt.subplots(figsize=(7, 2.8))
 
-    # Raw data
-    ax.plot(energies, counts_raw, ".",
-            color="0.35", markersize=2.5, alpha=0.6, zorder=1)
-
-    # Background
-    if bg is not None:
-        ax.plot(energies, bg, "--", color="0.45", linewidth=0.7, zorder=2)
-
-    # Component peaks (filled)
-    for i, pk in enumerate(peaks):
-        prefix = pk["prefix"]
-        color = PEAK_COLORS[i % len(PEAK_COLORS)]
-        if prefix in components:
-            comp_y = np.array(components[prefix])
-            if bg is not None:
-                comp_y = comp_y + bg
-            baseline = bg if bg is not None else np.zeros_like(energies)
-            ax.fill_between(energies, baseline, comp_y,
-                            alpha=0.25, color=color, linewidth=0, zorder=3)
-            ax.plot(energies, comp_y, color=color, linewidth=0.7, zorder=4)
-
-    # Envelope
-    env_plot = envelope + bg if bg is not None else envelope
-    ax.plot(energies, env_plot, "k-", linewidth=1.0, zorder=5)
-
-    # Species labels at peak maxima
-    env_max = np.max(env_plot)
-    for i, pk in enumerate(peaks):
-        prefix = pk["prefix"]
-        color = PEAK_COLORS[i % len(PEAK_COLORS)]
-        if prefix in components:
-            comp_y = np.array(components[prefix])
-            if bg is not None:
-                comp_y = comp_y + bg
-            if np.max(comp_y - (bg if bg is not None else 0)) < 0.08 * env_max:
-                continue
-            center_idx = np.argmax(comp_y)
-            cx, cy = energies[center_idx], comp_y[center_idx]
-            ax.annotate(
-                pk["label"],
-                xy=(cx, cy), fontsize=9, color=color, fontweight="bold",
-                ha="center", va="bottom",
-                xytext=(0, 5), textcoords="offset points",
-            )
+    draw_spectrum(ax, energies, counts_raw, bg, envelope, peaks, components)
 
     ax.set_ylabel("Intensity (counts)", fontsize=9)
     ax.set_xlabel("Binding Energy (eV)", fontsize=9)
@@ -91,10 +44,8 @@ def plot_region(fit_result: dict, out_path: str, title: str | None = None):
     ax.set_title(label, fontsize=11, loc="left")
 
     fig.tight_layout(pad=0.3)
-
     base = out_path.rsplit(".", 1)[0] if "." in out_path else out_path
-    fig.savefig(f"{base}.pdf", dpi=150, bbox_inches="tight")
-    fig.savefig(f"{base}.png", dpi=150, bbox_inches="tight")
+    save_both(fig, base)
     plt.close(fig)
 
     # Return fit summary for printing separately (not on the figure)
