@@ -2,3 +2,5 @@
 # Locally available for data extraction, not redistributable.
 # Extract facts (parameter tables, formulas) into references/*.md with DOI citations.
 /_papers/
+tests/data
+tests/output
