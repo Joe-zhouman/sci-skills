@@ -6,12 +6,11 @@ description: >-
   the figure warehouse and writing drafts before editing to preserve
   claim/evidence consistency. Covers polish, restructure, and Chinese-to-English translation of academic/scientific manuscript text —
   abstracts, introductions, results, discussions, conclusions, titles, methods
-  sections, or full drafts. Also covers LaTeX layout/typesetting fixes (float
-  placement, stranded headings, loose pages). Triggers on: polish my paper,
+  sections, or full drafts. Triggers on: polish my paper,
   revise this paragraph, edit manuscript, proofread, academic writing, scientific
   writing, SCI paper, English polishing, language editing, Chinese-to-English
   academic translation, 学术写作、科研写作、论文润色、SCI写作、英文论文润色、润色、
-  改写、学术英语、翻译、排版.
+  改写、学术英语、翻译.
 ---
 
 # sci-polish
@@ -19,6 +18,12 @@ description: >-
 Polish academic manuscript prose directly in `manuscript/vN/tex/`. Git tracks every
 change; commit messages carry the diagnosis and revision summary. No separate polish
 output directory — the manuscript is both source and output.
+
+**Prose only.** This skill handles wording, paragraph/section structure, claim/evidence
+consistency, terminology, and language. It does NOT handle LaTeX layout, float
+placement, page-fill, or typesetting — that is `sci-typeset`'s job. When the user asks
+for layout/typesetting fixes (stranded headings, loose pages, "Float too large", float
+placement), route them to `sci-typeset`.
 
 ## Layout & boundaries
 
@@ -206,10 +211,11 @@ read `claim.md` again and compare.
 reconstruct logical links, then apply English rules. Do not translate
 clause-by-clause. See `references/language-guide.md` for the full workflow.
 
-**For LaTeX layout requests:** skip the prose axes and load
-`references/latex-layout.md` directly. That file is self-contained — diagnosis
-workflow, float patterns, and the "regenerate wide figures taller at the source"
-rule. Always compile and visually inspect before and after.
+**LaTeX layout / typesetting requests are out of scope.** Float placement,
+stranded headings, loose pages, "Float too large", multi-panel arrangement,
+SI structure — these belong to `sci-typeset`, not this skill. Tell the user:
+"That's a typesetting concern — invoke `sci-typeset`." Don't load a layout
+reference here; the layout reference now lives under `sci-typeset`.
 
 **Core rules:** language serves argument. Don't invent data, references, or claims. Don't alter quantitative values. Enforce the terminology ledger. Avoid em dashes.
 
@@ -260,7 +266,6 @@ Each polish round is one commit. `git log -- manuscript/vN/tex/` is the polish h
 
 **On-demand only** (load when the user explicitly asks or the text needs it):
 - `references/phrasebank.md` — hedging, transition, evidence, limitation phrases
-- `references/latex-layout.md` — LaTeX float placement, page layout, typesetting
 
 ## Active interception
 
@@ -290,7 +295,6 @@ Respect the user's final decision, but leave a clear record of the warning.
 | `references/paper-types.md` | Paper type matters for architecture — research/methods/hypothesis/algorithmic/review playbooks |
 | `references/style-guardrails.md` | Every job — academic register, articles, numbers/units, overclaim checklist, integrity rules |
 | `references/phrasebank.md` | On demand — evidence verbs, transition families, hedging, limitation language, future-work patterns |
-| `references/latex-layout.md` | On demand — float placement, page fill, stranded headings, multi-panel arrangement, SI structure, diagnosis workflow |
 
 ## Boundaries
 

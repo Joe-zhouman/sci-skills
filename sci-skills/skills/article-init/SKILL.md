@@ -25,9 +25,10 @@ procedures, references, and guardrails that prevent specific failures.
 | 画图 / plot / figure / chart / 数据可视化 / revise figure | `sci-draw` |
 | 写论文 / write results / method / conclusion / 从数据写正文 | `sci-write` |
 | 写引言 / 写讨论 / 写摘要 / write introduction / discussion / abstract | `sci-story` |
-| 润色 / polish / revise paragraph / proofread / 翻译 / 排版 / LaTeX layout | `sci-polish` |
+| 润色 / polish / revise paragraph / proofread / 翻译 | `sci-polish` |
+| 排版 / typeset / LaTeX layout / float placement / stranded heading / 图飘了 / 表太宽 / 空页 / compile PDF | `sci-typeset` |
 | 投稿 / submit / cover letter / 选期刊 / 被拒转投 / 投稿追踪 | `sci-submit` |
-| 导出 / export / md转tex / tex转Word / md→tex / tex→docx | `sci-export` |
+| 导出 / export / 搬模板 / 换期刊模板 / tex转Word / tex→docx | `sci-export` |
 | 初始化 / init / 建目录 / scaffold / checkup / 迁移老项目 | (this skill) |
 
 ## Layout it builds
@@ -105,7 +106,7 @@ The script never moves user files. Determinism belongs to the script (init/check
 
 ## Sibling dirs
 
-Pre-built (design settled): `sci-draw`, `sci-write`, `sci-submit`. `sci-polish` is not pre-built (zero output dir — it edits manuscript tex directly).
+Pre-built (design settled): `sci-draw`, `sci-write`, `sci-submit`. `sci-polish` and `sci-typeset` are not pre-built (zero output dir — both edit manuscript tex directly).
 
 ## Privacy
 

@@ -1,6 +1,16 @@
 # LaTeX Layout & Typesetting
 
-Self-contained reference for LaTeX figure/table placement and page layout. When the user asks to fix placement rather than wording — loose pages, stranded headings, float placement, "Float too large", multi-panel arrangement, sparse Supplementary Information — skip the prose axes and use this file directly.
+Self-contained reference for LaTeX figure/table placement and page layout. When the user asks to fix placement rather than wording — loose pages, stranded headings, float placement, "Float too large", multi-panel arrangement, sparse Supplementary Information — use this file directly.
+
+## Scope — who reads what
+
+This file serves two skills with different concerns. **It has not yet been split into two files** — when you edit, keep the scope split in mind:
+
+- **`sci-typeset` (this skill's home)** owns **readability typesetting on our template**: loose pages, stranded headings, oversized tables, "Float too large", multi-panel arrangement within a page, SI structure. Uses: § Float placement tuning, § Common problems, § Multi-panel figures, § Supplementary Information, § "Regenerate wide figures taller at the source" rule. **Does NOT decide float *strategy* (where floats go document-wide)** — that depends on the target journal, not our template.
+
+- **`sci-export` (separate skill, template-move time)** owns **float strategy per the target journal's convention** (floats at end / inline / two-phase). Uses: § Complete journal reference, § Strategy summary, § Float at end (Figure/Table patterns), § Traditional inline float placement (specifiers by template). This is the journal-orientation concern, surfaced when moving the finalized tex into a target journal template.
+
+Rule of thumb: "is this float in the right *place in the document*?" → export (journal strategy). "does this page look right / is this float too big / is this heading stranded?" → typeset (readability).
 
 ## Complete journal reference
 
