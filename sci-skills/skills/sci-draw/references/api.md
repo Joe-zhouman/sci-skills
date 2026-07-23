@@ -384,11 +384,11 @@ def make_heatmap(ax, matrix, x_labels=None, y_labels=None,
 
 ## finalize_figure → use export_figure
 
-For export, use `scripts/export_figure.py` directly:
+`export_figure()` and `add_panel_labels()` should be **inlined** into the product `figN.py` script — do not import them from `scripts/` in the generated script (see SKILL.md Step 4, "Self-contained plotting scripts"). The snippets in `scripts/export_figure.py` and `scripts/layout_tools.py` are the source of truth you copy from.
+
+Inlined in `figN.py`:
 
 ```python
-from scripts.export_figure import export_figure
-
 paths = export_figure(
     fig,
     basename="figs/fig1",
@@ -399,11 +399,9 @@ paths = export_figure(
 )
 ```
 
-For layout cleanup before export, use `scripts/layout_tools.py`:
+For layout cleanup before export, inline the few lines or the `add_panel_labels` helper:
 
 ```python
-from scripts.layout_tools import finalize_figure, add_panel_labels
-
 finalize_figure(fig)                  # constrained_layout or tight_layout fallback
 add_panel_labels(fig, style="nature") # a/b/c aligned labels
 ```

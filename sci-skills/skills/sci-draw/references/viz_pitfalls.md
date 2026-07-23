@@ -295,7 +295,10 @@ sns.stripplot(data=df, x='group', y='value', color='black',
 3. **导出前用程序自检兜底**：`visual_qa.audit_layout(fig)` 会同时拦截 matplotlib 的 warning 与 logging 两条通道，**任何缺字直接判 FAIL**，把方框挡在导出之前。
 4. 不确定系统有哪些中文字体：`python scripts/setup_style.py --list-fonts`。
 
+下面这段是**开发期交互检查**（在 REPL 里跑，确认有没有缺字），不是产物 `figN.py` 的模板。产物脚本里 style 要内联（见 SKILL.md Step 4），`visual_qa` 这类审计工具不进产物脚本：
+
 ```python
+# 开发期交互检查 —— 不写进 figN.py
 from setup_style import setup_style
 from visual_qa import audit_layout, print_report
 
@@ -349,11 +352,14 @@ for ax, lab in zip(axes.flat, 'abcd'):
 **正确做法**：用 `layout_tools.add_panel_labels()` —— 它把标签锚在每个子图的 `axes fraction (0,1)`（左上角）再施加**统一的 points 偏移**。因为同列子图左边缘 figure-x 相同、同行子图上边缘 figure-y 相同，统一偏移后**所有标签横看一条线、竖看一条线**，且不受各子图 y 轴刻度宽度影响：
 
 ```python
-# ✓ 正解：一行搞定，自动对齐 + 风格统一
-from layout_tools import finalize_figure, add_panel_labels
+# ✓ 正解：在产物 figN.py 里，add_panel_labels 内联进来（见 SKILL.md Step 4 模板）；
+#    finalize_figure 用 matplotlib 原生 tight_layout/constrained_layout 替代
+from layout_tools import finalize_figure, add_panel_labels   # 开发期预览用
 finalize_figure(fig)                       # 先把版面定下来
 add_panel_labels(fig, style='nature')      # a b c d（IEEE 用 style='ieee' → (a)(b)(c)）
 ```
+
+产物 `figN.py` 里不要 `import layout_tools`——把 `add_panel_labels` 的实现（Step 4 模板里已给）内联，`finalize_figure` 直接用 `fig.tight_layout()` 或创建 figure 时 `layout='constrained'` 替代。
 
 字号默认取 `axes.labelsize` 并加粗，风格由 `style` 统一控制——不会再出现 `a` 和 `(a)` 混排。
 

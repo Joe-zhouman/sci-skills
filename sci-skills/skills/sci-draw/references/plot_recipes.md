@@ -20,26 +20,75 @@
 
 ## 通用前置
 
-```python
-import sys, os
-sys.path.insert(0, '../scripts')   # 假设从 references/ 调
-from setup_style import setup_style
-from export_figure import export_figure
+每份配方是**可直接运行的产物脚本**——拷出来改数据就能出图，不依赖 skill 安装位置。因此 style 和 export 都内联进脚本，不从 `scripts/` 导入（详见 SKILL.md Step 4「Self-contained plotting scripts」）。
 
+```python
+"""fig1.py — [core conclusion one-liner]. Run: python fig1.py"""
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 一次性设好样式
-setup_style(journal='nature', lang='en')
+# --- Inline style: resolve JOURNAL_PRESETS['nature'] (lang='en') once, bake in ---
+plt.rcParams.update({
+    'figure.figsize': (3.5, 2.625),
+    'figure.dpi': 150,
+    'savefig.dpi': 300,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Helvetica', 'Arial', 'DejaVu Sans'],
+    'font.size': 7,
+    'axes.labelsize': 8,
+    'axes.titlesize': 8,
+    'xtick.labelsize': 7,
+    'ytick.labelsize': 7,
+    'legend.fontsize': 7,
+    'lines.linewidth': 1.0,
+    'lines.markersize': 4,
+    'axes.linewidth': 0.6,
+    'axes.spines.top': False,
+    'axes.spines.right': False,
+    'pdf.fonttype': 42,
+    'ps.fonttype': 42,
+    'svg.fonttype': 'none',
+    'axes.unicode_minus': False,
+})
+
+# --- Inline export (trimmed from scripts/export_figure.py) ---
+def export_figure(fig, basename, formats=('pdf', 'png'), dpi=300,
+                  size_inches=None, grayscale_preview=False):
+    if size_inches is not None:
+        fig.set_size_inches(*size_inches)
+    plt.rcParams['pdf.fonttype'] = 42
+    written = []
+    for fmt in formats:
+        path = f'{basename}.{fmt}'
+        kwargs = {'bbox_inches': 'tight', 'pad_inches': 0.05}
+        if fmt == 'png':
+            kwargs['dpi'] = dpi
+        fig.savefig(path, **kwargs)
+        written.append(path)
+        print(f'[fig1] wrote {path}')
+    if grayscale_preview:
+        try:
+            from PIL import Image
+            png_path = f'{basename}.png'
+            fig.savefig(png_path, dpi=dpi, bbox_inches='tight')
+            gray = f'{basename}_grayscale.png'
+            Image.open(png_path).convert('L').save(gray)
+            written.append(gray)
+        except ImportError:
+            pass
+    return written
 
 # Okabe-Ito 8 色（色盲安全）
 OKABE = ['#000000', '#E69F00', '#56B4E9', '#009E73',
          '#F0E442', '#0072B2', '#D55E00', '#CC79A7']
-# 也可直接用 seaborn 的 colorblind
 PAL = sns.color_palette('colorblind')
 ```
+
+> **开发期预览**：如果你只是在交互式 REPL 里试色/试样式，可以临时 `from setup_style import setup_style; setup_style(journal='nature')` 看一眼。但写进产物 `figN.py` 的脚本必须用上面的内联版——它得在 skill 不在 `sys.path` 的机器上照样跑。
 
 ---
 

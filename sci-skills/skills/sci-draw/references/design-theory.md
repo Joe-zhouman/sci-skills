@@ -408,11 +408,9 @@ text_color = 'white' if luminance < 0.5 else 'black'
 ### PDF is the required primary format
 
 PDF preserves editable text (when `pdf.fonttype = 42`), supports lossless scaling,
-and is accepted by all major journals. Use `export_figure()` from `scripts/export_figure.py`.
+and is accepted by all major journals. Call the inline `export_figure()` baked into `figN.py` (see SKILL.md Step 4 template) — the product script must not import from `scripts/export_figure.py`.
 
 ```python
-from scripts.export_figure import export_figure
-
 paths = export_figure(
     fig,
     basename="figs/fig1",
