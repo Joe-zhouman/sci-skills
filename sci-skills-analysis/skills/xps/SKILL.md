@@ -349,17 +349,18 @@ python scripts/state.py set-region "<label>" --status done
 
 ### 3.4 生成可复现脚本
 
-**脚本不自调用 skill 的任何 py 文件——它只依赖 `fit.json` + `lmfit`。** Skill 会更新，但你的脚本永远能跑。
+**脚本不自调用 skill 的任何 py 文件——它只依赖 `fit.json` + `lmfit` + `matplotlib`。** Skill 会更新，但你的脚本永远能跑。
 
 核心逻辑（写在 `<dir>/fit_<label>.py`）：
 1. 从 `fit.json` 读 `energies`、`peaks[]`（center/sigma/amplitude/fraction）、`peak_function`
 2. 用 `lmfit` 重建模型、设参数到拟合结果的值
 3. `model.eval()` 求值 → 得 envelope + components
-4. `matplotlib` 出图
+4. 输出**三个文件**（一个都不能少）：
+   - **`fit_<label>.pdf`** — 矢量图，**拖进 Origin 解组后每个元素都能编辑**（字体/颜色/线型/标注）
+   - **`fit_<label>.png`** — 位图预览，组会/幻灯片直接贴
+   - **`fit_<label>.csv`** — 列：x, y_raw, y1, y2, …, yN, yf，**拖进 Origin 自己重画**（数据列齐全，完全掌控）
 
-不需要重跑校准、基线扣除、拟合——那些结果已经在 `fit.json` 里了。复现的意思是"同样的参数 → 同样的线和组分"，不是"重跑整个 pipeline"。
-
-脚本模板见 `references/reproducible-script-template.py`。生成时把模板复制到 `<dir>/fit_<label>.py`，填入 `fit.json` 路径和 `region_label` 即可。跑完验证：生成的图跟 `fit_<label>.png` 一致。
+脚本模板见 `references/reproducible-script-template.py`。生成时把模板复制到 `<dir>/fit_<label>.py`，填入 `fit.json` 路径即可。跑完必须验证：生成的 PDF/PNG 跟 `fit_<label>.png` 视觉一致。
 
 ---
 

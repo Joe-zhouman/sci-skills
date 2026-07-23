@@ -7,17 +7,25 @@ scripts. It only needs fit.json (produced by fit_peaks.py) + lmfit + matplotlib.
 Run with any Python ≥ 3.11 that has lmfit, numpy, matplotlib installed.
 
 Usage:
-  python fit_si2p.py            # reads ./fit.json, writes ./fit_si2p_repro.pdf
+  python fit_si2p.py            # reads ./fit.json, writes three output files
   python fit_si2p.py fit.json   # explicit input path
+
+Outputs (all in the same directory as this script):
+  fit_<label>.pdf   — vector, drag into Origin and ungroup to edit every element
+  fit_<label>.png   — raster preview for slides / group meeting
+  fit_<label>.csv   — columns: x, y_raw, y1, y2, …, yN, yf
+                       drag into Origin to replot with full control
 """
 
+import csv
 import json
 import sys
 from pathlib import Path
 
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
 from lmfit.models import GaussianModel, LorentzianModel, PseudoVoigtModel, VoigtModel
 
 MODEL_MAP = {
@@ -29,7 +37,7 @@ MODEL_MAP = {
 
 # ─── Configuration (auto-filled from fit.json, override if needed) ────────
 FIT_JSON = "fit.json"          # path to fit.json from fit_peaks.py
-OUTPUT = None                  # set to a path to override auto-naming
+OUT_DIR = None                 # output dir (default: same dir as this script)
 # ───────────────────────────────────────────────────────────────────────────
 
 
@@ -60,7 +68,6 @@ def rebuild_model(fit: dict):
         else:
             params.update(model.make_params())
 
-        # Set to fitted values from fit.json
         params[f"{prefix}center"].set(value=pk["center"])
         params[f"{prefix}sigma"].set(value=pk["sigma"])
         params[f"{prefix}amplitude"].set(value=pk["amplitude"])
@@ -70,8 +77,34 @@ def rebuild_model(fit: dict):
     return composite, params
 
 
-def plot(fit: dict, model, params, output_path: str) -> None:
-    """Draw the same style as plot_region.py: data + baseline + components + envelope."""
+def write_csv(fit, components, envelope, out_dir, label):
+    """CSV: x, y_raw, y1, y2, ..., yN, yf  — same format as export_result.py."""
+    energies = np.array(fit["energies"])
+    y_raw = np.array(fit.get("counts_raw", fit["counts_subtracted"]))
+    background = fit.get("background")
+
+    header = ["x", "y_raw"]
+    cols = [energies, y_raw]
+
+    for name, y_comp in components.items():
+        header.append(name)
+        cols.append(y_comp + (np.array(background) if background else 0))
+
+    header.append("yf")
+    yf = envelope + (np.array(background) if background else 0)
+    cols.append(yf)
+
+    path = out_dir / f"fit_{label}.csv"
+    with open(path, "w", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+        for row in zip(*cols):
+            writer.writerow([f"{v:.6g}" for v in row])
+    print(f"Saved: {path}", file=sys.stderr)
+
+
+def plot(fit, model, params, out_dir, label):
+    """PDF (vector) + PNG (raster preview)."""
     energies = np.array(fit["energies"])
     counts_sub = np.array(fit.get("counts_subtracted", fit["counts_raw"]))
     background = fit.get("background")
@@ -81,8 +114,7 @@ def plot(fit: dict, model, params, output_path: str) -> None:
 
     r_squared = 1 - np.sum(residual ** 2) / np.sum((counts_sub - np.mean(counts_sub)) ** 2)
 
-    label = fit.get("region_label", "Region")
-    # Morandi palette (matches _plot.py convention)
+    region_label = fit.get("region_label", "Region")
     cmap = plt.colormaps["tab10"]
 
     fig, (ax_top, ax_res) = plt.subplots(
@@ -90,27 +122,25 @@ def plot(fit: dict, model, params, output_path: str) -> None:
         gridspec_kw={"height_ratios": [4, 1]}, sharex=True,
     )
 
-    # Data
-    ax_top.scatter(energies, counts_sub, s=6, color=".3", zorder=10, label="data")
-    # Background
+    ax_top.scatter(energies, counts_sub, s=6, color=".3", zorder=10)
     if background:
-        ax_top.plot(energies, background, "--", color=".5", lw=1, label="background")
-    # Components
+        ax_top.plot(energies, background, "--", color=".5", lw=1)
+
     for i, (name, y_comp) in enumerate(components.items()):
         color = cmap(i % 10)
-        ax_top.fill_between(energies, background if background else 0, y_comp + (background if background else 0),
+        y_bottom = np.array(background) if background else 0
+        ax_top.fill_between(energies, y_bottom, y_comp + y_bottom,
                             alpha=0.35, color=color, lw=0)
-        ax_top.plot(energies, y_comp + (background if background else 0),
-                    color=color, lw=0.8, alpha=0.7)
-    # Envelope
-    ax_top.plot(energies, envelope + (background if background else 0), "-",
-                color=cmap(len(components) % 10), lw=1.2, label="envelope")
+        ax_top.plot(energies, y_comp + y_bottom, color=color, lw=0.8, alpha=0.7)
+
+    y_bottom = np.array(background) if background else 0
+    ax_top.plot(energies, envelope + y_bottom, "-",
+                color=cmap(len(components) % 10), lw=1.2)
 
     ax_top.set_ylabel("Counts")
-    ax_top.legend(fontsize=7, frameon=False, loc="upper left")
-    ax_top.set_title(f"{label}   R²={r_squared:.4f}   ({fit['peak_function']})", fontsize=9)
+    ax_top.set_title(f"{region_label}   R²={r_squared:.4f}   ({fit.get('peak_function','?')})",
+                     fontsize=9)
 
-    # Residual
     ax_res.plot(energies, residual, color=".4", lw=0.6)
     ax_res.axhline(0, color=".6", lw=0.5, ls="--")
     ax_res.set_xlabel("Binding Energy (eV)")
@@ -118,15 +148,25 @@ def plot(fit: dict, model, params, output_path: str) -> None:
 
     ax_top.invert_xaxis()
     ax_res.invert_xaxis()
-
     fig.tight_layout()
-    fig.savefig(output_path, dpi=200, bbox_inches="tight")
-    print(f"Saved: {output_path}", file=sys.stderr)
+
+    # PDF — vector, Origin-editable
+    pdf_path = out_dir / f"fit_{label}.pdf"
+    fig.savefig(pdf_path, dpi=200, bbox_inches="tight")
+    print(f"Saved: {pdf_path}", file=sys.stderr)
+
+    # PNG — raster preview
+    png_path = out_dir / f"fit_{label}.png"
+    fig.savefig(png_path, dpi=200, bbox_inches="tight")
+    print(f"Saved: {png_path}", file=sys.stderr)
+
     plt.close(fig)
+
+    return components, envelope
 
 
 def main():
-    global FIT_JSON, OUTPUT
+    global FIT_JSON, OUT_DIR
     if len(sys.argv) > 1:
         FIT_JSON = sys.argv[1]
 
@@ -134,8 +174,12 @@ def main():
     model, params = rebuild_model(fit)
 
     label = fit.get("region_label", "region").replace(" ", "_")
-    out = OUTPUT or f"fit_{label}_repro.pdf"
-    plot(fit, model, params, out)
+    out_dir = OUT_DIR or Path(__file__).resolve().parent
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    components, envelope = plot(fit, model, params, out_dir, label)
+    write_csv(fit, components, envelope, out_dir, label)
 
 
 if __name__ == "__main__":
