@@ -9,6 +9,7 @@ analysis context across sessions (context clears; files don't).
 Subcommands:
   init          Create the workdir tree + an empty state.json (idempotent).
   status        Read state.json and report what's done / in-progress / missing.
+  set-claim     Set the top-level claim.
   set-meta      Record instrument model, X-ray source, and pass energy.
   add-evidence  Copy an external file into evidence/ and append to state.evidence.
   set-region    Create a region subdir and/or advance its status
@@ -207,6 +208,14 @@ def cmd_set_rsf(args) -> dict:
     return {"action": "set-rsf", "rsf": state["rsf"]}
 
 
+def cmd_set_claim(args) -> dict:
+    """Set the top-level claim in state.json."""
+    state = _load_state()
+    state["claim"] = args.claim
+    _save_state(state)
+    return {"action": "set-claim", "claim": state["claim"]}
+
+
 def cmd_set_meta(args) -> dict:
     """Record instrument metadata in state.json."""
     state = _load_state()
@@ -359,6 +368,11 @@ def main():
                        help="allow status regression (e.g. re-open a done region)")
     p_reg.set_defaults(func=cmd_set_region)
     add_format_arg(p_reg)
+
+    p_claim = sub.add_parser("set-claim", help="set the top-level claim")
+    p_claim.add_argument("claim", help="the claim statement, e.g. 'Si₃N₄ is the dominant phase after modification'")
+    p_claim.set_defaults(func=cmd_set_claim)
+    add_format_arg(p_claim)
 
     p_rsf = sub.add_parser("set-rsf", help="record RSF source for atom% quantification")
     p_rsf.add_argument("--source", "-s", required=True,
