@@ -9,6 +9,7 @@ analysis context across sessions (context clears; files don't).
 Subcommands:
   init          Create the workdir tree + an empty state.json (idempotent).
   status        Read state.json and report what's done / in-progress / missing.
+  set-meta      Record instrument model, X-ray source, and pass energy.
   add-evidence  Copy an external file into evidence/ and append to state.evidence.
   set-region    Create a region subdir and/or advance its status
                 (explored → fitting → done).
