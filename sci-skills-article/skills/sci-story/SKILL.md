@@ -3,10 +3,11 @@ name: sci-story
 description: >-
   Narrative academic writing — draft Introduction, Discussion, Abstract,
   and Keywords from completed Results and figure reports. Anchored to the
-  four-question spine and Introduction-Discussion coherence. Writes intro.md,
-  discussion.md, abstract.md. 写引言、写讨论、写摘要、write introduction, write
-  discussion, write abstract. Does not do data-driven Method/Results/Conclusion,
-  does not polish prose, does not draw figures.
+  four-question spine and Introduction-Discussion coherence. Writes tex sections
+  directly into manuscript/vN/tex/sections/ (intro.tex, discussion.tex,
+  abstract.tex). 写引言、写讨论、写摘要、write introduction, write discussion,
+  write abstract. Does not do data-driven Method/Results/Conclusion, does not
+  polish prose, does not draw figures, does not produce SI.
 ---
 
 # sci-story
@@ -14,66 +15,88 @@ description: >-
 Write Introduction / Discussion / Abstract / Keywords from completed Results and
 the figure warehouse. Every section serves the four-question spine;
 Introduction and Discussion are coherent by construction — they're drafted together
-with the same spine, not independently.
+with the same spine, not independently. Output is **tex sections written directly
+into `manuscript/vN/tex/sections/`** — no md intermediate, no copy step.
 
 ## Layout & boundaries
 
 ```
 <project-root>/
-  manuscript/v1/tex/             ← the OFFICIAL manuscript (user owns; this skill does NOT touch it)
+  manuscript/vN/tex/sections/     ← THIS skill writes here: intro.tex, discussion.tex, abstract.tex
   sci-skills/
-    sci-draw/                    ← figure warehouse — READ-ONLY: figN-report.md
-    sci-write/                   ← THIS skill reads and writes here
-      claim.md                   ← READ: canonical claim (one-sentence argument + gap + evidence)
-      paper-plan.md              ← READ: figure list + section progress
-      results.md                 ← READ: completed Results (evidence baseline for Discussion)
-      method.md                  ← READ: data/sample context for Introduction
-      conclusion.md              ← READ: contribution statement
-      figN-reading.md            ← READ: figure claim corrections
-      terminology-ledger.md      ← READ + WRITE (co-owned with the writing and polishing stages)
-      intro.md                   ← WRITE: this skill's output
-      discussion.md              ← WRITE: this skill's output
-      abstract.md                ← WRITE: this skill's output
+    sci-draw/                     ← figure warehouse — READ-ONLY: figN-report.md
+    sci-write/                    ← READ working notes here
+      claim.md                    ← READ: canonical claim (one-sentence argument + gap + evidence)
+      paper-plan.md                ← READ: figure list + section progress
+      figN-reading.md              ← READ: figure claim corrections
+      terminology-ledger.md        ← READ + WRITE (co-owned with sci-write + sci-polish)
+  manuscript/vN/tex/sections/
+    results.tex                   ← READ: completed Results (evidence baseline for Discussion)
+    method.tex                    ← READ: data/sample context for Introduction
+    conclusion.tex                ← READ: contribution statement (fused into Discussion)
 ```
 
-- **Does NOT touch `manuscript/`.** MD drafts go to `sci-skills/sci-write/`.
-  Moving content into `manuscript/v1/tex/` is the human's job.
+- **Writes tex directly into `manuscript/vN/tex/sections/`.** Introduction/Discussion/Abstract are manuscript sections, written as tex from the start — no md draft, no later move.
+- **Reads sci-write's product tex** (`results.tex`, `method.tex`, `conclusion.tex`) plus working notes (`claim.md`, `paper-plan.md`, `figN-reading.md`) from `sci-skills/sci-write/`.
 - **Does NOT write to `../sci-draw/`.** Read-only on the figure warehouse.
-- **Output is always MD.** Don't ask "md or tex" — tex is a different skill's concern.
-- **Reads writing drafts from disk; never imports code.**
+- **Does NOT produce SI.** SI is sci-write's by-product (results/method overflow). Narrative sections don't carry supplementary material.
+- **Reads from disk; never imports code.**
 
 ## File contracts
 
+Working notes (read from `sci-skills/sci-write/`):
+
 | File | Produced by | Read by | Schema |
 |---|---|---|---|
-| `claim.md` | data-driven drafting (Step 0) | this skill, submission stage | one-sentence argument + gap + evidence baseline |
-| `paper-plan.md` | drafting stage | this skill | fig entries + section status |
-| `results.md` | drafting stage | this skill | data-driven prose (evidence baseline) |
-| `conclusion.md` | drafting stage | this skill | contribution statement |
-| `method.md` | drafting stage | this skill | data/sample context |
-| `figN-reading.md` | drafting stage | this skill | corrected claim (wins over report) |
-| `../sci-draw/figN-report.md` | any figure-maker | this skill | Core conclusion, Key findings |
-| `terminology-ledger.md` | drafting + polishing + this skill | this skill | canonical term forms |
-| `intro.md` | this skill | human, polishing stage | Introduction draft |
-| `discussion.md` | this skill | human, polishing stage | Discussion draft |
-| `abstract.md` | this skill | human, polishing stage | Abstract draft |
+| `claim.md` | sci-write (Step 0) | this skill, submission stage | one-sentence argument + gap + evidence baseline |
+| `paper-plan.md` | sci-write | this skill | fig entries + section status |
+| `figN-reading.md` | sci-write (Step 3) | this skill | corrected claim (wins over report) |
+| `terminology-ledger.md` | sci-write + sci-polish + this skill | all three | canonical term forms |
+
+Product tex (read from `manuscript/vN/tex/sections/`):
+
+| File | Produced by | Read by |
+|---|---|---|
+| `results.tex` | sci-write (Step 4) | this skill (evidence baseline for Discussion) |
+| `method.tex` | sci-write (Step 5) | this skill (data/sample context for Introduction) |
+| `conclusion.tex` | sci-write (Step 5) | this skill (fused into Discussion first paragraph) |
+
+Read-only neighbor:
+
+| File | Source | Read for |
+|---|---|---|
+| `../sci-draw/figN-report.md` | any figure-maker | Core conclusion, Key findings |
+
+Product tex (written by this skill into `manuscript/vN/tex/sections/`):
+
+| File | Produced by | Read by |
+|---|---|---|
+| `intro.tex` | this skill (Step 3) | sci-polish, sci-submit |
+| `discussion.tex` | this skill (Step 2) | sci-polish, sci-submit |
+| `abstract.tex` | this skill (Step 4) | sci-polish, sci-submit |
+| `title.tex` | this skill (Step 5) | sci-typeset, sci-submit |
+| `keywords.tex` | this skill (Step 6) | sci-submit |
 
 ## Startup
 
 Every session starts here:
 
-1. **Locate `sci-skills/sci-write/`.** Must exist — the figure reports and data-driven
-   drafts this skill reads live here. If `results.md` isn't there yet, tell the user:
-   "Results need to be drafted first — narrative sections are drafted AFTER completed
-   results exist. Draft the results, then come back."
+1. **Locate the manuscript and working notes.** Check `manuscript/vN/tex/sections/`
+   for `results.tex` — narrative sections are drafted AFTER completed Results exist.
+   If `results.tex` isn't there yet, tell the user: "Results need to be drafted first
+   (sci-write produces `results.tex`). Draft the results, then come back." Also
+   confirm `sci-skills/sci-write/` exists for working notes (`claim.md`, `paper-plan.md`).
 
 2. **Read the neighbors** (skip any that don't exist; flag missing but don't block):
 
-   From `sci-skills/sci-write/`:
+   From `manuscript/vN/tex/sections/` (sci-write's product tex):
+   - `results.tex` — completed Results (the evidence baseline Discussion interprets)
+   - `method.tex` — data/sample context for Introduction background
+   - `conclusion.tex` — the contribution statement (fused into Discussion's first paragraph)
+
+   From `sci-skills/sci-write/` (working notes):
+   - `claim.md` — canonical claim
    - `paper-plan.md` — figure claims, section status
-   - `results.md` — completed Results (the evidence baseline Discussion interprets)
-   - `conclusion.md` — the contribution statement
-   - `method.md` — data/sample context for Introduction background
    - `figN-reading.md` — claim corrections (corrected claim wins over report)
 
    From `../sci-draw/` (*figure warehouse* — read regardless of source):
@@ -97,8 +120,9 @@ Every session starts here:
 2. **Target journal** — nature / nat-comms / generic. Default: generic. Affects
    word limits and format, NOT writing quality. Top-journal standards apply
    regardless of target.
-3. **Read all neighbor files** — results.md, conclusion.md, method.md, figN-report.md,
-   figN-reading.md, paper-plan.md. Build the evidence baseline.
+3. **Read all neighbor files** — `results.tex`, `conclusion.tex`, `method.tex`
+   (from `manuscript/vN/tex/sections/`); `figN-report.md`, `figN-reading.md`,
+   `paper-plan.md`, `claim.md` (from working notes). Build the evidence baseline.
 4. **Backward reasoning first** (before writing anything):
    - What technical problem do we solve, and why is there no well-established solution?
    - What are the contributions, and what new insight do they bring?
@@ -134,7 +158,7 @@ right?" If the human changes it, update `claim.md` before proceeding.
 Discussion anchors interpretation. Write it first so Introduction knows exactly
 what narrative arc it must set up.
 
-**First paragraph: read `conclusion.md` and fuse it in.** sci-write already wrote
+**First paragraph: read `conclusion.tex` and fuse it in.** sci-write already wrote
 the Conclusion — contribution statement + decisive evidence + boundary. Don't
 rewrite it. Take it as-is, merge it as the first paragraph of Discussion. This
 is the common denominator across almost all journals.
@@ -150,7 +174,7 @@ Load `references/discussion-guide.md`. Structure after the fused Conclusion:
 
 Before writing full prose, run the **confirmation gate**: echo the fused Conclusion
 + Discussion's one-paragraph argument + key interpretations. Get human confirmation.
-Write `discussion.md`.
+Write `manuscript/vN/tex/sections/discussion.tex`.
 
 ### Step 3 — Draft Introduction
 
@@ -183,7 +207,7 @@ the Introduction outline, confirm Discussion has a corresponding response. If mi
 fix before drafting.
 
 Run the confirmation gate (spine + gap statements + coherence check). Get human
-confirmation. Write `intro.md`.
+confirmation. Write `manuscript/vN/tex/sections/intro.tex`.
 
 ### Step 4 — Draft Abstract
 
@@ -198,7 +222,7 @@ Abstract is a mini-paper, written last when Discussion and Introduction are stab
 
 Run the confirmation gate: echo the compressed spine. Get human confirmation.
 
-Write `abstract.md`.
+Write `manuscript/vN/tex/sections/abstract.tex`.
 
 ### Step 5 — Title
 
@@ -227,7 +251,9 @@ Generate 3-5 candidates. Mark the most defensible one.
 **Self-check:** Title ↔ claim.md — same argument? Title ↔ Abstract —
 title more conservative than Abstract → good, more exaggerated → rewrite.
 
-Write to `abstract.md` under `## Title`.
+Write to `manuscript/vN/tex/sections/title.tex` (a `\title{...}` line; the human
+or sci-typeset wires it into `main.tex`'s preamble). Mark the chosen candidate
+in a comment.
 
 ### Step 6 — Keywords
 
@@ -237,7 +263,8 @@ From the abstract and title, extract 5-8 keywords. Rules:
 - No abbreviations unless universally recognized
 - Semicolon-separated, sentence case
 
-Write to the end of `abstract.md` under `## Keywords`.
+Write to `manuscript/vN/tex/sections/keywords.tex` (a `\keywords{...}` line,
+or whatever the template's keyword macro expects).
 
 ### Step 7 — Self-checks
 
@@ -271,13 +298,14 @@ Intro 提了 gap/bottleneck         →   Discussion/Present study 填了吗？
 - Intro 提了但没填的 gap → 砍掉，或者补 Discussion。
 - Discussion 里出现但 Intro 没提的东西 → 要么 Intro 补一句，要么 Discussion 里砍掉。
 
-**修完自检之后**再进 Step 6。
+**修完自检之后**再进 Step 8（Human review）。
 
 ### Step 8 — Human review
 
 **Mandatory. Do not skip.**
 
-Show changes with `git diff` across `sci-skills/sci-write/`.
+Show changes with `git diff` across `manuscript/vN/tex/sections/` (the tex this
+skill wrote) and `sci-skills/sci-write/terminology-ledger.md`.
 
 Ask explicitly: "Do intro/discussion/abstract look right? Any coherence issues?"
 
@@ -288,8 +316,12 @@ The author owns the argument. Revisions are targeted, not full rewrites.
 After the human approves:
 
 ```bash
-git add sci-skills/sci-write/intro.md sci-skills/sci-write/discussion.md \
-        sci-skills/sci-write/abstract.md sci-skills/sci-write/terminology-ledger.md
+git add manuscript/vN/tex/sections/intro.tex \
+        manuscript/vN/tex/sections/discussion.tex \
+        manuscript/vN/tex/sections/abstract.tex \
+        manuscript/vN/tex/sections/title.tex \
+        manuscript/vN/tex/sections/keywords.tex \
+        sci-skills/sci-write/terminology-ledger.md
 git commit -m "story(intro,discussion,abstract): <one-line spine>
 
 - Introduction: funnel from [field stake] to gap [gap]

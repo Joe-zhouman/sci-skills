@@ -178,10 +178,10 @@ Gap 的粒度决定论文格局。"ML models predict but don't explain, and ther
 | Present study 堆方法细节 | 砍到框架级——架构 + 为什么这样设计 + 跟现有方法的区别 |
 | Opening 专有名词太密 | 前两句不用专业术语——Nature 审稿人跨领域，别让他们第一句就放弃 |
 
-## 从 writing drafts 搬素材
+## 从邻居搬素材
 
-- `results.md` → 主发现（写 Present study 时参考）
-- `conclusion.md` → 贡献声明（Present study 的锚）
-- `method.md` → 数据/样本背景（写研究背景时可以提一句）
-- `figN-report.md` / `figN-reading.md` → Core conclusion（主 claim 参考）
+- `manuscript/vN/tex/sections/results.tex` → 主发现（写 Present study 时参考）
+- `manuscript/vN/tex/sections/conclusion.tex` → 贡献声明（Present study 的锚）
+- `manuscript/vN/tex/sections/method.tex` → 数据/样本背景（写研究背景时可以提一句）
+- `../sci-draw/figN-report.md` / `figN-reading.md` → Core conclusion（主 claim 参考）
 - `paper-plan.md` → 图清单 = 贡献清单的骨架

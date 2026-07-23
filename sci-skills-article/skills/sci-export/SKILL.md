@@ -73,7 +73,7 @@ cd manuscript/vN/tex && make
 ### Step 3：编译通过后，组装 SI
 
 读 `sci-skills/sci-write/sup-list.md`。如果空 → 跳过。如果有内容 → 按以下顺序组装
-`manuscript/vN/tex/sup.tex`（或追加到已有 `sup.tex`）：
+`manuscript/vN/tex/si.tex`（或追加到已有 `si.tex`）：
 
 1. Supplementary Figures（每图一页，caption 从 `figN-report.md` 的 Core conclusion）
 2. Supplementary Tables

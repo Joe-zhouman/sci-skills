@@ -9,13 +9,13 @@ Discussion 是 Introduction 中 gap 的答案——Introduction 问"这里有个
 
 ### 段落 1: Conclusion
 
-sci-write 已经有了 `conclusion.md`——贡献声明 + 决定性证据 + 边界。Discussion 的第一段原封不动搬过来，不重写、不展开、不改成解释语气。这是几乎所有期刊的公因数。
+sci-write 已经有了 `conclusion.tex`——贡献声明 + 决定性证据 + 边界。Discussion 的第一段原封不动搬过来，不重写、不展开、不改成解释语气。这是几乎所有期刊的公因数。
 
 ### 段落 2: Opening — 主发现的解释（不复述 Results）
 
 - job: 回答"主发现意味着什么"，不是复述"我们观察到什么"。
 - 写法: "Our results show that [contribution statement]. This [suggests/indicates/demonstrates] [meaning or mechanism]."
-- 素材: `results.md` 的主 claim + `figN-report.md` 的 Core conclusion（以 `figN-reading.md` 的修正版为准）。
+- 素材: `manuscript/vN/tex/sections/results.tex` 的主 claim + `../sci-draw/figN-report.md` 的 Core conclusion（以 `figN-reading.md` 的修正版为准）。
 - 误写: 开头就是 "We observed that X increased by Y% (Fig 1)." —— 那是 Results 的开头，不是 Discussion 的。
 - 正确: "Our study provides evidence that [mechanism/insight]. Specifically, the [具体发现] suggests [解释]."
 
@@ -83,11 +83,11 @@ sci-write 已经有了 `conclusion.md`——贡献声明 + 决定性证据 + 边
 | 展望画大饼 | "opens new avenues" 不具体 | 给下一步的具体方向 |
 | Intro 的 gap 和 Discussion 的结论对不上 | Introduction 说 A，Discussion 说 B = 论文撕裂 | 回一致性检查，重对齐 |
 
-## 从 writing drafts 搬素材
+## 从邻居搬素材
 
-- `results.md` → 主发现（作为 Discussion 的解释起点）
-- `conclusion.md` → 贡献声明 + 局限 + 影响（Discussion 的骨架）
-- `figN-report.md` → Core conclusion + Key findings（引证据参考）
+- `manuscript/vN/tex/sections/results.tex` → 主发现（作为 Discussion 的解释起点）
+- `manuscript/vN/tex/sections/conclusion.tex` → 贡献声明 + 局限 + 影响（Discussion 的骨架）
+- `../sci-draw/figN-report.md` → Core conclusion + Key findings（引证据参考）
 - `figN-reading.md` → 修正版 claim（以修正版为准；若发现了误读风险，Discussion 要加对应限定）
 
 Discussion 不能从零写——它解释的"什么"必须已经存在于 Results。如果 Discussion 想要讨论一个 Results 里没有的发现 → 要么补 Results，要么砍 Discussion 的这段解释。

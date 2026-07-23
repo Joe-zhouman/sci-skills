@@ -44,9 +44,9 @@ SI 不是正文写完了再想"还有什么没放"——是在写作过程中被
 | 正文没有的数据、没有的图 | SI 只能用已有的材料——不制造新图新数据 |
 | 正文里"因为审稿人可能会问所以先藏着"的东西 | 这种逻辑等于承认正文不完整。把东西放回正文。SI 是溢出，不是避难所。 |
 
-## 组装（si-export 阶段）
+## 组装（si 阶段）
 
-正文 tex 编译通过后，读 `sup-list.md`，按以下结构组装 `manuscript/vN/tex/sup.tex`：
+正文 tex 编译通过后，读 `sup-list.md`，按以下结构组装 `manuscript/vN/tex/si.tex`：
 
 ```
 \beginsupplement

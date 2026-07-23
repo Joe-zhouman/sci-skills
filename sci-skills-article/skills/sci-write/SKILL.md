@@ -2,57 +2,76 @@
 name: sci-write
 description: >-
   Data-driven academic manuscript writing — turn finished figures + data into
-  publication prose (Method, Results, Conclusion). Use when the user has data
-  and/or figures and wants to draft these three sections: write results, write
+  publication prose (Method, Results, Conclusion, and SI as a by-product).
+  Writes tex sections directly into manuscript/vN/tex/. Use when the user has
+  data and/or figures and wants to draft these sections: write results, write
   method, write conclusion, draft from figures, claim-evidence mapping, 数据写论文,
   数据驱动写作, 把图画完写正文, 写结果/方法/结论. Drafts section by section from
   figure reports + a data profile, runs claim-vs-figure consistency checks via
   an image-understanding capability (any vision tool or vision-capable model;
   not bound to a specific tool), leaves real-DOI citation placeholders for the
   user to insert via Zotero. Does not draw figures. Introduction, Discussion,
-  Introduction, Abstract, Keywords → narrative drafting (external to this skill).
+  Abstract, Keywords → sci-story (narrative drafting, external to this skill).
+  SI is produced here alongside results/method, not by a separate skill.
 ---
 
 # sci-write
 
 Write Method / Results / Conclusion from finished figures + a data
 profile. Every claim hangs on evidence (a figure, a statistic); every section
-serves a one-sentence argument. Output is **md content drafts**, not the
-official manuscript.
+serves a one-sentence argument. Output is **tex sections written directly into
+`manuscript/vN/tex/`** — there is no md intermediate, no copy step.
 
 ## Layout & boundaries
 
 ```
 <project-root>/
-  manuscript/v1/tex/             ← the OFFICIAL manuscript (user owns; this skill does NOT touch it)
+  manuscript/vN/tex/             ← THIS skill writes tex sections here (method.tex, results.tex,
+                                   conclusion.tex, plus SI: si.tex or si/)
   sci-skills/
     sci-draw/                    ← figure warehouse — read ../sci-draw/figN-report.md + figN.png
-    sci-write/                   ← THIS skill's home — intermediate products + md drafts
+    sci-write/                   ← working-notes area ONLY (process metadata, not manuscript)
       claim.md                   ← canonical claim (Step 0 — the paper's one-sentence argument)
       paper-plan.md              ← baton: figure list + section progress
       data-profile.json          ← data profile (Step 0 produces)
       fig1-reading.md            ← claim-vs-figure consistency check (Step 3)
-      method.md results.md       ← md DRAFTS of the three sections
-      conclusion.md                (content carriers; human moves into manuscript/v1/tex/ later)
-      sup-list.md                ← SI parking list (accumulated during writing, assembled at export)
-      intro.md discussion.md     ← narrative sections (drafted externally, not by this skill)
-      abstract.md                  same directory, different stage
+      sup-list.md                ← SI parking list (overflow items, accumulated during writing)
+      terminology-ledger.md      ← co-owned with sci-story + sci-polish
 ```
 
-- **Does NOT touch `manuscript/`.** md drafts in `sci-write/` are content carriers, not the manuscript. Moving them into `manuscript/v1/tex/` is the human's job (or a future md→tex skill).
+- **Writes tex directly into `manuscript/vN/tex/`.** Method/Results/Conclusion are manuscript sections, so they are written as tex into the manuscript from the start — no md draft, no later move. SI (supplementary tables, overflow method details, extra figures) is a by-product of this pass and also lands under `manuscript/vN/` (e.g. `si.tex`).
+- **`sci-skills/sci-write/` holds working notes only.** `claim.md`, `paper-plan.md`, `data-profile.json`, `figN-reading.md`, `sup-list.md`, `terminology-ledger.md` are process metadata — they are not part of the manuscript and never become tex. They stay here.
 - **Does NOT write to `../sci-draw/`.** Read-only on the figure warehouse. Contract gaps are reported to the human (default read-only; write back only if the human permits).
-- **Output is always md.** Don't ask "md or tex" — tex is a different skill's concern.
+- **Does NOT do narrative sections.** Introduction/Discussion/Abstract/Keywords are sci-story's job (also tex, also into `manuscript/vN/tex/`).
 
 ## File contracts
 
+Working notes (in `sci-skills/sci-write/`):
+
 | File | Produced by | Read by | Schema |
 |---|---|---|---|
-| `claim.md` | this skill (Step 0, after human confirms) | this skill, narrative drafting, submission stage | one-sentence claim + evidence baseline (see Step 0) |
-| `paper-plan.md` | this skill (after human confirms) | this skill (baton), human | fig entries + section status (Step 1) |
+| `claim.md` | this skill (Step 0, after human confirms) | this skill, sci-story, submission stage | one-sentence claim + evidence baseline (see Step 0) |
+| `paper-plan.md` | this skill (after human confirms) | this skill (baton), human, sci-story | fig entries + section status (Step 1) |
 | `data-profile.json` | this skill (Step 0, via `profile_data`) | this skill (Method) | `profile_data()` return dict as JSON |
-| `../sci-draw/figN-report.md` | any figure-maker | this skill (claim/findings/stats) | 6-section markdown (see neighbor-contract ref) |
-| `../sci-draw/figN.png` | any figure-maker | this skill (Step 3 → an image-understanding capability) | PNG |
-| `figN-reading.md` | this skill (Step 3) | this skill (Results/Discussion) | consistency-check schema (Step 3) |
+| `figN-reading.md` | this skill (Step 3) | this skill (Results), sci-story (Discussion) | consistency-check schema (Step 3) |
+| `sup-list.md` | this skill (Steps 1/5) | this skill, sci-story, sci-polish | parked overflow items → assembled into SI |
+| `terminology-ledger.md` | this skill + sci-story + sci-polish | all three | canonical term forms |
+
+Product tex (in `manuscript/vN/tex/`):
+
+| File | Produced by | Read by |
+|---|---|---|
+| `sections/method.tex` | this skill (Step 5) | sci-story (context), sci-polish |
+| `sections/results.tex` | this skill (Step 4) | sci-story (evidence baseline), sci-polish |
+| `sections/conclusion.tex` | this skill (Step 5) | sci-story (fuses into Discussion), sci-polish |
+| `si.tex` (or `si/`) | this skill (Steps 4–5, by-product) | sci-polish, sci-export |
+
+Read-only neighbors:
+
+| File | Source | Read for |
+|---|---|---|
+| `../sci-draw/figN-report.md` | any figure-maker | claim/findings/stats |
+| `../sci-draw/figN.png` | any figure-maker | Step 3 image-understanding check |
 
 ## Workflow
 
@@ -244,7 +263,8 @@ A figure whose conclusion and visual don't match will mislead every reader — c
    those are Discussion verbs.
 
 5. Run the **confirmation gate**: echo the claim → each figure's role → each
-   paragraph's topic sentence as a chain. Get human confirmation. Write `results.md`.
+   paragraph's topic sentence as a chain. Get human confirmation. Write
+   `manuscript/vN/tex/sections/results.tex`.
 
 ### Step 5 — Write Method + Conclusion
 
@@ -267,7 +287,7 @@ If a paragraph can't answer Role in claim → it doesn't belong in Method.
 - Data description from `data-profile.json` (N, per-group n, variables, missingness).
 - Statistical methods **copied verbatim** from each `figN-report.md` `Statistical methods` — don't paraphrase, round, or "improve." Missing field → contract-gap handling.
 - Don't fabricate "standard practices" citations. If a method needs a reference, use Real-DOI placeholders.
-- Write `method.md`.
+- Write `manuscript/vN/tex/sections/method.tex`. Overflow method details that don't belong in the main Method → assemble into `manuscript/vN/tex/si.tex` (or `si/`) as supplementary methods; keep parking notes in `sup-list.md`.
 
 **Conclusion** (from claim.md, short):
 - Read `claim.md` → one-sentence argument, gap, evidence baseline, boundary.
@@ -275,17 +295,18 @@ If a paragraph can't answer Role in claim → it doesn't belong in Method.
 - **Decisive evidence** — the strongest piece of evidence from the evidence baseline.
 - **Boundary** — restate from claim.md, not a new limitation.
 - No new data, citations, or mechanisms. Conclusion is claim.md in paragraph form.
-- Write `conclusion.md`.
+- Write `manuscript/vN/tex/sections/conclusion.tex`.
 
 Method's verbatim rule: statistics are facts, prose is narrative — never let narrative instinct alter a number or test name.
 
-### Step 6 — External handoff (no orchestration)
+### Step 6 — Handoff to sci-story
 
-1. Mark Introduction/Discussion/Abstract/Keyword `story-drafted` in paper-plan (narrative sections, external to this skill).
-2. Two handoffs, neither orchestrated by this skill:
-   - **Content → manuscript**: "Method/Results/Conclusion md drafts are at `sci-skills/sci-write/`. They're content drafts, not the manuscript — move content into `manuscript/v1/tex/` when ready."
-   - **Narrative chapters**: "Introduction/Discussion/Abstract/Keywords are drafted in a separate stage, reading `sci-skills/sci-write/` + figure warehouse reports and writing `intro.md`, `discussion.md`, `abstract.md` into `sci-skills/sci-write/`."
-3. Set the three sections (Method/Results/Conclusion) to `written` in paper-plan.
+Method/Results/Conclusion tex are now in `manuscript/vN/tex/sections/`, and SI is at `manuscript/vN/tex/si.tex`. This skill's job is done. The remaining sections are narrative (sci-story's job):
+
+1. Mark Introduction/Discussion/Abstract/Keywords as `pending-story` in `paper-plan.md` (narrative sections, external to this skill). sci-story reads `paper-plan.md` + `claim.md` + `results.tex`/`method.tex` + figure reports and writes `intro.tex`/`discussion.tex`/`abstract.tex` directly into `manuscript/vN/tex/sections/`.
+2. Set Method/Results/Conclusion to `written` in `paper-plan.md`.
+
+There is no content-to-manuscript copy step — tex was written into the manuscript from the start.
 
 ## Pervasive discipline (Steps 4–5)
 

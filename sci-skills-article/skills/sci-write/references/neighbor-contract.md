@@ -88,16 +88,19 @@ conclusion 在 plan 阶段是"打算证明的"，在 report 阶段是"图实际�
 
 `data-profile.json` 放在 `sci-write/`（产出者即所有者），不放共享区——因为它是本 skill 的中间产物，figure warehouse 有自己的等价途径。
 
-## external 章节（Introduction/Abstract/Keyword）的交接
+## narrative 章节（Introduction/Discussion/Abstract/Keywords）的交接
 
-这些章节本 skill 不写，paper-plan 标 `status: external`。但**它们续写时要消费本 skill 的产物**，所以交接清单明确：
+这些章节由 sci-story 写（tex，直接进 `manuscript/vN/tex/sections/`）。本 skill
+不写它们，`paper-plan.md` 标 `status: pending-story`。但 sci-story 续写时要消费本
+skill 的产物，所以交接清单明确：
 
-接手这些章节的 skill（或人）需要读：
+sci-story 需要读：
 - `paper-plan.md` 的全部图条目（claim 清单 = 贡献清单的骨架）
-- `results.md` / `discussion.md` / `conclusion.md`（已成稿的正文）
+- `manuscript/vN/tex/sections/results.tex` / `method.tex` / `conclusion.tex`（已成稿的正文）
 - `../sci-draw/figN-report.md`（图的 evidence）
+- 工作笔记 `claim.md`、`figN-reading.md`
 
-本 skill 在 Step 7 输出这段交接提示，不主动调任何 skill 去写——人决定何时续写。
+本 skill 在 Step 6 标记 paper-plan 后退出，不主动调 sci-story——人决定何时续写。
 
 ## 解耦自检（维护本 skill 时跑）
 

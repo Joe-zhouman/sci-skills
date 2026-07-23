@@ -48,10 +48,10 @@ Variant 选择由论文的论证结构决定——不是你想用哪个，是论
 
 ## 从邻居搬素材
 
-- `intro.md` → gap statement + contribution 语言（Abstract 的 context 和 gap 从这里压缩）
-- `results.md` → 主发现的具体内容（Abstract 唯一许可的定量信息来源）
-- `discussion.md` → implication 语言（Abstract 的最后一句从这里提炼）
-- `conclusion.md` → 二次压缩参考（Conclusion 本身已经压缩了一次 findings）
+- `manuscript/vN/tex/sections/intro.tex` → gap statement + contribution 语言（Abstract 的 context 和 gap 从这里压缩）
+- `manuscript/vN/tex/sections/results.tex` → 主发现的具体内容（Abstract 唯一许可的定量信息来源）
+- `manuscript/vN/tex/sections/discussion.tex` → implication 语言（Abstract 的最后一句从这里提炼）
+- `manuscript/vN/tex/sections/conclusion.tex` → 二次压缩参考（Conclusion 本身已经压缩了一次 findings）
 
 ## 常见失败模式
 
