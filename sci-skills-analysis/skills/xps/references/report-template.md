@@ -15,15 +15,21 @@
 ## 1. 数据与方法
 
 - 仪器 / 数据来源：[如果用户提供了]
+- Pass energy：[eV，仪器展宽下限取决于此，影响 FWHM 可比性]
+- 平滑方法：[Savitzky-Golay 窗口 X / 未做平滑]
 - 校准方法：[C 1s @ 284.8 eV / 内标 Au 4f / 手动偏移 X eV]
-- 基线方法：[Shirley / Tougaard / 多项式]（全数据集统一）
+- 基线方法：[Shirley / Tougaard / 多项式]（全数据集统一） + 各区域端点
 - 峰函数：[Pseudo-Voigt / Voigt]
-- RSF 来源：[Scofield 理论值 (C 1s=1.000) / 用户提供仪器 RSF (Thermo K-Alpha default)]，是否做 IMFP 修正
+- RSF 来源：[Scofield 理论值 (C 1s=1.000) / 用户提供仪器 RSF]，是否做 IMFP 修正
 - 分析软件：sci-skills-analysis:xps (Python, lmfitxps)
 
 ## 2. 各区域结果
 
 ### Si 2p
+
+**Sub-claim:** Si₃N₄ 为主组分，Si⁰ 微量存在
+**校准偏移：** +0.6 eV（C 1s 实测 284.2 → 参考 284.8）
+**基线：** Shirley，端点 107–96 eV
 
 | 化学态 | BE (eV) | FWHM (eV) | 相对面积 (%) | 原子% (RSF校正) | NIST 参考 |
 |---|---|---|---|---|---|
@@ -34,6 +40,7 @@
 
 R² = 0.9987
 RSF: Scofield t-RSF, 未做 IMFP 修正
+NIST 查询: `lookup_be.py Si --line 2p --range 97 107 --format json`
 
 **解读：** Si₃N₄ 为主要组分（58.5 atom%），SiNₓ 次之（31.2 atom%），微量 Si⁰ 和 SiOₓ。与 claim "Si₃N₄ 为主要相"一致。
 
@@ -47,9 +54,11 @@ RSF: Scofield t-RSF, 未做 IMFP 修正
 
 ## 4. 局限性与注意事项
 
-- C 1s 校准 @ 284.8 eV 可能漂移 ±0.5 eV（Gengenbach 2022）
+- C 1s 外来碳校准 @ 284.8 eV 漂移可达 ±0.5 eV（Gengenbach 2022, *Appl. Surf. Sci.* 606, 154855）。本报告如用此方法，峰位绝对值的可靠性受此限制
+- 基线灵敏度：[换用 Linear / 多项式基线后面积比例变化 X%，结论在基线选择下稳定 / 不稳定]
 - RSF：[Scofield / 用户提供仪器 RSF]，未做 IMFP 修正，原子%为近似值
 - RSF 灵敏度：[仪器 RSF 和 Scofield 计算结果差异 X%，结论在 RSF 选择下稳定 / 不稳定]
+- R² 与拟合质量：[如 R² < 0.95，说明原因：噪声大 / 化学态连续分散 / 过渡金属卫星峰复杂]
 - 过渡金属/稀土的定量精度受卫星峰和多重组态影响，本报告如有此类元素需额外声明
 
 ## 5. 结论
