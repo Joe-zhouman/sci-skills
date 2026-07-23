@@ -43,6 +43,8 @@ STATUS_ORDER = ["explored", "fitting", "done"]
 def _empty_state() -> dict:
     return {
         "claim": "",
+        "instrument": "",
+        "pass_energy": None,
         "created": date.today().isoformat(),
         "updated": date.today().isoformat(),
         "rsf": None,
@@ -129,6 +131,8 @@ def cmd_status(args) -> dict:
         "action": "status",
         "workdir": WORKDIR,
         "claim": state.get("claim", "") or "(not set)",
+        "instrument": state.get("instrument", "") or "(not set)",
+        "pass_energy": state.get("pass_energy"),
         "rsf": _summarize_rsf(state.get("rsf")),
         "n_evidence": len(state.get("evidence", [])),
         "evidence_techniques": [e.get("technique", "?")
@@ -145,6 +149,8 @@ def _suggest_next(state: dict) -> list[str]:
     steps = []
     if not state.get("claim"):
         steps.append("claim not set — ask the user what XPS should prove (Step 0)")
+    if not state.get("instrument"):
+        steps.append("instrument not set — ask: what instrument model, what X-ray source (Al/Mg), what pass energy? (Step 0)")
     if not state.get("rsf"):
         steps.append("RSF not set — ask the user if they have instrument RSF table; if not, fall back to Scofield (Step 0)")
     regions = state.get("regions", [])
@@ -198,6 +204,21 @@ def cmd_set_rsf(args) -> dict:
     state["rsf"] = rsf
     _save_state(state)
     return {"action": "set-rsf", "rsf": state["rsf"]}
+
+
+def cmd_set_meta(args) -> dict:
+    """Record instrument metadata in state.json."""
+    state = _load_state()
+    if args.instrument is not None:
+        state["instrument"] = args.instrument
+    if args.pass_energy is not None:
+        state["pass_energy"] = args.pass_energy
+    _save_state(state)
+    return {
+        "action": "set-meta",
+        "instrument": state.get("instrument", ""),
+        "pass_energy": state.get("pass_energy"),
+    }
 
 
 def cmd_add_evidence(args) -> dict:
@@ -348,6 +369,14 @@ def main():
                        help="e.g. 'Thermo Avantage default RSF for K-Alpha'")
     p_rsf.set_defaults(func=cmd_set_rsf)
     add_format_arg(p_rsf)
+
+    p_meta = sub.add_parser("set-meta", help="record instrument metadata")
+    p_meta.add_argument("--instrument", default=None,
+                        help="instrument model + X-ray source, e.g. 'Thermo K-Alpha, Al Kα (mono)'")
+    p_meta.add_argument("--pass-energy", type=float, default=None,
+                        help="analyzer pass energy in eV, e.g. 50")
+    p_meta.set_defaults(func=cmd_set_meta)
+    add_format_arg(p_meta)
 
     args = parser.parse_args()
     result = args.func(args)
