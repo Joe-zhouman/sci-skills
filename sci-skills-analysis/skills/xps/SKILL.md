@@ -88,7 +88,22 @@ python scripts/state.py add-evidence xrd.png -t XRD -d "Si3N4 2theta=33.7" -n xr
 
 如果用户不知道怎么拿 RSF（外包测试、高校平台代测）→ `references/rsf-sources.md`：各平台 RSF 在哪找、怎么问测试老师、拿到了怎么处理。
 
-- **用户给了 RSF 文件** → `state.py set-rsf --source user --file <path> --notes "Thermo K-Alpha default"`
+用户给的 RSF 不管什么格式——截图、聊天里敲的数字、Excel——你先整理成 CSV：
+
+```csv
+Element,Line,RSF
+C,1s,1.000
+N,1s,0.477
+O,1s,0.780
+Si,2p,0.283
+```
+
+然后落盘：
+```bash
+state.py set-rsf --source user --file thermo_rsf.csv --notes "Thermo K-Alpha default"
+```
+
+- **用户给了 RSF**（不管什么格式，你转 CSV）→ `state.py set-rsf --source user --file <csv>`
 - **用户不知道 / 没有** → `state.py set-rsf --source scofield`
 
 **RSF 一拿到就落盘**（`state.py set-rsf`），和 claim 一样不依赖 session 上下文。
