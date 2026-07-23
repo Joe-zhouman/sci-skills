@@ -62,7 +62,17 @@ sci-skills/sci-analysis/xps/      ← 固定路径（相对当前 cwd）
 └── comparison/                    ← 对比图
 ```
 
-**启动：每次进入 skill，第一步跑 `state.py status`。** 目录不存在 → `state.py init` 建树 + 空 state.json，走 Step 0；存在 → `status` 报告当前进度（哪些 region 完成、缺什么、RSF 设了没）、问用户继续哪个，**不从零开始。**
+**启动：每次进入 skill，第一步跑 `state.py status`。** 目录不存在 → `state.py init` 建树 + 空 state.json，走 Step 0；存在 → **不从零开始。**
+
+拿到 `status` 输出后，把当前状态翻译给人话告诉用户，然后问：
+
+> "上次我们 [当前进度总结]。Claim 是'[当前 claim]'，路径是 [标准/叙事]。Evidence 有 [列表]（没有就直说没有）。要改 claim 吗？要加 evidence 吗？有没有新想法？"
+
+这个问法覆盖四种常见重进场景：
+- **标准流程做完，用户有了新想法**（"我发现 Si₃N₄ 好像是主相"）→ `state.py set-claim` 切到叙事，回到第二阶段，用已有的 fit.json 做基线，调峰数/约束/RSF 去支撑新 claim
+- **叙事路径卡住了**（"数据好像不支撑我原来的想法"）→ `state.py set-claim` 改 claim 或退到标准流程，重新审视
+- **来了新证据**（"我找到了 XRD/TEM 数据"）→ `state.py add-evidence` 落盘，回到 claim 重新审视
+- **就是继续**（"接着做就行"）→ 从 `status` 输出的 `next_steps` 继续
 
 <HARD-GATE>绝不依赖 session 上下文。要了解当前状态，跑 `state.py status`。</HARD-GATE>
 <HARD-GATE>state.json 由 `state.py` 管理，不手写编辑——手写容易漏字段、status 不流转、evidence 不追加。report.md 除外，那是叙事，LLM 按 `references/report-template.md` 写。</HARD-GATE>
