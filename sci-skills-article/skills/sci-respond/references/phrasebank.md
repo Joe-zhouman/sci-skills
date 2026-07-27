@@ -164,13 +164,23 @@ guarantee" — unless backed by the specific metric in the same response.
 
 ## TODO — what this bank still needs
 
-- *(public)* sources: a background sagittarius pass is collecting open
-  peer-review files and writing guides; merge their framing phrases here once
-  vetted.
-- *(TBD-accumulate)*: every category above has at least one *(sample)* or
-  *(public)* anchor, but the bank grows by real use — when an author uses a new
-  framing phrase that worked, add it with provenance. This is a living file,
-  not a frozen reference.
+- **Public sources are mostly empty for framing phrasing.** A sweep of open
+  resources (GitHub's ~24 `response-to-reviewers` template repos, public
+  peer-review files, writing guides) found only **LaTeX skeleton templates** —
+  empty `\begin{revcomment}...\end{revresponse}` scaffolds, not wording. The
+  open world avoids the framing layer (same avoidance the stance section calls
+  out): everyone teaches honesty phrasing, no one teaches "how to make a
+  weakness sound small." So this bank does **not** rely on external corpora —
+  it relies on the two sources that actually carry framing wording:
+  1. **(sample)** — real accepted letters from the author (Response Letter#1
+     contributed the R1-Q4/Q6/Q9, R2-Q6 phrases above).
+  2. **(TBD-accumulate)** — phrases that worked in real rounds the skill is
+     used on. When a framing phrase lands well, add it with provenance. This is
+     a living file; it thickens with use, not with scraping.
+- **If the author has access to a paid/curated source** (e.g. 科研者之家's
+  review reference library, journal-specific phrase collections), those can
+  populate this bank faster than accumulation — hand them over and they get
+  vetted and merged per category. But the skill does not depend on them.
 - Chinese-journal phrasing (中文期刊修改说明话术): currently absent. If the
   author works on Chinese-journal revisions, a 中文 phrasebank section is needed
   — defer until there's a real Chinese round to source from.
