@@ -29,16 +29,14 @@
 1. **`Intake`** —— `scripts/scan_neighbor.py` 感知 `grounding`（审稿意见、手稿 `tex`、`sci-write` 的写作笔记、`sci-draw` 的图 `report`、已有的 `issue-ledger`），报告哪些在、哪些缺。读它的输出，再去读单个文件。
 2. **拆意见 + `checkpoint`** —— 每条审稿意见拿一个稳定 ID（`R1-Q03`）、一个底层关注点、一个建议策略、一个 `safe-claim-boundary`。skill 把 `ledger` 摆出来，**停**。你锁策略。**没锁之前不起草。**
 3. **起草** —— 直接写 `response.tex`（`tex`，不是 `Word`——精确排版；你硬要 `Word` 就 `pandoc` 转，转不全的格式你自己补）。封面（三个双盲安全的字段）、按 `reviewer` 逐条、`substance-first` 顺序（事实→证据→立场→落地→可选的致谢放最后）。`typo`/澄清类用 `inline redline`（`\added`/`\deleted`）；`Response Figure` 非浮动（`as-is`，不飘）。
-4. **自检 + 编译** —— `scripts/check_response.py` 跑确定性检查（comment/response 配对、残留占位、裸 `\textcolor`、致谢计数、`banned qualifiers`、`float` 说明符、`cover` 字段）。然后是语义检查（`coverage audit`、`integrity firewall`、独立审稿人通读）。当 `session` 编译成 `PDF`。
+4. **自检 + 编译** —— `scripts/check_response.py` 跑确定性检查（comment/response 配对、残留占位、裸 `\textcolor`、致谢计数、`banned qualifiers`、`float` 说明符、`cover` 字段）。然后是语义检查（`coverage audit`、`integrity firewall`、独立审稿人通读）。最后在当前 session 编译成 PDF。
 
 ## `phrasebank` 飞轮
 
-`references/phrasebank.md` 是个活文件。写回复信最难的那部分——**框定话术**（怎么重新框定范围、把局限讲小、礼貌地拒绝一个实验）——在公开渠道是凑不到的。我扫了一圈开源资源（`GitHub` 的 `response-template` 仓库、写作指南），找到的只有空 `LaTeX` 骨架和诚实话术；框定这一层大家集体避谈。所以这个库靠两个真实来源长大：
+`references/phrasebank.md` 是个活文件。写回复信最难的那部分——**框定话术**（怎么重新框定范围、把局限讲小、礼貌地拒绝一个实验）——在公开渠道是凑不到的。我扫了一圈开源资源（`GitHub` 的 `response-template` 仓库、写作指南），找到的只有空 `LaTeX` 骨架和诚实话术；框定这一层大家集体避谈。所以这个库主要靠**作者自己的公开回复信**长大：
 
-1. **你自己公开发表的回复信** —— 每封丢到 `assets/samples/<作者>-<年份>-<期刊>/`（`PDF` + `text` 版 `.md`）。`scripts/extract_phrases.py` 帮你扫，抽出框定话术（整句 + 出处 + A–G 猜测），直接是 `Inbox` 格式。
-2. **你在帖子 / 同事的信 / 公开 `review` 里看到的好措辞** —— 原样贴进 `Inbox`，回头再分。
-
-每中一封，库就厚一点，下一封就省力一点，下一封又是一份新素材。左脚踩右脚。
+- **主要来源（作者）**：作者选择公开自己所有的回复信，每封丢到 `assets/samples/<作者>-<年份>-<期刊>/`（`PDF` + `text` 版 `.md`）。`scripts/extract_phrases.py` 扫一遍，抽出框定话术（整句 + 出处 + A–G 猜测），直接是 `Inbox` 格式，`vet` 后进正式库。每中一封，库就厚一点，下一封就省力一点，下一封又是一份新素材——左脚踩右脚。
+- **其他 user**：你自己的回复信不用公开。放到你自己项目的文件夹下，`extract_phrases.py path/to/your/letter/` 一样能扫，喂给你**本地的** `phrasebank`。如果你愿意公开，欢迎 `PR` 进 `assets/samples/`——带上 `DOI`（得是已发表、可验证的），`INDEX.md` 加一行，就是给这个 `skill` 的展示橱窗添一块证据。
 
 `samples/` 目录（`assets/samples/INDEX.md`）同时是**展示橱窗**——每条带论文的 `DOI`，谁都能点进去核实这封信真中过稿。是证据，不是嘴说。
 

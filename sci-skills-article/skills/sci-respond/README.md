@@ -33,12 +33,10 @@ Four phases per revision round. Details in `SKILL.md` + `references/`.
 
 ## The phrasebank flywheel
 
-`references/phrasebank.md` is a living file. The hard part of response-writing — the *framing* phrasing (how to reframe scope, minimize a limitation, decline an experiment politely) — is not in public corpora. A sweep of open resources (GitHub response-template repos, writing guides) found only empty LaTeX skeletons and honesty phrasing; the framing layer is universally avoided. So this bank grows from two real sources:
+`references/phrasebank.md` is a living file. The hard part of response-writing — the *framing* phrasing (how to reframe scope, minimize a limitation, decline an experiment politely) — is not in public corpora. A sweep of open resources (GitHub response-template repos, writing guides) found only empty LaTeX skeletons and honesty phrasing; the framing layer is universally avoided. So this bank grows mainly from **the author's own published response letters**:
 
-1. **Your own published response letters** — drop each as `assets/samples/<Author>-<Year>-<journal>/` (PDF + text `.md`). `scripts/extract_phrases.py` mines it for framing phrases (sentence + source + A–G guess) and emits Inbox-ready entries.
-2. **Phrases you spot in posts / colleagues' letters / public review files** — paste raw into the Inbox, sort later.
-
-Every accepted letter thickens the bank, which makes the next letter easier, which feeds the bank again. Left foot steps on right foot.
+- **Primary source (the author):** the author chooses to publish every response letter they write. Each lands as `assets/samples/<Author>-<Year>-<journal>/` (PDF + text `.md`). `scripts/extract_phrases.py` mines it for framing phrases (sentence + source + A–G guess), emitting Inbox-ready entries that get vetted into the bank. Every accepted letter thickens the bank, which makes the next letter easier, which feeds the bank again — left foot steps on right foot.
+- **Other users:** your own response letters need not be public. Drop them in a folder under *your* project, and `extract_phrases.py path/to/your/letter/` mines them just the same — feeding your *local* phrasebank. If you're willing to publish, PR it into `assets/samples/` (with a DOI — must be a published, verifiable paper) and add a row to `INDEX.md`; that's one more piece of evidence in the skill's showcase.
 
 The samples directory (`assets/samples/INDEX.md`) doubles as a **showcase** — each entry links the published paper's DOI so anyone can verify the letter worked. Proof, not claim.
 

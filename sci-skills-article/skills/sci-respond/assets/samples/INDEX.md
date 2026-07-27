@@ -31,3 +31,15 @@ Each directory holds:
 | [`Zhou-2025-commeng/`](Zhou-2025-commeng/) | "What surface characteristics truly affect thermal contact resistance — an interpretability study based on deep learning and CNNs." DOI: [10.1038/s44172-025-00508-0](https://doi.org/10.1038/s44172-025-00508-0) | Communications Engineering (Nature Portfolio), 2025 | A-reframe ("does not undermine the core conclusions" — R1-Q4); B-minimize (limitation as "manageable cost" + "modular design allows extension" — R1-Q6/R2-Q6); D-divert (small-text panels strategically relocated to Supplementary — R1-Q11); E-fill (own Chinaxiv preprint to fill the "no prior ML model" gap — R1-Q12); F-exit ("we are happy to remove" the rotation validation — R2-Q6); honest-but-tactical self-disclosure ("alphabetical order" DenseNet pick, "not experimentally validated" predictions). |
 
 _Add new published letters as a row here when added._
+
+## Contributing a sample
+
+The bank's primary source is the author's own published letters. Other users'
+letters need not be public — `scripts/extract_phrases.py path/to/your/letter/`
+mines them into your **local** phrasebank without touching this repo.
+
+If you're willing to publish a response letter and want it in the showcase, PR
+it: add `assets/samples/<YourName>-<Year>-<journal-short>/` (PDF + text `.md`),
+add a row above. **The paper must be published with a verifiable DOI** — this
+directory is proof the skill lands acceptances, not a collection of drafts.
+Letters that haven't been accepted yet don't belong here.
