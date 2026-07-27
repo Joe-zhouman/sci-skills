@@ -1,9 +1,14 @@
-# Response Letter #1 — text extraction (for phrasebank mining)
+# Zhou-2025-commeng — Response Letter (text extraction)
 
 > Text-extracted from `response.pdf` (the authoritative artifact). This `.md`
-> exists so `scripts/extract_phrases.py` can grep it — the PDF itself is for
-> humans. Source: a real, accepted revision (Nature Communications family /
-> Communications Engineering, COMMSENG-25-0150-T). Public.
+> exists so `scripts/extract_phrases.py` can grep it — the PDF is for humans.
+>
+> **Source paper:** "What surface characteristics truly affect thermal contact
+> resistance — An interpretability study based on deep learning and
+> convolutional neural networks." *Communications Engineering* (Nature
+> Portfolio), 2025. DOI: [10.1038/s44172-025-00508-0](https://doi.org/10.1038/s44172-025-00508-0).
+> Manuscript ID: COMMSENG-25-0150-T. Public — the published article and its
+> peer-review file are open.
 
 ## Response Letter #1
 

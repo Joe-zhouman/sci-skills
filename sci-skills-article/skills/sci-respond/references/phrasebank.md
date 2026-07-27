@@ -26,7 +26,7 @@ fragments exist to give a non-native or time-pressed author a *starting shape*
 that has worked in real accepted letters — they are not a substitute for
 judgment.
 
-Provenance: phrases marked *(sample)* come from `assets/Response Letter#1.pdf`
+Provenance: phrases marked *(sample)* come from `assets/samples/Zhou-2025-commeng/`
 — a real, accepted revision. Those marked *(public)* come from open
 peer-review files or writing guides (collected separately). Those marked
 *(TBD-accumulate)* are placeholders to fill as the skill is used on real rounds.
@@ -172,7 +172,7 @@ guarantee" — unless backed by the specific metric in the same response.
   out): everyone teaches honesty phrasing, no one teaches "how to make a
   weakness sound small." So this bank does **not** rely on external corpora —
   it relies on the two sources that actually carry framing wording:
-  1. **(sample)** — real accepted letters from the author (Response Letter#1
+  1. **(sample)** — real accepted letters from the author (`Zhou-2025-commeng`
      contributed the R1-Q4/Q6/Q9, R2-Q6 phrases above).
   2. **(TBD-accumulate)** — phrases that worked in real rounds the skill is
      used on. When a framing phrase lands well, add it with provenance. This is

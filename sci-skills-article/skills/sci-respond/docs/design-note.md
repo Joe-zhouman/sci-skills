@@ -2,7 +2,7 @@
 
 > **Status: design input, not implementation.** This file captures the design
 > blueprint extracted from one real, public revision package
-> (`assets/Response Letter#1.pdf`, Communications Engineering / Nature
+> (`assets/samples/Zhou-2025-commeng/`, Communications Engineering / Nature
 > Communications family) plus the author's stated principles. The SKILL.md is
 > **not** written yet. Do not implement against this until the design pass
 > settles — but everything here is what the SKILL.md will be built from.

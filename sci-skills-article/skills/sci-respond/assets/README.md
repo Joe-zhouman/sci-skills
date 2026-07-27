@@ -34,7 +34,7 @@ The flywheel: an accepted letter's framing phrasing gets mined into
 `references/phrasebank.md` via `extract_phrases.py`, which makes the next letter
 easier to write, which feeds the bank again. Left foot steps on right foot.
 
-Current sample: `samples/response-letter-1/` — a real, public revision package
+Current sample: `samples/Zhou-2025-commeng/` — a real, public revision package
 (Communications Engineering / Nature Communications family,
 COMMSENG-25-0150-T). Source of the document skeleton, five-part response order,
 6-strategy taxonomy, and the inline-redline visual contract (green `\added`,

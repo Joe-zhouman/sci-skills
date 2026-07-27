@@ -32,7 +32,7 @@ Verify:
 
 ## Skill acceptance checklist (subjective, run one real round end-to-end)
 
-Run the skill against a real revision package (e.g. `assets/Response Letter#1.pdf`
+Run the skill against a real revision package (e.g. `assets/samples/Zhou-2025-commeng/`
 as the target shape). Walk this checklist:
 
 1. **Intake senses grounding.** `scan_neighbor.py` runs first; the skill reads
