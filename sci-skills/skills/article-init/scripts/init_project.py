@@ -40,9 +40,13 @@ MANUSCRIPT_DIR_NAME = "manuscript"
 # 预建的兄弟 skill 子目录（与仓库 skills/ 下的 skill 对齐）。
 # 列表随 skill 成熟度演化——只预建需要自己输出目录的 skill。
 # sci-polish / sci-typeset 不预建：它们直接在 manuscript/ 里改 tex 文件，零落盘。
-# sci-story / sci-export 也不预建：sci-story 读 sci-write 的笔记 + 写 tex 进 manuscript/；
-#   sci-export 只读 manuscript/ 写副本。二者无独立产物目录。
-BROTHER_SKILLS = ["sci-draw", "sci-write", "sci-submit"]
+# sci-story / sci-export / sci-respond 也不预建：sci-story 读 sci-write 的笔记 + 写 tex
+#   进 manuscript/；sci-export 只读 manuscript/ 写副本；sci-respond 把 response 产物写进
+#   manuscript/rN/response/（CONTRACT 已预留）。三者都无独立产物目录。
+# sci-revise 预建：它是 revision 轮次的**共用过程状态家**（issue-ledger / change-log /
+#   polish-todo），sci-respond 写、sci-revise 读/写、sci-polish 读——同 sci-write/ 被三
+#   skill 共用一样，通过 CONTRACT 解耦，谁都不"独占"。
+BROTHER_SKILLS = ["sci-draw", "sci-write", "sci-submit", "sci-revise"]
 
 # 每个子目录的契约文件内容（CONTRACT.md，点开头=隐藏，给人看，也帮 git 跟踪空目录）。
 # 关键定位：**这些 CONTRACT.md 本身就是目录级接口契约**——任何 agent / 任何 skill
@@ -156,6 +160,50 @@ workflow-tracking 记录等。
 ## 谁读它
 人；本 skill 在设计中，文件清单会随设计确定后回填。
 """,
+    "sci-revise": """# sci-revise/ — 修回轮次共用状态（revision-round shared state）
+
+> **这份文件是契约（contract）。** 本目录是 revision 轮次的**过程状态家**，
+> 存 issue-ledger / change-log / polish-todo。多个 skill 共读写——同 sci-write/
+> 被 write/story/polish 共用一样，通过本契约解耦，谁都不"独占"。
+> **不放正文产物**：response letter 落 `../../manuscript/rN/response/`，
+> 改后的稿落 `../../manuscript/rN/tex/`；本目录只放过程元数据。
+
+## 这个文件夹是什么
+revision 轮次的**共用过程状态区**。名字借 sci-revise skill 的辨识度，但语义中性：
+任何处理修回的 skill 都按本契约读写这里。sci-respond 在 intake 阶段写 issue-ledger，
+sci-revise 读它去改稿、写回 change-log 和 polish-todo，sci-polish 读 polish-todo。
+
+## 有什么用
+- **issue-ledger.md 是 sci-respond ↔ sci-revise 的交接面**：每条审稿意见一个稳定 ID
+  （R1-Q03），记录 underlying concern / 策略 / safe-claim-boundary / 落地位置 /
+  revision_kind。sci-respond 写，sci-revise 据此改稿。
+- **change-log.md** 是 delta-only 审计轨迹（只记变更，不存当前真相）。
+- **polish-todo.md** 是 sci-revise → sci-polish 的交接面：大段新插入需 polish 的段落清单。
+
+## 文件清单（全是过程元数据，非正文）
+- `issue-ledger.md` — 每条审稿意见一个 block（stable ID + underlying concern + 策略 +
+  safe-claim-boundary + evidence_anchors + manuscript_action + revision_kind）。
+  sci-respond / sci-revise 共写；schema 见 sci-respond 的 state-contract.md。
+- `change-log.md` — delta-only 审计（append-only，不重写）。
+- `polish-todo.md` — 大段新插入段落清单（位置 + 开头快照 + 原因 + from_issue）。
+  sci-revise 写，sci-polish 读。**零碎改动不进**。
+
+## 正文产物在哪（不在本目录）
+- Response letter（tex+PDF+Response Figure）→ `../../manuscript/rN/response/`
+- 改后的稿 → `../../manuscript/rN/tex/`
+- 审稿意见原文 → `../../manuscript/rN/reviews/`
+- **本目录永远不放正文产物。**
+
+## 产物怎么进来
+- **sci-respond 写** issue-ledger（intake 阶段）+ change-log。
+- **sci-revise 读/写** issue-ledger（据此改稿）+ change-log + polish-todo。
+- **sci-polish 读** polish-todo（据此 polish 大段新插入）。
+- **人手动**：可直接编辑这里的 notes（改策略、补 boundary）。
+
+## 谁读它
+sci-respond（写 ledger）；sci-revise（读 ledger 改稿，写 change-log/polish-todo）；
+sci-polish（读 polish-todo）；人（读/改过程状态）。
+""",
 }
 
 # manuscript/ 的契约文案。manuscript/ 是项目一等公民（在项目根，不在 sci-skills/ 下）。
@@ -206,8 +254,10 @@ manuscript/
 
 ## 什么时候建 r1/r2
 
-init **只建 v1/**，不预建 r1/r2。rN 在**真到了那轮 revision 时**由人（或未来的
-sci-revise skill）建——因为没有审稿意见就建空 r1 没意义。建 rN 时照上面的结构。
+init **只建 v1/**，不预建 r1/r2。rN 在**真到了那轮 revision 时**由人建——
+sci-respond skill 触发时若 rN 不存在会提示人先建（没有审稿意见就建空 r1 没意义）。
+建 rN 时照上面的结构：`tex/`（改后的稿）+ `response/`（sci-respond 产的 Response letter）
++ `reviews/`（审稿意见原文）+ `revision-cover-letter/`（修回 cover letter，sci-submit 产）。
 
 ## 为什么在项目根、不在 sci-skills/ 下
 
