@@ -212,15 +212,9 @@ sci-respond writes **only** the response letter.
 |---|---|
 | `references/workflow.md` | Intake, checkpoint protocol, underlying-concern inference, Class-B strategy menu, viability |
 | `references/writing-rules.md` | The three hard rules, five-part order, 6 strategies, compression, banned qualifiers |
+| `references/phrasebank.md` | Framing phrasing for A–G tactics (reframe scope, minimize limitation, decline an experiment, offer an exit) — load **after** the strategy is decided, for the words. Not for honesty phrasing (state the fact plain). |
 | `references/latex-response.md` | Bundled template use, `\added`/`\deleted`, non-floating figures, cover page, compile, Word-via-pandoc |
 | `references/state-contract.md` | `issue-ledger.md` schema, `change-log.md`, `INF:` anchors, `[TBD]`, safe-claim-boundary |
 | `references/self-check.md` | Coverage audit, integrity firewall, independent-reviewer read, final search checklist |
 | `docs/design-note.md` | Full design rationale — read when modifying the skill itself |
 | `docs/cross-cutting-tricks.md` | Provenance of each adopted trick — read when questioning a rule's origin |
-
-## Status
-
-Design complete (`docs/design-note.md`); this SKILL.md is the executable form.
-Sibling `sci-revise` (manuscript editing) is designed alongside — its rules live
-in its own SKILL.md; this skill only writes the `revision_kind` field that
-drives them.

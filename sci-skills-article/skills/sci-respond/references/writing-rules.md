@@ -159,6 +159,15 @@ evidence. At the checkpoint (workflow.md §3), for each consequential issue the
 skill presents framing options alongside the strategy menu. The author picks the
 posture. The skill proposes; it does not decide how far to push.
 
+### The words for framing → `phrasebank.md`
+Once the strategy + framing posture are decided, the **words** for each tactic
+live in `references/phrasebank.md` — fragments (not templates) for A–G, each
+with its use-condition and the floor it must not cross. Load it after the
+strategy is decided, never before (it exists to serve a chosen framing, not to
+pick one). The bank is deliberately asymmetric: it collects **framing** phrasing,
+not honesty phrasing — honesty doesn't need a phrasebank, you just state the
+fact.
+
 ### Rule 3 — Acknowledgement restraint + anti-AI-pattern
 - **Default: no acknowledgement.** Most responses (typo, clarification, "fixed,
   see X", data-backed) need none. The substance is the thanks.
