@@ -74,9 +74,16 @@ the skill stops and asks. This is the meta-rule made concrete.
 1. **Self-contained (hard constraint).** Every response carries its own evidence
    — a quoted revised sentence, a Response Figure, or the data + a precise
    manuscript location with enough context that the reviewer need not look.
-2. **Honesty over embellishment.** Facts as-is. Missing numbers are `[TBD]`,
-   never invented. AI inferences tagged `INF:`. No "improves/significant/SOTA"
-   without the metric behind it.
+2. **Honesty is the floor, not the ceiling — the goal is acceptance.** Writing
+   a Response is not a virtue exercise; the author wants the paper accepted.
+   Within the floor (no fabricated data, no invented results, no fake citations,
+   no "did-experiments-we-didn't"), there is a wide **framing freedom** —
+   reframe claim scope, emphasize favorable evidence, move weakness to SI,
+   exploit reviewer misunderstanding — that exists to maximize acceptance.
+   See `references/writing-rules.md` §framing-freedom for the legitimate tactics
+   and the fabrication red line. The floor is non-negotiable; above it, frame
+   strategically. Missing numbers are `[TBD]`, never invented; AI inferences
+   tagged `INF:`.
 3. **Acknowledgement restraint.** Default: no acknowledgement. When warranted,
    one short line at the **end** of the response. Never "We sincerely appreciate
    your meticulous…" on a typo fix.

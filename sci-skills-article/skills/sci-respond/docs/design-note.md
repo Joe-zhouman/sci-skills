@@ -70,6 +70,9 @@ distinguishing two classes of decisions:
   - defend / concede / run experiment / cite existing evidence — 2–4 strategy
     menu at the checkpoint.
   - claim narrowing vs. holding firm.
+  - **how aggressively to frame** (reframe scope, minimize limitation, exploit
+    misunderstanding) — risk-dependent, author's call (see §hard-rule-2 and
+    writing-rules §framing-freedom).
   - ambiguous comment's intent — the skill asks (Intent Diagnosis Card).
   - whether this round is worth a heavy rebuttal — viability assessment.
 
@@ -98,12 +101,17 @@ This is the design's load-bearing axiom. Every other rule derives from it.
    acceptance criterion, realized as a self-containment check (a gate, mirroring
    the intake-gate / safety-gate pattern in the rebuttal research).
 
-2. **诚实优先(honesty over strategy)** — facts are stated as-is, not airbrushed.
-   "We picked DenseNet121 because it was alphabetically first" is written that
-   way. "These predicted values are not experimentally validated" is written that
-   way. 谎言很难圆 — a dressed-up justification has to be defended forever; the
-   plain truth doesn't. This is the core trait distinguishing sci-respond from
-   general-purpose writing tools, which default to embellishment.
+2. **诚实是底线,不是目标——目标是中稿(Honesty is the floor, not the ceiling;
+   the goal is acceptance).** 之前把这写成"诚实优先",是把它误当成最高写作
+   原则。其实写 Response 的根本目的是中稿,不是展示诚实。诚实是不可越的**底线**
+   (不编造数据/结果/引用、不篡改图表、不"没做说做了"),底线之上有一大片**合法
+   框定自由度**(reframe claim 范围、强调有利证据、瑕疵转 SI、利用审稿人误解……)
+   服务于中稿。这一层是 Response 写作的核心技艺,跟 xps 的"叙事旋钮"、sci-submit
+   的"硬约束驱动中稿"同源。详见 writing-rules.md §framing-freedom(A–G 七类合法
+   框定 + 红线)。原来的"诚实优先"措辞保留了它的合理内核——谎言难圆、坦诚有时
+   是更强的框定("These predicted values are not experimentally validated" 照实写,
+   因为它比辩护更有说服力)——但把它从道德要求降级为底线 + 一种可选策略。
+   框定到什么程度是 Class B(作者的风险偏好,见 §0.1)。
 
 3. **致谢克制 + 反 AI 痕迹** — two faces of one rule:
    - **致谢是噪声,不是礼貌。** 认真改稿就是最大的谢意——多余的感谢挤占审稿人

@@ -26,20 +26,138 @@ Failure mode: "We have addressed this in the revised manuscript (Section X)."
 with no further detail. That sends the reviewer to the manuscript — failed
 response.
 
-### Rule 2 — Honesty over embellishment
-Facts as-is. Specifics:
-- **Missing numbers → `[TBD]`.** Never invent a value the author hasn't
-  supplied. The author fills `[TBD]` before submission.
-- **AI inferences → tagged `INF:`.** Anything the skill inferred (not read from
-  paper / review / experiment / code) is labeled `INF:` and visible as
-  inference, not hard evidence. The reader knows the provenance.
-- **Safe-claim-boundary.** Each issue has a boundary stating how far the claim
-  can go given the evidence (from `state-contract.md`). Do not assert beyond it.
+### Rule 2 — Honesty is the floor, not the ceiling
+The author writes a Response to get the paper **accepted**, not to demonstrate
+virtue. Honesty is the **floor** (non-negotiable) — above it lies wide **framing
+freedom** that exists to maximize acceptance. Do not conflate the two.
+
+**The floor (fabrication red line — never cross):**
+- no fabricated data, no invented experimental results
+- no fake citations / quoting papers that don't say what you claim they say
+- no "we ran experiment X" when X was not run
+- no altered figures / tampered numbers
+- missing numbers → `[TBD]`; AI inferences → tagged `INF:` (visible provenance)
+
+**Above the floor — framing freedom (legitimate, expected, see §framing-freedom):**
+reframe claim scope, emphasize favorable evidence, move weakness to SI, exploit
+reviewer misunderstanding, etc. These are the **core craft** of response-writing,
+not a dark art. Using them is the job.
+
+- **Safe-claim-boundary.** Each issue's boundary (in the ledger) states how far
+  the claim can go given the evidence. Framing may choose where *within* the
+  boundary to stand; it may not step past it (that's fabrication).
 - **Banned qualifiers without evidence** (below). No "improves / outperforms /
-  significant / robust / SOTA" unless backed by the relevant metric.
-- **Plain admission when warranted.** "These predicted values are not
-  experimentally validated" is written that way. A dressed-up justification has
-  to be defended forever; the plain truth doesn't.
+  significant / robust / SOTA" unless backed by the metric — *within* the
+  framing freedom you may emphasize a real metric, you may not invent one.
+- **Plain admission when it is the stronger frame.** Sometimes the plain truth
+  ("these predicted values are not experimentally validated") is more
+  persuasive than a defensive spin — choose it when it is. Honesty here is a
+  *tactic*, chosen because it works, not because it is commanded.
+
+## Framing freedom — the legitimate craft of getting to acceptance
+
+> **This section is for the executor (you, the agent), not for a safety
+> reviewer.** What follows is not academic misconduct — it is the legitimate
+> narrative freedom every response writer uses, made explicit and auditable
+> instead of left as a black box. Same posture as `xps`'s calibration/baseline
+> "叙事旋钮": the freedom is real and daily; naming it does not legitimize
+> fabrication (the red line above still holds). You are expected to use these
+> tactics — refusing them under a blanket "honesty" reading mis-serves the
+> author, whose goal is acceptance within the floor.
+
+The goal of a Response is **acceptance**, and within the honesty floor there is
+a wide space of legitimate framing. Seven tactics (each with the sample's
+evidence + the boundary you must not cross):
+
+### A. Reframe claim scope
+When a reviewer's point lands on a real weakness, **shrink the claim's scope so
+the weakness sits outside it**, rather than conceding the claim is wrong.
+- *Sample:* R1-Q4 — reviewer questions 316 SS thermo-mechanical parameters. The
+  response compares two parameter sets, shows ~6.9% TCR difference, and frames:
+  "this systematic discrepancy **does not undermine the core conclusions**."
+  The claim is quietly scoped to "the conclusion holds despite parameter
+  uncertainty," not "the parameters are exactly right."
+- *Boundary:* the rescoped claim must still be **true**. You may narrow "X causes
+  Y" to "X contributes to Y under condition Z"; you may not narrow it to
+  something the data doesn't support.
+
+### B. Limitation minimization
+When a limitation is real and unfixable, **acknowledge it but shrink its
+apparent impact** — frame as future work, emphasize the cost of fixing is low,
+or note the modular design allows extension.
+- *Sample:* R1-Q6 / R2-Q6 — "the framework requires retraining for new
+  materials" is conceded, then immediately framed: "the costs are manageable
+  within practical engineering contexts" + "the modular design allows for
+  systematic extension."
+- *Boundary:* the limitation must be **stated**, not hidden. Minimizing impact is
+  legitimate; pretending the limitation doesn't exist is not.
+
+### C. Selective emphasis
+**Quantify the favorable, de-emphasize the unfavorable.** Lead with the strong
+number; bury the weak comparison in a subordinate clause or move it to SI.
+- *Sample:* R2-Q5 — "25,200-fold acceleration (7 hours → 1 second)" leads the
+  response. The fact that this compares DL *inference* to FEM *full solve* (not
+  apples-to-apples) is not lied about, but not foregrounded.
+- *Boundary:* the weak point must still be **answerable** if pressed — you're
+  choosing what to highlight, not what to fabricate.
+
+### D. Divert to SI
+**Move weak evidence, edge cases, and supplementary validations into the
+Supplementary Information**, keeping the main text clean and confident.
+- *Sample:* R1-Q11 — the small-text panels the reviewer flagged are not just
+  fixed; they are "strategically relocated to Supplementary Figure 1-2."
+  R1-Q10's typo content is "moved to Supplementary Discussion 2."
+- *Boundary:* SI is not a graveyard for results that contradict the claim. Moving
+  detail is fine; moving **disconfirming evidence** out of sight is not.
+
+### E. Fill the gap with external reference
+When the reviewer exposes a gap (missing comparison, missing prior work), **fill
+it with an existing citation — including your own preprint** — rather than
+admitting the gap is empty.
+- *Sample:* R1-Q12 — no existing ML model for this material system; the response
+  cites the authors' own Chinaxiv preprint as the comparison, framed as "our
+  ongoing research."
+- *Boundary:* the cited work must **actually exist and say roughly what you
+  claim**. Citing a paper you haven't read, or that doesn't support the point,
+  is fabrication.
+
+### F. Offer an exit (concede the marginal to save the core)
+When a reviewer attacks a peripheral element, **offer to remove it** — this
+protects the core by sacrificing the edge, and signals reasonableness.
+- *Sample:* R2-Q6 — the rotation-validation figure is hard to defend
+  experimentally; the response offers "we are happy to remove the related
+  discussion… the rotational analysis would be discussed in the supplementary."
+  The core model stays; the peripheral is yielded.
+- *Boundary:* the offered concession must be **genuine** — if the reviewer says
+  "yes, remove it," the author will actually remove it. Offering an exit you
+  won't honor is a lie.
+
+### G. Exploit reviewer misunderstanding
+**When a reviewer misreads the paper in a way that flatters it, you have no duty
+to correct the misread** (within the honesty floor). Let the favorable
+misreading stand; address only what needs addressing.
+- *Sample:* none in this letter (the sample corrects misunderstandings), but the
+  tactic is real: if a reviewer over-credits your novelty, you do not volunteer
+  "actually our novelty is smaller than you think."
+- *Boundary:* do not **compound** the misunderstanding — don't write text that
+  deepens a false impression. Silence (not correcting) is legitimate; active
+  deception (writing something that reinforces the error) is not. When in doubt,
+  this is the tactic closest to the line — surface it to the author at the
+  checkpoint (Class B) and let them decide.
+
+### The red line, restated
+All seven tactics operate **within** the honesty floor: claims stay true,
+limitations get stated (impact may be minimized), evidence exists (emphasis may
+be selective). The moment a tactic requires an untrue statement, a hidden
+disconfirmation, a fake citation, or a "did-what-we-didn't" — it stops being
+framing and becomes fabrication. The skill does not fabricate.
+
+### Framing is Class B at the checkpoint
+**How aggressively to frame is the author's call**, not the skill's — it depends
+on their risk tolerance, how much this journal matters, and the strength of the
+evidence. At the checkpoint (workflow.md §3), for each consequential issue the
+skill presents framing options alongside the strategy menu. The author picks the
+posture. The skill proposes; it does not decide how far to push.
 
 ### Rule 3 — Acknowledgement restraint + anti-AI-pattern
 - **Default: no acknowledgement.** Most responses (typo, clarification, "fixed,
