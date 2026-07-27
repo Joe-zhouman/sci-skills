@@ -14,6 +14,21 @@ experiment, claim narrowing, ambiguous intent) surface to the author.
 
 ## 1. Intake
 
+### Sense the grounding first (deterministic — run the script)
+Before reading any individual file, run the neighbor scan to see what's present
+and whether contract fields are complete:
+
+```bash
+python scripts/scan_neighbor.py                  # default: infer project root from cwd
+python scripts/scan_neighbor.py /abs/project     # absolute path (for testing)
+```
+
+The scan reports: the current revision round (rN), the reviewer comment files,
+the manuscript tex + sections, the writing-stage notes (claim/paper-plan/
+fig-reading/terminology-ledger), the figure reports, and the issue-ledger with
+per-issue field completeness. Read its output first — it tells you what to read
+next and what's missing (don't silently assume a source exists).
+
 ### Read everything that grounds the response
 A response is only as good as what it's grounded in. Read, in this order:
 

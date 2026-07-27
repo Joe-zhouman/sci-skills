@@ -151,10 +151,12 @@ shared `sci-skills/sci-revise/`.
 
 Four phases. Details in `references/workflow.md`; the shape:
 
-1. **Intake.** Read the reviews + the manuscript + the writing-stage notes.
-   Decompose each review into atomic issues with stable IDs (`R1-Q03`). For
-   each: surface comment → **underlying concern** → proposed strategy →
-   safe-claim-boundary → evidence anchors. Write to `issue-ledger.md`.
+1. **Intake.** First sense the grounding — run `scripts/scan_neighbor.py` to
+   see which files are present (reviews, manuscript tex, sci-write notes,
+   sci-draw figure reports, the issue-ledger) and whether their contract fields
+   are complete. Then decompose each review into atomic issues with stable IDs
+   (`R1-Q03`). For each: surface comment → **underlying concern** → proposed
+   strategy → safe-claim-boundary → evidence anchors. Write to `issue-ledger.md`.
 2. **Checkpoint — STOP.** Present the ledger. For Class-B issues (defend /
    concede / experiment / ambiguous intent), surface the options and wait for
    the author. **Nothing is drafted before this pause.** Class-A decisions
@@ -163,9 +165,12 @@ Four phases. Details in `references/workflow.md`; the shape:
    — cover page, overview, per-reviewer responses in the substance-first order.
    Typo/clarification responses use the inline-redline quote block. Response
    Figures are non-floating.
-4. **Self-check + compile.** Coverage audit, integrity firewall,
-   independent-reviewer read. Compile to PDF in this session. Word via pandoc
-   only if the author asked for it.
+4. **Self-check + compile.** Run `scripts/check_response.py response-rN.tex` for
+   the deterministic checks (comment/response pairing, leftover placeholders,
+   bare `\textcolor`, acknowledgement count, banned qualifiers, float
+   specifiers, cover fields). Then the semantic checks (coverage audit,
+   integrity firewall, independent-reviewer read) and compile to PDF in this
+   session. Word via pandoc only if the author asked for it.
 
 ## Per-response structure — five parts, substance-first
 

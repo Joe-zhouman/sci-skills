@@ -9,6 +9,21 @@ Run all four checks, then compile. **Do not report done until compile + searches
 pass in the current session** — a stale "done" from an earlier session doesn't
 count.
 
+### Deterministic checks first (run the script)
+The mechanical part of the search checklist is a script — run it before the
+semantic checks. It catches what a human/agent would miss by eye:
+
+```bash
+python scripts/check_response.py manuscript/rN/response/response-rN.tex
+```
+
+Reports: comment/response pairing, leftover placeholders (`[TBD]`/TODO/INSERT),
+bare `\textcolor` outside `changes`/caption (should be `\added`/`\deleted`),
+acknowledgement-phrase count, banned-qualifier hits, float specifiers (must be
+non-floating), cover-page fields. Each flagged item is a concrete fix; the
+"note" field says what to do. Semantic checks below handle what the script
+cannot (coverage intent, tone, self-containment of each response).
+
 ---
 
 ## 1. Coverage audit — every concern accounted for

@@ -1,0 +1,5 @@
+Reviewer #1
+===========
+1. Please provide nomenclature for the symbols and abbreviations used.
+2. Line 320: "Both groups exhibit a surface roughness of approximately 0.8." What is this roughness: RMS, Ra, or Rz? Unit?
+3. The theoretical model used for data generation should be explained in detail.
