@@ -476,12 +476,16 @@ judging an underlying concern or holding the claim boundary:
   in the ledger), but each response states it in full. Extends the first
   principle: a response is self-contained — no reliance on the manuscript *or*
   on another reviewer's section.
-- **Processing order is by priority, not by appearance** (workflow.md §2.1).
-  Heavy/long-lead issues (new experiment, claim-narrowing) processed first;
-  medium (supplementary explanation) next; light (typo/format) batched last.
-  **Internal only** — the response letter's presentation stays point-by-point
-  per reviewer (journal standard); processing order and presentation order are
-  independent.
+- **Solution order fuses importance and logic** (workflow.md §2.1; ledger's
+  `solution_order` + `depends_on` fields). Importance already carries logic:
+  typo/format always last (depend on nothing, affect nothing); "change"
+  (claim/experiment) before "fix" (explanation) — the change sets the footing
+  the explanation stands on; foundational issues (does claim X hold?) before
+  derived ones (application boundary *of* claim X). The ledger's thin index
+  carries one `solution_order` checklist the author works top-down. **Work in
+  solution order; present point-by-point per reviewer** (journal standard).
+  Internal only — avoids rework when a derived answer is settled before its
+  foundation.
 - **Banned qualifiers without evidence.** "improves/outperforms/significant/
   robust/SOTA" prohibited unless backed by the relevant metric
   (awesome-rebuttal `11_response_writer.md:125-126`).

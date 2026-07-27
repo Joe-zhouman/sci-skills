@@ -55,7 +55,21 @@ viability: PROMISING
 status: checkpoint               # intake | checkpoint | drafting | audited | done
 reviewers: R1, R2
 strategies_locked: no            # set yes after the checkpoint
+
+## Solution order (work top-down; present point-by-point)
+1. R1-Q02  [foundational]  claim X 是否退守           → 决定 R1-Q05/Q09
+2. R1-Q06  [foundational]  实验范围是否扩展           → 决定 R1-Q08
+3. R1-Q05  [derived, depends_on R1-Q02]  应用边界
+4. R1-Q08  [derived, depends_on R1-Q06]  实验验证
+5. R2-Q03  [independent]  DenseNet121 选择理由
+6. R1-Q10, R2-Q05  [terminal]  typo / 格式（批量扫）
 ```
+
+The solution order fuses importance and logic (workflow.md §2.1): foundational
+heavy issues first (they set the footing), derived medium ones next (built on
+the settled footing), independent ones slotted anywhere, terminal light ones
+(typo/format) batched last. Mark each issue's `solution_order` position and
+`depends_on` in its block. **Work in this order; present in reviewer order.**
 
 ### Per-issue block
 ```
@@ -77,6 +91,8 @@ strategies_locked: no            # set yes after the checkpoint
   source for E/ν.   (routed to sci-revise)
 - manuscript_location: manuscript/rN/tex/sections/methods.tex, parameter table
 - revision_kind: surgical    # surgical | polish-needed
+- solution_order: 3          # position in the solution-order list (§solution-order)
+- depends_on: R1-Q02         # which issue's answer this one relies on; "none" if independent
 - safety: proposed           # proposed | approved
 - status: draft-ready
 ```
@@ -95,6 +111,8 @@ strategies_locked: no            # set yes after the checkpoint
 | `manuscript_action` | what sci-revise does | free text; "none" if response-only |
 | `manuscript_location` | where | file + line/label; "n/a" if none |
 | `revision_kind` | edit type | `surgical` (default) / `polish-needed` |
+| `solution_order` | position in the work sequence | integer; see §solution-order |
+| `depends_on` | which issue's answer this relies on | issue id, or `none` |
 | `safety` | approval | `proposed` (checkpoint) / `approved` (locked) |
 | `status` | workflow | `analyzed` / `draft-ready` / `drafted` / `audited` |
 

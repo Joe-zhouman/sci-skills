@@ -99,26 +99,44 @@ For each atomic issue (schema in `state-contract.md`):
   them as separate issues (R1-Q03 and R2-Q01). See §2.2 — reviewers may not see
   each other's responses, so each must be answered in full in its own section.
 
-### 2.1 Processing order — by priority, not by appearance (internal)
+### 2.1 Solution order — importance and logic, fused (internal)
 
 The **response letter's presentation stays point-by-point** by reviewer (R1's
-Q1–Q14, then R2's Q1–Q6) — that is the journal standard and is not changed. But
-the **order in which the skill and author work through the issues** is by
-priority, not by Q-number. Process heavy/long-lead items first so they don't
-block the round:
+Q1–Q14, then R2's Q1–Q6) — journal standard, not changed. But the **order in
+which the skill and author work through the issues** is neither by Q-number nor
+by importance alone — it follows the **solution's own logic**.
 
-1. **Heavy / long-lead** — issues needing new computation, new experiment, or a
-   claim-narrowing decision. These take time (the author may need to run
-   something) and decide the claim's footing. **Process first.** These are the
-   Class-B checkpoint decisions.
-2. **Medium** — supplementary explanation, added discussion, new citation. No
-   new data, but substantive writing. Process after the heavy ones are locked.
-3. **Light** — typo, missing unit, formatting, missing reference. Batch these
-   for last; they're quick and don't move the argument.
+Importance and logic are not independent axes here — importance already carries
+logic:
+- **Typo / formatting always last** — they depend on nothing and changing them
+  affects nothing, so they sit at the tail naturally.
+- **"Change" (revise the claim, add an experiment) before "fix" (supplementary
+  explanation)** — the change decides the claim's footing, and the explanation
+  is written on top of the new footing. First change, then fix.
+- **Foundational issues before derived ones** — if R1-Q2 decides whether claim X
+  holds, and R1-Q5 discusses an application boundary *of* claim X, then Q5's
+  answer depends on Q2's. Answering Q5 first risks rework when Q2 lands.
 
-This ordering is internal (how the ledger is worked). The output order remains
-point-by-point per reviewer. The two are independent — work in priority order,
-present in reviewer order.
+So the solution order fuses both into one sequence:
+
+1. **Foundational / heavy** — claim-narrowing decisions, new computation or
+   experiment. These set the footing everything else stands on. Process first.
+2. **Derived / medium** — supplementary explanation, added discussion, new
+   citation — built on the (now-settled) foundational answers. Process next.
+3. **Independent** — concerns that neither depend on others nor affect them
+   (e.g. "why DenseNet121" — a self-contained clarification). Slotted anywhere
+   convenient.
+4. **Terminal / light** — typo, missing unit, formatting, missing reference.
+   Batched last; they don't move the argument.
+
+At decomposition, the skill marks each issue's `solution_order` position and, if
+derived, its `depends_on` (which issue's answer it relies on). The ledger's thin
+index carries the resulting `solution_order` list — a simple checklist the
+author works top-down. Work in solution order; present in reviewer order. The
+two are independent.
+
+This avoids the rework failure: answering a derived question before its
+foundation is settled, then redoing it when the foundation moves.
 
 ### 2.2 Cross-reviewer overlap — answer in full, do not reference
 
