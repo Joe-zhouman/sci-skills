@@ -19,6 +19,42 @@ pipeline works.
 **A part that cooperates beats a closed suite.** This is our survival strategy — and our
 only differentiator.
 
+## Who this is for
+
+Most research-skills assume a privileged default: good school, good data, good
+equipment, an advisor who mapped the path. For that author, "do honest science
+and present it well" **is** the optimal strategy — their work is strong enough
+that honesty alone carries it. Their skills can afford to treat honesty as the
+top principle.
+
+This family is not written for that default. It is written for the author whose
+position is **not** privileged — ordinary school, ordinary resources, work that
+sometimes can only be ordinary because that's what the conditions allow. That is
+not an attitude problem; it's a reality. And under that reality, "just be
+honest" is not enough: an honestly-presented ordinary submission gets judged by
+standards set for privileged work, and dies.
+
+So the goal of every skill here is **acceptance under constraint** — getting a
+paper accepted (and a thesis defended, a figure approved) within honest limits,
+using every legitimate degree of freedom to give ordinary work its fair chance.
+Not fabrication (the floor is hard: no invented data, no fake citations, no
+did-what-we-didn't). But above that floor: **framing is craft, not sin.**
+- `sci-submit` is driven by hard constraints (graduation, title review, advisor
+  demands) — acceptance is the explicit target, not a side effect.
+- `xps` treats calibration / baseline / peak constraints as legitimate narrative
+  knobs — the same data tells different stories depending on how they're set.
+- `sci-respond` carries seven legitimate framing tactics (reframe claim scope,
+  minimize limitation, divert to SI, exploit reviewer misunderstanding) — the
+  response exists to get the paper accepted, and honesty is the floor it stands
+  on, not the ceiling it bows to.
+
+This is the 黄药师 choice, not the 全真教 choice — not a moral difference, a
+positional one. 名门正派 has the capital to let "实力说话"; 桃花岛 serves people
+with no fallback, so it teaches 技艺. The martial art isn't lesser — it's built
+for a different student. Many skill authors avoid saying this; we lay it open,
+because pretending the default user is privileged serves no one in the actual
+target audience.
+
 ## Architecture
 
 ### Skills know files, not each other
@@ -76,10 +112,12 @@ skills can consume them. The family is the CI/CD layer for research outputs.
 |---|---|---|
 | [article-init](sci-skills/skills/article-init/) | Scaffold workspace, write contracts, audit layout, migrate external files | Every migration destination confirmed |
 | [sci-draw](sci-skills/skills/sci-draw/) | Publication-quality figures + structured figure reports | Panel plan approved before drawing |
-| [sci-write](sci-skills-article/skills/sci-write/) | Method / Results / Conclusion from figures + data. Claim-vs-figure consistency. | claim.md confirmed; paper-plan confirmed; figure-reading check |
+| [sci-write](sci-skills-article/skills/sci-write/) | Method / Results / Conclusion (+ SI as by-product) from figures + data, written directly as tex. Claim-vs-figure consistency. | claim.md confirmed; paper-plan confirmed; figure-reading check |
 | [sci-story](sci-skills-article/skills/sci-story/) | Introduction (two-stage funnel) / Discussion (+ fused conclusion) / Abstract / Title / Keywords. Literature search. | Claim read & confirmed; confirmation gate per section; self-checks |
 | [sci-polish](sci-skills-article/skills/sci-polish/) | Polish tex prose directly. Git as audit trail. AI-prose anti-patterns. | Git diff review |
-| [sci-export](sci-skills-article/skills/sci-export/) | md→tex (drafted content → manuscript). tex→docx (pandoc). SI assembly + cross-ref check. | Template choice confirmed |
+| [sci-typeset](sci-skills-article/skills/sci-typeset/) | LaTeX typesetting on our template — readability fixes (loose pages, stranded headings, oversized tables) + compile to PDF | Visual PDF review |
+| [sci-export](sci-skills-article/skills/sci-export/) | Move finalized tex into a target journal template (optional, decides float strategy); tex→docx (optional). | Template choice / float strategy confirmed |
+| [sci-respond](sci-skills-article/skills/sci-respond/) | Response-to-Reviewers letter (point-by-point) for a revision round — tex→PDF, framing freedom within the honesty floor | Per-issue strategy locked at checkpoint; framing posture is the author's call |
 | [sci-submit](sci-skills-article/skills/sci-submit/) | Hard constraints → journal selection → cover letters → rejection handling → submission tracking | Hard constraints collected; cover letter per paragraph confirmed |
 
 ## Pipeline
@@ -88,12 +126,15 @@ skills can consume them. The family is the CI/CD layer for research outputs.
 claim.md ──────────── the central contract (sci-write Step 0)
   │
   ├─→ sci-draw ───── figures + figure reports (conclusion-driven)
-  ├─→ sci-write ──── method / results / conclusion (claim-anchored)
-  │                    sup-list.md (SI parking, accumulated during writing)
+  ├─→ sci-write ──── method / results / conclusion / SI (tex-direct, claim-anchored)
   ├─→ sci-story ──── introduction / discussion / abstract / title / keywords
-  ├─→ sci-export ─── md→tex + SI assembly + cross-ref check / tex→docx
   ├─→ sci-polish ─── direct tex editing, git as audit trail
+  ├─→ sci-typeset ── readability typesetting on our template + compile PDF
+  ├─→ sci-export ─── (optional) move into journal template / tex→docx
   └─→ sci-submit ─── journal selection, cover letters, submission tracking
+                     ↓ after reviews arrive
+  rN/ ──→ sci-respond ── response-to-reviewers letter (tex→PDF, framing within floor)
+          sci-revise ──── surgical manuscript edits per the locked issue-ledger
 ```
 
 ## Philosophy in one sentence

@@ -26,6 +26,21 @@ This skill writes **only the response letter**. It does not touch manuscript
 tex (that is `sci-revise`'s job — see Boundary). It writes an issue ledger that
 `sci-revise` consumes to make the manuscript edits.
 
+## Stance — what you are actually doing here
+
+This is not a virtue exercise. **The author wants the paper accepted**, and is
+likely working from a position that is not privileged — ordinary school,
+ordinary resources, work that is sometimes only ordinary because that's what
+the conditions allow. Under that reality, "just present it honestly" gets the
+paper killed by standards set for stronger work. So your job is to get to
+acceptance **within the honesty floor**: no fabricated data, results, citations,
+or did-what-we-didn't — but above that floor, use every legitimate framing
+freedom (reframe scope, minimize limitation, divert to SI, exploit reviewer
+misunderstanding) to give the work its fair chance. Framing is craft, not sin;
+the floor is non-negotiable. How far to push is the author's call (Class B),
+because they carry the risk. Full rationale: `docs/design-note.md` §hard-rule-2
+and `references/writing-rules.md` §framing-freedom.
+
 ## First principle
 
 > **让审稿人不用回看手稿,也知道改动了什么。**
