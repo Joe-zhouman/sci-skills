@@ -184,3 +184,29 @@ guarantee" — unless backed by the specific metric in the same response.
 - Chinese-journal phrasing (中文期刊修改说明话术): currently absent. If the
   author works on Chinese-journal revisions, a 中文 phrasebank section is needed
   — defer until there's a real Chinese round to source from.
+
+---
+
+## Inbox — raw phrases before they're vetted into A–G above
+
+> **This is the low-friction drop zone.** When the author reads a post / a
+> colleague's response / a public review file and spots a framing phrase worth
+> keeping, drop it here as-is — no categorization, no polishing. Just three
+> fields: where it came from, the original wording, and a one-line guess at
+> which tactic (A–G) it serves. Every few rounds, the skill (or author) vets
+> these and promotes the good ones into the structured sections above; the rest
+> get cut. **Don't let a good phrase die because categorizing it is work —
+> paste it raw here and sort later.**
+
+Format (loose — just have the three bits):
+```
+- from: <URL / 论坛帖子 / 同事的信 / 哪本期刊公开的 review>
+  original: "<the wording, verbatim, in whatever language>"
+  guess: <A-G tactic, or "unclear">
+  note: <optional — what situation it fit>
+```
+
+<!-- 累积条目贴在下面这个列表里。空着没关系,等刷到再贴。 -->
+
+- _(empty — first entry here)_
+
