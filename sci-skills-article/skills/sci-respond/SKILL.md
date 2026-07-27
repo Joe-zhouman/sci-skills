@@ -1,24 +1,17 @@
 ---
 name: sci-respond
 description: >-
-  Write the Response-to-Reviewers letter as a standalone LaTeX document, compiled
-  to PDF. Point-by-point responses grounded in the manuscript, the reviews, and
-  the writing-stage notes (claim, paper-plan, figure reports) — every response
-  self-contained so the reviewer never has to flip back to the manuscript. Drives
-  a revision round on manuscript/rN/: intakes the reviews, decomposes them into a
-  stable issue ledger, stops at a checkpoint for the author to lock the
-  per-issue strategy decisions that only they can make, then drafts the response
-  tex and runs the final self-check. Writes tex directly (tex is the better
-  format — precise layout; Word via pandoc only if the author insists, and the
-  author fixes what pandoc cannot place precisely). Uses inline redline
-  (\added/\deleted) for typo/clarification responses, keeps Response Figures
-  non-floating (as-is), and compiles its own PDF from its bundled template.
-  Triggers on: response letter, response to reviewers, rebuttal letter,
-  point-by-point response, reviewer response, 审稿回复, 回复审稿人, 修回信,
-  修改说明, 逐条回复. Not for: editing the manuscript tex per the locked
-  decisions (that is sci-revise), polishing manuscript prose (sci-polish), cover
-  letters (sci-submit), or drawing data figures (sci-draw).
+  Write the Response-to-Reviewers letter (point-by-point) for a manuscript
+  revision round — the letter you submit back to the journal answering each
+  reviewer comment. Output is a standalone LaTeX document compiled to PDF,
+  landed in manuscript/rN/response/. Triggers on: response letter, response to
+  reviewers, rebuttal letter, point-by-point response, reviewer response,
+  审稿回复, 回复审稿人, 修回信, 修改说明, 逐条回复. Not for: editing the
+  manuscript tex per the locked decisions (that is sci-revise), polishing
+  manuscript prose (sci-polish), cover letters (sci-submit), or drawing data
+  figures (sci-draw).
 ---
+
 
 # sci-respond — Response-to-Reviewers letter
 
