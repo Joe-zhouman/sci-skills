@@ -198,6 +198,23 @@ guarantee" — unless backed by the specific metric in the same response.
 > get cut. **Don't let a good phrase die because categorizing it is work —
 > paste it raw here and sort later.**
 
+### Half-automatic extraction from your own published letters
+When you publish a response letter (drop it as `assets/samples/<letter-name>/`
+with a `response.md` text version), run the extractor to mine it for framing
+phrases — the flywheel: your own accepted letters feed this bank, which makes
+the next letter easier to write, which feeds the bank again.
+
+```bash
+python scripts/extract_phrases.py                  # scan all assets/samples/*/
+python scripts/extract_phrases.py path/to/letter/  # scan one letter dir
+```
+
+It prints Inbox-ready entries (sentence + source + tactic guess). Paste the
+good ones below; the signal table that drives it lives in the script and grows
+as you spot new framing markers. The script does the mechanical work (scan +
+match + extract whole sentences); you do the judgment (which to keep, which
+A–G category, the line each must not cross).
+
 Format (loose — just have the three bits):
 ```
 - from: <URL / 论坛帖子 / 同事的信 / 哪本期刊公开的 review>

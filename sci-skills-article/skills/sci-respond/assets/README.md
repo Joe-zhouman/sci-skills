@@ -20,15 +20,26 @@ Gaps the suite has (macros to add at implementation time: `\added`/`\deleted`,
 cover-page env, `\quoteRevision`) are documented in
 `references/latex-response.md` §6.
 
-## Design-blueprint samples
+## samples/ — the author's published response letters (the flywheel)
 
-- `Response Letter#1.pdf` — a real, already-public revision package (Nature
-  Communications family). The canonical example the skill's document skeleton,
-  five-part response order, and 6-strategy taxonomy were extracted from. Design
-  was driven by a real revision pass, not speculation.
-- `typo-format-1.png`, `typo-format-2.png` — the inline-redline visual contract
-  (green `\added`, red `\deleted`+strikethrough, gray unchanged, left vertical
-  bar). See `references/latex-response.md` §1.
+Every response letter the author publishes and is willing to share lands here as
+`samples/<letter-name>/` — these are **phrasebank fuel**, not just design
+blueprints. Each holds:
+- `response.pdf` — the authoritative artifact (what was actually sent)
+- `response.md` — a text-extracted version (`scripts/extract_phrases.py` greps
+  this; the PDF is for humans)
+- letter-specific assets (e.g. `typo-format-*.png` for the redline contract)
+
+The flywheel: an accepted letter's framing phrasing gets mined into
+`references/phrasebank.md` via `extract_phrases.py`, which makes the next letter
+easier to write, which feeds the bank again. Left foot steps on right foot.
+
+Current sample: `samples/response-letter-1/` — a real, public revision package
+(Communications Engineering / Nature Communications family,
+COMMSENG-25-0150-T). Source of the document skeleton, five-part response order,
+6-strategy taxonomy, and the inline-redline visual contract (green `\added`,
+red `\deleted`+strikethrough, gray unchanged, left vertical bar — see
+`references/latex-response.md` §1).
 
 ## Sibling skill
 
