@@ -154,15 +154,14 @@ After cloning, run the installer — it symlinks the three plugin families into 
 bash install.sh
 ```
 
-The installer calls `uv sync` to create `.venv/` from the repo-root `pyproject.toml` (deps: numpy, scipy, matplotlib, pandas, lmfit, lmfitxps, pyarrow, …). Skill scripts self-activate this env via a transparent launcher — agents just run `python scripts/foo.py`, no `uv run` needed. If `uv` isn't installed, the installer warns and skips env setup (install uv: <https://docs.astral.sh/uv/>, then re-run `bash install.sh`).
+The installer calls `uv sync` to create `.venv/` from the repo-root `pyproject.toml` (shared base: numpy, scipy, matplotlib, pandas, seaborn, python-dateutil, …). Skill scripts self-activate this env via a transparent launcher — agents just run `python scripts/foo.py`, no `uv run` needed. If `uv` isn't installed, the installer warns and skips env setup (install uv: <https://docs.astral.sh/uv/>, then re-run `bash install.sh`).
 
-`xps` (the `sci-skills-analysis` family) is not for everyone — no XPS data, no install. Skip it and you lose exactly one skill:
+**`xps` is not for everyone — no XPS data, no install.** The rule is the same no matter what agent or setup is doing the install; it does not assume Claude Code:
 
-```bash
-SKIP_FAMILIES=sci-skills-analysis bash install.sh
-```
-
-`SKIP_FAMILIES` takes a space-separated list of family names (`sci-skills`, `sci-skills-article`, `sci-skills-analysis`) and can skip any of them. A skipped family still runs `uv sync` — the Python env is shared across families.
+- **No XPS needs → skip the `sci-skills-analysis` family.** Everything else (writing, figures, submission) works without it.
+- The XPS-only deps (`lmfit`, `lmfitxps`, `pyarrow`) are an optional `xps` extra in `pyproject.toml`. A plain `uv sync` installs only the shared base; `uv sync --extra xps` adds XPS.
+- Claude Code installs can do both in one shot: `SKIP_FAMILIES=sci-skills-analysis bash install.sh` (skips the family symlink and the `xps` extra together).
+- Any other setup: don't install the `xps` extra and ignore the `sci-skills-analysis/` directory — same effect.
 
 Rebuild the env later (e.g. after `git pull` changed deps):
 

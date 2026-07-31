@@ -103,13 +103,12 @@ claim.md ──────────── 中心契约 (sci-write Step 0)
 
 装好后运行 `bash install.sh`（把三个 skill 家族 symlink 到 `~/.claude/skills/`，并配置 Python 环境）。
 
-xps 不是谁都要用的，没需要可以不安装——跳过它只少一个技能：
+**xps 不是谁都要用的，没需要可以不安装。** 这条规则对所有环境一样，不预设必须是 Claude Code：
 
-```bash
-SKIP_FAMILIES=sci-skills-analysis bash install.sh
-```
-
-`SKIP_FAMILIES` 是空格分隔的家族名列表（`sci-skills`、`sci-skills-article`、`sci-skills-analysis`），可跳过任意家族；跳过仍会 `uv sync`（Python 环境与其余家族共享）。
+- 没有 XPS 需求 → 跳过 `sci-skills-analysis` 家族，其余功能（写作、绘图、投稿）不受影响
+- XPS 专属依赖（`lmfit`、`lmfitxps`、`pyarrow`）是 `pyproject.toml` 里的可选 `xps` extra：`uv sync` 只装共享基础依赖，`uv sync --extra xps` 才带上 XPS
+- Claude Code 环境可一步完成：`SKIP_FAMILIES=sci-skills-analysis bash install.sh`（家族 symlink 和 `xps` extra 一起跳过）
+- 其他环境：不装 `xps` extra、忽略 `sci-skills-analysis/` 目录，效果相同
 
 ## 开发
 

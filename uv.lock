@@ -737,31 +737,36 @@ name = "sci-skills"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "lmfit" },
-    { name = "lmfitxps" },
     { name = "matplotlib" },
     { name = "numpy", version = "2.4.6", source = { registry = "https://mirrors.aliyun.com/pypi/simple" }, marker = "python_full_version < '3.12'" },
     { name = "numpy", version = "2.5.1", source = { registry = "https://mirrors.aliyun.com/pypi/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "pandas" },
-    { name = "pyarrow" },
     { name = "python-dateutil" },
     { name = "scipy", version = "1.17.1", source = { registry = "https://mirrors.aliyun.com/pypi/simple" }, marker = "python_full_version < '3.12'" },
     { name = "scipy", version = "1.18.0", source = { registry = "https://mirrors.aliyun.com/pypi/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "seaborn" },
 ]
 
-[package.metadata]
-requires-dist = [
+[package.optional-dependencies]
+xps = [
     { name = "lmfit" },
     { name = "lmfitxps" },
+    { name = "pyarrow" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "lmfit", marker = "extra == 'xps'" },
+    { name = "lmfitxps", marker = "extra == 'xps'" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
-    { name = "pyarrow" },
+    { name = "pyarrow", marker = "extra == 'xps'" },
     { name = "python-dateutil" },
     { name = "scipy" },
     { name = "seaborn" },
 ]
+provides-extras = ["xps"]
 
 [[package]]
 name = "scipy"

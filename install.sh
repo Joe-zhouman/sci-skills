@@ -85,9 +85,19 @@ done
 # `uv sync` creates .venv/ and installs them; scripts self-activate it via a
 # transparent launcher in _cli.py (re-exec under .venv), so agents just call
 # `python scripts/foo.py` with no env bookkeeping.
+# The XPS-only deps (lmfit/lmfitxps/pyarrow) are the optional `xps` extra —
+# skipped together with the sci-skills-analysis family (SKIP_FAMILIES).
+sync_env() {
+  ( cd "$REPO_ROOT" && "$@" ) || echo "  WARNING: uv sync failed — scripts will fall back to the caller's interpreter (deps may be missing). Install uv: https://docs.astral.sh/uv/"
+}
 if command -v uv >/dev/null 2>&1; then
-  echo "[env]     uv found — syncing .venv from pyproject.toml"
-  ( cd "$REPO_ROOT" && uv sync ) || echo "  WARNING: uv sync failed — scripts will fall back to the caller's interpreter (deps may be missing). Install uv: https://docs.astral.sh/uv/"
+  if skip_fam "sci-skills-analysis"; then
+    echo "[env]     uv found — syncing .venv (base deps only, no xps extra)"
+    sync_env uv sync
+  else
+    echo "[env]     uv found — syncing .venv (base deps + xps extra)"
+    sync_env uv sync --extra xps
+  fi
 else
   echo "[env]     uv NOT found — skipping .venv setup." >&2
   echo "          Skill scripts self-activate .venv when present; without uv they fall back to the caller's interpreter." >&2

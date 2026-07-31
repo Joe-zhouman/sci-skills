@@ -12,9 +12,17 @@ dependencies = [
     "scipy",
     "matplotlib",
     "pandas",
-    "pyarrow",          # read the NIST XPS parquet asset shipped in xps/assets/
     "seaborn",          # sci-draw (sci-skills) statistical plots
     "python-dateutil",  # sci-skills-article
+]
+
+[project.optional-dependencies]
+# xps (sci-skills-analysis) is not for everyone. The XPS-only deps are
+# optional so any setup (not just Claude Code) can skip them:
+#   uv sync                 → shared base only, no XPS
+#   uv sync --extra xps     → with XPS
+xps = [
+    "pyarrow",          # read the NIST XPS parquet asset shipped in xps/assets/
     "lmfit",            # xps peak fitting (fit_peaks.py, find_peaks.py)
     "lmfitxps",         # xps background models — Shirley/Tougaard (replaces hand-written)
 ]
