@@ -101,6 +101,16 @@ claim.md ──────────── 中心契约 (sci-write Step 0)
 | [`v1`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/v1) | **稳定版** — 只修 bug，不破坏现有功能 | `git clone -b v1 git@gitcode.com:Joe-zhouman/sci-skills.git` |
 | [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | 尝鲜版 — 最新功能，可能变动 | `git clone -b master git@gitcode.com:Joe-zhouman/sci-skills.git` |
 
+装好后运行 `bash install.sh`（把三个 skill 家族 symlink 到 `~/.claude/skills/`，并配置 Python 环境）。
+
+xps 不是谁都要用的，没需要可以不安装——跳过它只少一个技能：
+
+```bash
+SKIP_FAMILIES=sci-skills-analysis bash install.sh
+```
+
+`SKIP_FAMILIES` 是空格分隔的家族名列表（`sci-skills`、`sci-skills-article`、`sci-skills-analysis`），可跳过任意家族；跳过仍会 `uv sync`（Python 环境与其余家族共享）。
+
 ## 开发
 
 每个 skill 均按 [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus) 流程开发。

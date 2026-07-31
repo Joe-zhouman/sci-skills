@@ -26,10 +26,18 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$SCRIPT_DIR"
 
 # --- the three family directories (each is a separate plugin) ---
+# xps (sci-skills-analysis) 不是谁都要用的：不需要时跳过，只装其余家族：
+#   SKIP_FAMILIES=sci-skills-analysis bash install.sh
+# （空格分隔多个家族名；跳过仍会 uv sync，依赖与其他家族共享）
 FAMILIES=(sci-skills sci-skills-article sci-skills-analysis)
+SKIP_FAMILIES="${SKIP_FAMILIES:-}"
 
-# --- sanity: every family must have .claude-plugin/plugin.json + skills/ ---
+# returns 0 (true) if the family is in SKIP_FAMILIES
+skip_fam() { [[ " $SKIP_FAMILIES " == *" $1 "* ]]; }
+
+# --- sanity: every installed family must have .claude-plugin/plugin.json + skills/ ---
 for fam in "${FAMILIES[@]}"; do
+  if skip_fam "$fam"; then continue; fi
   if [[ ! -f "$REPO_ROOT/$fam/.claude-plugin/plugin.json" ]] || [[ ! -d "$REPO_ROOT/$fam/skills" ]]; then
     echo "ERROR: $REPO_ROOT/$fam does not look like a sci-skills family plugin" >&2
     echo "       (expected $fam/.claude-plugin/plugin.json and $fam/skills/)" >&2
@@ -53,6 +61,10 @@ echo
 mkdir -p "$SKILLS_DIR"
 
 for fam in "${FAMILIES[@]}"; do
+  if skip_fam "$fam"; then
+    echo "[skip]    $fam — in SKIP_FAMILIES"
+    continue
+  fi
   SRC="$REPO_ROOT/$fam"
   LINK="$SKILLS_DIR/$fam"
 

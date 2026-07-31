@@ -156,6 +156,14 @@ bash install.sh
 
 The installer calls `uv sync` to create `.venv/` from the repo-root `pyproject.toml` (deps: numpy, scipy, matplotlib, pandas, lmfit, lmfitxps, pyarrow, …). Skill scripts self-activate this env via a transparent launcher — agents just run `python scripts/foo.py`, no `uv run` needed. If `uv` isn't installed, the installer warns and skips env setup (install uv: <https://docs.astral.sh/uv/>, then re-run `bash install.sh`).
 
+`xps` (the `sci-skills-analysis` family) is not for everyone — no XPS data, no install. Skip it and you lose exactly one skill:
+
+```bash
+SKIP_FAMILIES=sci-skills-analysis bash install.sh
+```
+
+`SKIP_FAMILIES` takes a space-separated list of family names (`sci-skills`, `sci-skills-article`, `sci-skills-analysis`) and can skip any of them. A skipped family still runs `uv sync` — the Python env is shared across families.
+
 Rebuild the env later (e.g. after `git pull` changed deps):
 
 ```bash
