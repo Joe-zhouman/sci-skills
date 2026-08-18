@@ -127,6 +127,14 @@ SKIP_FAMILIES="sci-skills sci-skills-article" bash install.sh
 
 更新：`git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-article" bash ~/sci-skills/install.sh`（在仓库目录内重跑 install.sh）。
 
+### XPS 推荐用法
+
+不要指望在别的会话里提到「XPS」就自动触发。按数据集组织：
+
+1. **新建一个文件夹，把 XPS 数据放进去**——建议每组数据（每个样品）单独一个子文件夹，状态文件（`state.json`）和产出图不会互相串。
+2. **在该文件夹里开启一个 agent 会话。**
+3. **手动触发 skill**（`sci-skills-analysis:xps`）开始处理数据。
+
 ## 开发
 
 每个 skill 均按 [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus) 流程开发。

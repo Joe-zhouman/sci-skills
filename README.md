@@ -163,6 +163,31 @@ The installer calls `uv sync` to create `.venv/` from the repo-root `pyproject.t
 - Claude Code installs can do both in one shot: `SKIP_FAMILIES=sci-skills-analysis bash install.sh` (skips the family symlink and the `xps` extra together).
 - Any other setup: don't install the `xps` extra and ignore the `sci-skills-analysis/` directory — same effect.
 
+### XPS only (lightweight install — no tests, no writing/figure families)
+
+The full repo carries three families and all test files. If all you need is XPS, use a sparse clone and download just the XPS footprint (<2 MB):
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://gitcode.com/Joe-zhouman/sci-skills.git ~/sci-skills
+cd ~/sci-skills
+git sparse-checkout set --skip-checks sci-skills-analysis pyproject.toml uv.lock .python-version install.sh
+SKIP_FAMILIES="sci-skills sci-skills-article" bash install.sh
+```
+
+The third line keeps only the XPS family + env files (`pyproject.toml` / `uv.lock` / `install.sh`); the writing and figure families and all test files never touch your disk. The fourth line skips the other two families' registration and runs `uv sync --extra xps` for you (installs lmfit / lmfitxps / pyarrow into `.venv`). Without `uv`, the installer prints how to get it — install and re-run line four.
+
+Scripts don't care how they're invoked: `scripts/_cli.py` walks up to the repo-root `.venv` and re-execs under it (falling back to the caller's interpreter only if absent), so a plain `python scripts/foo.py` is already in the right env — no `uv run` needed.
+
+Update later: `git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-article" bash ~/sci-skills/install.sh` (re-run install.sh from inside the repo).
+
+### Recommended usage for XPS
+
+Don't rely on the skill auto-triggering from a mention of "XPS" in some unrelated session. Per dataset:
+
+1. **Create a fresh folder and put your XPS data in it** — one subfolder per sample/dataset group, so state files (`state.json`) and outputs never mix across samples.
+2. **Open your agent session in that folder.**
+3. **Manually invoke the skill** (`sci-skills-analysis:xps`) to start processing.
+
 Rebuild the env later (e.g. after `git pull` changed deps):
 
 ```bash
