@@ -110,6 +110,23 @@ claim.md ──────────── 中心契约 (sci-write Step 0)
 - Claude Code 环境可一步完成：`SKIP_FAMILIES=sci-skills-analysis bash install.sh`（家族 symlink 和 `xps` extra 一起跳过）
 - 其他环境：不装 `xps` extra、忽略 `sci-skills-analysis/` 目录，效果相同
 
+### 只要 XPS（轻量安装，不拉测试与写作/绘图家族）
+
+完整仓库带三个家族和全部测试文件；只需要 XPS 时用 sparse clone，只下载 XPS 所需内容（<1 MB）：
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://gitcode.com/Joe-zhouman/sci-skills.git ~/sci-skills
+cd ~/sci-skills
+git sparse-checkout set --skip-checks sci-skills-analysis pyproject.toml uv.lock .python-version install.sh
+SKIP_FAMILIES="sci-skills sci-skills-article" bash install.sh
+```
+
+第三行只保留 XPS 家族 + 环境文件（`pyproject.toml` / `uv.lock` / `install.sh`），写作、绘图家族与测试文件一律不落盘；第四行跳过另外两个家族的注册，并自动 `uv sync --extra xps` 建 `.venv`（含 lmfit / lmfitxps / pyarrow）。没装 uv 时脚本会给出安装提示，装好后重跑第四行即可。
+
+脚本不挑调用方式：`scripts/_cli.py` 会自动向上找到仓库根的 `.venv` 并重新以它执行（找不到时才回落到调用方解释器），所以直接 `python scripts/foo.py` 就在正确环境里，不需要 `uv run`。
+
+更新：`git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-article" bash ~/sci-skills/install.sh`（在仓库目录内重跑 install.sh）。
+
 ## 开发
 
 每个 skill 均按 [skill-creator-plus](https://github.com/Joe-zhouman/skill-creator-plus) 流程开发。
