@@ -35,6 +35,12 @@ Each pattern includes: concrete row/col layout, panel roles and visual weights, 
 
 Removed R backend references from `figure-contract.md` — sci-draw is Python/matplotlib only (nature-figure handles both backends).
 
+### xps: Ship NIST_BE.parquet in the repo (2026-08-15)
+
+`assets/NIST_BE.parquet` was listed in `assets/.gitignore`, so clones came down with an empty `assets/` and `lookup_be.py` failed with `asset_missing` — the database had to be fetched manually from [KherveDB](https://github.com/gkerherve/KherveDB). The parquet is only 1.1 MB, well within repo budget; it is now committed and clones are self-contained.
+
+Also bumped version metadata to `1.0.0` in `pyproject.toml` and `sci-skills-analysis/plugin.json` (both were stale at `0.1.0`, left behind when `v1.0.0` shipped 2026-07-18).
+
 ---
 
 ## [v1.0.0] — 2026-07-18

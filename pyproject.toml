@@ -1,6 +1,6 @@
 [project]
 name = "sci-skills"
-version = "0.1.0"
+version = "1.0.0"
 description = "sci-skills plugin families — research writing, data visualization, and experimental data analysis. Provides the shared Python env the bundled skill scripts run in."
 requires-python = ">=3.11"
 license = "MIT"
