@@ -61,11 +61,11 @@ def test_init_weaves_template():
     import tempfile, shutil
     cwd = pathlib.Path(tempfile.mkdtemp())
     orig = pathlib.Path.cwd()
-    # locate the generic-test pack inside the plugin: test_init.py is at
-    # sci-skills-thesis/skills/thesis-init/scripts/ → parents[3] = sci-skills-thesis (plugin root)
-    # templates/thesis/ ships inside the plugin so it resolves on standalone install too.
-    plugin_root = pathlib.Path(__file__).resolve().parents[3]
-    pack = plugin_root / "templates" / "thesis" / "generic-test"
+    # locate the generic-test pack at repo root: test_init.py is at
+    # sci-skills/skills/thesis-init/scripts/ → parents[4] = repo root (where templates/ lives)
+    # templates/thesis/ ships at repo root, matching article's templates/main/ convention.
+    repo_root = pathlib.Path(__file__).resolve().parents[4]
+    pack = repo_root / "templates" / "thesis" / "generic-test"
     assert pack.is_dir(), f"test pack missing at {pack}"
     os.chdir(cwd)
     try:
@@ -87,7 +87,7 @@ def test_init_idempotent():
     import tempfile, shutil
     cwd = pathlib.Path(tempfile.mkdtemp())
     orig = pathlib.Path.cwd()
-    plugin_root = pathlib.Path(__file__).resolve().parents[3]  # plugin root (same index as test_init_weaves_template)
+    repo_root = pathlib.Path(__file__).resolve().parents[4]  # repo root (same index as test_init_weaves_template)
     os.chdir(cwd)
     try:
         init_project.main(["init", "--no-git", "--template", "generic-test"])
@@ -311,9 +311,9 @@ def test_init_skips_nested_symlinks_in_pack():
 
 def test_init_rejects_traversal_template():
     """Bug 2 (aries MEDIUM): --template is documented as a pack NAME. An absolute path
-    (--template /tmp/secret) bypasses PLUGIN_TEMPLATES_DIR (Python Path join-on-absolute
+    (--template /tmp/secret) bypasses REPO_TEMPLATES_DIR (Python Path join-on-absolute
     replaces the base) and a traversal (--template ../../tmp/secret) climbs above the
-    plugin; both copy an arbitrary dir into thesis/tex/. The fix: reject --template
+    repo root; both copy an arbitrary dir into thesis/tex/. The fix: reject --template
     values that aren't a simple name (path separators / absolute / ..)."""
     import io, contextlib, tempfile, shutil, os
     secret = pathlib.Path(tempfile.mkdtemp())

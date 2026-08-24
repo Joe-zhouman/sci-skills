@@ -125,8 +125,11 @@ retroactively without clobbering content).
 
 ## Template selection
 
-init takes `--template <pack-name>` to select a university template pack from `templates/thesis/`
-(shipped inside the plugin, so it's self-contained on standalone install).
+init takes `--template <pack-name>` to select a university template pack. Template packs live
+at the repo's `templates/thesis/` (next to article's `templates/main/`); thesis-init weaves
+the selected pack into `thesis/tex/` at init time (thesis templates are fixed before writing,
+unlike article's your-paper-your-way). Adding a school = adding `templates/thesis/<school>/`,
+no skill code change.
 
 - **One pack** in `templates/thesis/`: default to it; `--template` optional.
 - **Many packs**: the agent asks the user which school and passes `--template <name>`.

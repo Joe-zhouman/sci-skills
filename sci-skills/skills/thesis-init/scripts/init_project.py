@@ -292,11 +292,10 @@ def family_root(project_root: Path) -> Path:
     return project_root / FAMILY_ROOT_NAME
 
 
-# templates/ live inside the plugin (sci-skills-thesis/templates/thesis/), resolved from
-# this script: scripts → thesis-init → skills → sci-skills-thesis (plugin root, parents[3]).
-# This keeps the plugin self-contained on standalone install — unlike article's repo-root
-# templates/main/ which is a manual-copy pointer in CONTRACT prose only.
-PLUGIN_TEMPLATES_DIR = Path(__file__).resolve().parents[3] / "templates" / "thesis"
+# templates/ live at repo root (templates/thesis/), matching article's templates/main/
+# convention — the repo is cloned wholesale, so repo-root templates ship with it. Resolved
+# from this script: scripts → thesis-init → skills → sci-skills (plugin) → repo root (parents[4]).
+REPO_TEMPLATES_DIR = Path(__file__).resolve().parents[4] / "templates" / "thesis"
 
 
 def _resolve_template_pack(args) -> Path | None:
@@ -311,7 +310,7 @@ def _resolve_template_pack(args) -> Path | None:
         # Bug 2 (aries MEDIUM): --template is documented as a pack NAME. Without
         # containment, an absolute path (--template /tmp/secret) bypasses the base
         # (Python Path join-on-absolute replaces the LHS) and a traversal
-        # (--template ../../tmp/secret) climbs above the plugin — both copy an
+        # (--template ../../tmp/secret) climbs above the repo root — both copy an
         # arbitrary dir into thesis/tex/. Reject anything that isn't a simple name:
         # a bare name has PurePath(s).name == s; any path separator / absolute /
         # '..' makes them diverge. Also reject '..' outright (bare ".." has name==".."
@@ -320,14 +319,14 @@ def _resolve_template_pack(args) -> Path | None:
         if PurePath(name).name != name or ".." in PurePath(name).parts:
             print(f"⚠ --template 必须是模板包名（不含路径），got: {name!r}")
             return None
-        d = PLUGIN_TEMPLATES_DIR / args.template
+        d = REPO_TEMPLATES_DIR / args.template
         if not d.is_dir():
             print(f"⚠ 模板包不存在: {d}（可用: {', '.join(_available_packs())}）")
             return None
         return d
     packs = _available_packs()
     if len(packs) == 1:
-        return PLUGIN_TEMPLATES_DIR / packs[0]
+        return REPO_TEMPLATES_DIR / packs[0]
     if not packs:
         print("⚠ 无模板包（templates/thesis/ 为空）。thesis/tex/ 留空，待手动织入。")
         return None
@@ -336,9 +335,9 @@ def _resolve_template_pack(args) -> Path | None:
 
 
 def _available_packs() -> list[str]:
-    if not PLUGIN_TEMPLATES_DIR.is_dir():
+    if not REPO_TEMPLATES_DIR.is_dir():
         return []
-    return sorted(p.name for p in PLUGIN_TEMPLATES_DIR.iterdir() if p.is_dir())
+    return sorted(p.name for p in REPO_TEMPLATES_DIR.iterdir() if p.is_dir())
 
 
 def _weave_template(thesis_tex: Path, pack: Path) -> list[str]:
@@ -425,8 +424,9 @@ def cmd_init(args: argparse.Namespace) -> int:
         tex_dir.mkdir(parents=True)
         report.append(f"  - 创建 tex/（补建）")
 
-    # 0b. weave the selected template pack into thesis/tex/ (templates ship inside the plugin,
-    #     resolved via parents[3] — self-contained on standalone install). Idempotent.
+    # 0b. weave the selected template pack into thesis/tex/ (templates ship at repo root
+    #     templates/thesis/, resolved via parents[4] — matching article's templates/main/
+    #     convention). Idempotent.
     pack = _resolve_template_pack(args)
     if pack:
         report.extend(_weave_template(th / "tex", pack))

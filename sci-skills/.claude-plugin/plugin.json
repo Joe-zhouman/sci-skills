@@ -1,6 +1,6 @@
 {
   "name": "sci-skills",
-  "description": "Shared sci-skills utilities — figure drawing (sci-draw) and project scaffolding (article-init). Claude Code only.",
+  "description": "Shared sci-skills utilities — figure drawing (sci-draw) and project scaffolding (article-init, thesis-init). Claude Code only.",
   "version": "1.0.0",
   "author": {
     "name": "Joe-zhouman",
@@ -9,5 +9,5 @@
   "homepage": "https://github.com/Joe-zhouman/sci-skills",
   "repository": "https://github.com/Joe-zhouman/sci-skills",
   "license": "MIT",
-  "keywords": ["skills", "research", "figures", "scaffolding", "sci-skills"]
+  "keywords": ["skills", "research", "figures", "scaffolding", "thesis", "sci-skills"]
 }

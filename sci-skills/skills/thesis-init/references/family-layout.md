@@ -45,8 +45,9 @@ never touching anything at the project root.
 ## Source vs output split
 
 - **Skill source**: in the repo at `skills/<skill-name>/` (SKILL.md / scripts /
-  references). For the thesis plugin this lives at
-  `sci-skills-thesis/skills/thesis-init/`.
+  references). thesis-init lives in the SHARED `sci-skills` plugin at
+  `sci-skills/skills/thesis-init/` (alongside `article-init`); the writing chain (future)
+  lives in `sci-skills-thesis/skills/`.
 - **Skill output**: in the user's project at `<project-root>/sci-skills/<skill-name>/`
   for working notes, and `<project-root>/thesis/` for the first-class artifact.
 
@@ -198,13 +199,13 @@ co-write). The one single-producer-single-consumer handoff is `chapter-map.md`
 - **`chapter-map.md`**: fixed name, lives in `sci-skills/thesis-dissect/`. It's
   the dissect→summary handoff surface — fixed name so summary can find it without
   configuration.
-- **Template packs**: at `sci-skills-thesis/templates/thesis/<school>/` (inside
-  the plugin, self-contained on standalone install). Each pack ships a
-  `template-spec.md` + `.cls` + blueprint (`main.tex` etc.). The plugin is the
-  pack's home — unlike the article family, whose `templates/main/` is a
-  repo-root convenience referenced only in CONTRACT prose as a manual-copy
-  pointer. The thesis pack is a runtime path dependency (init reads it to weave),
-  so it must ship with the plugin.
+- **Template packs**: at repo-root `templates/thesis/<school>/` (matching article's
+  `templates/main/` convention; the repo ships them). Each pack ships a
+  `template-spec.md` + `.cls` + blueprint (`main.tex` etc.). The repo root is the
+  pack's home — same convention as the article family, whose `templates/main/` is
+  also a repo-root convenience. The thesis pack is a runtime path dependency (init
+  reads it to weave), resolved via `parents[4]` from `init_project.py` (scripts →
+  thesis-init → skills → sci-skills plugin → repo root).
 
 ## Evolution rules
 
