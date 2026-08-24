@@ -4,7 +4,7 @@ Test plan — run via the stdlib test script (no pytest; the repo has no pytest 
 
     cd scripts && python3 test_init.py
 
-The six cases in `scripts/test_init.py`:
+The eight cases in `scripts/test_init.py`:
 
 1. **test_constants** — module constants pin the workspace layout:
    `FAMILY_ROOT_NAME="sci-skills"` (shared with the article family for coexistence),
@@ -21,8 +21,10 @@ The six cases in `scripts/test_init.py`:
    family's / human's).
 3. **test_init_weaves_template** — `init --template generic-test` weaves the template pack
    into `thesis/tex/`. The generic-test pack ships flat files only (`main.tex`,
-   `template-spec.md`); the test asserts those land in `tex/` and that the chosen
-   template-spec's naming convention (`chapterN.tex`) is copied into `thesis/template-spec.md`.
+   `template-spec.md`); the test asserts `main.tex` lands in `tex/` AND `template-spec.md`
+   lands at `thesis/template-spec.md` (NOT in `tex/` — `_weave_template` skips it there to
+   avoid duplication, since `thesis/template-spec.md` is the canonical spot). The chosen
+   template-spec's naming convention (`chapterN.tex`) is preserved in the woven spec.
    Subdir recursion is implemented in `_weave_template` via `shutil.copytree` for real
    multi-file packs (e.g. thuthesis with `config/`/`figures/` subdirs), but is not
    exercised by this test.
@@ -32,6 +34,13 @@ The six cases in `scripts/test_init.py`:
 5. **test_checkup_healthy** — on a freshly-init'd layout, `checkup` exits 0.
 6. **test_checkup_missing_workspace** — on an uninit'd cwd, `checkup` exits non-zero
    (reports missing `thesis/` and `sci-skills/`).
+7. **test_checkup_prints_json** — U1: `checkup` prints a `--- JSON ---` block for
+   programmatic consumption (mirrors article-init), including `project_root`, `thesis`,
+   and `sci-skills` state. Exercises the JSON-output path on a healthy layout (exit 0).
+8. **test_checkup_reports_misplaced_items** — U1: a stray file dropped in the project
+   root (not under `thesis/` or `sci-skills/`) is named in the checkup report AND
+   surfaces in the JSON under `root_candidates`; checkup exits non-zero. Exercises the
+   misplaced-items scan added in the U1 round.
 
 Each `CONTRACT.md` is verified by string match on key sections (`thesis/CONTRACT.md`
 first-class-artifact framing; brother-skill contracts per their role).
