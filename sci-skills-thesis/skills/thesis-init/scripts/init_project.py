@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -290,6 +291,66 @@ def family_root(project_root: Path) -> Path:
     return project_root / FAMILY_ROOT_NAME
 
 
+# templates/ live inside the plugin (sci-skills-thesis/templates/thesis/), resolved from
+# this script: scripts → thesis-init → skills → sci-skills-thesis (plugin root, parents[3]).
+# This keeps the plugin self-contained on standalone install — unlike article's repo-root
+# templates/main/ which is a manual-copy pointer in CONTRACT prose only.
+PLUGIN_TEMPLATES_DIR = Path(__file__).resolve().parents[3] / "templates" / "thesis"
+
+
+def _resolve_template_pack(args) -> Path | None:
+    """Find the template pack dir to weave. Returns None if user opted out."""
+    if args.template_dir:
+        d = Path(args.template_dir)
+        if not d.is_dir():
+            print(f"⚠ --template-dir 不存在: {d}")
+            return None
+        return d
+    if args.template:
+        d = PLUGIN_TEMPLATES_DIR / args.template
+        if not d.is_dir():
+            print(f"⚠ 模板包不存在: {d}（可用: {', '.join(_available_packs())}）")
+            return None
+        return d
+    packs = _available_packs()
+    if len(packs) == 1:
+        return PLUGIN_TEMPLATES_DIR / packs[0]
+    if not packs:
+        print("⚠ 无模板包（templates/thesis/ 为空）。thesis/tex/ 留空，待手动织入。")
+        return None
+    print(f"⚠ 多个模板包: {', '.join(packs)}。用 --template <name> 指定；本次跳过织入。")
+    return None
+
+
+def _available_packs() -> list[str]:
+    if not PLUGIN_TEMPLATES_DIR.is_dir():
+        return []
+    return sorted(p.name for p in PLUGIN_TEMPLATES_DIR.iterdir() if p.is_dir())
+
+
+def _weave_template(thesis_tex: Path, pack: Path) -> list[str]:
+    """Copy pack contents into thesis/tex/, recursing into subdirs (real packs like
+    thuthesis have config/figures subdirs). Idempotent: skip existing files/dirs."""
+    report = []
+    for src in pack.iterdir():
+        if src.name.startswith("."):
+            continue
+        dst = thesis_tex / src.name
+        if src.is_dir():
+            if dst.exists():
+                report.append(f"  - tex/{src.name}/ 已存在（跳过）")
+            else:
+                shutil.copytree(src, dst)
+                report.append(f"  - 织入 tex/{src.name}/")
+        else:
+            if dst.exists():
+                report.append(f"  - tex/{src.name} 已存在（跳过）")
+            else:
+                shutil.copyfile(src, dst)
+                report.append(f"  - 织入 tex/{src.name}")
+    return report
+
+
 # ----------------------------- init -----------------------------
 
 
@@ -312,6 +373,18 @@ def cmd_init(args: argparse.Namespace) -> int:
         (th / "tex").mkdir()
         th_contract.write_text(THESIS_CONTRACT, encoding="utf-8")  # <-- the write article-init's mirror has
         report.append(f"✓ 创建 {THESIS_DIR_NAME}/ + tex/ + CONTRACT.md")
+
+    # 0b. weave the selected template pack into thesis/tex/ (templates ship inside the plugin,
+    #     resolved via parents[3] — self-contained on standalone install). Idempotent.
+    pack = _resolve_template_pack(args)
+    if pack:
+        report.extend(_weave_template(th / "tex", pack))
+    # copy template-spec.md to thesis/ (top of thesis/, the skill-facing contract)
+    spec_src = pack / "template-spec.md" if pack else None
+    spec_dst = th / "template-spec.md"
+    if spec_src and spec_src.is_file() and not spec_dst.exists():
+        shutil.copyfile(spec_src, spec_dst)
+        report.append("  - 织入 thesis/template-spec.md")
 
     # 1. family root (shared with article family — create if absent, never clobber existing article files)
     fam = family_root(root)

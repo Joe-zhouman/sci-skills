@@ -57,7 +57,33 @@ def test_init_builds_skeleton():
         shutil.rmtree(cwd, ignore_errors=True)
     print("test_init_builds_skeleton: PASS")
 
+def test_init_weaves_template():
+    import tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    # locate the generic-test pack inside the plugin: test_init.py is at
+    # sci-skills-thesis/skills/thesis-init/scripts/ → parents[3] = sci-skills-thesis (plugin root)
+    # templates/thesis/ ships inside the plugin so it resolves on standalone install too.
+    plugin_root = pathlib.Path(__file__).resolve().parents[3]
+    pack = plugin_root / "templates" / "thesis" / "generic-test"
+    assert pack.is_dir(), f"test pack missing at {pack}"
+    os.chdir(cwd)
+    try:
+        rc = init_project.main(["init", "--no-git", "--template", "generic-test"])
+        assert rc == 0
+        tex = cwd / "thesis" / "tex"
+        assert (tex / "main.tex").is_file(), "main.tex not woven"
+        assert (tex / "template-spec.md").is_file(), "template-spec.md not copied"
+        # the chosen template-spec's naming convention is copied into thesis/
+        spec = (cwd / "thesis" / "template-spec.md").read_text()
+        assert "chapterN.tex" in spec, "naming convention not in woven spec"
+    finally:
+        os.chdir(orig)
+        shutil.rmtree(cwd, ignore_errors=True)
+    print("test_init_weaves_template: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
     test_init_builds_skeleton()
+    test_init_weaves_template()
