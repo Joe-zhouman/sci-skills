@@ -33,7 +33,7 @@ import os
 import shutil
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePath
 
 # 家族顶层目录名 — 与 article 家族共享（同一工作区 sci-skills/，二者共存）
 FAMILY_ROOT_NAME = "sci-skills"
@@ -308,6 +308,18 @@ def _resolve_template_pack(args) -> Path | None:
             return None
         return d
     if args.template:
+        # Bug 2 (aries MEDIUM): --template is documented as a pack NAME. Without
+        # containment, an absolute path (--template /tmp/secret) bypasses the base
+        # (Python Path join-on-absolute replaces the LHS) and a traversal
+        # (--template ../../tmp/secret) climbs above the plugin — both copy an
+        # arbitrary dir into thesis/tex/. Reject anything that isn't a simple name:
+        # a bare name has PurePath(s).name == s; any path separator / absolute /
+        # '..' makes them diverge. Also reject '..' outright (bare ".." has name==".."
+        # so the name check alone misses it). PurePath is lexical — no FS access.
+        name = args.template
+        if PurePath(name).name != name or ".." in PurePath(name).parts:
+            print(f"⚠ --template 必须是模板包名（不含路径），got: {name!r}")
+            return None
         d = PLUGIN_TEMPLATES_DIR / args.template
         if not d.is_dir():
             print(f"⚠ 模板包不存在: {d}（可用: {', '.join(_available_packs())}）")
@@ -331,13 +343,28 @@ def _available_packs() -> list[str]:
 
 def _weave_template(thesis_tex: Path, pack: Path) -> list[str]:
     """Copy pack contents into thesis/tex/, recursing into subdirs (real packs like
-    thuthesis have config/figures subdirs). Idempotent: skip existing files/dirs."""
+    thuthesis have config/figures subdirs). Idempotent: skip existing files/dirs.
+
+    Symlink guard (aries #1): a malicious --template-dir pack can carry a symlink
+    pointing outside itself (e.g. leaked_key.tex -> ~/.ssh/id_rsa). shutil.copyfile
+    follows symlinks by default (follow_symlinks=True) and shutil.copytree(symlinks=False)
+    follows dir symlinks — both copy the TARGET's content into tex/, which git add && push
+    then exfiltrates. A legitimate template pack has no symlinks, so refuse them outright:
+    detect is_symlink() BEFORE the is_dir()/is_file() branches (is_dir() follows symlinks
+    and would route a symlink-to-dir into copytree) and skip with a warning."""
     report = []
     for src in pack.iterdir():
         if src.name.startswith(".") or src.name == "template-spec.md":
             # dotfiles + template-spec.md skipped: template-spec.md is copied explicitly to
             # thesis/template-spec.md (the canonical skill-facing location) by cmd_init —
             # weaving it here too would duplicate it into tex/. (E1)
+            continue
+        if src.is_symlink():
+            # Bug 1: never follow a symlink in a template pack — its target (which may be
+            # ~/.ssh/id_rsa or any file outside the pack) would be copied into tex/ and
+            # later exfiltrated via git add && push. Skip the symlink entirely; do NOT copy
+            # it as a symlink either (a symlink in tex/ still points at the target).
+            report.append(f"  - ⚠ 跳过符号链接 {src.name}（模板包不应含符号链接）")
             continue
         dst = thesis_tex / src.name
         if src.is_dir():
@@ -374,9 +401,18 @@ def cmd_init(args: argparse.Namespace) -> int:
             report.append(f"✓ {THESIS_DIR_NAME}/ 已存在（跳过）")
     else:
         th.mkdir(parents=True)
-        (th / "tex").mkdir()
         th_contract.write_text(THESIS_CONTRACT, encoding="utf-8")  # write CONTRACT.md (article-init:371 mirror)
-        report.append(f"✓ 创建 {THESIS_DIR_NAME}/ + tex/ + CONTRACT.md")
+        report.append(f"✓ 创建 {THESIS_DIR_NAME}/ + CONTRACT.md")
+    # Bug 3 (aries MEDIUM): ensure thesis/tex/ exists in BOTH branches (idempotent).
+    # Previously tex/ was created only inside the `else` (thesis/ absent); if thesis/
+    # existed but tex/ had been deleted (corrupted weave / mid-run crash), the weave
+    # below crashed with FileNotFoundError at copyfile's missing parent, and tex/ was
+    # never recreated — the project was un-healable by init alone. mkdir(exist_ok=True)
+    # here heals a deleted tex/ on re-run; the `else` branch no longer pre-creates it.
+    tex_dir = th / "tex"
+    if not tex_dir.exists():
+        tex_dir.mkdir(parents=True)
+        report.append(f"  - 创建 tex/（补建）")
 
     # 0b. weave the selected template pack into thesis/tex/ (templates ship inside the plugin,
     #     resolved via parents[3] — self-contained on standalone install). Idempotent.

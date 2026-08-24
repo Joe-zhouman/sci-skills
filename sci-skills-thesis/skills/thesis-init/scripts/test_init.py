@@ -215,12 +215,129 @@ def test_checkup_flags_missing_tex_dir():
         os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
     print("test_checkup_flags_missing_tex_dir: PASS")
 
+def test_init_skips_symlinks_in_pack():
+    """Bug 1 (aries HIGH): a malicious --template-dir pack with a symlinked file
+    (leaked_key.tex -> ~/.ssh/id_rsa) must NOT have its target content copied into
+    thesis/tex/. shutil.copyfile follows symlinks by default; the fix is to detect
+    symlinks in _weave_template and skip them with a warning (a legitimate template
+    pack has no symlinks). Covers both file and dir symlinks."""
+    import io, contextlib, tempfile, shutil, os
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    # build a malicious pack: legit main.tex + a symlinked FILE + a symlinked DIR,
+    # both pointing at a target outside the pack holding secret content
+    pack = pathlib.Path(tempfile.mkdtemp())
+    secret = pathlib.Path(tempfile.mkdtemp())
+    (pack / "main.tex").write_text("% legit", encoding="utf-8")
+    (secret / "id_rsa").write_text("SSH-Private-Key-LEAK", encoding="utf-8")
+    (secret / "shadow").write_text("root:x:0:0:root", encoding="utf-8")
+    os.symlink(secret / "id_rsa", pack / "leaked_key.tex")
+    os.symlink(secret, pack / "leaked_dir")
+    os.chdir(cwd)
+    try:
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = init_project.main(["init", "--no-git", "--template-dir", str(pack)])
+        assert rc == 0
+        tex = cwd / "thesis" / "tex"
+        # the legit file is woven
+        assert (tex / "main.tex").is_file(), "legit main.tex should be woven"
+        # Bug 1: neither the symlinked file NOR its target content is in tex/
+        assert not (tex / "leaked_key.tex").is_file(), \
+            "symlinked file target content was exfiltrated into tex/ (Bug 1)"
+        assert not (tex / "leaked_key.tex").is_symlink(), \
+            "symlink itself must not be copied into tex/ either"
+        # the symlinked dir is not followed/copied
+        assert not (tex / "leaked_dir").is_dir(), \
+            "symlinked dir target was recursively copied into tex/ (Bug 1)"
+        # the secret content never landed in the project
+        assert not (tex / "leaked_key.tex").exists()
+        # a warning was issued naming the skipped symlink
+        out = buf.getvalue()
+        assert "符号链接" in out or "symlink" in out.lower(), \
+            "weave must warn about the skipped symlink"
+        assert "leaked_key.tex" in out, "warning must name the skipped symlink"
+    finally:
+        os.chdir(orig)
+        shutil.rmtree(cwd, ignore_errors=True)
+        shutil.rmtree(pack, ignore_errors=True)
+        shutil.rmtree(secret, ignore_errors=True)
+    print("test_init_skips_symlinks_in_pack: PASS")
+
+def test_init_rejects_traversal_template():
+    """Bug 2 (aries MEDIUM): --template is documented as a pack NAME. An absolute path
+    (--template /tmp/secret) bypasses PLUGIN_TEMPLATES_DIR (Python Path join-on-absolute
+    replaces the base) and a traversal (--template ../../tmp/secret) climbs above the
+    plugin; both copy an arbitrary dir into thesis/tex/. The fix: reject --template
+    values that aren't a simple name (path separators / absolute / ..)."""
+    import io, contextlib, tempfile, shutil, os
+    secret = pathlib.Path(tempfile.mkdtemp())
+    (secret / "s.txt").write_text("LEAK", encoding="utf-8")
+    # both attack shapes for the same containment check
+    attacks = [
+        str(secret),                       # absolute path
+        os.path.relpath(secret),           # relative traversal (../..<secret>)
+    ]
+    for t in attacks:
+        cwd = pathlib.Path(tempfile.mkdtemp())
+        orig = pathlib.Path.cwd()
+        os.chdir(cwd)
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = init_project.main(["init", "--no-git", "--template", t])
+            out = buf.getvalue()
+            # init still succeeds (builds skeleton) — it just refuses the weave
+            assert rc == 0, f"--template {t!r} should not crash init"
+            assert (cwd / "thesis" / "CONTRACT.md").is_file(), "skeleton must still build"
+            # the arbitrary dir must NOT be woven into tex/
+            assert not (cwd / "thesis" / "tex" / "s.txt").is_file(), \
+                f"--template {t!r} copied an out-of-plugin dir into tex/ (Bug 2)"
+            # a warning naming the offending value was printed
+            assert "⚠" in out, f"--template {t!r} must emit a warning"
+        finally:
+            os.chdir(orig)
+            shutil.rmtree(cwd, ignore_errors=True)
+    shutil.rmtree(secret, ignore_errors=True)
+    print("test_init_rejects_traversal_template: PASS")
+
+def test_init_heals_deleted_tex_dir():
+    """Bug 3 (aries MEDIUM): tex/ is only created when thesis/ is absent. Delete
+    thesis/tex/ + re-run init -> FileNotFoundError at the weave (dst parent missing),
+    tex/ never recreated, project un-healable by init alone. init must ensure tex/
+    exists in BOTH the exists/absent branches (idempotent heal)."""
+    import tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        # first init — succeeds, weaves main.tex into tex/
+        rc = init_project.main(["init", "--no-git", "--template", "generic-test"])
+        assert rc == 0
+        assert (cwd / "thesis" / "tex" / "main.tex").is_file()
+        # simulate a corrupted/deleted weave — the natural recovery is to re-run init
+        shutil.rmtree(cwd / "thesis" / "tex")
+        assert not (cwd / "thesis" / "tex").exists()
+        # second init — must NOT crash; must recreate tex/ and re-weave
+        rc = init_project.main(["init", "--no-git", "--template", "generic-test"])
+        assert rc == 0, "re-init after tex/ deletion must not crash"
+        assert (cwd / "thesis" / "tex").is_dir(), "tex/ must be recreated on re-init"
+        assert (cwd / "thesis" / "tex" / "main.tex").is_file(), \
+            "template must re-weave into the recreated tex/"
+    finally:
+        os.chdir(orig)
+        shutil.rmtree(cwd, ignore_errors=True)
+    print("test_init_heals_deleted_tex_dir: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
     test_init_builds_skeleton()
     test_init_weaves_template()
     test_init_idempotent()
+    test_init_skips_symlinks_in_pack()
+    test_init_rejects_traversal_template()
+    test_init_heals_deleted_tex_dir()
     test_checkup_healthy()
     test_checkup_missing_workspace()
     test_checkup_prints_json()
