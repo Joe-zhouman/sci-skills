@@ -82,8 +82,31 @@ def test_init_weaves_template():
         shutil.rmtree(cwd, ignore_errors=True)
     print("test_init_weaves_template: PASS")
 
+def test_init_idempotent():
+    import tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    plugin_root = pathlib.Path(__file__).resolve().parents[3]  # plugin root (same index as test_init_weaves_template)
+    os.chdir(cwd)
+    try:
+        init_project.main(["init", "--no-git", "--template", "generic-test"])
+        # snapshot: capture content of a woven file + a contract
+        main_tex = (cwd / "thesis" / "tex" / "main.tex").read_text()
+        contract = (cwd / "thesis" / "CONTRACT.md").read_text()
+        # second run — must not error, must not overwrite existing files
+        rc = init_project.main(["init", "--no-git", "--template", "generic-test"])
+        assert rc == 0
+        # idempotent: existing files unchanged
+        assert (cwd / "thesis" / "tex" / "main.tex").read_text() == main_tex
+        assert (cwd / "thesis" / "CONTRACT.md").read_text() == contract
+    finally:
+        os.chdir(orig)
+        shutil.rmtree(cwd, ignore_errors=True)
+    print("test_init_idempotent: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
     test_init_builds_skeleton()
     test_init_weaves_template()
+    test_init_idempotent()
