@@ -73,8 +73,9 @@ def test_init_weaves_template():
         assert rc == 0
         tex = cwd / "thesis" / "tex"
         assert (tex / "main.tex").is_file(), "main.tex not woven"
-        assert (tex / "template-spec.md").is_file(), "template-spec.md not copied"
-        # the chosen template-spec's naming convention is copied into thesis/
+        # E1: template-spec.md must NOT be duplicated in tex/ (canonical home is thesis/template-spec.md)
+        assert not (tex / "template-spec.md").is_file(), "template-spec.md should be at thesis/ not tex/"
+        # the chosen template-spec's naming convention is copied into thesis/ (canonical location)
         spec = (cwd / "thesis" / "template-spec.md").read_text()
         assert "chapterN.tex" in spec, "naming convention not in woven spec"
     finally:
@@ -129,6 +130,48 @@ def test_checkup_missing_workspace():
         os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
     print("test_checkup_missing_workspace: PASS")
 
+def test_checkup_prints_json():
+    """U1: checkup prints a JSON block (for programmatic consumption), mirroring article-init."""
+    import io, contextlib, tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        init_project.main(["init", "--no-git", "--template", "generic-test"])
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = init_project.main(["checkup"])
+        assert rc == 0, "healthy layout should exit 0"
+        out = buf.getvalue()
+        assert "--- JSON ---" in out, "checkup must print a JSON block for programmatic consumption"
+        assert '"project_root"' in out, "JSON must include project_root"
+        assert '"thesis"' in out, "JSON must include thesis state"
+        assert '"sci-skills"' in out, "JSON must include sci-skills state"
+    finally:
+        os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
+    print("test_checkup_prints_json: PASS")
+
+def test_checkup_reports_misplaced_items():
+    """U1: a stray file in project root is reported as a misplaced item + surfaces in JSON."""
+    import io, contextlib, tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        init_project.main(["init", "--no-git", "--template", "generic-test"])
+        # drop a stray file in project root (not under thesis/ or sci-skills/)
+        (cwd / "stray.tex").write_text("% misplaced", encoding="utf-8")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = init_project.main(["checkup"])
+        assert rc != 0, "a misplaced item should make checkup exit non-zero"
+        out = buf.getvalue()
+        assert "stray.tex" in out, "checkup must name the misplaced item in its report"
+        assert '"root_candidates"' in out, "JSON must list root_candidates"
+    finally:
+        os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
+    print("test_checkup_reports_misplaced_items: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
@@ -137,3 +180,5 @@ if __name__ == "__main__":
     test_init_idempotent()
     test_checkup_healthy()
     test_checkup_missing_workspace()
+    test_checkup_prints_json()
+    test_checkup_reports_misplaced_items()

@@ -112,9 +112,10 @@ thesis/
 
 与 article 家族不同（article 在投稿时才搬模板），thesis 的大学模板在 **init 时就织入**
 `thesis/tex/`——因为学位论文从第一行 tex 起就必须符合校规（.cls / 封面 / 前置后置页 /
-盲审格式）。init 把 `templates/thesis/<pack>/` 织进来（main.tex + 章骨架 + template-spec.md），
-此后各写章 skill 直接往织好的章文件里写 tex。**本契约不重复模板要求**——模板要什么看
-`tex/template-spec.md` 和织入的 `.cls`。
+盲审格式）。init 把 `templates/thesis/<pack>/` 织入 `tex/`（main.tex + 章骨架），并把
+`template-spec.md` 复制到 `thesis/`（本目录，各 skill 读的命名约定）。此后各写章 skill
+直接往织好的章文件里写 tex。**本契约不重复模板要求**——模板要什么看 `template-spec.md`
+（本目录）和织入 `tex/` 的 `.cls`。
 
 ## 为什么在项目根、不在 sci-skills/ 下
 
@@ -333,7 +334,10 @@ def _weave_template(thesis_tex: Path, pack: Path) -> list[str]:
     thuthesis have config/figures subdirs). Idempotent: skip existing files/dirs."""
     report = []
     for src in pack.iterdir():
-        if src.name.startswith("."):
+        if src.name.startswith(".") or src.name == "template-spec.md":
+            # dotfiles + template-spec.md skipped: template-spec.md is copied explicitly to
+            # thesis/template-spec.md (the canonical skill-facing location) by cmd_init —
+            # weaving it here too would duplicate it into tex/. (E1)
             continue
         dst = thesis_tex / src.name
         if src.is_dir():
@@ -450,25 +454,65 @@ def cmd_init(args: argparse.Namespace) -> int:
     return 0
 
 
+# ----------------------------- checkup helpers -----------------------------
+
+
+def list_root_candidates(root: Path) -> list[dict]:
+    """列出项目根下不在标准位置的内容（thesis/、sci-skills/、.git 之外的东西）。
+    浅层扫描，只给 checkup 当"该派 Explore 深查"的信号——**不下结论**这些是什么、
+    该进哪。判断（这是不是正文、是不是老图仓库）由 Explore agent 读懂内容后做，
+    脚本写死规则会误判用户文件。镜像 article-init 的同名函数，区别仅在标准位置
+    名（manuscript/ → thesis/）。
+    """
+    entries: list[dict] = []
+    if root.is_dir():
+        for entry in sorted(root.iterdir()):
+            if entry.name in {FAMILY_ROOT_NAME, THESIS_DIR_NAME, ".git"}:
+                continue
+            if entry.name.startswith("."):
+                continue
+            if entry.is_dir():
+                n_files = sum(1 for _ in entry.rglob("*") if _.is_file())
+                entries.append({"name": entry.name + "/", "type": "dir", "files": n_files})
+            else:
+                entries.append({"name": entry.name, "type": "file", "size": entry.stat().st_size})
+    return entries
+
+
 # ----------------------------- checkup -----------------------------
 
 
 def cmd_checkup(args: argparse.Namespace) -> int:
-    """体检：扫描当前结构，报告 thesis/ + sci-skills/ 落盘位置对不对。"""
+    """体检：扫描当前结构，报告 thesis/ + sci-skills/ 落盘位置对不对。
+
+    镜像 article-init 的 cmd_checkup：misplaced-items 扫描 + git 状态 + JSON block
+    （供程序化消费）。git 未 init 不计入 issues——thesis-init 的 --no-git 是一等选项，
+    且 thesis 家族常与 article 共存于已 git 化的仓库；只报告、不报警。
+    """
     root = find_project_root()
     fam = family_root(root)
     report: list[str] = [f"checkup @ {root}"]
     issues: list[str] = []
+    info: dict = {
+        "project_root": str(root),
+        "thesis": {},
+        "sci-skills": {"present": fam.is_dir()},
+        "skills": {},
+    }
 
+    # 0. thesis/（一等公民，先报）
     th = root / THESIS_DIR_NAME
     if not th.is_dir():
         issues.append(f"✗ {THESIS_DIR_NAME}/ 不存在。跑 `init` 建它。")
+        info["thesis"] = {"present": False}
     else:
         tex_files = list((th / "tex").glob("*.tex")) if (th / "tex").is_dir() else []
         report.append(f"thesis/   ✓  tex 文件: {len(tex_files)}")
+        info["thesis"] = {"present": True, "tex_file_count": len(tex_files)}
         if not (th / "template-spec.md").is_file():
             issues.append("⚠ thesis/template-spec.md 缺失（模板未织入？）")
 
+    # 1. sci-skills/ 共享工作区
     if not fam.is_dir():
         issues.append(f"✗ {FAMILY_ROOT_NAME}/ 不存在。跑 `init` 建它。")
     else:
@@ -477,9 +521,39 @@ def cmd_checkup(args: argparse.Namespace) -> int:
                 issues.append(f"⚠ {FAMILY_ROOT_NAME}/{name} 缺失")
         if not (fam / "thesis-README.md").is_file():
             issues.append("⚠ sci-skills/thesis-README.md 缺失")
-        for s in BROTHER_SKILLS:
-            if not (fam / s / "CONTRACT.md").is_file():
-                issues.append(f"⚠ {FAMILY_ROOT_NAME}/{s}/CONTRACT.md 缺失")
+        # 1b. 各兄弟子目录 + CONTRACT.md 状态（表格化，镜像 article-init）
+        report.append(f"\n{'skill':<16} {'目录':<8} {'文件数':<8} 状态")
+        report.append("-" * 50)
+        for skill in BROTHER_SKILLS:
+            sd = fam / skill
+            if not sd.is_dir():
+                report.append(f"{skill:<16} {'—':<8} {'—':<8} 缺失（按需 init）")
+                info["skills"][skill] = {"present": False}
+                continue
+            if not (sd / "CONTRACT.md").is_file():
+                issues.append(f"⚠ {FAMILY_ROOT_NAME}/{skill}/CONTRACT.md 缺失")
+            files = [p for p in sd.rglob("*") if p.is_file() and p.name != "CONTRACT.md"]
+            report.append(
+                f"{skill:<16} {'✓':<8} {len(files):<8} {'空' if not files else '有产物'}"
+            )
+            info["skills"][skill] = {"present": True, "file_count": len(files)}
+
+    # 2. 项目根错位（浅层信号——脚本不下结论这些是什么、该进哪；判断派 Explore）
+    root_cands = list_root_candidates(root)
+    if root_cands:
+        info["root_candidates"] = root_cands
+        cand_names = ", ".join(c["name"] for c in root_cands)
+        issues.append(
+            f"⚠ 项目根有 {len(root_cands)} 项不在 {THESIS_DIR_NAME}/ 或 "
+            f"{FAMILY_ROOT_NAME}/ 下（{cand_names}）。派 Explore agent 读懂这些内容、"
+            f"判断归位（正文→{THESIS_DIR_NAME}/tex/，老图→{FAMILY_ROOT_NAME}/ 等），"
+            "跟用户确认后发 mv。脚本不自动判断、不自动移。"
+        )
+
+    # 3. git 状态（只报告，不计入 issues——见 docstring 的 --no-git 说明）
+    git_present = (root / ".git").is_dir()
+    info["git"] = git_present
+    report.append(f"\ngit/   {'✓ 已 git init' if git_present else '· 未 git init（--no-git 或尚未 init）'}")
 
     report.append("")
     if issues:
@@ -488,7 +562,10 @@ def cmd_checkup(args: argparse.Namespace) -> int:
             report.append(f"  {it}")
     else:
         report.append("✓ 布局健康。")
+
+    info["issues"] = issues
     print("\n".join(report))
+    print("\n--- JSON ---\n" + json.dumps(info, ensure_ascii=False, indent=2))
     return 1 if issues else 0
 
 

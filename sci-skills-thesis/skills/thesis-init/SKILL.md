@@ -130,10 +130,11 @@ init takes `--template <pack-name>` to select a university template pack from `t
 
 - **One pack** in `templates/thesis/`: default to it; `--template` optional.
 - **Many packs**: the agent asks the user which school and passes `--template <name>`.
-- **User's school not packaged yet**: `--template-dir <path>` points at a user-supplied `.cls` +
-  spec. Degraded mode — init generates a temporary `template-spec.md` from the `.cls` so
-  downstream skills still have a naming convention to align to. Adding a real pack later
-  replaces the temporary spec.
+- **User's school not packaged yet**: `--template-dir <path>` points at a user-supplied directory
+  containing the `.cls` + a `template-spec.md`. If the spec is absent, init weaves the `.cls` but
+  skips `thesis/template-spec.md` — downstream skills have no naming convention until one is added
+  manually. (Generating a spec from a bare `.cls` is not done — it would require parsing the class
+  file; the human writes the spec, same as any other template-pack author.)
 
 A template pack = `templates/thesis/<school>/`: the `.cls` + a blueprint (`main.tex` + front/back
 -matter skeleton) + `template-spec.md` (file-naming convention, `refs.bib` name, chapter
@@ -150,9 +151,9 @@ python scripts/init_project.py checkup
 
 Reports:
 
-- `thesis/` present? `tex/` has `.cls` + `main.tex` + `template-spec.md`? which chapter files exist?
-- `sci-skills/` present? each shared file's state (`thesis-sources.md` filled? `thesis-spine.md` /
-  `thesis-terminology-ledger.md` created?)
+- `thesis/` present? `tex/` has `.cls` + `main.tex`? which chapter files exist? `thesis/template-spec.md` present?
+- `sci-skills/` present? each shared file present? (`thesis-sources.md` / `thesis-spine.md` /
+  `thesis-terminology-ledger.md` / `thesis-README.md`) — the agent or human judges "filled" by reading it
 - each writing skill's working-notes dir + `CONTRACT.md` state
 - **misplaced items** — anything in the project root that isn't under `thesis/` or `sci-skills/`
 - git status
