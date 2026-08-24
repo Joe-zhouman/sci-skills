@@ -172,6 +172,49 @@ def test_checkup_reports_misplaced_items():
         os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
     print("test_checkup_reports_misplaced_items: PASS")
 
+def test_checkup_flags_missing_main_tex():
+    """Important#1: if thesis/tex/main.tex is missing, checkup flags it (weave integrity).
+    main.tex is the universal compile entry point — every pack ships one; its absence
+    means the weave didn't complete or the file was deleted."""
+    import io, contextlib, tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        init_project.main(["init", "--no-git", "--template", "generic-test"])
+        # delete main.tex — simulate incomplete weave / accidental deletion
+        (cwd / "thesis" / "tex" / "main.tex").unlink()
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = init_project.main(["checkup"])
+        assert rc != 0, "missing main.tex should make checkup exit non-zero"
+        out = buf.getvalue()
+        assert "main.tex 缺失" in out, "checkup must flag missing main.tex"
+    finally:
+        os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
+    print("test_checkup_flags_missing_main_tex: PASS")
+
+def test_checkup_flags_missing_tex_dir():
+    """Minor#4: if thesis/tex/ dir itself is missing (partial init), checkup flags it
+    instead of silently reporting 'tex 文件: 0'."""
+    import io, contextlib, tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        init_project.main(["init", "--no-git", "--template", "generic-test"])
+        # remove tex/ dir entirely — simulate partial init / deleted tex/
+        shutil.rmtree(cwd / "thesis" / "tex")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = init_project.main(["checkup"])
+        assert rc != 0, "missing tex/ dir should make checkup exit non-zero"
+        out = buf.getvalue()
+        assert "tex/ 缺失" in out, "checkup must flag missing tex/ dir"
+    finally:
+        os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
+    print("test_checkup_flags_missing_tex_dir: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
@@ -182,3 +225,5 @@ if __name__ == "__main__":
     test_checkup_missing_workspace()
     test_checkup_prints_json()
     test_checkup_reports_misplaced_items()
+    test_checkup_flags_missing_main_tex()
+    test_checkup_flags_missing_tex_dir()

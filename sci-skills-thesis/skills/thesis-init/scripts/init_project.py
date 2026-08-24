@@ -375,7 +375,7 @@ def cmd_init(args: argparse.Namespace) -> int:
     else:
         th.mkdir(parents=True)
         (th / "tex").mkdir()
-        th_contract.write_text(THESIS_CONTRACT, encoding="utf-8")  # <-- the write article-init's mirror has
+        th_contract.write_text(THESIS_CONTRACT, encoding="utf-8")  # write CONTRACT.md (article-init:371 mirror)
         report.append(f"✓ 创建 {THESIS_DIR_NAME}/ + tex/ + CONTRACT.md")
 
     # 0b. weave the selected template pack into thesis/tex/ (templates ship inside the plugin,
@@ -447,8 +447,10 @@ def cmd_init(args: argparse.Namespace) -> int:
         try:
             subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
             report.append("✓ git init")
-        except (FileNotFoundError, subprocess.CalledProcessError):
-            report.append("⚠ git init 跳过")
+        except FileNotFoundError:
+            report.append("⚠ git 未安装，跳过 git init（请手动 git init）")
+        except subprocess.CalledProcessError as e:
+            report.append(f"⚠ git init 失败: {e.stderr.strip()}")
 
     print("\n".join(report))
     return 0
@@ -493,6 +495,7 @@ def cmd_checkup(args: argparse.Namespace) -> int:
     fam = family_root(root)
     report: list[str] = [f"checkup @ {root}"]
     issues: list[str] = []
+    # TODO: align JSON key with article-init's "family_root_exists" for cross-family consumers
     info: dict = {
         "project_root": str(root),
         "thesis": {},
@@ -500,17 +503,45 @@ def cmd_checkup(args: argparse.Namespace) -> int:
         "skills": {},
     }
 
-    # 0. thesis/（一等公民，先报）
+    # 0. thesis/（一等公民，先报）。checkup verifies weave integrity: tex/ present?
+    #    main.tex present? (.cls is informational only — generic-test uses native report
+    #    class with none; real packs like thuthesis ship one). template-spec.md present?
     th = root / THESIS_DIR_NAME
     if not th.is_dir():
         issues.append(f"✗ {THESIS_DIR_NAME}/ 不存在。跑 `init` 建它。")
         info["thesis"] = {"present": False}
     else:
-        tex_files = list((th / "tex").glob("*.tex")) if (th / "tex").is_dir() else []
-        report.append(f"thesis/   ✓  tex 文件: {len(tex_files)}")
-        info["thesis"] = {"present": True, "tex_file_count": len(tex_files)}
+        info["thesis"] = {"present": True}
+        tex_dir = th / "tex"
+        if not tex_dir.is_dir():
+            # tex/ dir itself missing — partial init (template weave didn't run / was deleted).
+            # Do NOT silently report "tex 文件: 0"; surface the broken weave.
+            report.append(f"thesis/   ✓  tex/ ✗ 缺失")
+            issues.append(f"⚠ {THESIS_DIR_NAME}/tex/ 缺失（init 未完整跑完？）")
+            info["thesis"]["tex_dir"] = False
+        else:
+            tex_files = list(tex_dir.glob("*.tex"))
+            cls_files = sorted(p.name for p in tex_dir.glob("*.cls"))  # informational only
+            main_tex = tex_dir / "main.tex"
+            info["thesis"].update({
+                "tex_dir": True,
+                "tex_file_count": len(tex_files),
+                "main_tex": main_tex.is_file(),
+                "cls_files": cls_files,
+            })
+            cls_note = ", ".join(cls_files) if cls_files else "(无 — 原生 report 类)"
+            report.append(
+                f"thesis/   ✓  tex 文件: {len(tex_files)}  "
+                f"main.tex: {'✓' if main_tex.is_file() else '✗'}  .cls: {cls_note}"
+            )
+            # main.tex is the universal compile entry point — every pack ships one; its
+            # absence means the weave didn't complete or it was deleted.
+            if not main_tex.is_file():
+                issues.append(
+                    f"⚠ {THESIS_DIR_NAME}/tex/main.tex 缺失（模板未完整织入？）"
+                )
         if not (th / "template-spec.md").is_file():
-            issues.append("⚠ thesis/template-spec.md 缺失（模板未织入？）")
+            issues.append(f"⚠ {THESIS_DIR_NAME}/template-spec.md 缺失（模板未织入？）")
 
     # 1. sci-skills/ 共享工作区
     if not fam.is_dir():

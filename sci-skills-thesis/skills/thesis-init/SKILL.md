@@ -151,7 +151,7 @@ python scripts/init_project.py checkup
 
 Reports:
 
-- `thesis/` present? `tex/` has `.cls` + `main.tex`? which chapter files exist? `thesis/template-spec.md` present?
+- `thesis/` present? `tex/` present? `main.tex` present? how many `.tex` files? `thesis/template-spec.md` present? (`.cls` files reported informationally — not required; generic-test uses native `report` class with none)
 - `sci-skills/` present? each shared file present? (`thesis-sources.md` / `thesis-spine.md` /
   `thesis-terminology-ledger.md` / `thesis-README.md`) — the agent or human judges "filled" by reading it
 - each writing skill's working-notes dir + `CONTRACT.md` state
