@@ -15,6 +15,10 @@ The canonical domain language for the sci-skills family (sci-draw / sci-write / 
 
 ## Terms
 
+**Thesis (`thesis/`, first-class citizen)**:
+The degree-thesis artifact, living at the project root parallel to `manuscript/` (not under `sci-skills/`). Organized by **chapter** (Ch1 绪论 / Ch2 共用理论方法 / ChN 各小论文重构章 / 总结展望), not by review round — this is what distinguishes it from `manuscript/`. The thesis is the **product**; the thesis skill is a **tool** that serves it. **Input small papers are read, never absorbed** — a thesis skill *reads* `manuscript/vN/` or external paper tex/PDF as intake; it does not move them in or rewrite them. The thesis has its own lifecycle (开题 → 中期 → 盲审 → 答辩), distinct from a manuscript's review-round lifecycle.
+_Avoid_: manuscript (that's the journal-paper artifact, organized by review round), the dissertation (too generic)
+
 **Family namespace (`sci-skills/`)**:
 The fixed, recognizable top-level directory shared by all sci-* skills, present in every project root. Its name is the family's identity marker (analogous to how `docs/superpowers/` marks that skill family), not a per-project name. Each skill occupies one subdirectory beneath it.
 _Avoid_: project folder, workspace root (too generic)
@@ -59,11 +63,33 @@ _Avoid_: figure analysis (ambiguous — could mean the vision tool's output or t
 ## Relationships
 
 - A **Family namespace** contains one **Figure warehouse** and one home directory per skill (e.g. `sci-write/`).
+- A **Thesis** is a distinct first-class artifact from a **Manuscript**: organized by chapter (not review round), built by *reading* small papers as intake (not absorbing them), with its own degree-thesis lifecycle. A thesis skill reads `manuscript/vN/` or external papers; it never moves or rewrites them.
+- A thesis family is a **sibling family** to the article family, mirroring its compass-file coupling: its own entry skill (`thesis-init`, the only node knowing all siblings) + execution skills that interconnect via `thesis/` directory contracts, not code imports. An **architecture-level claim** (main line / unified framework / progression / common-extraction) is the thesis's analog of an article's citation-level claim — but one stratum higher, and author-articulated not AI-generated.
 - A **paper-plan.md** lists many figure entries, each in a **Figure status**; and many section entries, each in a **Section status**.
 - A figure entry's `claim` field ↔ that figure's report `Core conclusion` (plan = intended, report = demonstrated).
 - A **figN-reading.md** references exactly one figure report and is consumed by Results/Discussion drafting.
 - A **Real-DOI placeholder** appears inside section prose; its final insertion is performed by the human, never by a skill.
 - **Read neighbors, don't orchestrate** governs every cross-file/cross-skill interaction in the family.
+
+**Compass file (罗盘文件)**:
+The on-disk artifacts that couple a skill family without code imports: (a) the entry skill's init script carrying `BROTHER_SKILLS` (the routing table of which skills exist) + `SKILL_DIR_CONTRACTS` (the CONTRACT.md text per shared directory) + the first-class artifact's contract; (b) each shared directory's visible `CONTRACT.md` (the interface spec + on-ramp for outside producers); (c) `family-layout.md` (the depth reference for evolving the family). The entry skill is the **only** node that knows about all siblings; every other skill knows only files. This is "read neighbors, don't orchestrate" made concrete.
+_Avoid_: config, index file (too generic), orchestrator (that's a posture, not the file)
+
+**拆即写 (dissect-is-write)**:
+The thesis-dissect discipline: when dissecting a small paper into a thesis chapter, the chapter tex is written *in the same pass*, because the logic is already clear at dissection time — separating the two would mean reloading the just-traced logic. Made clean by tex's one-chapter-one-file property. Dissect is not two responsibilities forced together (structure-judgment + writing); they are two faces of one act.
+_Avoid_: outline-then-fill (implies separate write step — loses the just-traced logic)
+
+**Architecture-level claim**:
+A claim at the thesis's structural level, not the citation level: the **main line (主线)**, the **unified framework (统一框架)**, **inter-chapter progression (章间递进)**, and the **common-extraction (共性提炼)**. These are the failure-prone points where AI generates plausible-but-empty frameworks or invented commonalities. Unlike citation-level claims, an AI **cannot honestly audit these** — checking "is this framework deep or hollow" produces the very shallowness it's checking. So architecture-level claims are **author-articulated, human-gated**: the author grounds them in the actual content of the small papers; AI may propose candidate materials, decompose the logic, and examine from a dispassionate angle (pointing at cracks the author's attachment hides), but **AI never gates architecture-level decisions and never auto-adopts a candidate**. Enforcement = mandatory human review at each critical stage, with files-on-disk as the audit surface (the human reads `spine.md` / `chapter-map.md` / `synthesis.md`, not chat context).
+_Avoid_: claim (too general — "claim" is the citation/sentence-level thing; architecture-level is a distinct, higher stratum)
+
+**Citation-level vs architecture-level (the enforcement split)**:
+The thesis's claim strata take *different* enforcement by design, in three layers not two. **Citation-level** (a sentence cites a source that must actually support it) is fully *mechanical* — resolve the DOI, fetch the source, locate the passage — so AI/schema hard-gates are legitimate here (tez-atif-dogrulama `allOf` if/then, real-DOI placeholders). **Architecture coverage/grounding** (was a gap filled by a later chapter? is the common-extraction grounded in specific chapter results? does each chapter declare how it instantiates the unified framework?) is *also mechanical* — a script/agent can check these against on-disk files; the spec's own gates live here. **Architecture depth** (is the framework high-level enough? is the common-extraction insightful? is the main line sharp?) is *not mechanical* — an AI gate would generate plausible confirmations of the very shallowness it checks — so it is **human-gated only**, AI assisting (propose candidates marked `pending`, decompose logic, dispassionate crack-pointing). Conflating depth with coverage (letting an AI gate framework depth because it can gate coverage) is the core anti-pattern this family refuses.
+_Avoid_: gate, validation (too generic — must always specify which layer)
+
+**Serves-the-author-first (family stance for the thesis family)**:
+A thesis skill is built for **an author who has understanding and thinking about their own work** — not for a novice ("白丁"). It scaffolds the author's own top-tier vision and first-principles reasoning; it does not generate the thinking for someone who hasn't done it. The test: if a skill can't serve the author who built it (please yourself), it can't serve anyone. Direct consequence: AI's role is *assistive* — provide materials, decompose logic, dispassionate examination — never substitute for the author's judgment at architecture-level stages. This stance shapes tone (assume competence, don't hand-hold) and intake (the author brings genuine understanding; the skill doesn't manufacture it).
+_Avoid_: beginner-friendly, general-purpose (these pull toward generating-for-a-novice, the opposite of the stance)
 
 ## Flagged ambiguities
 
