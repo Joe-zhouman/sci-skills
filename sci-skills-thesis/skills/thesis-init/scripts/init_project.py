@@ -345,13 +345,17 @@ def _weave_template(thesis_tex: Path, pack: Path) -> list[str]:
     """Copy pack contents into thesis/tex/, recursing into subdirs (real packs like
     thuthesis have config/figures subdirs). Idempotent: skip existing files/dirs.
 
-    Symlink guard (aries #1): a malicious --template-dir pack can carry a symlink
-    pointing outside itself (e.g. leaked_key.tex -> ~/.ssh/id_rsa). shutil.copyfile
-    follows symlinks by default (follow_symlinks=True) and shutil.copytree(symlinks=False)
-    follows dir symlinks — both copy the TARGET's content into tex/, which git add && push
-    then exfiltrates. A legitimate template pack has no symlinks, so refuse them outright:
-    detect is_symlink() BEFORE the is_dir()/is_file() branches (is_dir() follows symlinks
-    and would route a symlink-to-dir into copytree) and skip with a warning."""
+    Symlink guard (aries #1 + round 2): a malicious --template-dir pack can carry a
+    symlink pointing outside itself (e.g. leaked_key.tex -> ~/.ssh/id_rsa). Two layers:
+    (1) TOP-LEVEL is_symlink() skip — detect BEFORE the is_dir()/is_file() branches
+    (is_dir() follows symlinks and would route a symlink-to-dir into copytree) and skip
+    with a warning. (2) NESTED symlinks inside a real subdir/ defeat layer 1 — the subdir
+    is a real dir, passes the top-level guard, and a default copytree(symlinks=False)
+    FOLLOWS the nested symlink, materializing the target's content into tex/. copytree
+    with symlinks=True copies the link itself (target not read); a symlink-to-outside in
+    tex/ is benign — git stores it as a symlink path, never dereferencing on commit.
+    shutil.copyfile still follows top-level symlinks by default, but layer 1 skips them
+    before copyfile is reached."""
     report = []
     for src in pack.iterdir():
         if src.name.startswith(".") or src.name == "template-spec.md":
@@ -371,7 +375,14 @@ def _weave_template(thesis_tex: Path, pack: Path) -> list[str]:
             if dst.exists():
                 report.append(f"  - tex/{src.name}/ 已存在（跳过）")
             else:
-                shutil.copytree(src, dst)
+                # Bug 1 round 2 (aries HIGH): symlinks=True copies nested symlinks AS
+                # symlinks (the link is copied, the target is NOT read/materialized).
+                # Default symlinks=False follows a symlink nested one level deeper —
+                # inside a real subdir/ the top-level is_symlink() guard doesn't see —
+                # and materializes the target's content into tex/, exfiltrated via
+                # git add && push. A symlink-to-outside sitting in tex/ is benign: git
+                # stores it as a symlink path, never dereferencing on commit.
+                shutil.copytree(src, dst, symlinks=True)
                 report.append(f"  - 织入 tex/{src.name}/")
         else:
             if dst.exists():

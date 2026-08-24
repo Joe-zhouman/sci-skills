@@ -264,6 +264,51 @@ def test_init_skips_symlinks_in_pack():
         shutil.rmtree(secret, ignore_errors=True)
     print("test_init_skips_symlinks_in_pack: PASS")
 
+def test_init_skips_nested_symlinks_in_pack():
+    """Bug 1 round 2 (aries HIGH): the round-1 top-level is_symlink() guard only checks
+    iterdir() entries — a NESTED symlink (one level deeper, inside a real subdir/) passes
+    the top-level guard, reaches shutil.copytree(src, dst) whose default symlinks=False
+    FOLLOWS the nested symlink and materializes the target's content into
+    thesis/tex/subdir/leak.tex. git add && push then exfiltrates it. Fix: copytree(symlinks=True)
+    copies the link itself (target not read). A symlink-to-outside sitting in tex/ is benign
+    — git stores it as a symlink path, never dereferencing on commit."""
+    import io, contextlib, tempfile, shutil, os
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    pack = pathlib.Path(tempfile.mkdtemp())
+    secret = pathlib.Path(tempfile.mkdtemp())
+    # legit pack: main.tex + a REAL subdir holding a real file AND a nested symlink
+    # whose target (a secret outside the pack) would be exfiltrated if materialized.
+    (pack / "main.tex").write_text("% legit", encoding="utf-8")
+    (pack / "subdir").mkdir()
+    (pack / "subdir" / "real.tex").write_text("% real content", encoding="utf-8")
+    (secret / "id_rsa").write_text("SSH-Private-Key-LEAK", encoding="utf-8")
+    os.symlink(secret / "id_rsa", pack / "subdir" / "leak.tex")
+    os.chdir(cwd)
+    try:
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = init_project.main(["init", "--no-git", "--template-dir", str(pack)])
+        assert rc == 0
+        tex = cwd / "thesis" / "tex"
+        # the legit top-level file + the real file inside the real subdir are woven
+        assert (tex / "main.tex").is_file(), "legit main.tex should be woven"
+        assert (tex / "subdir" / "real.tex").is_file(), \
+            "real file inside the legit subdir should be woven"
+        # Bug 1 round 2: the nested symlink's TARGET CONTENT must NOT be materialized
+        # into tex/subdir/. Acceptable outcomes: skipped (absent) OR copied-as-symlink
+        # (is_symlink True). The bug: materialized as a regular file holding the secret's
+        # bytes (is_symlink False, exfiltrated via git add && push).
+        leak = tex / "subdir" / "leak.tex"
+        assert not leak.exists() or leak.is_symlink(), \
+            "nested symlink target content was materialized into tex/ (Bug 1 round 2)"
+    finally:
+        os.chdir(orig)
+        shutil.rmtree(cwd, ignore_errors=True)
+        shutil.rmtree(pack, ignore_errors=True)
+        shutil.rmtree(secret, ignore_errors=True)
+    print("test_init_skips_nested_symlinks_in_pack: PASS")
+
 def test_init_rejects_traversal_template():
     """Bug 2 (aries MEDIUM): --template is documented as a pack NAME. An absolute path
     (--template /tmp/secret) bypasses PLUGIN_TEMPLATES_DIR (Python Path join-on-absolute
@@ -336,6 +381,7 @@ if __name__ == "__main__":
     test_init_weaves_template()
     test_init_idempotent()
     test_init_skips_symlinks_in_pack()
+    test_init_skips_nested_symlinks_in_pack()
     test_init_rejects_traversal_template()
     test_init_heals_deleted_tex_dir()
     test_checkup_healthy()
