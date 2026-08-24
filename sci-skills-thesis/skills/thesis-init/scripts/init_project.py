@@ -275,3 +275,133 @@ thesis-summary skill 的**工作笔记区**。写末章（总结展望——共�
 人（读/改 notes）；thesis-spine（读总结笔记感知 thesis 级 claim 是否收束）。
 """,
 }
+
+
+# ----------------------------- helpers -----------------------------
+
+
+def find_project_root(start: Path | None = None) -> Path:
+    """项目根 = cwd 或 start。家族布局不强制在 git 根，
+    就用调用者所在目录作为项目根。"""
+    return Path(start) if start else Path.cwd()
+
+
+def family_root(project_root: Path) -> Path:
+    return project_root / FAMILY_ROOT_NAME
+
+
+# ----------------------------- init -----------------------------
+
+
+def cmd_init(args: argparse.Namespace) -> int:
+    root = find_project_root()
+    report: list[str] = [f"init @ {root}"]
+
+    # 0. thesis/ — first-class artifact. Build thesis/ + CONTRACT.md + tex/ (empty for now).
+    #    CONTRACT.md written in BOTH branches (idempotent: skip if exists, write if new).
+    th = root / THESIS_DIR_NAME
+    th_contract = th / "CONTRACT.md"
+    if th.exists():
+        if not th_contract.exists():
+            th_contract.write_text(THESIS_CONTRACT, encoding="utf-8")
+            report.append(f"✓ {THESIS_DIR_NAME}/ 已存在，补 CONTRACT.md")
+        else:
+            report.append(f"✓ {THESIS_DIR_NAME}/ 已存在（跳过）")
+    else:
+        th.mkdir(parents=True)
+        (th / "tex").mkdir()
+        th_contract.write_text(THESIS_CONTRACT, encoding="utf-8")  # <-- the write article-init's mirror has
+        report.append(f"✓ 创建 {THESIS_DIR_NAME}/ + tex/ + CONTRACT.md")
+
+    # 1. family root (shared with article family — create if absent, never clobber existing article files)
+    fam = family_root(root)
+    if not fam.exists():
+        fam.mkdir(parents=True)
+        report.append(f"✓ 创建 {FAMILY_ROOT_NAME}/")
+
+    # 2. top-level shared files (thesis- prefixed). Skip if exists; never overwrite.
+    for name, content in SHARED_FILES_PLACEHOLDERS.items():
+        p = fam / name
+        if p.exists():
+            report.append(f"  - {name} 已存在（跳过）")
+        else:
+            p.write_text(content, encoding="utf-8")
+            report.append(f"  - 创建 {name}")
+
+    # 3. thesis-README.md (thesis-owned routing table — NOT README.md, which the article
+    #    family may own in a coexist project; thesis- prefix avoids the collision).
+    readme = fam / "thesis-README.md"
+    if not readme.exists():
+        readme.write_text(_readme_text(), encoding="utf-8")
+        report.append("  - 创建 thesis-README.md")
+
+    # 4. brother skill dirs + CONTRACT.md
+    for skill in BROTHER_SKILLS:
+        sd = fam / skill
+        c = sd / "CONTRACT.md"
+        if sd.exists():
+            if not c.exists() and skill in SKILL_DIR_CONTRACTS:
+                c.write_text(SKILL_DIR_CONTRACTS[skill], encoding="utf-8")
+                report.append(f"  - {skill}/ 已存在，补 CONTRACT.md")
+            else:
+                report.append(f"  - {skill}/ 已存在（跳过）")
+        else:
+            sd.mkdir()
+            c.write_text(SKILL_DIR_CONTRACTS.get(skill, f"# {skill}/\n\nReserved.\n"), encoding="utf-8")
+            report.append(f"  - 创建 {skill}/ + CONTRACT.md")
+
+    # 5. thesis/.gitignore (thesis-scoped — LaTeX build products). Written INSIDE thesis/,
+    #    not at project root, so it never collides with an article-family .gitignore.
+    #    Root .gitignore is the human's/article's concern; init does not touch it.
+    gi = th / ".gitignore"
+    if not gi.exists():
+        gi.write_text("\n".join([
+            "# LaTeX build products", "*.aux", "*.log", "*.out", "*.toc", "*.bbl", "*.blg",
+            "*.fls", "*.fdb_latexmk", "*.synctex.gz", "",
+        ]) + "\n", encoding="utf-8")
+        report.append("  - 创建 thesis/.gitignore")
+
+    # 6. git init (unless --no-git) — mirror article-init
+    if (root / ".git").is_dir():
+        report.append("✓ .git/ 已存在（跳过）")
+    elif args.no_git:
+        report.append("· 跳过 git init（--no-git）")
+    else:
+        try:
+            subprocess.run(["git", "init"], cwd=root, check=True, capture_output=True, text=True)
+            report.append("✓ git init")
+        except (FileNotFoundError, subprocess.CalledProcessError):
+            report.append("⚠ git init 跳过")
+
+    print("\n".join(report))
+    return 0
+
+
+# ----------------------------- checkup -----------------------------
+
+
+def cmd_checkup(args: argparse.Namespace) -> int:
+    """Stub — implemented in Task 8."""
+    print("checkup: not implemented yet (Task 8)")
+    return 0
+
+
+# ----------------------------- main -----------------------------
+
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(description="sci-skills-thesis 家族项目初始化 / 体检。手动触发，跑一次就退。")
+    sub = parser.add_subparsers(dest="cmd", required=True)
+    p_init = sub.add_parser("init", help="建 thesis/ + sci-skills/ 骨架 + 织入模板")
+    p_init.add_argument("--no-git", action="store_true")
+    p_init.add_argument("--template", default=None, help="模板包名 (templates/thesis/<name>)")
+    p_init.add_argument("--template-dir", default=None, help="用户自带 .cls+spec 目录（degraded）")
+    p_init.set_defaults(func=cmd_init)
+    p_chk = sub.add_parser("checkup", help="体检落盘位置")
+    p_chk.set_defaults(func=cmd_checkup)
+    args = parser.parse_args(argv)
+    return args.func(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

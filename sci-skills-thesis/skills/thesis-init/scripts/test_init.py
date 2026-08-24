@@ -22,6 +22,42 @@ def test_constants():
     assert "thesis-spine.md" in init_project.SHARED_FILES_PLACEHOLDERS
     assert "thesis-terminology-ledger.md" in init_project.SHARED_FILES_PLACEHOLDERS
 
+import tempfile, shutil
+
+def test_init_builds_skeleton():
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        rc = init_project.main(["init", "--no-git"])
+        assert rc == 0
+        # thesis/ first-class artifact — CONTRACT.md MUST be written (the bug aquarius caught)
+        assert (cwd / "thesis" / "CONTRACT.md").is_file(), "thesis/CONTRACT.md not written"
+        assert (cwd / "thesis" / "tex").is_dir()
+        assert (cwd / "thesis" / ".gitignore").is_file(), "thesis/.gitignore not written"
+        # shared workspace + thesis- prefixed shared files
+        fam = cwd / "sci-skills"
+        assert fam.is_dir()
+        assert (fam / "thesis-sources.md").is_file()
+        assert (fam / "thesis-spine.md").is_file()
+        assert (fam / "thesis-terminology-ledger.md").is_file()
+        # thesis-README.md (thesis-owned routing table; NOT README.md, which the article
+        # family may own in a coexist project — the collision aquarius flagged)
+        assert (fam / "thesis-README.md").is_file(), "thesis-README.md not written"
+        # init must NOT write a root .gitignore (collides with article family / human's)
+        assert not (cwd / ".gitignore").is_file(), "init must not write root .gitignore"
+        # brother skill dirs each with a CONTRACT.md
+        for s in init_project.BROTHER_SKILLS:
+            assert (fam / s / "CONTRACT.md").is_file(), f"missing {s}/CONTRACT.md"
+        # spine/polish/typeset do NOT get dirs
+        assert not (fam / "thesis-spine").is_dir()
+        assert not (fam / "thesis-polish").is_dir()
+    finally:
+        os.chdir(orig)
+        shutil.rmtree(cwd, ignore_errors=True)
+    print("test_init_builds_skeleton: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
+    test_init_builds_skeleton()
