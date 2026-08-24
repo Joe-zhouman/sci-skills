@@ -104,9 +104,36 @@ def test_init_idempotent():
         shutil.rmtree(cwd, ignore_errors=True)
     print("test_init_idempotent: PASS")
 
+def test_checkup_healthy():
+    import tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        init_project.main(["init", "--no-git", "--template", "generic-test"])
+        rc = init_project.main(["checkup"])
+        assert rc == 0, "healthy layout should exit 0"
+    finally:
+        os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
+    print("test_checkup_healthy: PASS")
+
+def test_checkup_missing_workspace():
+    import tempfile, shutil
+    cwd = pathlib.Path(tempfile.mkdtemp())
+    orig = pathlib.Path.cwd()
+    os.chdir(cwd)
+    try:
+        rc = init_project.main(["checkup"])  # never init'd
+        assert rc != 0, "uninit'd project should exit non-zero"
+    finally:
+        os.chdir(orig); shutil.rmtree(cwd, ignore_errors=True)
+    print("test_checkup_missing_workspace: PASS")
+
 if __name__ == "__main__":
     test_constants()
     print("test_constants: PASS")
     test_init_builds_skeleton()
     test_init_weaves_template()
     test_init_idempotent()
+    test_checkup_healthy()
+    test_checkup_missing_workspace()

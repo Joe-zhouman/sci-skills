@@ -454,9 +454,42 @@ def cmd_init(args: argparse.Namespace) -> int:
 
 
 def cmd_checkup(args: argparse.Namespace) -> int:
-    """Stub — implemented in Task 8."""
-    print("checkup: not implemented yet (Task 8)")
-    return 0
+    """体检：扫描当前结构，报告 thesis/ + sci-skills/ 落盘位置对不对。"""
+    root = find_project_root()
+    fam = family_root(root)
+    report: list[str] = [f"checkup @ {root}"]
+    issues: list[str] = []
+
+    th = root / THESIS_DIR_NAME
+    if not th.is_dir():
+        issues.append(f"✗ {THESIS_DIR_NAME}/ 不存在。跑 `init` 建它。")
+    else:
+        tex_files = list((th / "tex").glob("*.tex")) if (th / "tex").is_dir() else []
+        report.append(f"thesis/   ✓  tex 文件: {len(tex_files)}")
+        if not (th / "template-spec.md").is_file():
+            issues.append("⚠ thesis/template-spec.md 缺失（模板未织入？）")
+
+    if not fam.is_dir():
+        issues.append(f"✗ {FAMILY_ROOT_NAME}/ 不存在。跑 `init` 建它。")
+    else:
+        for name in SHARED_FILES_PLACEHOLDERS:
+            if not (fam / name).is_file():
+                issues.append(f"⚠ {FAMILY_ROOT_NAME}/{name} 缺失")
+        if not (fam / "thesis-README.md").is_file():
+            issues.append("⚠ sci-skills/thesis-README.md 缺失")
+        for s in BROTHER_SKILLS:
+            if not (fam / s / "CONTRACT.md").is_file():
+                issues.append(f"⚠ {FAMILY_ROOT_NAME}/{s}/CONTRACT.md 缺失")
+
+    report.append("")
+    if issues:
+        report.append("问题:")
+        for it in issues:
+            report.append(f"  {it}")
+    else:
+        report.append("✓ 布局健康。")
+    print("\n".join(report))
+    return 1 if issues else 0
 
 
 # ----------------------------- main -----------------------------
