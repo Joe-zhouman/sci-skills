@@ -21,7 +21,9 @@ STRUCTURAL_FIELDS = ["Main line", "Unified framework", "Inter-chapter progressio
 
 # pending 标记：字段以 `[pending? ]` 开头表示 AI 候选未 settle。
 # header 注释用 backtick-`pending`（不含 `[`），不撞此标记。
-PENDING_MARKER = "[pending"
+# 用 `[pending?`（含问号）而非 `[pending`——后者会误匹配 audit-trail 散文
+# 如 `[pending replication by third party]`（aries #3）。
+PENDING_MARKER = "[pending?"
 
 
 def split_sections(text: str) -> dict[str, str]:
@@ -56,11 +58,16 @@ def check(spine_path: Path) -> list[str]:
     issues: list[str] = []
     if not spine_path.is_file():
         return [f"✗ {spine_path} 不存在（spine 未产？跑 thesis-spine）"]
-    text = spine_path.read_text(encoding="utf-8")
+    try:
+        text = spine_path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return [f"✗ {spine_path} 不是有效的 UTF-8 文本（二进制？）"]
+    except OSError as e:
+        return [f"✗ {spine_path} 无法读取：{e}"]
 
     # 1. 无 pending 残留（settled 后作者删 [pending? ] 标记）
     if PENDING_MARKER in text:
-        issues.append("✗ 仍有 `[pending` 标记——有未 settle 的候选，dissect 不可建在 unsettled 字段上")
+        issues.append("✗ 仍有 `[pending?` 标记——有未 settle 的候选，dissect 不可建在 unsettled 字段上")
 
     sections = split_sections(text)
 
@@ -78,7 +85,9 @@ def check(spine_path: Path) -> list[str]:
     if framework:
         paper_ids = re.findall(r"^-\s+(paper-[\w-]+)", intake, re.MULTILINE)
         for pid in paper_ids:
-            if pid not in framework:
+            # anchor the id as a distinct token, not a bare substring —
+            # paper-A must not match inside paper-AB's instantiation line.
+            if not re.search(rf"\b{re.escape(pid)}(?![\w-])", framework):
                 issues.append(f"✗ `{pid}` 在 Intake 列出但 Unified framework 无实例化（contract gap）")
 
     # 4. Inter-chapter progression: 每个角色声明 question + advance

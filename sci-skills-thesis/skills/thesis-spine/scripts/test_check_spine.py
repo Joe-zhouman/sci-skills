@@ -106,6 +106,58 @@ def test_fails_on_role_missing_question():
     assert any("question" in i.lower() for i in issues), f"expected missing-question issue, got: {issues}"
     print("test_fails_on_role_missing_question: PASS")
 
+def test_graceful_on_binary_file():
+    """aries #1: binary/non-utf8 file must not raise — return a graceful issue, exit 1."""
+    import tempfile, os
+    p = pathlib.Path(tempfile.mkdtemp()) / "binary.md"
+    p.write_bytes(b"\xff\xfe\x00\x01garbage non-utf8")  # invalid utf-8
+    try:
+        issues = check_spine.check(p)
+        assert issues and any("读" in i or "read" in i.lower() or "decode" in i.lower() or "无法" in i or "UTF-8" in i for i in issues), \
+               f"expected graceful read issue, got: {issues}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} on binary file — must be graceful"
+    print("test_graceful_on_binary_file: PASS")
+
+def test_graceful_on_unreadable_file():
+    """aries #2: unreadable (chmod 000) file must not raise — graceful issue. Skip if root."""
+    import tempfile, os
+    if os.geteuid() == 0:
+        print("test_graceful_on_unreadable_file: SKIP (root bypasses perms)")
+        return
+    p = pathlib.Path(tempfile.mkdtemp()) / "noperm.md"
+    p.write_text("## Main line (主线)\ntext", encoding="utf-8")
+    os.chmod(p, 0o000)
+    try:
+        issues = check_spine.check(p)
+        assert issues and any("读" in i or "read" in i.lower() or "权限" in i or "permission" in i.lower() for i in issues), \
+               f"expected graceful perm issue, got: {issues}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} on unreadable file — must be graceful"
+    finally:
+        os.chmod(p, 0o644)  # restore so cleanup works
+    print("test_graceful_on_unreadable_file: PASS")
+
+def test_no_false_positive_on_pending_prose():
+    """aries #3: legitimate prose '[pending replication by third party]' in Cracks
+    must NOT trip the gate. The real marker is '[pending? ]'."""
+    settled_with_prose = SETTLED.replace(
+        "## Cracks flagged (tension-flagging, §⑤)\n- [stage 1 / main line] (a) tension: … (b) evidence: … (c) question: …?\n  disposition: [dismissed → reason: …]",
+        "## Cracks flagged (tension-flagging, §⑤)\n- [stage 1 / main line] (a) tension: X (b) evidence: paper-D §3 (c) question: does X hold?\n  disposition: [dismissed → reason: X holds generally]\n- note: [pending replication by third party] recommended.")
+    issues = check_spine.check(_write_fixture(settled_with_prose))
+    assert issues == [], f"false-positive on legitimate '[pending ...]' prose: {issues}"
+    print("test_no_false_positive_on_pending_prose: PASS")
+
+def test_no_substring_false_negative_on_paper_ids():
+    """aries #4: paper-A listed in Intake with NO instantiation must fail,
+    even if paper-AB (which contains 'paper-A' as substring) IS instantiated."""
+    bad = SETTLED.replace(
+        "per-paper: how paper-A instantiates it = 侧视角1\nper-paper: how paper-B instantiates it = 侧视角2",
+        "per-paper: how paper-AB instantiates it = 侧视角AB")  # paper-A gone, paper-AB present; Intake still lists paper-A + paper-B
+    issues = check_spine.check(_write_fixture(bad))
+    assert any("paper-A" in i for i in issues), f"substring false-negative: paper-A should be flagged but: {issues}"
+    print("test_no_substring_false_negative_on_paper_ids: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled_spine()
     test_fails_on_pending_marker()
@@ -115,4 +167,8 @@ if __name__ == "__main__":
     test_fails_on_missing_per_paper_instantiation()
     test_fails_on_role_missing_advance()
     test_fails_on_role_missing_question()
+    test_graceful_on_binary_file()
+    test_graceful_on_unreadable_file()
+    test_no_false_positive_on_pending_prose()
+    test_no_substring_false_negative_on_paper_ids()
     print("ALL TESTS PASS")
