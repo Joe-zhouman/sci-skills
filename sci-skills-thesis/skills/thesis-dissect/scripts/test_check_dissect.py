@@ -136,6 +136,30 @@ def test_graceful_on_binary_file():
         assert False, f"check() raised {type(e).__name__} — must be graceful"
     print("test_graceful_on_binary_file: PASS")
 
+def test_fails_on_missing_tex_file():
+    """chapter references ch1.tex but it's absent from thesis/tex/ → coverage issue."""
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch2.tex": "x"})  # ch1.tex missing
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("ch1.tex" in i and "不存在" in i for i in issues), \
+           f"expected missing-tex-file issue, got: {issues}"
+    print("test_fails_on_missing_tex_file: PASS")
+
+def test_fails_on_missing_tex_file_field():
+    """chapter has no tex-file field at all → coverage issue."""
+    bad = SETTLED.replace("- tex-file: ch1.tex\n", "")
+    cm, tex_dir = _write_project(bad)
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("tex-file" in i and "Chapter 1" in i for i in issues), \
+           f"expected missing-tex-file-field issue, got: {issues}"
+    print("test_fails_on_missing_tex_file_field: PASS")
+
+def test_passes_when_all_tex_files_exist():
+    """all referenced tex files present → no tex-file issues."""
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch1.tex": "\\chapter{A}", "ch2.tex": "\\chapter{B}"})
+    issues = check_dissect.check(cm, tex_dir)
+    assert not any("tex-file" in i for i in issues), f"unexpected tex-file issue: {issues}"
+    print("test_passes_when_all_tex_files_exist: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_framework_instantiation()
@@ -148,4 +172,7 @@ if __name__ == "__main__":
     test_fails_on_status_stale()
     test_fails_on_missing_chapter_map()
     test_graceful_on_binary_file()
-    print("ALL CORE TESTS PASS")
+    test_fails_on_missing_tex_file()
+    test_fails_on_missing_tex_file_field()
+    test_passes_when_all_tex_files_exist()
+    print("ALL TESTS PASS")

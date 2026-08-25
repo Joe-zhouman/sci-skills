@@ -102,7 +102,16 @@ def check(chapter_map_path: Path, tex_dir: Path) -> list[str]:
         elif st.lower() != SETTLED_STATUS:
             issues.append(f"✗ {label} status={st}（应为 written；pending=未写完，stale=backtrack 后失效）")
 
-        # 5. tex-file 存在于 thesis/tex/（Task 2 在此扩展）
+        # 5. tex-file 存在于 thesis/tex/
+        tf = _field_value(body, "tex-file")
+        if tf is None:
+            issues.append(f"✗ {label} 缺 tex-file")
+        elif not tf.strip():
+            issues.append(f"✗ {label} tex-file 为空")
+        else:
+            tex_path = tex_dir / tf.strip()
+            if not tex_path.is_file():
+                issues.append(f"✗ {label} tex-file `{tf.strip()}` 不存在于 {tex_dir}")
     return issues
 
 
