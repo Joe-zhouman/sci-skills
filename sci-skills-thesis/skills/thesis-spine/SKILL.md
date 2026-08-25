@@ -21,7 +21,7 @@ chapter is a standalone paper, the chapters don't progress into each other, the 
 can't callback, the summary has no common framework to extract. Output is **`thesis-spine.md`**
 (the rich baton dissect / intro / summary / theory read) + a seeded
 `thesis-terminology-ledger.md`. There is no tex written here, no paper→chapter binding, no
-deep reading — those are dissect's job (拆即写, 拆即写). Run before dissect, after thesis-init.
+deep reading — those are dissect's job (拆即写). Run before dissect, after thesis-init.
 The author advances the pipeline by invoking each writing skill (read neighbors, don't
 orchestrate). This skill serves the author first — the author gates architecture depth; AI
 assists, never substitutes for the author's depth judgment.
@@ -67,7 +67,7 @@ Compass-file coupling (罗盘文件) — no skill calls a sibling skill; handoff
 | `thesis-sources.md` *(read)* | thesis-init | spine | source registry (paper_id / paths / slug / claim) |
 | `template-spec.md` *(read)* | thesis-init | spine | chapter-naming convention (so progression roles align) |
 | small papers *(read)* | external | spine | per-paper claim + IMRaD structure (high-level intake) |
-| `scripts/check_spine.py` *(spine's own)* | spine | spine Step 5 | coverage mechanical gate (deterministic; pytest-tested) |
+| `scripts/check_spine.py` *(spine's own)* | spine | spine Step 5 | coverage mechanical gate (deterministic; stdlib-tested — assert script, no pytest) |
 
 - **Spine produces top-level `thesis-spine.md` + seeds `thesis-terminology-ledger.md`.** No
   working-notes directory (spec §② — spine is directory-less; a single rich baton holds product
