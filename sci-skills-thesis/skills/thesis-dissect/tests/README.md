@@ -50,4 +50,15 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    - dissect reads spine's `thesis-spine.md` (the baton) but never writes it;
      same for `thesis-sources.md` + `template-spec.md` (thesis-init's, read-only).
 
+**Known limitation (markdown code-fence handling, aries round-2):** `check_dissect.py`'s
+`split_chapters` skips `## Chapter N` headers inside ``` fences (so a phantom chapter in a
+quoted block isn't parsed), but two CommonMark edge cases are NOT handled: `~~~` tilde fences
+(treated as prose, so a `## Chapter N` inside `~~~` leaks as a phantom chapter) and nested
+4-tick fences closed by an inner 3-tick. These only fire on **out-of-schema input** — the
+chapter-map.md schema (above) is flat field-list markdown with no code blocks, and dissect
+never produces one with code blocks. Conservative direction: fails only on malformed
+out-of-schema maps, never false-blocks a valid settled map. Documented, not fixed —
+elevating to full CommonMark fence handling is scope creep for a coverage gate reading flat
+fields. Fix if a real chapter-map.md ever carries code blocks.
+
 TODO: scaffold evals.json + run the full eval loop per skill-creator-plus before ship.
