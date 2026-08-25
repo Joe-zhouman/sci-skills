@@ -160,6 +160,43 @@ def test_passes_when_all_tex_files_exist():
     assert not any("tex-file" in i for i in issues), f"unexpected tex-file issue: {issues}"
     print("test_passes_when_all_tex_files_exist: PASS")
 
+def test_chapter_headers_with_trailing_title_accepted():
+    """taurus #1: `## Chapter 1 (绪论)` must be parsed, not rejected → 0 chapters.
+    The chapter label for issues is still 'Chapter 1'."""
+    cm_with_title = SETTLED.replace("## Chapter 1\n", "## Chapter 1 (绪论)\n")
+    cm_with_title = cm_with_title.replace("## Chapter 2\n", "## Chapter 2 (方法)\n")
+    cm, tex_dir = _write_project(cm_with_title)
+    issues = check_dissect.check(cm, tex_dir)
+    # must NOT report "no entries"; must pass (settled content, just titled headers)
+    assert not any("无" in i and "Chapter" in i for i in issues), \
+           f"titled chapter header rejected: {issues}"
+    assert issues == [], f"expected pass on titled-header settled map, got: {issues}"
+    print("test_chapter_headers_with_trailing_title_accepted: PASS")
+
+def test_graceful_on_unreadable_file():
+    """taurus #2: unreadable (chmod 000) chapter-map.md must not raise — graceful issue.
+    Covers the except OSError handler. Skip if root (root bypasses perms)."""
+    import os
+    if os.geteuid() == 0:
+        print("test_graceful_on_unreadable_file: SKIP (root bypasses perms)")
+        return
+    root = pathlib.Path(tempfile.mkdtemp())
+    cm = root / "sci-skills" / "thesis-dissect" / "chapter-map.md"
+    cm.parent.mkdir(parents=True)
+    cm.write_text(SETTLED, encoding="utf-8")
+    os.chmod(cm, 0o000)
+    tex_dir = root / "thesis" / "tex"; tex_dir.mkdir(parents=True)
+    (tex_dir / "ch1.tex").write_text("x"); (tex_dir / "ch2.tex").write_text("x")
+    try:
+        issues = check_dissect.check(cm, tex_dir)
+        assert issues and any("无法读取" in i or "read" in i.lower() or "权限" in i or "permission" in i.lower() for i in issues), \
+               f"expected graceful perm issue, got: {issues}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} on unreadable file — must be graceful"
+    finally:
+        os.chmod(cm, 0o644)  # restore so cleanup works
+    print("test_graceful_on_unreadable_file: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_framework_instantiation()
@@ -175,4 +212,6 @@ if __name__ == "__main__":
     test_fails_on_missing_tex_file()
     test_fails_on_missing_tex_file_field()
     test_passes_when_all_tex_files_exist()
+    test_chapter_headers_with_trailing_title_accepted()
+    test_graceful_on_unreadable_file()
     print("ALL TESTS PASS")

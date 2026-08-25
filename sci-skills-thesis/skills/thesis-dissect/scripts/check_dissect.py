@@ -29,7 +29,7 @@ def split_chapters(text: str) -> list[tuple[str, str]]:
     current_label: str | None = None
     current_lines: list[str] = []
     for line in text.splitlines():
-        m = re.match(r"^##\s+(Chapter\s+\d+)\s*$", line, re.IGNORECASE)
+        m = re.match(r"^##\s+(Chapter\s+\d+)(?:\s+.*)?$", line, re.IGNORECASE)
         if m:
             if current_label is not None:
                 chapters.append((current_label, "\n".join(current_lines)))
