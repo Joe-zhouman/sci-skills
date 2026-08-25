@@ -24,18 +24,27 @@ _NONE_TOKENS = {"none", "（none）", "(none)", "无", "—"}
 
 
 def split_chapters(text: str) -> list[tuple[str, str]]:
-    """把 chapter-map.md 按 `## Chapter N` 切成 [(chapter_label, body), ...]，按出现序。"""
+    """把 chapter-map.md 按 `## Chapter N` 切成 [(chapter_label, body), ...]，按出现序。
+    跳过 ``` 代码块内的标题（aries #2 — code-fence blindness）。"""
     chapters: list[tuple[str, str]] = []
     current_label: str | None = None
     current_lines: list[str] = []
+    in_fence = False
     for line in text.splitlines():
-        m = re.match(r"^##\s+(Chapter\s+\d+)(?:\s+.*)?$", line, re.IGNORECASE)
-        if m:
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
             if current_label is not None:
-                chapters.append((current_label, "\n".join(current_lines)))
-            current_label = m.group(1).strip()
-            current_lines = []
-        elif current_label is not None:
+                current_lines.append(line)
+            continue
+        if not in_fence:
+            m = re.match(r"^##\s+(Chapter\s+\d+)(?:\s+.*)?$", line, re.IGNORECASE)
+            if m:
+                if current_label is not None:
+                    chapters.append((current_label, "\n".join(current_lines)))
+                current_label = m.group(1).strip()
+                current_lines = []
+                continue
+        if current_label is not None:
             current_lines.append(line)
     if current_label is not None:
         chapters.append((current_label, "\n".join(current_lines)))
@@ -109,9 +118,15 @@ def check(chapter_map_path: Path, tex_dir: Path) -> list[str]:
         elif not tf.strip():
             issues.append(f"✗ {label} tex-file 为空")
         else:
-            tex_path = tex_dir / tf.strip()
-            if not tex_path.is_file():
-                issues.append(f"✗ {label} tex-file `{tf.strip()}` 不存在于 {tex_dir}")
+            tf_name = tf.strip()
+            tf_path = Path(tf_name)
+            # aries #1: reject absolute paths + `..` traversal — tex-file must live under thesis/tex/
+            if tf_path.is_absolute() or ".." in tf_path.parts:
+                issues.append(f"✗ {label} tex-file `{tf_name}` 在 thesis/tex/ 之外（绝对路径或 `..` 遍历，禁止）")
+            else:
+                tex_path = tex_dir / tf_name
+                if not tex_path.is_file():
+                    issues.append(f"✗ {label} tex-file `{tf_name}` 不存在于 {tex_dir}")
     return issues
 
 

@@ -197,6 +197,47 @@ def test_graceful_on_unreadable_file():
         os.chmod(cm, 0o644)  # restore so cleanup works
     print("test_graceful_on_unreadable_file: PASS")
 
+def test_fails_on_absolute_tex_file_path():
+    """aries #1: `tex-file: /etc/passwd` (absolute) must NOT pass — it's outside thesis/tex/.
+    pathlib discards tex_dir when tf is absolute, defeating the gate."""
+    import os
+    # /etc/passwd exists on essentially all Linux; if somehow absent, use a known-existing abs path
+    target = "/etc/passwd" if os.path.isfile("/etc/passwd") else os.path.abspath(__file__)
+    bad = SETTLED.replace("- tex-file: ch1.tex\n", f"- tex-file: {target}\n")
+    cm, tex_dir = _write_project(bad)  # tex_dir has ch1.tex + ch2.tex, but tf points at abs path
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("tex-file" in i and ("绝对" in i or "absolute" in i.lower() or "thesis/tex" in i or "外" in i) for i in issues), \
+           f"absolute tex-file path must fail (outside thesis/tex/), got: {issues}"
+    print("test_fails_on_absolute_tex_file_path: PASS")
+
+def test_fails_on_dotdot_tex_file_path():
+    """aries #1: `tex-file: ../etc/passwd` traversal must NOT pass."""
+    import os
+    # _write_project puts tex_dir at root/thesis/tex; ../etc/passwd resolves to root/etc/passwd (likely absent),
+    # so use a path that resolves to an existing file outside tex_dir: ../../<something>
+    cm, tex_dir = _write_project(SETTLED)
+    # craft a tf that traverses out to a file we know exists (the chapter-map.md itself, under sci-skills/thesis-dissect/)
+    cm_path = cm
+    # tex_dir = root/thesis/tex; cm is at root/sci-skills/thesis-dissect/chapter-map.md → ../../sci-skills/thesis-dissect/chapter-map.md
+    bad = SETTLED.replace("- tex-file: ch1.tex\n", "- tex-file: ../../sci-skills/thesis-dissect/chapter-map.md\n")
+    cm2, tex_dir2 = _write_project(bad)  # fresh project; the traversal target won't exist there → but absolute test above covers the core
+    # Better: test that `..` in parts is rejected regardless of existence
+    issues = check_dissect.check(cm2, tex_dir2)
+    assert any("tex-file" in i and (".." in i or "外" in i or "traversal" in i.lower() or "thesis/tex" in i) for i in issues), \
+           f"`..` traversal tex-file must fail, got: {issues}"
+    print("test_fails_on_dotdot_tex_file_path: PASS")
+
+def test_ignores_chapter_headers_inside_code_fence():
+    """aries #2: a `## Chapter 99` line inside a ``` block must NOT be parsed as a real chapter."""
+    bad = SETTLED + "\n```\n## Chapter 99\n- this is inside a code block\n```\n"
+    cm, tex_dir = _write_project(bad)
+    issues = check_dissect.check(cm, tex_dir)
+    # Chapter 99 is phantom; must not appear in issues, must not shift ch1/ch2 semantics
+    assert not any("Chapter 99" in i for i in issues), f"phantom Chapter 99 leaked: {issues}"
+    # the real 2 chapters should still pass
+    assert issues == [], f"expected pass (2 real chapters, phantom ignored), got: {issues}"
+    print("test_ignores_chapter_headers_inside_code_fence: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_framework_instantiation()
@@ -214,4 +255,7 @@ if __name__ == "__main__":
     test_passes_when_all_tex_files_exist()
     test_chapter_headers_with_trailing_title_accepted()
     test_graceful_on_unreadable_file()
+    test_fails_on_absolute_tex_file_path()
+    test_fails_on_dotdot_tex_file_path()
+    test_ignores_chapter_headers_inside_code_fence()
     print("ALL TESTS PASS")
