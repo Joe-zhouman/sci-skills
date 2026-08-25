@@ -83,10 +83,36 @@ def test_ignores_umbrella_and_boundary():
     assert issues == [], f"empty umbrella/boundary must NOT fail coverage (they're depth): {issues}"
     print("test_ignores_umbrella_and_boundary: PASS")
 
+def test_fails_on_missing_per_paper_instantiation():
+    """Intake 列了 paper-B 但 Unified framework 无其实例化 → contract gap。"""
+    bad = SETTLED.replace("per-paper: how paper-B instantiates it = 侧视角2\n",
+                          "")  # paper-B instantiation gone, but still in Intake
+    issues = check_spine.check(_write_fixture(bad))
+    assert any("paper-B" in i for i in issues), f"expected missing-instantiation issue for paper-B, got: {issues}"
+    print("test_fails_on_missing_per_paper_instantiation: PASS")
+
+def test_fails_on_role_missing_advance():
+    """progression role 缺 advance → coverage 问题。"""
+    bad = SETTLED.replace("advances the main line by 拓展 boundary",
+                          "")  # role 2 now has question but no advance
+    issues = check_spine.check(_write_fixture(bad))
+    assert any("advance" in i.lower() for i in issues), f"expected missing-advance issue, got: {issues}"
+    print("test_fails_on_role_missing_advance: PASS")
+
+def test_fails_on_role_missing_question():
+    """progression role 缺 question → coverage 问题。"""
+    bad = SETTLED.replace("question = X 怎么起作用?;", "")
+    issues = check_spine.check(_write_fixture(bad))
+    assert any("question" in i.lower() for i in issues), f"expected missing-question issue, got: {issues}"
+    print("test_fails_on_role_missing_question: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled_spine()
     test_fails_on_pending_marker()
     test_fails_on_empty_structural_field()
     test_fails_on_missing_structural_section()
     test_ignores_umbrella_and_boundary()
-    print("ALL CORE TESTS PASS")
+    test_fails_on_missing_per_paper_instantiation()
+    test_fails_on_role_missing_advance()
+    test_fails_on_role_missing_question()
+    print("ALL TESTS PASS")

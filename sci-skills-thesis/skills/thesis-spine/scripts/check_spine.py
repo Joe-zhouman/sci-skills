@@ -72,7 +72,29 @@ def check(spine_path: Path) -> list[str]:
         elif not body.strip():
             issues.append(f"✗ 结构字段 `## {field}` 为空")
 
-    # sub-coverage（Task 3 在此扩展：framework 每篇实例化 + progression 每角色 advance/question）
+    # 3. Unified framework: 每篇 Intake 论文都有实例化行（contract gap 否则）
+    intake = _find_section(sections, "Intake") or ""
+    framework = _find_section(sections, "Unified framework") or ""
+    if framework:
+        paper_ids = re.findall(r"^-\s+(paper-[\w-]+)", intake, re.MULTILINE)
+        for pid in paper_ids:
+            if pid not in framework:
+                issues.append(f"✗ `{pid}` 在 Intake 列出但 Unified framework 无实例化（contract gap）")
+
+    # 4. Inter-chapter progression: 每个角色声明 question + advance
+    progression = _find_section(sections, "Inter-chapter progression") or ""
+    if progression:
+        # 角色条目形如 "- role 1: question = …; advances the main line by …"
+        role_lines = [ln for ln in progression.splitlines()
+                      if re.match(r"^\s*-\s+role\s+\d+", ln, re.IGNORECASE)]
+        if not role_lines:
+            issues.append("✗ Inter-chapter progression 无 role 条目")
+        for role_line in role_lines:
+            low = role_line.lower()
+            if "question" not in low:
+                issues.append(f"✗ progression role 缺 question：{role_line.strip()}")
+            if "advance" not in low:
+                issues.append(f"✗ progression role 缺 advance：{role_line.strip()}")
     return issues
 
 
