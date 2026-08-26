@@ -124,7 +124,6 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
             chapter_nums = _chapter_numbers_in(cm_text)
         except (UnicodeDecodeError, OSError):
             chapter_nums = set()  # chapter-map 不可读 → cross-ref 查不出，但 core 查继续
-    # Task 2 在此处扩展 cross-ref 检查
 
     for label, body in gaps:
         # 2. gap 非空
@@ -139,6 +138,17 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
             issues.append(f"✗ {label} 缺 status")
         elif st.lower() != SETTLED_STATUS:
             issues.append(f"✗ {label} status={st}（应为 filled；pending=未写完，unfilled=无章填此 gap）")
+        # 6. filled-by 章存在于 chapter-map.md（near-trivial consistency：防 agent 编造不存在的章号）
+        fb = _field_value(body, "filled-by")
+        if not _is_empty(fb):
+            ch_num = _filled_by_chapter_num(fb)
+            if ch_num is None:
+                issues.append(f"✗ {label} filled-by `{fb}` 无法解析章号（应为 'Chapter N' 格式）")
+            elif chapter_nums and ch_num not in chapter_nums:
+                issues.append(f"✗ {label} filled-by Chapter {ch_num} 不在 chapter-map.md 的章列表中（悬空/编造）")
+    # 若 chapter-map.md 缺失（dissect 未跑），报 issue（intro 需 dissect 的 baton 才能 cross-ref）
+    if not chapter_map_path.is_file():
+        issues.append(f"✗ {chapter_map_path} 不存在（dissect 未产？intro 需 chapter-map.md 做 cross-ref）")
     # 5. ch0-intro.tex 存在于 thesis/tex/
     intro_tex = tex_dir / "ch0-intro.tex"
     if not intro_tex.is_file():

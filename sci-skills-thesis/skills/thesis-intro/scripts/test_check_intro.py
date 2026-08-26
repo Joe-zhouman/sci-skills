@@ -174,6 +174,53 @@ def test_graceful_on_binary_gap_map():
         assert False, f"check() raised {type(e).__name__} — must be graceful"
     print("test_graceful_on_binary_gap_map: PASS")
 
+def test_fails_on_dangling_filled_by():
+    """filled-by = Chapter 9 but chapter-map.md only has ch1-2 → fabricated/dangling → issue."""
+    gm, cm, tex_dir = _write_project()
+    # gap-map references Chapter 9; chapter-map has only ch1-2
+    bad = GAP_MAP_SETTLED.replace("- filled-by: Chapter 2\n- callback-anchor",
+                                  "- filled-by: Chapter 9\n- callback-anchor")
+    gm, cm, tex_dir = _write_project(gap_map=bad)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("Chapter 9" in i and ("不在" in i or "not in" in i.lower() or "dangling" in i.lower() or "悬空" in i) for i in issues), \
+           f"expected dangling-filled-by issue, got: {issues}"
+    print("test_fails_on_dangling_filled_by: PASS")
+
+def test_fails_on_missing_chapter_map():
+    """chapter-map.md missing → can't cross-ref → issue (dissect hasn't run)."""
+    gm, cm, tex_dir = _write_project()
+    cm.unlink()
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("chapter-map" in i.lower() and ("不存在" in i or "not exist" in i.lower()) for i in issues), \
+           f"expected missing-chapter-map issue, got: {issues}"
+    print("test_fails_on_missing_chapter_map: PASS")
+
+def test_fails_on_malformed_filled_by():
+    """filled-by = 'some chapter' (no number) → can't cross-ref → issue."""
+    bad = GAP_MAP_SETTLED.replace("- filled-by: Chapter 1\n",
+                                  "- filled-by: some chapter\n")
+    gm, cm, tex_dir = _write_project(gap_map=bad)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("filled-by" in i and "Gap 1" in i for i in issues), \
+           f"expected malformed-filled-by issue, got: {issues}"
+    print("test_fails_on_malformed_filled_by: PASS")
+
+def test_ignores_chapter_headers_inside_code_fence():
+    """chapter-map.md with `## Chapter 99` inside a code fence → 99 NOT a valid chapter →
+    a gap filled-by: Chapter 99 must still fail cross-ref (mirror check_dissect aries #2)."""
+    bad_cm = CHAPTER_MAP_SETTLED + "\n```\n## Chapter 99\n- fake\n```\n"
+    # gap references Chapter 99 (which is ONLY inside a code fence → must be treated as absent)
+    bad_gm = GAP_MAP_SETTLED.replace("- filled-by: Chapter 2\n- callback-anchor",
+                                     "- filled-by: Chapter 99\n- callback-anchor")
+    gm, cm, tex_dir = _write_project(gap_map=bad_gm, chapter_map=bad_cm)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("Chapter 99" in i and ("不在" in i or "悬空" in i) for i in issues), \
+           f"code-fenced Chapter 99 must NOT count as valid → expected dangling issue, got: {issues}"
+    print("test_ignores_chapter_headers_inside_code_fence: PASS")
+
+# (no test_passes_when_all_filled_by_resolve — redundant with test_passes_on_settled,
+# which asserts the strictly stronger `issues == []`. aquarius plan review finding.)
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_field()
@@ -186,4 +233,8 @@ if __name__ == "__main__":
     test_fails_on_missing_gap_map()
     test_fails_on_missing_ch0_intro_tex()
     test_graceful_on_binary_gap_map()
-    print("ALL CORE TESTS PASS")
+    test_fails_on_dangling_filled_by()
+    test_fails_on_missing_chapter_map()
+    test_fails_on_malformed_filled_by()
+    test_ignores_chapter_headers_inside_code_fence()
+    print("ALL TESTS PASS")
