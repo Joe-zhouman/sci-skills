@@ -3,7 +3,7 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_intro.py` (the gate) +
-   `scripts/test_check_intro.py` (15 stdlib cases, run `python3 test_check_intro.py`).
+   `scripts/test_check_intro.py` (17 stdlib cases, run `python3 test_check_intro.py`).
    Exit-code contract: 0 = consistency through; 1 = consistency issues (each printed).
    Cases covered:
    - passes on a settled gap-map.md + its chapter-map.md + ch0-intro.tex (2 gaps,
@@ -12,6 +12,9 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    - fails on an empty `gap` (value = `none`);
    - fails on a missing `filled-by` (field absent);
    - fails on an empty `filled-by` (value = `none`);
+   - fails on a missing `callback-anchor` (field absent — the field that earns
+     gap-map.md its existence per §①; presence is mechanical, not depth);
+   - fails on an empty `callback-anchor` (value = `none`);
    - fails on `status=pending` (unsettled — gap not yet filled);
    - fails on `status=unfilled` (contract gap — no chapter fills this gap);
    - fails on a pending residual (`[pending?` marker anywhere — unsettled candidate,
@@ -85,8 +88,8 @@ coverage** (spec §① residual) — a gap that no chapter genuinely fills but c
 a valid chapter number passes the gate; that is a depth failure, caught only by
 the author + prose eval, not here. `anchor-in-intro` is an **optional audit-trail
 field, NOT enforced by check_intro.py** (demoted per aquarius — a non-enforced
-pointer is ceremony; check_intro.py verifies `gap` + `filled-by` + `status` +
-`filled-by` cross-ref + `ch0-intro.tex` existence, not `anchor-in-intro`).
+pointer is ceremony; check_intro.py verifies `gap` + `filled-by` + `callback-anchor` +
+`status` + `filled-by` cross-ref + `ch0-intro.tex` existence, not `anchor-in-intro`).
 
 TODO: scaffold evals.json + run the full eval loop per skill-creator-plus before
 ship (the prose surface).
