@@ -5,7 +5,7 @@
 **非 coverage gate，非 depth**。gaps ~1:1 derived from chapters by construction
 （glossary Narrative gap "typically one per body chapter"）→ coverage near-trivial。
 本门查的是：缺席（gap-map.md 不存在）+ 官僚 lapse（编造不存在的章号 / filled-by 悬空 /
-pending 残留 / 缺 ch0-intro.tex）。**查不出 depth**（一个 gap 实际没章 genuinely fills
+pending 残留 / 缺 intro-tex 文件）。**查不出 depth**（一个 gap 实际没章 genuinely fills
 但 agent 填了章号 → 过本门，是 depth failure，属人工门/prose eval）。
 gap-map.md 的 real value 是 `callback-anchor` data baton（summary 继承的 promise），
 非本 consistency 门。见 spec §门与 enforcement + §① residual。
@@ -64,6 +64,14 @@ def _field_value(body: str, field: str) -> str | None:
     return m.group(1).strip() if m else None
 
 
+def _top_level_field(text: str, field: str) -> str | None:
+    """从 gap-map.md 全文取 top-level 字段值。字段形如 `intro-tex: ...`（无 `- ` 前缀，
+    区别于 per-gap `- field:` 字段）。返回值（去首尾空格），找不到返回 None。"""
+    m = re.search(rf"^{re.escape(field)}\s*:\s*(.*)$",
+                  text, re.MULTILINE | re.IGNORECASE)
+    return m.group(1).strip() if m else None
+
+
 def _is_empty(val: str | None) -> bool:
     """字段缺失或值为 none-token → 视为空。"""
     if val is None:
@@ -91,9 +99,12 @@ def _chapter_numbers_in(text: str) -> set[int]:
 
 
 def _filled_by_chapter_num(val: str) -> int | None:
-    """从 filled-by 值（如 'Chapter 1'）提取章号。匹配不上返回 None。"""
-    m = re.search(r"chapter\s+(\d+)", val, re.IGNORECASE)
-    return int(m.group(1)) if m else None
+    """从 filled-by 值（如 'Chapter 1'）提取章号。匹配不上或含多个 Chapter N token 返回 None
+    （aries #5：多章号 filled-by 是 malformed——spec 一 gap→一章）。"""
+    matches = re.findall(r"chapter\s+(\d+)", val, re.IGNORECASE)
+    if len(matches) != 1:
+        return None  # 0 matches (unparseable) OR >1 matches (malformed multi-chapter)
+    return int(matches[0])
 
 
 def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str]:
@@ -102,7 +113,7 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
     if not gap_map_path.is_file():
         return [f"✗ {gap_map_path} 不存在（intro 未产？跑 thesis-intro）"]
     try:
-        text = gap_map_path.read_text(encoding="utf-8")
+        text = gap_map_path.read_text(encoding="utf-8-sig")
     except UnicodeDecodeError:
         return [f"✗ {gap_map_path} 不是有效的 UTF-8 文本（二进制？）"]
     except OSError as e:
@@ -120,7 +131,7 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
     chapter_nums: set[int] = set()
     if chapter_map_path.is_file():
         try:
-            cm_text = chapter_map_path.read_text(encoding="utf-8")
+            cm_text = chapter_map_path.read_text(encoding="utf-8-sig")
             chapter_nums = _chapter_numbers_in(cm_text)
         except (UnicodeDecodeError, OSError):
             chapter_nums = set()  # cross-ref 查不出
@@ -153,10 +164,14 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
     # 若 chapter-map.md 缺失（dissect 未跑），报 issue（intro 需 dissect 的 baton 才能 cross-ref）
     if not chapter_map_path.is_file():
         issues.append(f"✗ {chapter_map_path} 不存在（dissect 未产？intro 需 chapter-map.md 做 cross-ref）")
-    # 7. ch0-intro.tex 存在于 thesis/tex/
-    intro_tex = tex_dir / "ch0-intro.tex"
-    if not intro_tex.is_file():
-        issues.append(f"✗ ch0-intro.tex 不存在于 {tex_dir}（intro 未写绪论 tex？）")
+    # 7. intro-tex 字段存在 + 所命名的文件存在于 thesis/tex/（template-derived，非硬编码 ch0-intro.tex——aries #2）
+    intro_tex_name = _top_level_field(text, "intro-tex")
+    if intro_tex_name is None or not intro_tex_name.strip():
+        issues.append(f"✗ gap-map.md 缺 top-level `intro-tex` 字段（绪论文件名，按 template-spec.md）")
+    else:
+        intro_tex_path = tex_dir / intro_tex_name.strip()
+        if not intro_tex_path.is_file():
+            issues.append(f"✗ intro-tex `{intro_tex_name.strip()}` 不存在于 {tex_dir}（intro 未写绪论 tex？）")
     return issues
 
 
