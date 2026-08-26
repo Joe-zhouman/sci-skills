@@ -110,7 +110,9 @@ thesis-intro 的职责：**读 spine baton（主线+框架+umbrella，narrate �
 2. 每 gap 有 `filled-by` + 非空 `gap` + **非空 `callback-anchor`**（字段 presence，镜像 check_dissect framework-instantiation）。`callback-anchor` 是 gap-map.md 唯一 genuinely new 内容（§①）——其 presence 是机械 field-check（非 depth：anchor 好不好是 depth，在不在是机械），故 enforced。*注：`anchor-in-intro` 不在 enforced 检查——见 schema 修正。*
 3. `filled-by` 章存在于 `chapter-map.md`（consistency：防 agent 编造不存在的章号 / 悬空引用；near-trivial-by-construction 因 gaps derived from chapters，但低成本防官僚 lapse）。
 4. 每 gap `status=filled`（unfilled fail，镜像 check_dissect status=written）。
-5. `ch0-intro.tex` 存在于 `thesis/tex/`（镜像 check_dissect tex-file 存在）。
+5. **`intro-tex` 字段存在 + 所命名的文件存在于 `thesis/tex/`**（template-derived 文件名，非硬编码 `ch0-intro.tex`——aries #2 修；镜像 dissect `tex-file` 字段 + 存在性检查）。若 `intro-tex` 缺失/为空 → issue；若命名的文件不存在 → issue。
+
+> **aries round-1 修正**：原 check #5 硬编码 `ch0-intro.tex`——与 shipped template-spec + init 契约矛盾。改为读 gap-map.md 的 `intro-tex` 字段 + 验文件存在。**另修 aries #1（BOM）**：两处 `read_text` 用 `encoding="utf-8-sig"`（剥离 BOM，否则 `## Gap 1`/`## Chapter 1` 首行被 BOM 前缀 → regex `^##` 失配 → 首 gap/章静默丢失）。**另修 aries #5（多章号 filled-by）**：`_filled_by_chapter_num` 拒绝含多个 `Chapter N` token 的值（spec：一 gap→一章）。
 
 > **scorpio round-1 修正（M1）**：原 §⑥ check #2 只列 `filled-by` + `gap`，漏了 `callback-anchor`——与 Acceptance（L217/L219 "callback-anchor 非空"）矛盾。`callback-anchor` 是 gap-map.md 挣得存在的字段（§① "genuinely new 内容"），其 presence 是机械 field-check（非 depth），故补入 check #2 enforced。
 
@@ -154,15 +156,21 @@ thesis-intro 的职责：**读 spine baton（主线+框架+umbrella，narrate �
 > → summary must callback. Produced AFTER intro tex exists (dissect's write-then-record discipline).
 > coverage check (check_intro.py) is near-trivial-by-construction consistency, NOT depth (§①).
 
+intro-tex: chapter0.tex              ← the intro tex filename (per template-spec.md — NOT hardcoded;
+                                        mirrors dissect's `tex-file` field). check_intro.py verifies
+                                        this file exists in thesis/tex/ (aries #2).
+
 ## Gap 1
 - gap: <one sentence: the narrative research-status gap (断层, not 空白) intro articulates>
-- filled-by: Chapter <N>            ← which body chapter fills this (must exist in chapter-map.md)
+- filled-by: Chapter <N>            ← which body chapter fills this (must exist in chapter-map.md; ONE chapter only)
 - callback-anchor: <the promise summary must callback — left for summary to resolve>
 - status: filled                      (pending → filled; unfilled ← no body chapter fills it)
 - anchor-in-intro: <§/line ref — OPTIONAL audit-trail, NOT enforced by check_intro.py (§⑥)>
 ```
 
-**product** = 每 gap → 填它的章 + callback-anchor + status。**callback-anchor** = gap-map.md 唯一 genuinely new 内容（summary 继承的 cross-skill promise，chapter-map.md 不携带，§①）。**status=unfilled** = contract gap（gap 无章填——surfaced 给作者：要么 thesis 有洞，要么从 intro 砍该 gap）。
+**product** = `intro-tex` 字段（按 template-spec.md 记录的绪论文件名，非硬编码——镜像 dissect `tex-file`）+ 每 gap → 填它的章 + callback-anchor + status。**callback-anchor** = gap-map.md 唯一 genuinely new 内容（summary 继承的 cross-skill promise，chapter-map.md 不携带，§①）。**status=unfilled** = contract gap（gap 无章填——surfaced 给作者：要么 thesis 有洞，要么从 intro 砍该 gap）。
+
+**`intro-tex` 字段（aries #2 修）**：round-1 check_intro.py 硬编码 `ch0-intro.tex`——与 shipped `generic-test` template-spec（`chapter0.tex`）+ init 契约（"不硬编码章文件名"）矛盾。**修正**：gap-map.md 顶层记 `intro-tex: <filename>`（按 template-spec.md，镜像 dissect chapter-map.md 的 `tex-file` 字段），check_intro.py 读它 + 验该文件存在于 `thesis/tex/`（非硬编码 `ch0-intro.tex`）。template-agnostic。
 
 **`anchor-in-intro` round-2 降级（aquarius finding）**：round-1 把它当 enforced 字段（check #2 验 non-empty）。aquarius 抓到这是 ceremony——check 验 non-empty 不验 resolves to ch0-intro.tex 内容，是 pointer into prose，polish/revision 后 drift 无人 maintain。**修正**：降级为 **OPTIONAL audit-trail 字段，check_intro.py 不 enforce**（人用——定位 gap 在哪提的；脚本不管）。honest：要么 enforce（grep ch0-intro.tex for anchor resolves 才 pass）要么不 claim enforcement——选后者（enforce fragile，prose drifts）。
 
@@ -172,11 +180,11 @@ thesis-intro 的职责：**读 spine baton（主线+框架+umbrella，narrate �
 - **Step 1 — 提 gap 候选 + 叙事 framing（per-section confirmation gate，enforce framing alignment §④）**：逐节漏斗（研究背景/研究现状/gap articulation/thesis-structure-preview）：AI 提 gap 候选（`pending`，grounded in spine.md 主线 + chapter-map.md framework-instantiations）+ 叙事 framing；**per-section confirmation gate** echo (a) 一段论证 (b) 哪些 gap + 哪些章填 **(c) 关键术语/假设**；作者对齐 framing（gate enforce framing alignment，**非 depth**——depth 是 author-judged residual §④）；**仅当 framing 无歧义清晰时跳过 gate**（镜像 sci-story gate-skip 条件）。**Step 1 commit gap→章 结构承诺（§② residual：章已存在，mapping 是 discovered 非 generated；约束 Step 2 prose——诚实命名，非 dodge）**。文献决策按 B3 heuristic（§③：gray zone at gate——作者裁 callback vs search）。
 - **Step 2 — 写该节 tex（dissect 写后记录，the act）**：写进 `thesis/tex/ch0-intro.tex`（tex-direct 无 md 中间；real-DOI placeholder）。**实际落盘的 gap→章 mapping 是 Step 3 记录的——Step 1 的 pre-commit mapping 若与写出的事实不符，Step 3 以落盘为准**（dissect 写后记录纪律：record what landed）。
 - **Step 3 — 写后记录 gap-map.md（dissect baton 镜像）**：每节 tex 写完后，追加其 gap 到 `gap-map.md`（gap→filled-by 章→callback-anchor→status=filled；anchor-in-intro 可选 audit-trail）；**若 gap 无章填 → status=unfilled → surfaced 给作者**（contract gap：要么 thesis 有洞，要么从 intro 砍该 gap）；共写新术语进 `thesis-terminology-ledger.md`（`source: thesis-intro`）。
-- **Step 4 — Handoff**：跑 `python scripts/check_intro.py`（near-trivial consistency：无 pending + 每 gap filled-by 存在章 + status=filled + ch0-intro.tex 存在；**非 depth** §①）；通过 → gap-map.md 是 settled data baton，summary 读它跑 future callback lock；指向 **thesis-summary**（下一步）。**不 auto-run**（read neighbors, don't orchestrate）。
+- **Step 4 — Handoff**：跑 `python scripts/check_intro.py`（near-trivial consistency：无 pending + 每 gap filled-by 存在章 + status=filled + `intro-tex` 字段命名的文件存在于 thesis/tex/；**非 depth** §①）；通过 → gap-map.md 是 settled data baton，summary 读它跑 future callback lock；指向 **thesis-summary**（下一步）。**不 auto-run**（read neighbors, don't orchestrate）。
 
 ### 门与 enforcement（落实 §①+§④+§⑥ + 父 spec §① 三层 split）
 
-- **Coverage（机械，`scripts/check_intro.py` + stdlib test）——near-trivial consistency（§① round-2 修）**：gap-map.md 每 gap 字段非空（gap/filled-by）+ filled-by 章存在于 chapter-map.md + status=filled + ch0-intro.tex 存在 + 无 pending 残留。**near-trivial-by-construction**（gaps derived from chapters），非 spine/dissect 那种 "required 结构元素在不在" 的 coverage。**depth/grounding 不在此层**。
+- **Coverage（机械，`scripts/check_intro.py` + stdlib test）——near-trivial consistency（§① round-2 修）**：gap-map.md 每 gap 字段非空（gap/filled-by/callback-anchor）+ filled-by 章存在于 chapter-map.md + status=filled + `intro-tex` 字段命名的文件存在于 thesis/tex/ + 无 pending 残留。**near-trivial-by-construction**（gaps derived from chapters），非 spine/dissect 那种 "required 结构元素在不在" 的 coverage。**depth/grounding 不在此层**。
 - **Grounding（机械）**：写的 tex 每个 claim 挂证据——real-DOI placeholder，不造假（镜像 sci-write/dissect claim-evidence 纪律）。**不单独脚本**——prose eval 查 + 作者 gate。
 - **Framing alignment（confirmation gate + eval，非 depth 人工门 §④）**：confirmation gate enforce framing alignment（这节讲什么、提哪些 gap、哪些章填）；**gap 是断层还是空白、研究现状定位准不准 = depth = 作者 judgment residual**，非 gate enforce。这是 framing enforcement，非 spine 那种分级 depth-gate。
 - **诚实边界（父 spec §Load-bearing premise + §①+§④ residual）**：文件交接 + coverage 门防**缺席**（gap-map.md 不存在 summary 进行不下去）+ **官僚 lapse**（编造章号/悬空/残 pending），**不防 depth-level 空头 gap**（gap 实际没章填但填了章号 → 过 coverage，是 depth failure）+ **不防 framing-accurate-but-hollow 研究现状**（gate 只查 framing alignment 不查 depth）。空洞能过 coverage + confirmation gate（若作者工艺判断失准）。无结构性机制替代作者叙事工艺判断。诚实命名，不 overclaim（对齐父 spec §Load-bearing premise + 镜像 spine §⑤ + dissect §诚实边界）。
@@ -238,7 +246,7 @@ thesis-intro 的职责：**读 spine baton（主线+框架+umbrella，narrate �
 
 ### 测试验收
 
-- **`check_intro.py` + `test_check_intro.py`**：在 settled gap-map.md + ch0-intro.tex 上 pass；在含 `pending` / 空 gap 字段 / filled-by 章不在 chapter-map.md（悬空/编造）/ status=unfilled / 缺 ch0-intro.tex 上 fail（stdlib assert，镜像 spine/dissect test 模式）。**注意（§① round-2）**：check 是 near-trivial consistency（防官僚 lapse），非 depth coverage；叙事 depth/grounding 不在脚本（属 framing/depth，confirmation gate+eval+作者 gate）。`anchor-in-intro` 不在 enforced 检查（optional audit-trail §⑥）。
+- **`check_intro.py` + `test_check_intro.py`**：在 settled gap-map.md（含 `intro-tex` 字段 + 所命名文件存在）上 pass；在含 `pending` / 空 gap 字段 / filled-by 章不在 chapter-map.md（悬空/编造）/ status=unfilled / 缺 `intro-tex` 字段 / `intro-tex` 命名的文件不存在 / BOM 首 gap 丢失（aries #1）/ 多章号 filled-by（aries #5）上 fail（stdlib assert，镜像 spine/dissect test 模式）。**注意（§① round-2）**：check 是 near-trivial consistency（防官僚 lapse），非 depth coverage；叙事 depth/grounding 不在脚本（属 framing/depth，confirmation gate+eval+作者 gate）。`anchor-in-intro` 不在 enforced 检查（optional audit-trail §⑥）。
 - **eval loop**（prose）：给定 spine + chapter-map + 正文章，intro 提与正文对齐的 gap（断层非空白）、B3 heuristic gray-zone 判断（何时 callback 何时搜索）、confirmation gate framing-alignment 行为（gate-skip 条件）、gap→章 depth grounding（章是否真填 gap——非 check #3 能查）、real-DOI 纪律、写后记录 gap-map.md。
 - **Known limitation 诚实**（镜像 dissect tests/README practice）：eval loop 是 prose-judgment 非确定性——明说，不假装脚本覆盖 depth。check_intro.py 是 near-trivial consistency 非深度 coverage——明说（§①）。
 
