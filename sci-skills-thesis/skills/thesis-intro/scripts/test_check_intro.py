@@ -176,7 +176,6 @@ def test_graceful_on_binary_gap_map():
 
 def test_fails_on_dangling_filled_by():
     """filled-by = Chapter 9 but chapter-map.md only has ch1-2 → fabricated/dangling → issue."""
-    gm, cm, tex_dir = _write_project()
     # gap-map references Chapter 9; chapter-map has only ch1-2
     bad = GAP_MAP_SETTLED.replace("- filled-by: Chapter 2\n- callback-anchor",
                                   "- filled-by: Chapter 9\n- callback-anchor")
@@ -238,6 +237,14 @@ def test_fails_on_empty_callback_anchor():
     assert any("callback-anchor" in i and "Gap 1" in i for i in issues), f"expected empty callback-anchor issue, got: {issues}"
     print("test_fails_on_empty_callback_anchor: PASS")
 
+def test_accepts_gap_headers_with_trailing_title():
+    """`## Gap 1 (研究背景)` (trailing title) must parse — mirrors check_dissect's trailing-title test."""
+    titled = GAP_MAP_SETTLED.replace("## Gap 1\n", "## Gap 1 (研究背景)\n")
+    gm, cm, tex_dir = _write_project(gap_map=titled)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert issues == [], f"trailing-title gap header should parse (not be flagged missing): {issues}"
+    print("test_accepts_gap_headers_with_trailing_title: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_field()
@@ -256,4 +263,5 @@ if __name__ == "__main__":
     test_ignores_chapter_headers_inside_code_fence()
     test_fails_on_missing_callback_anchor()
     test_fails_on_empty_callback_anchor()
+    test_accepts_gap_headers_with_trailing_title()
     print("ALL TESTS PASS")

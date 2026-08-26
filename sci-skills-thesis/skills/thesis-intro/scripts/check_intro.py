@@ -123,7 +123,8 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
             cm_text = chapter_map_path.read_text(encoding="utf-8")
             chapter_nums = _chapter_numbers_in(cm_text)
         except (UnicodeDecodeError, OSError):
-            chapter_nums = set()  # chapter-map 不可读 → cross-ref 查不出，但 core 查继续
+            chapter_nums = set()  # cross-ref 查不出
+            issues.append(f"✗ {chapter_map_path} 不可读（二进制/权限）— cross-ref 跳过")
 
     for label, body in gaps:
         # 2. gap 非空
@@ -132,10 +133,10 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
         # 3. filled-by 非空
         if _is_empty(_field_value(body, "filled-by")):
             issues.append(f"✗ {label} filled-by 缺失或为空")
-        # 2b. callback-anchor 非空（gap-map.md 唯一 genuinely new 内容——§①；presence 是机械 field-check 非 depth）
+        # 4. callback-anchor 非空（gap-map.md 唯一 genuinely new 内容——§①；presence 是机械 field-check 非 depth）
         if _is_empty(_field_value(body, "callback-anchor")):
             issues.append(f"✗ {label} callback-anchor 缺失或为空")
-        # 4. status = filled（不是 pending / unfilled）
+        # 5. status = filled（不是 pending / unfilled）
         st = _field_value(body, "status")
         if st is None:
             issues.append(f"✗ {label} 缺 status")
@@ -152,7 +153,7 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
     # 若 chapter-map.md 缺失（dissect 未跑），报 issue（intro 需 dissect 的 baton 才能 cross-ref）
     if not chapter_map_path.is_file():
         issues.append(f"✗ {chapter_map_path} 不存在（dissect 未产？intro 需 chapter-map.md 做 cross-ref）")
-    # 5. ch0-intro.tex 存在于 thesis/tex/
+    # 7. ch0-intro.tex 存在于 thesis/tex/
     intro_tex = tex_dir / "ch0-intro.tex"
     if not intro_tex.is_file():
         issues.append(f"✗ ch0-intro.tex 不存在于 {tex_dir}（intro 未写绪论 tex？）")
