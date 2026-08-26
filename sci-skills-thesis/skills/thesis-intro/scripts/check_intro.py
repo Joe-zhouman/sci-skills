@@ -19,7 +19,7 @@ gap-map.md 的 real value 是 `callback-anchor` data baton（summary 继承的 p
 """
 from __future__ import annotations
 import re, sys
-from pathlib import Path
+from pathlib import Path, PurePath
 
 # status 的 settled 值（其它如 pending/unfilled 都 fail）
 SETTLED_STATUS = "filled"
@@ -169,9 +169,15 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
     if intro_tex_name is None or not intro_tex_name.strip():
         issues.append(f"✗ gap-map.md 缺 top-level `intro-tex` 字段（绪论文件名，按 template-spec.md）")
     else:
-        intro_tex_path = tex_dir / intro_tex_name.strip()
-        if not intro_tex_path.is_file():
-            issues.append(f"✗ intro-tex `{intro_tex_name.strip()}` 不存在于 {tex_dir}（intro 未写绪论 tex？）")
+        intro_tex_name = intro_tex_name.strip()
+        intro_tex_path = tex_dir / intro_tex_name
+        # aries re-test: reject absolute paths + `..` traversal — intro-tex must live under thesis/tex/
+        # (mirror check_dissect.py:123-125; intro_tex_name is file-content-derived, untrusted)
+        intro_pure = PurePath(intro_tex_name)
+        if intro_pure.is_absolute() or ".." in intro_pure.parts:
+            issues.append(f"✗ intro-tex `{intro_tex_name}` 在 thesis/tex/ 之外（绝对路径或 `..` 遍历，禁止）")
+        elif not intro_tex_path.is_file():
+            issues.append(f"✗ intro-tex `{intro_tex_name}` 不存在于 {tex_dir}（intro 未写绪论 tex？）")
     return issues
 
 

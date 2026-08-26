@@ -304,6 +304,24 @@ def test_accepts_gap_headers_with_trailing_title():
     assert issues == [], f"trailing-title gap header should parse (not be flagged missing): {issues}"
     print("test_accepts_gap_headers_with_trailing_title: PASS")
 
+def test_fails_on_intro_tex_path_traversal():
+    """intro-tex with absolute path or `..` traversal → issue (aries re-test: mirror check_dissect.py:123-125).
+    intro_tex_name is file-content-derived (untrusted) — must not escape thesis/tex/."""
+    from pathlib import PurePath
+    # absolute path
+    bad_abs = GAP_MAP_SETTLED.replace("intro-tex: chapter0.tex", "intro-tex: /etc/passwd")
+    gm, cm, tex_dir = _write_project(gap_map=bad_abs)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("intro-tex" in i and ("之外" in i or "绝对" in i or "traversal" in i.lower()) for i in issues), \
+           f"absolute intro-tex must be rejected, got: {issues}"
+    # relative .. traversal
+    bad_rel = GAP_MAP_SETTLED.replace("intro-tex: chapter0.tex", "intro-tex: ../../../etc/passwd")
+    gm, cm, tex_dir = _write_project(gap_map=bad_rel)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("intro-tex" in i and ("之外" in i or "traversal" in i.lower() or ".." in i) for i in issues), \
+           f"`..` traversal intro-tex must be rejected, got: {issues}"
+    print("test_fails_on_intro_tex_path_traversal: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_field()
@@ -328,4 +346,5 @@ if __name__ == "__main__":
     test_fails_on_missing_callback_anchor()
     test_fails_on_empty_callback_anchor()
     test_accepts_gap_headers_with_trailing_title()
+    test_fails_on_intro_tex_path_traversal()
     print("ALL TESTS PASS")
