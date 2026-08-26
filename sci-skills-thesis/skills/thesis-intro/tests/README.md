@@ -3,7 +3,7 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_intro.py` (the gate) +
-   `scripts/test_check_intro.py` (17 stdlib cases, run `python3 test_check_intro.py`).
+   `scripts/test_check_intro.py` (18 stdlib cases, run `python3 test_check_intro.py`).
    Exit-code contract: 0 = consistency through; 1 = consistency issues (each printed).
    Cases covered:
    - passes on a settled gap-map.md + its chapter-map.md + ch0-intro.tex (2 gaps,
@@ -30,7 +30,13 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      can't cross-ref);
    - **passes-ignore on chapter headers inside a code fence** — a `## Chapter 99`
      inside a ``` fence in chapter-map.md is NOT counted as a valid chapter, so a
-     gap `filled-by: Chapter 99` still fails cross-ref (mirror check_dissect aries #2).
+     gap `filled-by: Chapter 99` still fails cross-ref (mirror check_dissect aries #2);
+   - **accepts gap headers with a trailing title** — `## Gap 1 (研究背景)` parses
+     (the regex's `(?:\s+.*)?$` clause), so the gap body isn't lost (mirror check_dissect
+     trailing-title test);
+   - **reports an unreadable chapter-map.md honestly** — if chapter-map.md exists but
+     is binary/permission-denied, the gate appends a "cross-ref 跳过" issue (fails exit 1)
+     instead of silently swallowing the error and overclaiming "consistency 通过".
 
 2. **the split (spec §⑥, stated honestly)** — check_intro.py is **NEAR-TRIVIAL
    CONSISTENCY, NOT a coverage gate, NOT depth.** gaps ~1:1 derived from chapters
