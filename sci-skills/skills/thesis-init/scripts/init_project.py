@@ -195,15 +195,18 @@ thesis-summary（读 chapter-map.md 做共性提炼和 callback）。
 
 ## 这个文件夹是什么
 thesis-intro skill 的**工作笔记区**。写学位论文绪论章（研究背景、研究现状、gap、
-论文结构）时的过程笔记。
+论文结构）时的过程笔记。`gap-map.md`
+是跨 session 的接力棒（intro→summary data baton），summary 读。
 
 ## 有什么用
 - 承载绪论章写作的**过程状态**：gap 怎么提炼、现状怎么组织、绪论如何引出后续各章。
 - 跨 session 接力：绪论可能在一个 session 起草、在另一个 session 改。
 
 ## 文件清单（全是 working notes，非正文）
-具体文件名随 thesis-intro skill 设计定（该 skill 后续计划补）。常见类别：
-gap 分析、研究现状综述、绪论结构（引出各章的逻辑）。
+- `gap-map.md` — **接力棒（data baton）**。一条/gap：每个绪论 articulates 的 narrative
+  gap（研究现状断层）→ 填它的正文章（Chapter N）+ callback-anchor（summary 继承的 promise）
+  + status。summary 读它做 future callback lock。全家族导航。
+  （按 `../../thesis/template-spec.md` 的章命名交叉引用 chapter-map.md 的章。）
 
 ## 正文 tex 在哪（不在本目录）
 绪论章 tex **直接写进 `../../thesis/tex/`**（章文件名遵循
@@ -215,7 +218,8 @@ gap 分析、研究现状综述、绪论结构（引出各章的逻辑）。
 - **从 `../thesis-spine.md` 读**（不复制）：读主线和 thesis 级 claim，确保绪论引出主线。
 
 ## 谁读它
-人（读/改 notes）；thesis-spine（读绪论笔记感知主线是否在绪论正确引出）。
+人（读/改 notes）；thesis-spine（读绪论笔记感知主线是否在绪论正确引出）；
+thesis-summary（读 gap-map.md 做 callback）。
 """,
     "thesis-theory": """# thesis-theory/ — 共用理论方法章工作笔记（working notes only）
 
