@@ -221,6 +221,23 @@ def test_ignores_chapter_headers_inside_code_fence():
 # (no test_passes_when_all_filled_by_resolve — redundant with test_passes_on_settled,
 # which asserts the strictly stronger `issues == []`. aquarius plan review finding.)
 
+def test_fails_on_missing_callback_anchor():
+    """gap missing the `callback-anchor:` field → issue (it's the field that earns gap-map.md its existence)."""
+    bad = GAP_MAP_SETTLED.replace("- callback-anchor: summary 须回扣高温条件下的有效性\n", "")
+    gm, cm, tex_dir = _write_project(gap_map=bad)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("callback-anchor" in i and "Gap 1" in i for i in issues), f"expected callback-anchor issue, got: {issues}"
+    print("test_fails_on_missing_callback_anchor: PASS")
+
+def test_fails_on_empty_callback_anchor():
+    """callback-anchor present but empty/none → issue."""
+    bad = GAP_MAP_SETTLED.replace("- callback-anchor: summary 须回扣高温条件下的有效性",
+                                  "- callback-anchor: none")
+    gm, cm, tex_dir = _write_project(gap_map=bad)
+    issues = check_intro.check(gm, cm, tex_dir)
+    assert any("callback-anchor" in i and "Gap 1" in i for i in issues), f"expected empty callback-anchor issue, got: {issues}"
+    print("test_fails_on_empty_callback_anchor: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_field()
@@ -237,4 +254,6 @@ if __name__ == "__main__":
     test_fails_on_missing_chapter_map()
     test_fails_on_malformed_filled_by()
     test_ignores_chapter_headers_inside_code_fence()
+    test_fails_on_missing_callback_anchor()
+    test_fails_on_empty_callback_anchor()
     print("ALL TESTS PASS")

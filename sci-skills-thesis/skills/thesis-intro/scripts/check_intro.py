@@ -132,6 +132,9 @@ def check(gap_map_path: Path, chapter_map_path: Path, tex_dir: Path) -> list[str
         # 3. filled-by 非空
         if _is_empty(_field_value(body, "filled-by")):
             issues.append(f"✗ {label} filled-by 缺失或为空")
+        # 2b. callback-anchor 非空（gap-map.md 唯一 genuinely new 内容——§①；presence 是机械 field-check 非 depth）
+        if _is_empty(_field_value(body, "callback-anchor")):
+            issues.append(f"✗ {label} callback-anchor 缺失或为空")
         # 4. status = filled（不是 pending / unfilled）
         st = _field_value(body, "status")
         if st is None:
