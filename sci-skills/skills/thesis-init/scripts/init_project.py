@@ -264,8 +264,12 @@ thesis-summary skill 的**工作笔记区**。写末章（总结展望——共�
 - 总结章是 thesis 级 claim 的收束——本目录笔记帮收束决策。
 
 ## 文件清单（全是 working notes，非正文）
-具体文件名随 thesis-summary skill 设计定（该 skill 后续计划补）。常见类别：
-共性提炼、callback 映射、展望（未来工作/局限）。
+- `summary-map.md` — **接力棒（写后 baton）**。Callback 一条/gap（与
+  `../thesis-intro/gap-map.md` 的 Gap N 一一对应——Intro↔Summary coherence lock
+  的兑付记录）+ Commonality 一条/共性（作者 depth gate 的 confirmed 痕迹，
+  grounded-in ≥2 章）+ `synthesis-tex` 字段（总结章 tex 文件名，按
+  `../../thesis/template-spec.md`，非硬编码）。summary skill 的 check_summary.py
+  一致性门读它做 cross-ref。
 
 ## 正文 tex 在哪（不在本目录）
 总结展望章 tex **直接写进 `../../thesis/tex/`**（章文件名遵循
@@ -273,9 +277,11 @@ thesis-summary skill 的**工作笔记区**。写末章（总结展望——共�
 
 ## 产物怎么进来
 - **本 skill 自己产**：working notes，全由 thesis-summary 写。
-- **从 `../thesis-sources.md` 读**（不复制）：读来源 registry 感知全貌。
-- **从 `../thesis-spine.md` 读**（不复制）：读 thesis 级 claim，确保总结收束主线。
-- **从 `../thesis-dissect/chapter-map.md` 读**（不复制）：读各章 claim 做共性提炼和 callback。
+- **从 `../thesis-spine.md` 读**（不复制）：读 thesis 级 claim 与 Boundary，确保总结收束主线、展望 hook 边界。
+- **从 `../thesis-dissect/chapter-map.md` 读**（不复制）：读各章 framework-instantiation 做共性提炼和 callback 定位。
+- **从 `../thesis-intro/gap-map.md` 读**（不复制）：读 intro 的 data baton（每 gap 的
+  callback-anchor promise——summary 兑付它）。summary 不读来源 registry、不读小论文
+  （材料全在 thesis 内部：spine/chapter-map/gap-map/正文 tex——dissect 已消化小论文）。
 
 ## 谁读它
 人（读/改 notes）；thesis-spine（读总结笔记感知 thesis 级 claim 是否收束）。
