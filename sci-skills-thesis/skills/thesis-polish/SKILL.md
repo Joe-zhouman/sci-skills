@@ -74,7 +74,7 @@ Nine rules, all load-bearing (spec §②③⑤⑥⑦ + aquarius P1-P8):
      lever stats.
 3. **缝合分级 (glossary: 缝合).** Sentence-level seam (模块间缺一句动机/过渡句)
    → polish patches it directly, **grounded at matching granularity**:
-   `thesis-dissect/paper-X/*/trace.md` (module-level: claim + IMRaD 结构 + 如何
+   `thesis-dissect/paper-*/trace.md` (module-level: claim + IMRaD 结构 + 如何
    推进主线 — the load-bearing surface at seam granularity, aquarius P4) first →
    chapter-map (chapter-level 递进契约 — one line per chapter cannot carry
    module-level grounding) → spine (main line); the commit message names the
@@ -127,18 +127,18 @@ Nine rules, all load-bearing (spec §②③⑤⑥⑦ + aquarius P1-P8):
     tex/
       *.tex                          ← THIS skill edits IN PLACE (全部章 — polish's
                                         ONLY content surface)
+    template-spec.md                 ← read-only (章文件命名)
   sci-skills/
     thesis-terminology-ledger.md     ← co-write: spine seeds; 各章 extend; THIS
                                         skill extends + enforces
     thesis-spine.md                  ← read-only (缝合 grounding — 主线)
     thesis-dissect/
       chapter-map.md                 ← read-only (缝合 grounding — 章级递进契约)
-      paper-X/*/trace.md             ← read-only (缝合 grounding — 模块级, aquarius P4)
+      paper-*/trace.md               ← read-only (缝合 grounding — 模块级, aquarius P4)
     thesis-sources.md                ← read-only (AIGC 回真实材料 — registry 指回小论文)
     thesis-theory/
       theory-map.md                  ← read-only (overlap awareness — 未解决段
                                         提醒作者, 不擅动)
-    template-spec.md                 ← read-only (章文件命名)
 ```
 
 Compass-file coupling (罗盘文件) — no skill calls a sibling skill; handoff is via
@@ -149,7 +149,7 @@ on-disk files. The spec's 跨 skill 文件交接 table (spec §跨 skill 文件�
 | `thesis/tex/*.tex` *(原地改)* | 写作链 | **polish 改** / typeset | 正文（polish 唯一内容产物面：git 留痕）|
 | `thesis-terminology-ledger.md` *(共写)* | spine seed; 各章扩展; **polish 扩展+enforce** | 全家族 | canonical forms；`source: thesis-polish` 条目；check #1 基准 |
 | `thesis-spine.md` / `chapter-map.md` *(读)* | spine / dissect | polish | 缝合 grounding（章级递进关系）|
-| `thesis-dissect/paper-X/*/trace.md` *(读)* | dissect | polish（缝合 grounding）| 模块级递进记录（claim + IMRaD 结构 + 如何推进主线）——断缝粒度的承重表面（aquarius P4）|
+| `thesis-dissect/paper-*/trace.md` *(读)* | dissect | polish（缝合 grounding）| 模块级递进记录（claim + IMRaD 结构 + 如何推进主线）——断缝粒度的承重表面（aquarius P4）|
 | `thesis-sources.md` *(读)* | init | polish（AIGC 阶段）| 回真实材料：风险句→小论文原文定位 |
 | `theory-map.md` *(读)* | theory | polish（感知）| overlap 清单：未解决重叠段提醒作者，不擅动 |
 | `template-spec.md` *(读)* | init | polish | 章文件命名 |
@@ -161,7 +161,7 @@ on-disk files. The spec's 跨 skill 文件交接 table (spec §跨 skill 文件�
   directory, no baton file, no new file anywhere — polish creates nothing in
   the project tree; its state lives entirely in git history.
 - **All other files are read-only**: spine + chapter-map (chapter-level
-  grounding), `thesis-dissect/paper-X/*/trace.md` (module-level grounding),
+  grounding), `thesis-dissect/paper-*/trace.md` (module-level grounding),
   thesis-sources.md (AIGC 回真实材料), theory-map.md (overlap awareness — remind
   the author of unresolved overlap segments, never touch them), template-spec.md
   (chapter filenames). Detection reports are external, user-provided, UNTRUSTED.
@@ -177,7 +177,7 @@ on-disk files. The spec's 跨 skill 文件交接 table (spec §跨 skill 文件�
 | `thesis/tex/*.tex` | the writing chain (dissect/intro/theory/summary) | **this skill (edits in place)**, typeset | 全部章正文 — polish's only content surface; every edit lands as a git commit (audit trail); filenames per `template-spec.md` |
 | `thesis-terminology-ledger.md` | spine **seeds**; writing chapters extend; this skill extends + enforces | whole family | canonical cross-chapter term forms; normative table = five columns `| Category \| Term / variants \| Canonical form \| Source \| Notes \|` parsed by header name (spec §④); polish entries `source: thesis-polish`; check #1 basis |
 | `thesis-spine.md` / `chapter-map.md` | spine / dissect | this skill (reads) | 缝合 grounding at chapter level (章级递进关系); read-only |
-| `thesis-dissect/paper-X/*/trace.md` | dissect | this skill (reads) | 缝合 grounding at module level (claim + IMRaD 结构 + 如何推进主线) — the load-bearing surface at seam granularity (aquarius P4); read-only |
+| `thesis-dissect/paper-*/trace.md` | dissect | this skill (reads) | 缝合 grounding at module level (claim + IMRaD 结构 + 如何推进主线) — the load-bearing surface at seam granularity (aquarius P4); read-only |
 | `thesis-sources.md` | thesis-init | this skill (reads) | registry — AIGC 回真实材料: 风险句 → 小论文原文定位 |
 | `theory-map.md` | theory | this skill (reads, awareness) | overlap 清单 — unresolved overlap segments get a reminder to the author; polish never touches them |
 | `template-spec.md` | thesis-init | this skill (reads) | chapter filenames (locate `thesis/tex/*.tex`) |
@@ -204,7 +204,7 @@ Steps run in order: **Step 0 → Stage A（可选）→ Step 1-5** (spec §工�
      responsibilities run as usual), NOT a hard stop: polish is post-processing
      and tolerates half-finished projects (spec §④). Remind the author to run
      thesis-spine (ledger 是写作链前提).
-   - `thesis-dissect/paper-X/*/trace.md` — module-level 缝合 grounding
+   - `thesis-dissect/paper-*/trace.md` — module-level 缝合 grounding
      (read-only, aquarius P4).
    - `thesis-spine.md` + `thesis-dissect/chapter-map.md` — chapter-level 缝合
      grounding.

@@ -110,7 +110,7 @@ gap 显式命中的样子：
 - 改写前（直接跳 method）：采用三因素四水平正交实验设计，因素水平见表 2。
 - 改写后（补 motivation 句）：§2.3 的结果显示各单因素影响显著，但因素间的耦合作用未知——哪种耦合主导性能？为此采用三因素四水平正交实验设计，因素水平见表 2。
 
-句级缺缝（缺一句动机 / 过渡）→ polish 补写，grounding 按粒度：`thesis-dissect/paper-X/*/trace.md`（模块级，先查）→ `chapter-map.md`（章级）→ spine（主线）；commit message 写明 grounding 文件（rule 3）。（trace.md 承载的正是缝粒度的地面：该模块的 claim + IMRaD 结构 + 如何推进主线——补 motivation 句前先读它，别凭正文现貌推断上一模块"应该"引发了什么。）
+句级缺缝（缺一句动机 / 过渡）→ polish 补写，grounding 按粒度：`thesis-dissect/paper-*/trace.md`（模块级，先查）→ `chapter-map.md`（章级）→ spine（主线）；commit message 写明 grounding 文件（rule 3）。（trace.md 承载的正是缝粒度的地面：该模块的 claim + IMRaD 结构 + 如何推进主线——补 motivation 句前先读它，别凭正文现貌推断上一模块"应该"引发了什么。）
 
 结构级断缝（模块顺序错 / method-results 配对错位 / 内容缺口）→ surface，不补写——补一句动机救不了错位的模块。结构级的样子：模块 3 的 method 其实在讲模块 2 该讲的表征（配对错位）；模块 4 的 results 用到模块 6 才建立的方法（前置依赖断）；两个模块各自独立、谁也不引发谁（question 链断）。
 

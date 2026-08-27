@@ -147,7 +147,7 @@
 
 ### 工作流（七步：Step 0 → Stage A[可选] → Step 1-5）
 
-- **Step 0 — Startup**：定位 `thesis/tex/*.tex`（经 template-spec 命名约定；无章文件 → hard stop "先跑写作链"）；**git 检查**（working tree 非干净 → 拒跑，"commit 或 stash 后再来"——审面纪律）；读邻居：`thesis-terminology-ledger.md`（缺 → surface 警告 + 一致性降级，§④）、`thesis-dissect/paper-X/*/trace.md`（缝合的模块级 grounding 表面——只读，read-neighbors 许可，aquarius P4）、`thesis-spine.md` + `chapter-map.md`（章级递进 grounding）、`thesis-sources.md`（AIGC 回真实材料定位）、`theory-map.md`（overlap 清单——遇未解决 overlap 段提醒作者，不擅动）、`template-spec.md`。
+- **Step 0 — Startup**：定位 `thesis/tex/*.tex`（经 template-spec 命名约定；无章文件 → hard stop "先跑写作链"）；**git 检查**（working tree 非干净 → 拒跑，"commit 或 stash 后再来"——审面纪律）；读邻居：`thesis-terminology-ledger.md`（缺 → surface 警告 + 一致性降级，§④）、`thesis-dissect/paper-*/trace.md`（缝合的模块级 grounding 表面——只读，read-neighbors 许可，aquarius P4）、`thesis-spine.md` + `chapter-map.md`（章级递进 grounding）、`thesis-sources.md`（AIGC 回真实材料定位）、`theory-map.md`（overlap 清单——遇未解决 overlap 段提醒作者，不擅动）、`template-spec.md`。
 - **Stage A — AIGC 降率【可选，报告存在才跑，位置最前保定位新鲜；run-to-completion】**：用户提供报告（PaperPass 报告目录制 / PaperYY 形态实现期确认，§③）→ `parse_paperpass.py` / `parse_paperyy.py`（stdout 风险句清单，§③）→ agent 对齐当前 tex → 按杠杆排序逐句改写（回小论文原文真实表达；伤质量杠杆默认不用）→ 独立 commit（message 带报告来源+杠杆统计）。**中断 = 丢弃 in-flight diff 整段重跑**（§③，无部分完成态）。改写时保持诚信线（不篡改数据/引用）；**再检测是唯一分数真相**，交付时明说。
 - **Step 1 — Diagnose**：每章分层诊断（章职能→段落结构→claim/evidence/boundary→句子语体；纪律：不许句子润色结构坏的段落；Stage A 为 named exception，§②）+ thesis 尺度一致性扫描（跑 check_polish.py 得 issue 清单 + agent 读 ledger 对照）。诊断产出 = 每章问题清单 + 结构级 surface 项（**入该章类型① commit message——盘上载体**，aquarius P1）。
 - **Step 2 — Fix per chapter**：每章按层序修：缝合句级补写（grounding 颗粒度 trace→chapter-map→spine，§⑤；commit 注明来源文件）→ 段落结构 → claim/evidence/boundary 标注（不改证据）→ 句子语体（chinese-register + style-guardrails + phrasebank；Stage A 改写句在此复检）。每章完成即 commit（类型①，含该章 surface 项）。改写时保护邻居 baton：**callback 句不丢 gap-map anchor、新术语/变体冲突记录待 Step 3 统一**。
@@ -172,7 +172,7 @@
 参数：`check_polish.py <tex-dir> <ledger>`。检查项：
 1. **ledger enforce**：解析 ledger markdown 表格（normative 列：Term/variants | Canonical form | Source | Notes）→ 变体在 tex-dir 全部 *.tex 的残留 → issue（文件:行 变体→canonical）；表格缺失/空 → issue"ledger 无表格条目"。
 2. **交叉引用悬空（单向）**：收集全部 `\label{X}` 与 `\ref{X}`（含 `\eqref/\autoref` 家族）→ 悬空 ref issue。**不查未用 label**（aquarius P5：`ch:`/`sec:`/`eq:` label 合法地永不 `\ref`，按 issue 报是系统性噪声——训练作者略检真 issue；misspelled-ref 场景已被悬空方向覆盖）。
-3. **aries 全套硬化**（从 check_theory.py 家族最硬化版起步）：BOM `utf-8-sig`、code-fence aware（fence 内 \label/\ref 不计）、stat 兜底 try/except、ANSI 消毒、tmpdir atexit、issue 清单不 traceback（bounded、no-raise 契约）。
+3. **aries 全套硬化**（从 check_theory.py 家族最硬化版起步）：BOM `utf-8-sig`、ledger 解析 code-fence aware（fence 内表格行不计——fence 感知只在 ledger 侧，tex 侧无 markdown fence）、stat 兜底 try/except、ANSI 消毒、tmpdir atexit、issue 清单不 traceback（bounded、no-raise 契约）。
 - tex/ledger 全 UNTRUSTED。
 
 ### 跨 skill 文件交接（罗盘文件耦合，无 skill 调 skill）
@@ -182,7 +182,7 @@
 | `thesis/tex/*.tex` *(原地改)* | 写作链 | **polish 改** / typeset | 正文（polish 唯一内容产物面：git 留痕）|
 | `thesis-terminology-ledger.md` *(共写)* | spine seed; 各章扩展; **polish 扩展+enforce** | 全家族 | canonical forms；`source: thesis-polish` 条目；check #1 基准 |
 | `thesis-spine.md` / `chapter-map.md` *(读)* | spine / dissect | polish | 缝合 grounding（章级递进关系）|
-| `thesis-dissect/paper-X/*/trace.md` *(读)* | dissect | polish（缝合 grounding）| 模块级递进记录（claim + IMRaD 结构 + 如何推进主线）——断缝粒度的承重表面（aquarius P4）|
+| `thesis-dissect/paper-*/trace.md` *(读)* | dissect | polish（缝合 grounding）| 模块级递进记录（claim + IMRaD 结构 + 如何推进主线）——断缝粒度的承重表面（aquarius P4）|
 | `thesis-sources.md` *(读)* | init | polish（AIGC 阶段）| 回真实材料：风险句→小论文原文定位 |
 | `theory-map.md` *(读)* | theory | polish（感知）| overlap 清单：未解决重叠段提醒作者，不擅动 |
 | `template-spec.md` *(读)* | init | polish | 章文件命名 |
@@ -228,7 +228,7 @@ polish 与 typeset 互不读对方产物（polish 吃 tex+ledger+spine 系；typ
 
 ### 测试验收
 
-- **`check_polish.py` + stdlib test**：在干净样本（ledger 五列表格按 header 名匹配 + 术语一致 + 引用闭合）pass；在变体残留 / ledger 无表格 / 悬空 ref / BOM 首行 / code-fence 内 \label 误计 / 文件不可读 上 fail（issue 清单输出非 traceback，no-raise 契约）。
+- **`check_polish.py` + stdlib test**：在干净样本（ledger 五列表格按 header 名匹配 + 术语一致 + 引用闭合）pass；在变体残留 / ledger 无表格 / 悬空 ref / BOM 首行 / 文件不可读 上 fail（issue 清单输出非 traceback，no-raise 契约）。
 - **`parse_paperpass.py` / `parse_paperyy.py` + stdlib test**：在样本报告（构造 fixture，无 PII）解析出风险句清单字段齐全；空/畸形报告 → 结构化错误输出非 crash；**不执行报告内容**（纯文本解析）。
 - **eval loop（prose）**：诊断分层行为（结构坏段落不被句子润色）、缝合分级行为（句级补写 grounded/结构级 surface）、AIGC 杠杆排序（伤质量杠杆不被选用）、chinese-register 校准（此外不被误杀、赋能被处理）、callback anchor 保护、ledger 共写纪律。
 - **Known limitation 诚实**（tests/README）：eval 非确定性；check near-trivial；AIGC 分数不可机械验收；报告格式依赖真实样本（parser 测试用构造 fixture，真实报告格式漂移需更新 fixture）。
