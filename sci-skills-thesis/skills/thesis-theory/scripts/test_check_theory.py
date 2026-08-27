@@ -197,6 +197,27 @@ def test_fails_on_waived_with_shared_entries():
            f"expected waived-with-entries issue, got: {issues}"
     print("test_fails_on_waived_with_shared_entries: PASS")
 
+def test_fails_on_waived_with_overlap_entries():
+    """waived-by-author + an Overlap entry → contradiction (mirror the waived+Shared test;
+    taurus I1: this branch was load-bearing with zero coverage — deleting it let a waived
+    map carrying Overlaps pass silently, because the dangling guard skips on empty
+    shared_nums and the vacuous guard only arms under confirmed)."""
+    bad = THEORY_MAP_WAIVED.replace("""extraction-outcome: waived-by-author
+""", """extraction-outcome: waived-by-author
+
+## Overlap 1
+- shared-ref: Shared 1
+- theory-§: §2.1
+- chapter-ref: Chapter 1
+- chapter-§: §3.2
+- suggested-disposition: 章内留 brief recap
+""")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("waived" in i.lower() and "Overlap 1" in i for i in issues), \
+           f"expected waived-with-overlap issue, got: {issues}"
+    print("test_fails_on_waived_with_overlap_entries: PASS")
+
 def test_fails_on_missing_component():
     bad = THEORY_MAP_SETTLED.replace("- component: 统一热力学表征框架 T(x)\n", "")
     tm, cm, sp, tex_dir = _write_project(theory_map=bad)
@@ -229,7 +250,7 @@ def test_fails_on_grounding_single_chapter():
         "- grounded-in: [Chapter 1 §2 method, Chapter 1 §4 method]")
     tm, cm, sp, tex_dir = _write_project(theory_map=bad)
     issues = check_theory.check(tm, cm, sp, tex_dir)
-    assert any("grounded-in" in i and ("2" in i or "两" in i) for i in issues), \
+    assert any("grounded-in" in i and ("解析出" in i or "不同章" in i) for i in issues), \
            f"expected single-chapter grounding issue, got: {issues}"
     print("test_fails_on_grounding_single_chapter: PASS")
 
@@ -518,40 +539,42 @@ def test_bad_theory_tex_value_graceful():
         assert False, f"check() raised {type(e).__name__} — must be graceful"
     print("test_bad_theory_tex_value_graceful: PASS")
 
+def test_top_level_fields_ignore_fenced_examples():
+    """A fenced example block (schema sample) above the real fields must not supply
+    false values (taurus I2: leftmost re.search match on fence lines = false failures
+    on legal maps)."""
+    fenced_example = THEORY_MAP_SETTLED.replace(
+        """theory-tex: chapter1.tex
+extraction-outcome: confirmed""",
+        """```
+theory-tex: chapter9.tex
+extraction-outcome: pending
+```
+theory-tex: chapter1.tex
+extraction-outcome: confirmed""")
+    tm, cm, sp, tex_dir = _write_project(theory_map=fenced_example)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert issues == [], f"fenced example must not poison the real fields, got: {issues}"
+    print("test_top_level_fields_ignore_fenced_examples: PASS")
+
+def test_fenced_example_does_not_mask_missing_field():
+    """Real extraction-outcome deleted, fenced example remains → the missing-field
+    issue must fire (taurus I2 inverted variant: without fence-awareness the fence's
+    'confirmed' satisfies the check and the map passes with the real field absent —
+    a silent pass)."""
+    bad = THEORY_MAP_SETTLED.replace("extraction-outcome: confirmed\n",
+                                     "```\nextraction-outcome: confirmed\n```\n")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("extraction-outcome" in i and "缺" in i for i in issues), \
+           f"real field absent must be caught despite the fenced example, got: {issues}"
+    print("test_fenced_example_does_not_mask_missing_field: PASS")
+
 if __name__ == "__main__":
-    test_passes_on_settled()
-    test_passes_on_waived_terminal()
-    test_fails_on_missing_extraction_outcome()
-    test_fails_on_invalid_extraction_outcome()
-    test_fails_on_confirmed_vacuous_shared()
-    test_fails_on_waived_with_shared_entries()
-    test_fails_on_missing_component()
-    test_fails_on_empty_instantiates_framework()
-    test_fails_on_shared_status_pending()
-    test_fails_on_grounding_single_chapter()
-    test_fails_on_dangling_grounded_in()
-    test_fails_on_missing_theory_map()
-    test_graceful_on_binary_theory_map()
-    test_ignores_utf8_bom_in_theory_map()
-    test_accepts_entry_headers_with_trailing_title()
-    test_fails_on_missing_theory_tex_field()
-    test_fails_on_missing_theory_tex_file()
-    test_fails_on_theory_tex_path_traversal()
-    test_fails_on_missing_shared_ref()
-    test_fails_on_dangling_shared_ref()
-    test_fails_on_malformed_shared_ref()
-    test_fails_on_overlap_chapter_not_in_chapter_map()
-    test_fails_on_empty_suggested_disposition()
-    test_fails_on_missing_chapter_map()
-    test_fails_on_unreadable_chapter_map()
-    test_fails_on_chapter_map_without_entries()
-    test_fails_on_missing_spine()
-    test_fails_on_unreadable_spine()
-    test_fails_on_spine_pending_residue()
-    test_fenced_shared_does_not_count()
-    test_hr_closes_field_window()
-    test_foreign_block_fields_do_not_substitute()
-    test_orphan_fence_diagnostic()
-    test_ansi_sanitized_in_issue_output()
-    test_bad_theory_tex_value_graceful()
-    print("ALL TESTS PASS")
+    # auto-discovery runner（taurus M4）：按名收集所有 test_* 函数——定义了却没被
+    # 手动列表调用的 test 不可能存在（silent-never-runs 漂移类封死）。执行序 =
+    # 字母序；每个 test 自建 project，与顺序无关。count 打印防 fixture 静默丢失。
+    _tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
+    for _t in _tests:
+        _t()
+    print(f"ALL TESTS PASS ({len(_tests)} tests)")

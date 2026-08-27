@@ -3,10 +3,13 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_theory.py` (the gate) +
-   `scripts/test_check_theory.py` (35 stdlib cases, run `python3
+   `scripts/test_check_theory.py` (38 stdlib cases, run `python3
    test_check_theory.py`). Exit-code contract: 0 = consistency 通过; 1 =
    consistency issues (each printed). Four args: theory-map / chapter-map /
-   spine / tex-dir. All 35 cases, checked one-by-one against the on-disk test
+   spine / tex-dir. Runner auto-discovers `test_*` functions and prints the
+   count (taurus M4: a test defined but never called is impossible — the
+   manual call list is gone; execution order is alphabetical, each test builds
+   its own project). All 38 cases, checked one-by-one against the on-disk test
    functions:
    - `test_passes_on_settled` — passes on a settled theory-map.md
      (extraction-outcome: confirmed — 2 Shared entries each grounded-in 2
@@ -103,7 +106,21 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      crash (stat fallback). NOTE the Python 3.13 finding: pathlib `is_file()`
      internally catches the NUL ValueError (returns False), so a NUL value never
      reaches the stat-fallback branch — the overlong-name pattern is what
-     actually triggers it (mirror summary aries B2).
+     actually triggers it (mirror summary aries B2);
+   - `test_fails_on_waived_with_overlap_entries` — fails on
+     waived-with-Overlap-entries (mirror of waived+Shared; taurus I1: the
+     branch was load-bearing with zero coverage — deleting it let a waived map
+     carrying Overlaps pass silently, because the dangling-ref guard skips on
+     empty shared_nums and the vacuous guard only arms under confirmed);
+   - `test_top_level_fields_ignore_fenced_examples` — a fenced example block
+     (schema sample) above the real top-level fields must not supply false
+     values (taurus I2: fence-blind `_top_level_field` = false failures on
+     legal maps — the fenced `pending`/`chapter9.tex` poisoned the real
+     fields);
+   - `test_fenced_example_does_not_mask_missing_field` — the inverted variant:
+     real `extraction-outcome` deleted, fenced example remains → the
+     missing-field issue must fire (without fence-awareness the fence's value
+     satisfies the check — a silent pass).
 
    Parsing/scoping rule (summary aries B1/B3/R1 lineage): fields must live
    directly under their entry header until the next heading of ANY level or a
@@ -187,7 +204,10 @@ resolve overlaps long after this skill hands off). **Overlap coverage
 completeness is NOT mechanically checked** (aquarius T5 — absent-entry failures
 make the author's work list look complete while a lifted position went
 unrecorded; that is write-then-record discipline + eval territory, not a gate
-property).
+property). **Duplicate `## Shared N` headers pass the gate** (a
+verbatim-duplicated entry validates cleanly twice; per-entry validation works
+and the number set dedupes — structurally ambiguous but not gated; a
+family-design question recorded here, taurus M7).
 
 TODO: scaffold evals.json + run the full eval loop per skill-creator-plus
 before ship (the prose surface).

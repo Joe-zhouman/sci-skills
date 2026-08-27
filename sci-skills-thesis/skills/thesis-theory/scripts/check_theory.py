@@ -40,8 +40,7 @@ _NONE_TOKENS = {"none", "（none）", "(none)", "无", "—"}
 
 # 任意级别 markdown 标题（`## 备注` / `### 编辑注记` / 异族 entry header 一视同仁）
 # 与单独成行的水平分割线（`---` / `***` / `___`）都终止当前 entry——字段窗口被截断，
-# 外来区块的字段行不能顶替本 entry 的缺失字段（aries B1 + R1；取代旧的
-# _ANY_ENTRY_HEADER——那是本规则的 Shared/Overlap 特例）。hr 须整行只有
+# 外来区块的字段行不能顶替本 entry 的缺失字段（aries B1 + R1）。hr 须整行只有
 # 分割字符（`-{3,}\s*$` 等）——bullet `- shared-ref` 带后续内容，不满足，不会误伤。
 _SCOPE_TERMINATOR = re.compile(r"^(?:#{1,6}\s|-{3,}\s*$|\*{3,}\s*$|_{3,}\s*$)")
 
@@ -100,10 +99,22 @@ def _field_value(body: str, field: str) -> str | None:
 
 
 def _top_level_field(text: str, field: str) -> str | None:
-    """从 theory-map.md 全文取 top-level 字段值（`theory-tex: ...`，无 `- ` 前缀）。"""
-    m = re.search(rf"^{re.escape(field)}\s*:\s*(.*)$",
-                  text, re.MULTILINE | re.IGNORECASE)
-    return m.group(1).strip() if m else None
+    """从 theory-map.md 全文取 top-level 字段值（`theory-tex: ...`，无 `- ` 前缀）。
+    fence-aware（taurus I2，2026-08-27）：跳过 ``` 围栏内的行——fenced 示例块既不能
+    顶替真字段的值（假失败）也不能掩盖真字段被删（静默过）。与 _split_sections 用
+    同一 fence 判定（lstrip 后 ``` 前缀）。注意：check_summary.py 的同名 helper 仍有
+    此洞——家族 hardening 队列，零 churn 不在本分支修。"""
+    in_fence = False
+    for line in text.splitlines():
+        if line.lstrip().startswith("```"):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        m = re.match(rf"^{re.escape(field)}\s*:\s*(.*)$", line, re.IGNORECASE)
+        if m:
+            return m.group(1).strip()
+    return None
 
 
 def _is_empty(val: str | None) -> bool:
@@ -151,7 +162,7 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
     except OSError as e:
         return [f"✗ {tm_path} 无法读取：{e}"]
 
-    shareds = _split_sections(text, "Shared")
+    components = _split_sections(text, "Shared")
     overlaps = _split_sections(text, "Overlap")
     if not _fences_balanced(text):
         issues.append(f"✗ {tm_path} 存在未闭合 code fence——其后条目可能被整体跳过（检查 ``` 标记配对）")
@@ -191,13 +202,15 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
     if outcome not in (OUTCOME_CONFIRMED, OUTCOME_WAIVED) and outcome != "":
         issues.append(f"✗ extraction-outcome `{_sanitize(outcome)}` 非法（应为 confirmed 或 waived-by-author）")
 
-    # --- Shared 条目检查（waived 模式下存在即矛盾；confirmed 模式逐字段）---
-    shared_nums: set[int] = set()
-    for label, body in shareds:
-        shared_nums.add(int(label.split()[1]))
-        if outcome == OUTCOME_WAIVED:
-            issues.append(f"✗ {label} 存在于 waived-by-author 终态（waived = 作者裁了最小章——Shared/Overlap 段须空，spec §Step 1 fallback）")
-            continue
+    # --- waived 终态守卫（waived = 作者裁最小章：Shared/Overlap 段须空，spec §Step 1 fallback / taurus I1+M1）---
+    if outcome == OUTCOME_WAIVED and (components or overlaps):
+        stray = ", ".join(label for label, _ in components + overlaps)
+        issues.append(f"✗ {stray} 存在于 waived-by-author 终态（waived = 作者裁了最小章——Shared/Overlap 段须空，spec §Step 1 fallback）")
+        components, overlaps = [], []   # gate both loops — stray entries are one contradiction, not per-entry field problems
+
+    # --- Shared 条目（spec §⑥ #2）---
+    shared_nums = _header_numbers(text, "Shared")   # 单一 parser（taurus I3——不在 check() 内手搓第二份）
+    for label, body in components:
         if _is_empty(_field_value(body, "component")):
             issues.append(f"✗ {label} component 缺失或为空")
         if _is_empty(_field_value(body, "instantiates-framework")):
@@ -212,21 +225,19 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
             elif chapter_nums and not nums <= chapter_nums:
                 bad = ", ".join(str(x) for x in sorted(nums - chapter_nums))
                 issues.append(f"✗ {label} grounded-in 引用 Chapter {bad} 不在 chapter-map.md 的章列表中（悬空/编造）")
+        # status 检查承担 spec §⑥ #1 的无-pending 拦截（pending = AI 候选，never auto-adopted）
         st = _field_value(body, "status")
         if st is None:
             issues.append(f"✗ {label} 缺 status")
         elif st.lower() != SHARED_SETTLED:
             issues.append(f"✗ {label} status={st}（应为 confirmed——作者 depth gate 痕迹；pending=AI 候选未 settle，never auto-adopted）")
 
-    # --- vacuous-pass guard：confirmed 但 Shared 段空（T3——缺席拦截）---
-    if outcome == OUTCOME_CONFIRMED and not shareds:
+    # --- vacuous-pass guard（spec §⑥ #2）：confirmed 但 Shared 段空（T3 缺席拦截）---
+    if outcome == OUTCOME_CONFIRMED and not components:
         issues.append("✗ extraction-outcome=confirmed 但 Shared 段为空（要么 ≥1 条 confirmed 组件，要么落 waived-by-author 终态——无静默第三态，spec §⑥ #2）")
 
-    # --- Overlap 条目检查（不 enforce resolution——resolver 是作者，glossary Overlap 清单）---
+    # --- Overlap 条目（spec §⑥ #3；不 enforce resolution——resolver 是作者，glossary Overlap 清单）---
     for label, body in overlaps:
-        if outcome == OUTCOME_WAIVED:
-            issues.append(f"✗ {label} 存在于 waived-by-author 终态（waived = Shared/Overlap 段须空）")
-            continue
         sr = _field_value(body, "shared-ref")
         if _is_empty(sr):
             issues.append(f"✗ {label} shared-ref 缺失或为空")
@@ -251,7 +262,7 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
         # 注意：disposition（作者事后填）不查——resolver 是作者，无下游 enforce（§③）；
         # 也不查"每条提升位置都有 Overlap"——覆盖完整性是 absent 类，eval + 写后纪律（T5）。
 
-    # --- theory-tex top-level 字段（template-derived，非硬编码；含路径守卫 + stat 兜底）---
+    # --- theory-tex 字段（spec §⑥ #4；template-derived，非硬编码，含路径守卫 + stat 兜底）---
     tex_name = _top_level_field(text, "theory-tex")
     if tex_name is None or not tex_name.strip():
         issues.append("✗ theory-map.md 缺 top-level `theory-tex` 字段（理论章文件名，按 template-spec.md——init 预留的 chapter1 槽位）")
