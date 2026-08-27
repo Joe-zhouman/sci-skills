@@ -238,7 +238,11 @@ reports may drift (the structured-error exit surfaces it). The parsers'
 hostile-input guarantees — clean-vs-drift verdict, no-traceback,
 bounded-time — are only as good as their hostile-input tests (taurus
 review: the two crash paths and the clean-report path were all untested
-edges, exactly where constructed fixtures stop covering); 知网 parser is
+edges, exactly where constructed fixtures stop covering); malformed-HTML
+reports with a literal unescaped `<` in text tokenize through the next
+`>` and can swallow a following section title (linear, fails toward
+missed section names — drift-shaped input, the structured-error path
+catches the extreme); 知网 parser is
 a future extension slot (needs a sample report). AIGC 降了多少分不设机械
 验收 (spec Acceptance #2) — 再检测是唯一分数真相.
 
