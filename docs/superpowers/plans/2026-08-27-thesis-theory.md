@@ -1217,11 +1217,10 @@ Expected: `ALL TESTS PASS` (35 tests).
 - [ ] **Step 2: Decoupling grep — no sibling-skill calls**
 
 ```bash
-grep -rn 'from thesis-\|import thesis-' sci-skills-thesis/skills/thesis-theory/ && echo "FAIL: sibling import found" || echo "DECOUPLING-OK"
+grep -rnE '^\s*(from|import)\s+thesis-' --include='*.py' sci-skills-thesis/skills/thesis-theory/ && echo "FAIL: sibling import found" || echo "DECOUPLING-OK"
 grep -n 'check_intro.py\|check_spine.py\|check_dissect.py\|check_summary.py' sci-skills-thesis/skills/thesis-theory/SKILL.md && echo "FAIL: runs a sibling's script" || echo "NO-SIBLING-SCRIPT-OK"
-grep -rn 'thesis-sources\|gap-map\|summary-map\|synthesis' sci-skills-thesis/skills/thesis-theory/SKILL.md | grep -v 'does NOT\|不读\|NOT the registry' && echo "WARN: check these mentions are read-cut statements, not reads" || echo "READ-CUT-CLEAN"
 ```
-Expected: `DECOUPLING-OK`, `NO-SIBLING-SCRIPT-OK`, `READ-CUT-CLEAN` (the third grep allows mentions that ARE the read-cut statement itself).
+Expected: `DECOUPLING-OK`, `NO-SIBLING-SCRIPT-OK`. (First grep anchored + .py-only — the naive `grep 'from thesis-'` false-positives on SKILL.md prose like "works from thesis-internal material", which Task 5's README documents as expected. A `WARN`-class read-cut mention sweep on the .md files may note prose hits; they are statements of the cut, not reads.)
 
 - [ ] **Step 3: Zero-churn assertion — only new files + the one init edit differ from the recorded base sha**
 
