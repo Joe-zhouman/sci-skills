@@ -840,9 +840,12 @@ def test_ansi_sanitized_in_issue_output():
     print("test_ansi_sanitized_in_issue_output: PASS")
 
 def test_bad_theory_tex_value_graceful():
-    """A theory-tex value that breaks stat (embedded NUL) → graceful '值无法检验'
-    issue, never a crash (summary stat-fallback lineage)."""
-    bad = THEORY_MAP_SETTLED.replace("theory-tex: chapter1.tex", "theory-tex: chap\x00ter.tex")
+    """A theory-tex value that breaks stat → graceful '值无法检验' issue, never a
+    crash (summary stat-fallback lineage — aries B2 pattern). NOTE: use the
+    overlong-name pattern (5000 chars → OSError ENAMETOOLONG), NOT an embedded NUL —
+    on Python 3.13 pathlib's is_file() internally catches the NUL ValueError and
+    returns False, so the fallback never fires (Task 2 empirical finding)."""
+    bad = THEORY_MAP_SETTLED.replace("theory-tex: chapter1.tex", "theory-tex: " + "a" * 5000)
     tm, cm, sp, tex_dir = _write_project(theory_map=bad)
     try:
         issues = check_theory.check(tm, cm, sp, tex_dir)
