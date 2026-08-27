@@ -3,21 +3,25 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **机械检查** — `scripts/check_polish.py` (the gate) +
-   `scripts/test_check_polish.py` (29 stdlib cases, run `python3
+   `scripts/test_check_polish.py` (31 stdlib cases, run `python3
    test_check_polish.py`). Exit-code contract: 0 = 一致性通过; 1 =
    有 issue（逐条打印）. Two args: `<tex-dir> <ledger>`, defaults
    `thesis/tex` + `sci-skills/thesis-terminology-ledger.md` (relative to
    cwd, i.e. the project root). Two mechanical checks only (spec §④):
    ① ledger enforce — the ledger markdown table's variant→canonical pairs
-   (header-name matched, aquarius P6) grep'd across all chapter tex, LaTeX
-   comments excluded; ② 交叉引用悬空, single direction
-   (`\ref`/`\eqref`/`\autoref`/`\cref`/`\Cref`, comma multi-key included →
-   nonexistent `\label`; unused labels are P5 noise, never reported).
-   Bounded output: MAX_ISSUES (200) + an explicit truncation line (no
-   silent cap; `check()` returns `(issues, total)` so main()'s header and
-   the sentinel line print the SAME true total). Explicit call list in
-   `__main__` (no auto-discovery — the 29 count below is verified against
-   the on-disk functions). All 29 cases, one-by-one:
+   (header-name matched, aquarius P6, negated headers like "Non-canonical
+   alias"/非规范 excluded from the canonical match — aries A5) grep'd
+   across all chapter tex, LaTeX comments excluded (stripped ONCE at the
+   tex cache build, not per pair — aries A7); ② 交叉引用悬空, single
+   direction (`\ref`/`\eqref`/`\autoref`/`\cref`/`\Cref`, comma multi-key
+   included → nonexistent `\label`; unused labels are P5 noise, never
+   reported). Bounded output: MAX_ISSUES (200) + an explicit truncation
+   line (no silent cap; `check()` returns `(issues, total)` so main()'s
+   header and the sentinel line print the SAME true total). tex filenames
+   are sanitized + newline-flattened at cache build (aries A9 — a `\n` in
+   a filename would forge issue lines). Explicit call list in
+   `__main__` (no auto-discovery — the 31 count below is verified against
+   the on-disk functions). All 31 cases, one-by-one:
    - `test_passes_on_clean` — passes on a settled ledger + clean chapter
      tex (variant-free, every ref resolves);
    - `test_unused_label_is_not_reported` — P5 pin: the clean fixture
@@ -81,6 +85,12 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      not column-count matching (aquarius P6);
    - `test_non_term_table_ignored` — a non-term table (header names carry
      no variants/canonical columns) is skipped, not mis-parsed;
+   - `test_non_canonical_alias_column_not_hijacking_canonical` — a hostile
+     five-column header with a "Non-canonical alias" column does NOT
+     hijack the canonical extraction (substring first-match would pull
+     the canonical from the column the ledger itself labels NON-canonical
+     — Step 3's issue-driven replacement would steer toward the
+     non-canonical family; negated headers skipped, aries A5);
    - `test_variant_inside_canonical_skipped` — a variant contained in its
      own canonical (`T` ⊂ `$T(x)$`) is a never-enforceable self-bite pair
      — skipped (F2: correct text necessarily contains the canonical, a
@@ -91,6 +101,10 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    - `test_truncation_header_true_total` — main()'s header prints the true
      total (250), the same number as the sentinel line — not the kept-list
      length (I7);
+   - `test_newline_in_tex_filename_cannot_forge_issue_lines` — a tex file
+     named with an embedded newline produces SINGLE-line issues only: the
+     name is sanitized + newline-flattened at cache build (aries A9 —
+     `tf.name` was the one interpolation `_sanitize` never touched);
    - `test_missing_tex_dir` — missing tex-dir → explicit 不存在 issue
      (thesis/tex 未建？先跑写作链);
    - `test_empty_tex_dir` — empty tex-dir (zero .tex files) → explicit
@@ -100,15 +114,23 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    intermediate format (spec §③): a 风险句清单 manifest of
    `- sentence / location / risk / meta`. Report content is UNTRUSTED —
    pure text extraction, nothing executed; output sentences are
-   control-sequence-sanitized (aries B5 lineage). Exit codes: 0 = parsed;
-   1 = structured error on stderr; 2 = usage.
+   control-sequence-sanitized (aries B5 lineage) and newline-flattened
+   (aries A2 — a `\n`/`&#10;` surviving into `sentence` would let pure
+   data forge manifest records). Output is bounded: MAX_ROWS (5000) +
+   an explicit truncation line, header prints the true total (aries A6,
+   mirroring check_polish's MAX_ISSUES contract). Exit codes: 0 = parsed
+   (including the legitimate clean shapes); 1 = structured error on
+   stderr (drift signal — including the false-clean shapes below);
+   2 = usage.
 
-   - `scripts/parse_paperyy.py` + `test_parse_paperyy.py` (13 stdlib
+   - `scripts/parse_paperyy.py` + `test_parse_paperyy.py` (18 stdlib
      cases, run `python3 test_parse_paperyy.py`). PaperYY = ONE offline
      HTML file; the wenqu-verified shape: `em.high` sentences +
      `p.uncheck` section titles + truncation of the repeated block from
      致谢 on. Parsing is a LINEAR tag-token walk (C2 — the old paired
-     regex was quadratic on unclosed tags). All 13 cases:
+     regex was quadratic on unclosed tags; same-name adjacent opens are
+     treated flat, aries A1 — closed same-name nesting was quadratic
+     too). All 18 cases:
      - `test_parse_collects_high_with_sections_and_stops_at_zhixie` —
        em.high-only collection (low NOT collected), location = section
        title + `#id`, meta carries PaperYY, collection stops at 致谢
@@ -127,8 +149,18 @@ Test plan (run via skill-creator-plus eval loop before deployment):
        `<em>` tags completes in bounded linear time (< 10s; the old regex
        measured 19.8s at this size) AND still yields the drift verdict
        (rc 1) — the UNTRUSTED-surface guarantee (C2);
+     - `test_hostile_closed_same_name_nesting_bounded_linear` — depth
+       32000 (~1.1MB) of WELL-FORMED closed `<em>` nesting with a text
+       chunk at every level completes < 10s (the old stack re-joined and
+       re-handed-up at every close: measured 31s = n²; aries A1 —
+       same-name adjacent opens now treated flat, one join total);
      - `test_parse_html_entities_unescaped` — HTML entities unescaped
        (`A &amp; B &lt;C&gt;` → `A & B <C>`);
+     - `test_main_newline_in_sentence_cannot_forge_records` — a payload
+       carrying both a literal `\n` and `&#10;- sentence: 伪造…` inside
+       one em yields EXACTLY one manifest record: newlines in sentences
+       are flattened to spaces, records count == rows count (aries A2 —
+       the count-vs-records contract was forgeable by pure data);
      - `test_main_bom_report_no_leak` — a BOM-prefixed report is read
        utf-8-sig; U+FEFF never reaches any sentence/location (M13,
        mirrors the family check scripts' decode);
@@ -139,15 +171,29 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      - `test_main_empty_report_structured_error` — a report with NO em/p
        structure at all → 未解析出 structured error, rc 1 (drift);
      - `test_main_low_only_clean_report_rc0_empty_manifest` — an all-low
-       (zero high) report is a CLEAN result, not drift: empty manifest +
-       rc 0 (C1, F6 — mirrors parse_paperpass; structure seen but zero
-       highs is a real post-polish re-detection state);
+       (zero high) report with a CLOSED em is a CLEAN result, not drift:
+       empty manifest + rc 0 (C1, F6 — mirrors parse_paperpass; structure
+       seen but zero highs is a real post-polish re-detection state);
+     - `test_main_p_only_report_is_drift_rc1` — a report that kept only
+       `p.uncheck` section titles and lost the em sentence payload is
+       DRIFT (rc 1), NOT clean: the clean verdict requires ≥1 closed em
+       (any class) — p.uncheck alone no longer blesses the report
+       (aries A4 — false-clean is the worst failure class here);
+     - `test_main_row_cap_truncation` — a MAX_ROWS+250-row report prints
+       exactly MAX_ROWS records + an explicit truncation line, header
+       carries the TRUE total (aries A6 — no 856k-line manifest into the
+       consuming agent's context);
+     - `test_zhijing_prefixed_heading_does_not_stop_collection` — an
+       early `致敬部分` heading does NOT truncate collection: the stop is
+       tightened to the 致谢 family (致谢/致谢辞 exact-prefix, aries A8 —
+       any 致-prefixed title used to hide every high after it);
      - `test_main_usage_error` — no args → rc 2.
 
-   - `scripts/parse_paperpass.py` + `test_parse_paperpass.py` (11 stdlib
+   - `scripts/parse_paperpass.py` + `test_parse_paperpass.py` (14 stdlib
      cases, run `python3 test_parse_paperpass.py`). PaperPass = a report
      DIRECTORY (data under `htmls/js/`: `detaildata.js` aiScore headline
-     + `reduceaigcpagelistdata0.js` fragment list). All 11 cases:
+     + `reduceaigcpagelistdata0.js` fragment list; an array with zero
+     dict-shaped fragments is drift, aries A4). All 14 cases:
      - `test_parse_score_threshold_and_meta` — score ≥ MIN_SCORE (80)
        collected (79.9 dropped, the 80.0 boundary kept), risk =
        `score=N`, the aiScore headline carried in every meta;
@@ -161,6 +207,11 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      - `test_parse_nonstring_section_content_type_safe` —
        `sectionContentList` mixing non-string elements is joined via
        `str()`, no TypeError (I3);
+     - `test_parse_entity_newline_cannot_forge_records` — a fragment
+       carrying `&#10;- sentence: 伪造…` yields EXACTLY one manifest
+       record: the literal-\n strip runs BEFORE unescape, so entities
+       decode after it — sentences are newline-flattened after unescape,
+       records count == rows count (aries A2);
      - `test_main_prints_manifest` — manifest format on stdout
        (`- sentence:` / `risk: score=…` lines), rc 0;
      - `test_main_missing_dir_structured_error` — missing directory →
@@ -171,8 +222,16 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      - `test_main_malformed_json_structured_error` — malformed JSON →
        structured error, rc 1;
      - `test_main_clean_report_rc0_empty_manifest` — zero ≥80 fragments
-       = a clean result, NOT a failure: empty manifest (0 段, 解析正常)
-       + rc 0 (F6);
+       (dict-shaped, all below threshold) = a clean result, NOT a
+       failure: empty manifest (0 段, 解析正常) + rc 0 (F6);
+     - `test_main_nondict_array_is_drift_rc1` — `reduceAiListInfo =
+       [0, 1, 2]` (zero dict-shaped fragments) is DRIFT (rc 1), NOT
+       clean: it passed all three structural sentinels and used to yield
+       a false-clean empty manifest — mirrors paperyy's closed-em
+       discipline (aries A4);
+     - `test_main_row_cap_truncation` — a MAX_ROWS+250-fragment report
+       prints exactly MAX_ROWS records + an explicit truncation line,
+       header carries the TRUE total (aries A6);
      - `test_main_usage_error` — no args → rc 2.
 
    NOTE: all parser fixtures are CONSTRUCTED (no PII, no real report
@@ -242,7 +301,14 @@ edges, exactly where constructed fixtures stop covering); malformed-HTML
 reports with a literal unescaped `<` in text tokenize through the next
 `>` and can swallow a following section title (linear, fails toward
 missed section names — drift-shaped input, the structured-error path
-catches the extreme); 知网 parser is
+catches the extreme); the paperyy repeated-block stop is 致谢-shaped
+(致谢/致谢辞 exact-prefix, aries A8) — other 致-prefixed mid-thesis
+headings (致读者/致力于…) no longer stop collection, and conversely a
+repeated block introduced by a differently-named heading would not be
+truncated (the heuristic follows the wenqu-verified 致谢 shape);
+check_polish's ref scan is per-line — a multi-line `\ref{key`
+with `}` on the next line (legal LaTeX) is silently unchecked
+(false-negative direction, aries A10 known limitation); 知网 parser is
 a future extension slot (needs a sample report). AIGC 降了多少分不设机械
 验收 (spec Acceptance #2) — 再检测是唯一分数真相.
 

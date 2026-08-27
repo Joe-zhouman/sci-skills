@@ -43,8 +43,6 @@ This skill **serves the author first**: the author owns the argument, the
 terminology, and the final call on every change (Step 4 human review is
 mandatory); structure-level problems are surfaced for the author's decision,
 never silently fixed. At close, Step 5 points the author to
-`sci-skills-thesis:thesis-typeset` — the other post-processing skill; there is no
-At close, Step 5 points the author to
 `sci-skills-thesis:thesis-typeset`（尚未落地，落地后使用）— the other post-processing
 skill; there is no file dependency between the two, run order is the author's
 preference (do NOT auto-run, spec §后处理链位置).

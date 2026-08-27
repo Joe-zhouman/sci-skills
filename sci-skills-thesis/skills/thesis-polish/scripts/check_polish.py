@@ -32,6 +32,9 @@ MAX_ISSUES = 200          # bounded output——超出截断 + 显式行
 VARIANT_MIN_LEN = 2       # 单字符变体太噪，跳过
 # 视为 "空变体" 的值
 _NONE_TOKENS = {"none", "（none）", "(none)", "无", "—", "-"}
+# 取反的 canonical 表头（A5）：'Non-canonical alias' 列子串含 "canonical"，
+# 首中即劫持 canonical 抽取（Step 3 全局替换被引向非规范方向）——跳过。
+_NEG_CANON_RE = re.compile(r"non[- ]?canonical|非规范")
 
 
 def _fences_balanced(text: str) -> bool:
@@ -113,14 +116,16 @@ def _parse_ledger_pairs(text: str) -> tuple[list[tuple[str, str]], int, int, int
     for block in _ledger_tables(text):
         header = [c.strip().lower() for c in block[0].strip("|").split("|")]
 
-        def _col(names: tuple[str, ...]) -> int | None:
+        def _col(names: tuple[str, ...], skip: re.Pattern[str] | None = None) -> int | None:
             for i, h in enumerate(header):
+                if skip is not None and skip.search(h):
+                    continue   # A5：取反表头（Non-canonical alias/非规范）不算 canonical 列
                 if any(n in h for n in names):
                     return i
             return None
 
         vi = _col(("variant", "term"))
-        ci = _col(("canonical",))
+        ci = _col(("canonical",), skip=_NEG_CANON_RE)
         if vi is None or ci is None:
             continue  # 非术语表格（笔记表/单位表无 variants 列等）——header 名不匹配则跳过
         n_tables += 1
@@ -172,13 +177,20 @@ def check(tex_dir: Path, ledger: Path) -> tuple[list[str], int]:
             issues.append(f"✗ {tex_dir} 无 .tex 文件（写作链未产正文？）")
 
     # --- tex 预读一次（I5：旧 pair 循环每对重读重解码整文件——O(pairs×files)
-    # 全量解码；缓存后检查 1/2 共用，O(files)）---
-    tex_cache: dict[Path, list[str]] = {}
+    # 全量解码；缓存后检查 1/2 共用，O(files)）。A7：注释剥离同样只在缓存构建时
+    # 做一次（旧检查 1 每对×每行重跑逐字符状态机，400 对×20 文件×1000 行实测
+    # 43.9s；缓存剥离后两检查都吃剥离好的行）。A9：tf.name 在此消毒 + 压平换行
+    # 一次——文件名里的 \n 会在行导向 issue 输出里伪造新行（B5/I6 血统的同一面；
+    # _sanitize 惯例 \t/\n 留，name 进输出前必须单行）。---
+    tex_cache: list[tuple[str, list[str]]] = []
     for tf in tex_files:
         try:
-            tex_cache[tf] = tf.read_text(encoding="utf-8-sig", errors="replace").splitlines()
+            lines = tf.read_text(encoding="utf-8-sig", errors="replace").splitlines()
         except OSError as e:
             issues.append(f"✗ {tf} 无法读取：{e}")
+            continue
+        tex_cache.append((_sanitize(tf.name).replace("\n", " "),
+                          [_strip_comment(l) for l in lines]))
 
     # --- ledger 解析（缺失→issue+降级，非终止——spec §④）---
     pairs: list[tuple[str, str]] = []
@@ -206,27 +218,26 @@ def check(tex_dir: Path, ledger: Path) -> tuple[list[str], int]:
         except OSError as e:
             issues.append(f"✗ {ledger} 无法读取：{e}——一致性检查降级")
 
-    # --- 检查 1：变体残留（LaTeX 注释不计）---
+    # --- 检查 1：变体残留（LaTeX 注释不计——行已在缓存构建时剥离，A7）---
     for v, canon in pairs:
         pat = _variant_pattern(v)
-        for tf, lines in tex_cache.items():
+        for fname, lines in tex_cache:
             for ln, line in enumerate(lines, 1):
-                if pat.search(_strip_comment(line)):
-                    issues.append(f"✗ {tf.name}:{ln} 变体 `{_sanitize(v)}` → 应为 "
+                if pat.search(line):
+                    issues.append(f"✗ {fname}:{ln} 变体 `{_sanitize(v)}` → 应为 "
                                   f"`{_sanitize(canon)}`（thesis-terminology-ledger.md）")
 
     # --- 检查 2：交叉引用悬空（单向——未用 label 不查，aquarius P5）---
     labels: set[str] = set()
     refs: list[tuple[str, int, str]] = []
-    for tf, lines in tex_cache.items():
+    for fname, lines in tex_cache:
         for ln, line in enumerate(lines, 1):
-            code = _strip_comment(line)
-            labels.update(_LABEL_RE.findall(code))
-            for m in _REF_RE.finditer(code):
+            labels.update(_LABEL_RE.findall(line))
+            for m in _REF_RE.finditer(line):
                 for key in m.group(1).split(","):
                     key = key.strip()
                     if key:
-                        refs.append((tf.name, ln, key))
+                        refs.append((fname, ln, key))
     for fname, ln, key in refs:
         if key not in labels:
             # key 捕获自原始 tex 字节——同过 _sanitize（I6，与 ledger echo 同一面）
