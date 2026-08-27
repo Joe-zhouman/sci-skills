@@ -3,7 +3,7 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **机械检查** — `scripts/check_polish.py` (the gate) +
-   `scripts/test_check_polish.py` (25 stdlib cases, run `python3
+   `scripts/test_check_polish.py` (29 stdlib cases, run `python3
    test_check_polish.py`). Exit-code contract: 0 = 一致性通过; 1 =
    有 issue（逐条打印）. Two args: `<tex-dir> <ledger>`, defaults
    `thesis/tex` + `sci-skills/thesis-terminology-ledger.md` (relative to
@@ -14,9 +14,10 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    (`\ref`/`\eqref`/`\autoref`/`\cref`/`\Cref`, comma multi-key included →
    nonexistent `\label`; unused labels are P5 noise, never reported).
    Bounded output: MAX_ISSUES (200) + an explicit truncation line (no
-   silent cap). Explicit call list in `__main__` (no auto-discovery — the
-   25 count below is verified against the on-disk functions). All 25
-   cases, one-by-one:
+   silent cap; `check()` returns `(issues, total)` so main()'s header and
+   the sentinel line print the SAME true total). Explicit call list in
+   `__main__` (no auto-discovery — the 29 count below is verified against
+   the on-disk functions). All 29 cases, one-by-one:
    - `test_passes_on_clean` — passes on a settled ledger + clean chapter
      tex (variant-free, every ref resolves);
    - `test_unused_label_is_not_reported` — P5 pin: the clean fixture
@@ -62,8 +63,19 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    - `test_ansi_stripped_from_issues` — ANSI/control sequences in ledger
      values echoed into issue lines are stripped (no terminal-title
      rewrite / log-line forgery surface — aries B5 lineage);
-   - `test_separator_row_skipped` — the `|---|---|` separator row yields
-     no bogus variant pair;
+   - `test_ansi_in_tex_ref_key_stripped` — same sanitize discipline on the
+     tex side: a `\ref` key carrying an ANSI escape is echoed sanitized
+     (I6 — key comes from raw tex bytes, same B5 surface);
+   - `test_mismatched_ledger_row_counted_not_silent` — a ledger row whose
+     cell count mismatches the header (unescaped `|` in a cell) is NOT
+     silently dropped: one summary fail-noisy issue (M8);
+   - `test_short_canonical_row_surfaced` — a row with a single-char
+     canonical (`λ`-type) is mechanically unenforceable under
+     VARIANT_MIN_LEN: one issue surfaces it for author attention instead
+     of a silent skip (M10);
+   - `test_separator_row_skipped` — direct parser pin (one white-box
+     assert, M11): the `|---|---|` separator row yields no bogus pair AND
+     counts as neither dropped nor short-canonical;
    - `test_header_name_matching_tolerates_columns` — a FOUR-column ledger
      (no Category) and extra columns both parse — header-NAME matching,
      not column-count matching (aquarius P6);
@@ -74,7 +86,11 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      — skipped (F2: correct text necessarily contains the canonical, a
      flag there would always false-fire);
    - `test_truncation_cap` — 250 dangling refs → exactly MAX_ISSUES (200)
-     issues + 1 explicit truncation line;
+     issues + 1 explicit truncation line, and the returned `total` carries
+     the TRUE count (250);
+   - `test_truncation_header_true_total` — main()'s header prints the true
+     total (250), the same number as the sentinel line — not the kept-list
+     length (I7);
    - `test_missing_tex_dir` — missing tex-dir → explicit 不存在 issue
      (thesis/tex 未建？先跑写作链);
    - `test_empty_tex_dir` — empty tex-dir (zero .tex files) → explicit
@@ -87,11 +103,12 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    control-sequence-sanitized (aries B5 lineage). Exit codes: 0 = parsed;
    1 = structured error on stderr; 2 = usage.
 
-   - `scripts/parse_paperyy.py` + `test_parse_paperyy.py` (8 stdlib
+   - `scripts/parse_paperyy.py` + `test_parse_paperyy.py` (13 stdlib
      cases, run `python3 test_parse_paperyy.py`). PaperYY = ONE offline
      HTML file; the wenqu-verified shape: `em.high` sentences +
      `p.uncheck` section titles + truncation of the repeated block from
-     致谢 on. All 8 cases:
+     致谢 on. Parsing is a LINEAR tag-token walk (C2 — the old paired
+     regex was quadratic on unclosed tags). All 13 cases:
      - `test_parse_collects_high_with_sections_and_stops_at_zhixie` —
        em.high-only collection (low NOT collected), location = section
        title + `#id`, meta carries PaperYY, collection stops at 致谢
@@ -100,26 +117,50 @@ Test plan (run via skill-creator-plus eval loop before deployment):
        attributes, multi-value class (`class='some high extra'`), nested
        tags stripped — attribute-order-independent parsing;
      - `test_parse_ansi_stripped` — ANSI stripped from output sentences;
+     - `test_parse_spanning_nested_tag_stripped` — a nested tag SPANNING
+       a newline is stripped whole (I4 — the tag never enters the text
+       buffer under the token walk);
+     - `test_parse_data_attrs_no_false_match` — `data-class=`/`data-id=`
+       do NOT classify as class/id (attribute-boundary anchored, M12 — a
+       crafted report can't inflate its own risk level);
+     - `test_hostile_unclosed_tags_bounded_linear` — ~250KB of unclosed
+       `<em>` tags completes in bounded linear time (< 10s; the old regex
+       measured 19.8s at this size) AND still yields the drift verdict
+       (rc 1) — the UNTRUSTED-surface guarantee (C2);
      - `test_parse_html_entities_unescaped` — HTML entities unescaped
        (`A &amp; B &lt;C&gt;` → `A & B <C>`);
+     - `test_main_bom_report_no_leak` — a BOM-prefixed report is read
+       utf-8-sig; U+FEFF never reaches any sentence/location (M13,
+       mirrors the family check scripts' decode);
      - `test_main_prints_manifest` — manifest format on stdout
        (`# 风险句清单` + `- sentence:` / `location:` lines), rc 0;
      - `test_main_missing_file_structured_error` — missing file →
        structured stderr error, rc 1;
-     - `test_main_empty_report_structured_error` — a report nothing
-       parses out of → 未解析出 structured error, rc 1;
+     - `test_main_empty_report_structured_error` — a report with NO em/p
+       structure at all → 未解析出 structured error, rc 1 (drift);
+     - `test_main_low_only_clean_report_rc0_empty_manifest` — an all-low
+       (zero high) report is a CLEAN result, not drift: empty manifest +
+       rc 0 (C1, F6 — mirrors parse_paperpass; structure seen but zero
+       highs is a real post-polish re-detection state);
      - `test_main_usage_error` — no args → rc 2.
 
-   - `scripts/parse_paperpass.py` + `test_parse_paperpass.py` (9 stdlib
+   - `scripts/parse_paperpass.py` + `test_parse_paperpass.py` (11 stdlib
      cases, run `python3 test_parse_paperpass.py`). PaperPass = a report
      DIRECTORY (data under `htmls/js/`: `detaildata.js` aiScore headline
-     + `reduceaigcpagelistdata0.js` fragment list). All 9 cases:
+     + `reduceaigcpagelistdata0.js` fragment list). All 11 cases:
      - `test_parse_score_threshold_and_meta` — score ≥ MIN_SCORE (80)
        collected (79.9 dropped, the 80.0 boundary kept), risk =
        `score=N`, the aiScore headline carried in every meta;
      - `test_parse_multiline_fragment_joined` — multiline fragment
        content joined into one sentence;
      - `test_parse_ansi_stripped` — ANSI stripped from output sentences;
+     - `test_parse_type_confused_fragment_info_skipped` — a fragment
+       whose `originalFragmentInfo` is a STRING (type-confused JSON) is
+       skipped gracefully — no traceback out of parse() (I3, UNTRUSTED
+       surface);
+     - `test_parse_nonstring_section_content_type_safe` —
+       `sectionContentList` mixing non-string elements is joined via
+       `str()`, no TypeError (I3);
      - `test_main_prints_manifest` — manifest format on stdout
        (`- sentence:` / `risk: score=…` lines), rc 0;
      - `test_main_missing_dir_structured_error` — missing directory →
@@ -193,7 +234,11 @@ pretend the script covers depth. check_polish.py is mechanical
 consistency, not depth (a well-formed but hollow paragraph passes the
 gate — human review + eval territory). The parsers were built against
 CONSTRUCTED fixtures mirroring the wenqu-verified report shapes; real
-reports may drift (the structured-error exit surfaces it). 知网 parser is
+reports may drift (the structured-error exit surfaces it). The parsers'
+hostile-input guarantees — clean-vs-drift verdict, no-traceback,
+bounded-time — are only as good as their hostile-input tests (taurus
+review: the two crash paths and the clean-report path were all untested
+edges, exactly where constructed fixtures stop covering); 知网 parser is
 a future extension slot (needs a sample report). AIGC 降了多少分不设机械
 验收 (spec Acceptance #2) — 再检测是唯一分数真相.
 

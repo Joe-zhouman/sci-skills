@@ -93,7 +93,7 @@ def _ledger_tables(text: str) -> list[list[str]]:
     return blocks
 
 
-def _parse_ledger_pairs(text: str) -> tuple[list[tuple[str, str]], int]:
+def _parse_ledger_pairs(text: str) -> tuple[list[tuple[str, str]], int, int, int]:
     """按 header 名匹配解析 (变体→规范形) 对（aquarius P6）。
 
     header 行须同时含 variant/term 列与 canonical 列（大小写不敏感，子串匹配
@@ -101,10 +101,15 @@ def _parse_ledger_pairs(text: str) -> tuple[list[tuple[str, str]], int]:
     变体按 / 与中英逗号切分；与 canonical 同形（忽略大小写）**或包含于
     canonical** 的变体跳过（F2：变体 ⊂ 自身规范形 = 永远无法 enforce——正确
     文本必含规范形即自啮，跳过是语义正确非掩盖）。
-    返回 (pairs, 可解析表格数)——非术语表格（header 名不匹配）跳过不计数。
+    返回 (pairs, 可解析表格数, 列数与表头不符的行数, canonical 短于
+    VARIANT_MIN_LEN 的行数)——末两项给 check() 出 fail-noisy 汇总 issue
+    （M8：静默丢行 = 该行变体悄悄不 enforce；M10：单字符规范形被同一长度下限
+    挡在机械 enforce 外——如 μ/λ）；非术语表格（header 名不匹配）跳过不计数。
     """
     pairs: list[tuple[str, str]] = []
     n_tables = 0
+    dropped = 0
+    short_canon = 0
     for block in _ledger_tables(text):
         header = [c.strip().lower() for c in block[0].strip("|").split("|")]
 
@@ -122,12 +127,13 @@ def _parse_ledger_pairs(text: str) -> tuple[list[tuple[str, str]], int]:
         for row in block[1:]:
             cells = [c.strip() for c in row.strip("|").split("|")]
             if len(cells) != len(header):
+                dropped += 1   # M8：计数不静默（常见因：单元格内未转义 | 拆列）
                 continue
             if all(re.fullmatch(r":?-+:?", c or "-") for c in cells):
                 continue  # 分隔行 |---|---|
-            if vi >= len(cells) or ci >= len(cells):
-                continue
             canon = cells[ci]
+            if canon and len(canon) < VARIANT_MIN_LEN:
+                short_canon += 1   # M10：μ/λ 类单字符规范形——机械不 enforce，计数
             variants = [v.strip() for v in re.split(r"[/,，]", cells[vi])
                         if len(v.strip()) >= VARIANT_MIN_LEN
                         and v.strip().lower() not in _NONE_TOKENS]
@@ -135,7 +141,7 @@ def _parse_ledger_pairs(text: str) -> tuple[list[tuple[str, str]], int]:
                 for v in variants:
                     if v.lower() != canon.lower() and v.lower() not in canon.lower():
                         pairs.append((v, canon))
-    return pairs, n_tables
+    return pairs, n_tables, dropped, short_canon
 
 
 def _variant_pattern(variant: str) -> re.Pattern[str]:
@@ -150,8 +156,10 @@ _REF_RE = re.compile(r"\\(?:ref|eqref|autoref|cref|Cref)\{([^}]+)\}")
 _LABEL_RE = re.compile(r"\\label\{([^}]+)\}")
 
 
-def check(tex_dir: Path, ledger: Path) -> list[str]:
-    """返回 issue 列表（空 = 通过）。不抛异常——问题进列表。"""
+def check(tex_dir: Path, ledger: Path) -> tuple[list[str], int]:
+    """返回 (issue 列表, 真实总数)（空列表 = 通过）。截断时列表 = MAX_ISSUES 条
+    + 显式 sentinel 行、真实总数只在返回值——main() 的 header 与 sentinel 行打
+    同一个数（I7）。不抛异常——问题进列表。"""
     issues: list[str] = []
 
     # --- tex 收集 ---
@@ -163,6 +171,15 @@ def check(tex_dir: Path, ledger: Path) -> list[str]:
         if not tex_files:
             issues.append(f"✗ {tex_dir} 无 .tex 文件（写作链未产正文？）")
 
+    # --- tex 预读一次（I5：旧 pair 循环每对重读重解码整文件——O(pairs×files)
+    # 全量解码；缓存后检查 1/2 共用，O(files)）---
+    tex_cache: dict[Path, list[str]] = {}
+    for tf in tex_files:
+        try:
+            tex_cache[tf] = tf.read_text(encoding="utf-8-sig", errors="replace").splitlines()
+        except OSError as e:
+            issues.append(f"✗ {tf} 无法读取：{e}")
+
     # --- ledger 解析（缺失→issue+降级，非终止——spec §④）---
     pairs: list[tuple[str, str]] = []
     if not ledger.is_file():
@@ -173,10 +190,17 @@ def check(tex_dir: Path, ledger: Path) -> list[str]:
             text = ledger.read_text(encoding="utf-8-sig")
             if not _fences_balanced(text):
                 issues.append(f"✗ {ledger} 存在未闭合 code fence——表格解析可能不完整（检查 ``` 配对）")
-            pairs, n_tables = _parse_ledger_pairs(text)
+            pairs, n_tables, dropped, short_canon = _parse_ledger_pairs(text)
             if not n_tables:
                 issues.append(f"✗ {ledger} 无可解析术语表格（normative 五列 "
                               "| Category | Term / variants | Canonical form | Source | Notes |，按 header 名匹配）")
+            if dropped:
+                issues.append(f"✗ {ledger} 有 {dropped} 行列数与表头不符（单元格内未转义 "
+                              "| 拆列？）——该行变体未 enforce，请修表格行")
+            if short_canon:
+                issues.append(f"✗ {ledger} 有 {short_canon} 行 canonical form 短于 "
+                              f"{VARIANT_MIN_LEN} 字符（如 λ）——单字符匹配太噪，机械门不 "
+                              "enforce 该行，请人工统一")
         except UnicodeDecodeError:
             issues.append(f"✗ {ledger} 不是有效的 UTF-8 文本（二进制？）——一致性检查降级")
         except OSError as e:
@@ -185,12 +209,7 @@ def check(tex_dir: Path, ledger: Path) -> list[str]:
     # --- 检查 1：变体残留（LaTeX 注释不计）---
     for v, canon in pairs:
         pat = _variant_pattern(v)
-        for tf in tex_files:
-            try:
-                lines = tf.read_text(encoding="utf-8-sig", errors="replace").splitlines()
-            except OSError as e:
-                issues.append(f"✗ {tf} 无法读取：{e}")
-                continue
+        for tf, lines in tex_cache.items():
             for ln, line in enumerate(lines, 1):
                 if pat.search(_strip_comment(line)):
                     issues.append(f"✗ {tf.name}:{ln} 变体 `{_sanitize(v)}` → 应为 "
@@ -199,11 +218,7 @@ def check(tex_dir: Path, ledger: Path) -> list[str]:
     # --- 检查 2：交叉引用悬空（单向——未用 label 不查，aquarius P5）---
     labels: set[str] = set()
     refs: list[tuple[str, int, str]] = []
-    for tf in tex_files:
-        try:
-            lines = tf.read_text(encoding="utf-8-sig", errors="replace").splitlines()
-        except OSError:
-            continue  # 读取失败已在检查 1 记 issue
+    for tf, lines in tex_cache.items():
         for ln, line in enumerate(lines, 1):
             code = _strip_comment(line)
             labels.update(_LABEL_RE.findall(code))
@@ -214,23 +229,26 @@ def check(tex_dir: Path, ledger: Path) -> list[str]:
                         refs.append((tf.name, ln, key))
     for fname, ln, key in refs:
         if key not in labels:
-            issues.append(f"✗ {fname}:{ln} \\ref{{{key}}} 悬空——\\label{{{key}}} 不存在于任何章 tex")
+            # key 捕获自原始 tex 字节——同过 _sanitize（I6，与 ledger echo 同一面）
+            issues.append(f"✗ {fname}:{ln} \\ref{{{_sanitize(key)}}} 悬空——"
+                          f"\\label{{{_sanitize(key)}}} 不存在于任何章 tex")
 
     # --- bounded output（no silent cap）---
-    if len(issues) > MAX_ISSUES:
+    total = len(issues)
+    if total > MAX_ISSUES:
         kept = issues[:MAX_ISSUES]
-        kept.append(f"✗ …… 另有 {len(issues) - MAX_ISSUES} 个 issue 截断（共 {len(issues)}）——"
+        kept.append(f"✗ …… 另有 {total - MAX_ISSUES} 个 issue 截断（共 {total}）——"
                     f"修完前 {MAX_ISSUES} 个再跑")
-        return kept
-    return issues
+        return kept, total
+    return issues, total
 
 
 def main(argv: list[str]) -> int:
     tex_dir = Path(argv[1]) if len(argv) > 1 else Path("thesis") / "tex"
     ledger = Path(argv[2]) if len(argv) > 2 else Path("sci-skills") / "thesis-terminology-ledger.md"
-    issues = check(tex_dir, ledger)
+    issues, total = check(tex_dir, ledger)
     if issues:
-        print(f"check_polish: {len(issues)} 个一致性问题 @ {tex_dir} + {ledger}:")
+        print(f"check_polish: {total} 个一致性问题 @ {tex_dir} + {ledger}:")
         for it in issues:
             print(f"  {it}")
         return 1

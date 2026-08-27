@@ -32,7 +32,7 @@ def _sanitize(s: str) -> str:
 
 def _readf(p: Path) -> str:
     try:
-        return p.read_text(encoding="utf-8", errors="ignore")
+        return p.read_text(encoding="utf-8-sig", errors="ignore")   # M13：BOM 剥离，对齐家族 check 脚本
     except OSError:
         return ""
 
@@ -57,8 +57,13 @@ def parse(root: Path) -> tuple[list[dict] | None, str | None]:
     rows: list[dict] = []
     for i, o in enumerate(arr, 1):
         fi = o.get("originalFragmentInfo", {}) if isinstance(o, dict) else {}
+        if not isinstance(fi, dict):
+            continue   # I3：类型错乱的片段条目跳过——UNTRUSTED 面不出 traceback
         sc = fi.get("score", 0)
-        txt = "".join(fi.get("sectionContentList", [])).replace("\n", "").strip()
+        scl = fi.get("sectionContentList")
+        if not isinstance(scl, list):
+            scl = []
+        txt = "".join(str(x) for x in scl).replace("\n", "").strip()
         txt = _sanitize(ht.unescape(re.sub(r"<.*?>", "", txt)))
         if txt and isinstance(sc, (int, float)) and sc >= MIN_SCORE:
             rows.append({"sentence": txt,

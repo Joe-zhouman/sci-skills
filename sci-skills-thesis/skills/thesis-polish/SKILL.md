@@ -44,8 +44,10 @@ terminology, and the final call on every change (Step 4 human review is
 mandatory); structure-level problems are surfaced for the author's decision,
 never silently fixed. At close, Step 5 points the author to
 `sci-skills-thesis:thesis-typeset` — the other post-processing skill; there is no
-file dependency between the two, run order is the author's preference (do NOT
-auto-run, spec §后处理链位置).
+At close, Step 5 points the author to
+`sci-skills-thesis:thesis-typeset`（尚未落地，落地后使用）— the other post-processing
+skill; there is no file dependency between the two, run order is the author's
+preference (do NOT auto-run, spec §后处理链位置).
 
 ## Core discipline (state upfront)
 
@@ -314,8 +316,8 @@ with the feedback.
    carry them (aquarius P1), AIGC rewrite stats (from the type-③ commit), and
    the honest boundary restated (再检测是唯一分数真相; prose quality is depth —
    human review + eval, not a mechanical gate).
-3. Point the author to **`sci-skills-thesis:thesis-typeset`** — the other
-   post-processing skill. No file dependency between polish and typeset
+3. Point the author to **`sci-skills-thesis:thesis-typeset`**（尚未落地，落地后
+   使用）— the other post-processing skill. No file dependency between polish and typeset
    (polish eats tex + ledger + spine 系; typeset eats tex + template-spec +
    CONTRACT); run order is the author's preference (先润后排 is the usual
    order — typeset first would mean re-typesetting after prose changes). Do
