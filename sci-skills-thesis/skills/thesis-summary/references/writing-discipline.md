@@ -42,6 +42,12 @@ sci-story's gates have no skip condition; its human review says "Mandatory. Do n
 ① is the lock-critical section; ③'s gate echo is cheap; a skip saves one round and risks
 a mis-framed closure chain (spec §工作流 Step 1; F2).
 
+**Targeted revision after the gate.** When the author flags a mis-framing at the gate
+(a wrong closure, a bad hook), fix what was flagged — do not rewrite the section
+wholesale; the echo-aligned rest stands (spec §⑧ direct mirror from sci-story's
+targeted-revision discipline; spec Acceptance 防带病推进: framing 错回 gate 重对齐,
+targeted 不全文重写).
+
 ### ② spine depth gate — pending candidates, author settles
 
 ② (共性提炼·创新点归纳) is an architecture-level claim (glossary common-extraction) —
