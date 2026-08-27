@@ -9,11 +9,19 @@ refs / dangling chapter numbers / pending residual / missing synthesis-tex file)
 It does NOT catch depth (an agent can write resolved-how without real prose —
 prose-vs-promise, author + eval).
 """
-import codecs, importlib.util, pathlib, sys, tempfile
+import atexit, codecs, importlib.util, pathlib, shutil, sys, tempfile
 HERE = pathlib.Path(__file__).parent
 spec = importlib.util.spec_from_file_location("check_summary", HERE / "check_summary.py")
 check_summary = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(check_summary)
+
+# --- tmpdir cleanup (aries B6): mkdtemp roots are registered and rmtree'd at exit ---
+_ROOTS: list[pathlib.Path] = []
+def _new_root() -> pathlib.Path:
+    d = pathlib.Path(tempfile.mkdtemp())
+    _ROOTS.append(d)
+    return d
+atexit.register(lambda: [shutil.rmtree(d, ignore_errors=True) for d in _ROOTS])
 
 # --- fixtures ---
 # A settled summary-map.md (2 callbacks + 1 commonality) + the gap-map.md it
@@ -86,7 +94,7 @@ def _write_project(summary_map: str = SUMMARY_MAP_SETTLED,
                    synthesis_tex_name: str = "chapter5.tex") -> tuple[pathlib.Path, pathlib.Path, pathlib.Path, pathlib.Path]:
     """Build a temp project: summary-map.md + gap-map.md + chapter-map.md +
     thesis/tex/<synthesis-tex>. Returns (sm, gm, cm, tex_dir)."""
-    root = pathlib.Path(tempfile.mkdtemp())
+    root = _new_root()
     sm = root / "sci-skills" / "thesis-summary" / "summary-map.md"
     sm.parent.mkdir(parents=True)
     sm.write_text(summary_map, encoding="utf-8")
@@ -420,6 +428,97 @@ def test_fails_on_status_bleed_from_foreign_entry():
         f"foreign-status bleed mis-attributed, got: {issues}"
     print("test_fails_on_status_bleed_from_foreign_entry: PASS")
 
+def test_fails_on_field_from_stray_note_block():
+    """aries B1: a non-entry heading (`## 备注`) after an entry must terminate the field
+    window — a stray note block's `- status: filled` must NOT substitute for the entry's
+    own missing status (old behavior: any non Callback/Commonality heading let its lines
+    fold into the previous entry's body, gutting the required-field checks)."""
+    bad = SUMMARY_MAP_SETTLED.replace("""## Callback 1
+- gap-ref: Gap 1
+- resolved-how: 第 5 章回顾高温条件下的有效性，收束 Gap 1
+- status: filled""", """## Callback 1
+- gap-ref: Gap 1
+- resolved-how: 第 5 章回顾高温条件下的有效性，收束 Gap 1
+
+## 备注
+以下为旧版笔记遗留：
+- status: filled""")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Callback 1" in i and "缺 status" in i for i in issues), \
+        f"note-block field must not substitute for the entry's own status, got: {issues}"
+    print("test_fails_on_field_from_stray_note_block: PASS")
+
+def test_ignores_fenced_example_fields():
+    """aries B3: fields inside a balanced code fence in the entry body are NOT field
+    material — a preserved example block must not feed the checks. Callback 2's real
+    fields are all absent; only the fenced example shows them → each missing-field
+    issue must still fire."""
+    bad = SUMMARY_MAP_SETTLED.replace("""## Callback 2
+- gap-ref: Gap 2
+- resolved-how: 第 5 章回顾可解释性贡献，收束 Gap 2
+- status: filled""", """## Callback 2
+下面的示例块（保留作参考）：
+```
+- gap-ref: Gap 2
+- resolved-how: ok
+- status: filled
+```""")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Callback 2" in i and "gap-ref" in i for i in issues), \
+        f"fenced example gap-ref must not satisfy the real check, got: {issues}"
+    assert any("Callback 2" in i and "resolved-how" in i for i in issues), \
+        f"fenced example resolved-how must not satisfy the real check, got: {issues}"
+    assert any("Callback 2" in i and "缺 status" in i for i in issues), \
+        f"fenced example status must not satisfy the real check, got: {issues}"
+    print("test_ignores_fenced_example_fields: PASS")
+
+def test_graceful_on_overlong_synthesis_tex():
+    """aries B2: a 5000-char synthesis-tex value makes is_file() raise OSError
+    [Errno 36] (File name too long) — must surface as a 无法检验 issue, never a
+    traceback (docstring contract: 不抛异常——问题进列表)."""
+    bad = SUMMARY_MAP_SETTLED.replace("synthesis-tex: chapter5.tex", "synthesis-tex: " + "a"*5000)
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    try:
+        issues = check_summary.check(sm, gm, cm, tex_dir)
+        assert any("无法检验" in i for i in issues), \
+            f"expected overlong-synthesis-tex issue, got: {len(issues)} issues"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} — must be graceful"
+    print("test_graceful_on_overlong_synthesis_tex: PASS")
+
+def test_fails_on_unclosed_fence_diagnostic():
+    """aries B4: a stray unclosed ``` after Callback 1 leaves in_fence stuck True —
+    all following entries get swallowed whole. The gate must emit an explicit
+    unclosed-fence diagnostic (no-silent-skip), not just the misleading
+    'Gap 2 无对应 Callback'."""
+    bad = SUMMARY_MAP_SETTLED.replace("""- status: filled
+
+## Callback 2""", """- status: filled
+```
+
+## Callback 2""")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("未闭合" in i for i in issues), \
+        f"stray fence must produce an explicit unclosed-fence issue, got: {issues}"
+    print("test_fails_on_unclosed_fence_diagnostic: PASS")
+
+def test_sanitizes_control_sequences_in_messages():
+    """aries B5: a gap-ref carrying ANSI/control sequences must still be reported
+    malformed, and the raw escapes must be stripped from the issue line (no
+    terminal-title rewrite / log-line forgery surface)."""
+    bad = SUMMARY_MAP_SETTLED.replace("- gap-ref: Gap 1\n",
+                                      "- gap-ref: \x1b]0;pwned\x07Gap x\x1b[31m\n")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("无法解析" in i and "Callback 1" in i for i in issues), \
+        f"malformed gap-ref must still be reported, got: {issues}"
+    assert "\x1b" not in "".join(issues), \
+        f"raw ESC must not leak into issue lines: {issues!r}"
+    print("test_sanitizes_control_sequences_in_messages: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_ref()
@@ -452,4 +551,9 @@ if __name__ == "__main__":
     test_parses_sections_in_any_order()
     test_graceful_on_permission_denied_summary_map()
     test_fails_on_status_bleed_from_foreign_entry()
+    test_fails_on_field_from_stray_note_block()
+    test_ignores_fenced_example_fields()
+    test_graceful_on_overlong_synthesis_tex()
+    test_fails_on_unclosed_fence_diagnostic()
+    test_sanitizes_control_sequences_in_messages()
     print("ALL TESTS PASS")

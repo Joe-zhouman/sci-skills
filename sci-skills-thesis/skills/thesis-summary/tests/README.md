@@ -3,9 +3,9 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_summary.py` (the gate) +
-   `scripts/test_check_summary.py` (31 stdlib cases, run `python3 test_check_summary.py`).
+   `scripts/test_check_summary.py` (36 stdlib cases, run `python3 test_check_summary.py`).
    Exit-code contract: 0 = consistency check passes; 1 = consistency issues (each printed).
-   Four args: summary-map / gap-map / chapter-map / tex-dir. All 31 cases, checked
+   Four args: summary-map / gap-map / chapter-map / tex-dir. All 36 cases, checked
    one-by-one against the on-disk test functions:
    - `test_passes_on_settled` — passes on a settled summary-map.md (2 Callbacks
      bijection-complete against gap-map.md + 1 Commonality grounded-in 2 chapters +
@@ -88,8 +88,35 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    - `test_fails_on_status_bleed_from_foreign_entry` — fails on foreign-status bleed
      (Callback 2 has no `status` of its own; the trailing Commonality carries
      `status: confirmed` — the gate must report Callback 2's honest 缺 status, NOT
-     mis-attribute the foreign value; revert-detection oracle for the
-     `_ANY_ENTRY_HEADER` entry terminator, taurus re-review 4).
+     mis-attribute the foreign value; revert-detection oracle for the entry
+     terminator — since aries B1 generalized to any heading (`_ANY_HEADING`),
+     taurus re-review 4);
+   - `test_fails_on_field_from_stray_note_block` — fails on a field supplied by a
+     stray note block (Callback 1 has no `status`; a later `## 备注` block carries
+     `- status: filled` — any markdown heading of ANY level terminates the entry's
+     field window, so the note cannot substitute for the missing field; aries B1);
+   - `test_ignores_fenced_example_fields` — fenced example fields are not field
+     material (Callback 2's real fields are all absent; only a balanced fenced
+     example block inside the entry shows them — the gate still reports each
+     missing field; aries B3);
+   - `test_graceful_on_overlong_synthesis_tex` — graceful on an overlong
+     synthesis-tex filename (5000 chars — `is_file()` raises OSError [Errno 36];
+     normalized to a 无法检验 issue, no traceback escapes; aries B2);
+   - `test_fails_on_unclosed_fence_diagnostic` — fails with an explicit
+     unclosed-fence diagnostic (a stray ``` swallows all following entries — the
+     gate reports the structural problem itself, not just the misleading
+     "Gap 2 无对应 Callback"; no-silent-skip; aries B4);
+   - `test_sanitizes_control_sequences_in_messages` — sanitizes ANSI/control
+     sequences in issue messages (a gap-ref carrying `\x1b]0;pwned\x07...` is
+     reported malformed with the escapes stripped — no terminal-title rewrite /
+     log-line forgery surface; aries B5).
+
+   Parsing/scoping rule (aries B1/B3): fields must live directly under their entry
+   header until the next heading of ANY level (`## 备注` / `### 编辑注记` terminate the
+   entry as surely as a foreign `## Commonality` header); fenced content is not
+   field material. An unbalanced ``` count additionally emits an explicit
+   unclosed-fence diagnostic rather than silently swallowing the rest of the file
+   (aries B4 — informational; fail-noisy over fail-silent).
 
 2. **the split (spec §⑥, stated honestly)** — check_summary.py is **NEAR-TRIVIAL
    CONSISTENCY, NOT a coverage gate, NOT depth, NOT a post-polish invariant (a

@@ -32,16 +32,19 @@ COMMONALITY_SETTLED = "confirmed"
 _NONE_TOKENS = {"none", "（none）", "(none)", "无", "—"}
 
 
-# summary-map.md 的两类条目 header（Callback / Commonality）——任意一族出现即终止
-# 当前 entry，使 scoping 与段序无关（taurus Minor 6）。对 Gap/Chapter 解析不命中。
-_ANY_ENTRY_HEADER = re.compile(r"^##\s+(?:Callback|Commonality)\s+\d+(?:\s+.*)?$", re.IGNORECASE)
+# 任意级别 markdown 标题（`## 备注` / `### 编辑注记` / 异族 entry header 一视同仁）
+# 都终止当前 entry——字段窗口被截断，外来区块的字段行不能顶替本 entry 的缺失字段
+# （aries B1；取代旧的 _ANY_ENTRY_HEADER——那是本规则的 Callback/Commonality 特例）。
+_ANY_HEADING = re.compile(r"^#{1,6}\s")
 
 
 def _split_sections(text: str, header_word: str) -> list[tuple[str, str]]:
     """把 baton 按 `## <header_word> N` 切成 [(label, body), ...]，按出现序。
-    跳过 ``` 代码块内的标题（mirror check_intro.py aries #2——fence 内的条目不算）。
-    异族条目 header（Callback↔Commonality）终止当前 entry，后续行丢弃到下一个本族
-    header——body 不吞异族段，scoping 与段序无关（taurus Minor 6）。"""
+    entry scoping（aries B1/B3 收紧）：字段窗口 = entry header 起，到**任意级别**的
+    下一个 markdown 标题为止——`## 备注`/`### 编辑注记` 都截断，后续行丢弃到下一个
+    本族 header，scoping 与段序无关（taurus Minor 6 的推广）。fence 内的行（含 ```
+    标记行本身）不进 body——fenced 示例块不是 field material，fence 内的标题也不
+    开 entry（mirror check_intro.py aries #2——fence 内的条目不算）。"""
     sections: list[tuple[str, str]] = []
     current_label: str | None = None
     current_lines: list[str] = []
@@ -50,26 +53,34 @@ def _split_sections(text: str, header_word: str) -> list[tuple[str, str]]:
     for line in text.splitlines():
         if line.lstrip().startswith("```"):
             in_fence = not in_fence
+            continue  # fence 标记行不进 body（aries B3）
+        if in_fence:
+            continue  # fence 内容行不进 body（aries B3）
+        m = pat.match(line)
+        if m:
             if current_label is not None:
-                current_lines.append(line)
+                sections.append((current_label, "\n".join(current_lines)))
+            current_label = f"{header_word} {m.group(1)}"
+            current_lines = []
             continue
-        if not in_fence:
-            m = pat.match(line)
-            if m:
-                if current_label is not None:
-                    sections.append((current_label, "\n".join(current_lines)))
-                current_label = f"{header_word} {m.group(1)}"
-                current_lines = []
-                continue
-            if current_label is not None and _ANY_ENTRY_HEADER.match(line):
+        if _ANY_HEADING.match(line):
+            if current_label is not None:
                 sections.append((current_label, "\n".join(current_lines)))
                 current_label = None
-                continue
+            continue
         if current_label is not None:
             current_lines.append(line)
     if current_label is not None:
         sections.append((current_label, "\n".join(current_lines)))
     return sections
+
+
+def _fences_balanced(text: str) -> bool:
+    """数 ``` 开头行——奇数 = 存在未闭合 code fence（aries B4：孤 fence 会让后续
+    条目被整体吞掉，须显式诊断而非只留误导性的缺席 issue——fail-noisy 好过
+    fail-silent）。与 _split_sections 用同一 fence 判定（lstrip 后 ``` 前缀）。"""
+    n = sum(1 for line in text.splitlines() if line.lstrip().startswith("```"))
+    return n % 2 == 0
 
 
 def _field_value(body: str, field: str) -> str | None:
@@ -109,6 +120,16 @@ def _single_ref_number(val: str, word: str) -> int | None:
     return int(matches[0])
 
 
+# ANSI/控制序列消毒（aries B5）——\t 与 \n 留（值内合法，且 issue 行本身按行打印）。
+_CTRL_RE = re.compile(r"[\x00-\x08\x0b-\x1f\x7f]")
+
+
+def _sanitize(val: str) -> str:
+    """剥离 ANSI/控制序列——issue 行只承载可读文本（aries B5：原始字段值不可
+    直接进输出，防终端 title 改写/日志行伪造）。"""
+    return _CTRL_RE.sub("", val)
+
+
 def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[str]:
     """返回 consistency 问题列表（空 = 通过）。不抛异常——问题进列表。"""
     issues: list[str] = []
@@ -123,6 +144,8 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
 
     callbacks = _split_sections(text, "Callback")
     commonalities = _split_sections(text, "Commonality")
+    if not _fences_balanced(text):
+        issues.append(f"✗ {sm_path} 存在未闭合 code fence——其后条目可能被整体跳过（检查 ``` 标记配对）")
 
     # 读 gap-map.md 的 Gap 编号集合（bijection + fabricated-ref 用）
     gap_nums: set[int] = set()
@@ -159,7 +182,7 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
         else:
             n = _single_ref_number(gr, "Gap")
             if n is None:
-                issues.append(f"✗ {label} gap-ref `{gr}` 无法解析单个 Gap 号（应为 'Gap N' 格式，一 Callback→一 gap）")
+                issues.append(f"✗ {label} gap-ref `{_sanitize(gr)}` 无法解析单个 Gap 号（应为 'Gap N' 格式，一 Callback→一 gap）")
             elif gap_nums and n not in gap_nums:
                 issues.append(f"✗ {label} gap-ref Gap {n} 不在 gap-map.md 的 Gap 列表中（编造/悬空）")
             elif n in seen_gap_refs:
@@ -190,7 +213,7 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
         else:
             nums = {int(x) for x in re.findall(r"chapter\s+(\d+)", gi, re.IGNORECASE)}
             if len(nums) < 2:
-                issues.append(f"✗ {label} grounded-in `{gi}` 解析出 <2 个不同章（跨章共性的定义下限：≥2 章）")
+                issues.append(f"✗ {label} grounded-in `{_sanitize(gi)}` 解析出 <2 个不同章（跨章共性的定义下限：≥2 章）")
             elif chapter_nums and not nums <= chapter_nums:
                 bad = ", ".join(str(x) for x in sorted(nums - chapter_nums))
                 issues.append(f"✗ {label} grounded-in 引用 Chapter {bad} 不在 chapter-map.md 的章列表中（悬空/编造）")
@@ -209,9 +232,15 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
         syn_path = tex_dir / syn_name
         syn_pure = PurePath(syn_name)
         if syn_pure.is_absolute() or ".." in syn_pure.parts:
-            issues.append(f"✗ synthesis-tex `{syn_name}` 在 thesis/tex/ 之外（绝对路径或 `..` 遍历，禁止）")
-        elif not syn_path.is_file():
-            issues.append(f"✗ synthesis-tex `{syn_name}` 不存在于 {tex_dir}（summary 未写总结章 tex？）")
+            issues.append(f"✗ synthesis-tex `{_sanitize(syn_name)}` 在 thesis/tex/ 之外（绝对路径或 `..` 遍历，禁止）")
+        else:
+            try:
+                syn_exists = syn_path.is_file()
+            except (OSError, ValueError) as e:
+                syn_exists = None
+                issues.append(f"✗ synthesis-tex 值无法检验（{e}）——路径超长/非法")
+            if syn_exists is False:
+                issues.append(f"✗ synthesis-tex `{_sanitize(syn_name)}` 不存在于 {tex_dir}（summary 未写总结章 tex？）")
     return issues
 
 
