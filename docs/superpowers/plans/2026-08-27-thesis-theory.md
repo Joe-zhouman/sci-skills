@@ -359,8 +359,8 @@ def test_ignores_utf8_bom_in_theory_map():
     tm = root / "sci-skills" / "thesis-theory" / "theory-map.md"
     tm.parent.mkdir(parents=True)
     tm.write_bytes(codecs.BOM_UTF8
-                   + b"## Shared 1\n- component: x\n- grounded-in: [Chapter 1 §2, Chapter 9 §3]\n"
-                   + b"- instantiates-framework: y\n- status: confirmed\n")
+                   + "## Shared 1\n- component: x\n- grounded-in: [Chapter 1 §2, Chapter 9 §3]\n".encode("utf-8")
+                   + "- instantiates-framework: y\n- status: confirmed\n".encode("utf-8"))
     cm = root / "sci-skills" / "thesis-dissect" / "chapter-map.md"
     cm.parent.mkdir(parents=True)
     cm.write_text(CHAPTER_MAP_SETTLED, encoding="utf-8")
@@ -381,7 +381,7 @@ def test_accepts_entry_headers_with_trailing_title():
     print("test_accepts_entry_headers_with_trailing_title: PASS")
 
 def test_fails_on_missing_theory_tex_field():
-    bad = THEORY_MAP_SETTLED.replace("theory-tex: chapter1.tex\n\n## Shared 1", "## Shared 1")
+    bad = THEORY_MAP_SETTLED.replace("theory-tex: chapter1.tex\n", "")
     tm, cm, sp, tex_dir = _write_project(theory_map=bad)
     issues = check_theory.check(tm, cm, sp, tex_dir)
     assert any("theory-tex" in i for i in issues), f"expected missing-theory-tex-field issue, got: {issues}"
@@ -547,7 +547,7 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
         if _is_empty(_field_value(body, "component")):
             issues.append(f"✗ {label} component 缺失或为空")
         if _is_empty(_field_value(body, "instantiates-framework")):
-            issues.append(f"✗ {label} instantiates-framework 缺失或为空（门"共用理论 grounded 在主线框架"的机械面——非空即查，好坏归 eval+作者）")
+            issues.append(f"✗ {label} instantiates-framework 缺失或为空（门「共用理论 grounded 在主线框架」的机械面——非空即查，好坏归 eval+作者）")
         gi = _field_value(body, "grounded-in")
         if _is_empty(gi):
             issues.append(f"✗ {label} grounded-in 缺失或为空")
