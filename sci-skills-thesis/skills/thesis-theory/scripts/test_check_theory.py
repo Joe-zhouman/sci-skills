@@ -570,6 +570,43 @@ def test_fenced_example_does_not_mask_missing_field():
            f"real field absent must be caught despite the fenced example, got: {issues}"
     print("test_fenced_example_does_not_mask_missing_field: PASS")
 
+def test_graceful_on_overlong_digit_hostile_chapter_map():
+    """`## Chapter <5000 digits>` in chapter-map.md (dissect's product — not theory's
+    own file) must NOT crash check() — bounded parse, issue list, no traceback
+    (aries B1: CPython's 4300-digit str→int limit threw ValueError out of check())."""
+    hostile = CHAPTER_MAP_SETTLED + "\n## Chapter " + "7" * 5000 + "\n- status: written\n"
+    tm, cm, sp, tex_dir = _write_project(chapter_map=hostile)
+    try:
+        issues = check_theory.check(tm, cm, sp, tex_dir)
+        assert isinstance(issues, list), f"expected issue list, got: {issues!r}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} — must be graceful (aries B1)"
+    print("test_graceful_on_overlong_digit_hostile_chapter_map: PASS")
+
+def test_graceful_on_overlong_digit_shared_header():
+    """`## Shared <5000 digits>` in theory-map.md itself — same bounded-parse contract
+    (aries B1 vector a): no raise; the garbage entry is skipped, settled entries still
+    validate, no vacuous interference."""
+    hostile = THEORY_MAP_SETTLED + "\n## Shared " + "7" * 5000 + "\n- component: x\n- status: confirmed\n"
+    tm, cm, sp, tex_dir = _write_project(theory_map=hostile)
+    try:
+        issues = check_theory.check(tm, cm, sp, tex_dir)
+        assert isinstance(issues, list), f"expected issue list, got: {issues!r}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} — must be graceful (aries B1)"
+    print("test_graceful_on_overlong_digit_shared_header: PASS")
+
+def test_directory_shaped_theory_map_clear_message():
+    """A directory at the theory-map path → the clear not-a-regular-file message,
+    not a misleading 不存在 (aries B4 — safe direction, wrong words)."""
+    tm, cm, sp, tex_dir = _write_project()
+    tm.unlink()
+    tm.mkdir()
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("不是常规文件" in i for i in issues), f"expected directory message, got: {issues}"
+    tm.rmdir()
+    print("test_directory_shaped_theory_map_clear_message: PASS")
+
 if __name__ == "__main__":
     # auto-discovery runner（taurus M4）：按名收集所有 test_* 函数——定义了却没被
     # 手动列表调用的 test 不可能存在（silent-never-runs 漂移类封死）。执行序 =

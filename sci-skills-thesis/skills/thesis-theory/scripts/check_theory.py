@@ -126,18 +126,31 @@ def _is_empty(val: str | None) -> bool:
 
 def _header_numbers(text: str, word: str) -> set[int]:
     """从 baton 的条目标题提取编号（Shared/Chapter→theory-map/chapter-map）。
-    派生自 _split_sections 的 labels——单一 parser，无脱钩可能（taurus I1：
-    旧实现的无锚正则与 _split_sections 的全锚正则对 `## Shared 2x` 类行分歧）。"""
-    return {int(label.split()[1]) for label, _ in _split_sections(text, word)}
+    派生自 _split_sections 的 labels——单一 parser，无脱钩可能（taurus I1）。
+    超长数字串按无法解析跳过（aries B1——有界 _int，不抛）。"""
+    nums: set[int] = set()
+    for label, _ in _split_sections(text, word):
+        n = _int(label.split()[1])
+        if n is not None:
+            nums.add(n)
+    return nums
 
 
 def _single_ref_number(val: str, word: str) -> int | None:
     """从引用值（如 'Shared 1'）提取单个编号。匹配不上或含多个 token 返回 None
-    （mirror intro aries #5：一 Overlap→一 Shared/Chapter）。"""
+    （mirror intro aries #5：一 Overlap→一 Shared/Chapter）；单个但超长同样返回
+    None（aries B1——有界 _int，编造号按 unparseable 走）。"""
     matches = re.findall(rf"{word}\s+(\d+)", val, re.IGNORECASE)
     if len(matches) != 1:
         return None  # 0 matches (unparseable) OR >1 matches (malformed multi-ref)
-    return int(matches[0])
+    return _int(matches[0])
+
+
+def _int(s: str) -> int | None:
+    """有界 int 解析（aries B1）：超长数字串（>6 位）按无法解析处理返回 None——
+    章号/条目号超 4 位必为编造；CPython 4300 位上限的 ValueError 不能冲出 check()
+    的「不抛异常」契约。None 由调用方走 unparseable/malformed 分支。"""
+    return int(s) if len(s) <= 6 else None
 
 
 # ANSI/控制序列消毒（aries B5）——\t 与 \n 留（值内合法，且 issue 行本身按行打印）。
@@ -154,6 +167,8 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
     """返回 consistency 问题列表（空 = 通过）。不抛异常——问题进列表。"""
     issues: list[str] = []
     if not tm_path.is_file():
+        if tm_path.exists():
+            return [f"✗ {tm_path} 存在但不是常规文件（目录？）——theory-map.md 应为 baton 文本文件"]
         return [f"✗ {tm_path} 不存在（theory 未产？跑 thesis-theory）"]
     try:
         text = tm_path.read_text(encoding="utf-8-sig")
@@ -219,7 +234,8 @@ def check(tm_path: Path, cm_path: Path, spine_path: Path, tex_dir: Path) -> list
         if _is_empty(gi):
             issues.append(f"✗ {label} grounded-in 缺失或为空")
         else:
-            nums = {int(x) for x in re.findall(r"chapter\s+(\d+)", gi, re.IGNORECASE)}
+            nums = {n for x in re.findall(r"chapter\s+(\d+)", gi, re.IGNORECASE)
+                    if (n := _int(x)) is not None}
             if len(nums) < 2:
                 issues.append(f"✗ {label} grounded-in `{_sanitize(gi)}` 解析出 <2 个不同章（共用组件的定义下限：≥2 章）")
             elif chapter_nums and not nums <= chapter_nums:
