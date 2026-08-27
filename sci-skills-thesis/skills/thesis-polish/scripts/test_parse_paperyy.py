@@ -98,6 +98,32 @@ def test_hostile_closed_same_name_nesting_bounded_linear():
     assert elapsed < 10.0, f"quadratic blowup: {elapsed:.2f}s"
     print(f"test_hostile_closed_same_name_nesting_bounded_linear: PASS ({elapsed:.3f}s)")
 
+def test_hostile_interleaved_nesting_bounded_linear():
+    """N1：交错规整嵌套（每层先开后闭、顶-tag em/p 交替——<em>甲乙。<p>节。…
+    全部开完再反向全部闭合）同样二次方。A1 的同名守卫只看 stack 顶，交替形态
+    永不触发、栈全量嵌套，每层闭合 join+extend 全量上缴（16k/482KB 实测 7.5s，
+    ~4x/翻倍）。修法 = 平铺规则加宽：栈上已有 em/p 时任何 em/p 开标签不 push
+    （内层非结构，文本直接续进外层缓冲——vendor 报告不嵌套句/题标签）。"""
+    import time
+    d = 32000
+    hostile = ("".join((f"<em class='high' id='{i}'>甲乙。" if i % 2 == 0
+                        else "<p class='uncheck'>节。") for i in range(d))
+               + "Z"
+               + "".join(("</em>" if i % 2 == 0 else "</p>")
+                         for i in range(d - 1, -1, -1)))   # ~1MB，全闭合（well-formed 敌意形态）
+    with tempfile.TemporaryDirectory() as d_:
+        p = pathlib.Path(d_) / "hostile-interleaved.html"
+        p.write_text(hostile, encoding="utf-8")
+        buf = io.StringIO()
+        t0 = time.monotonic()
+        with redirect_stdout(buf):
+            rc = ppy.main(["parse_paperyy.py", str(p)])
+        elapsed = time.monotonic() - t0
+    assert rc == 0, f"exit {rc}"
+    assert "1 句" in buf.getvalue(), buf.getvalue()[:200]   # 平铺自恢复 = 单条记录
+    assert elapsed < 10.0, f"quadratic blowup: {elapsed:.2f}s"
+    print(f"test_hostile_interleaved_nesting_bounded_linear: PASS ({elapsed:.3f}s)")
+
 def test_parse_html_entities_unescaped():
     rows, _ = ppy.parse("<em class='high' id='1'>A &amp; B &lt;C&gt;</em>")
     assert rows and rows[0]["sentence"] == "A & B <C>", rows
@@ -247,6 +273,7 @@ if __name__ == "__main__":
     test_parse_data_attrs_no_false_match()
     test_hostile_unclosed_tags_bounded_linear()
     test_hostile_closed_same_name_nesting_bounded_linear()
+    test_hostile_interleaved_nesting_bounded_linear()
     test_parse_html_entities_unescaped()
     test_main_newline_in_sentence_cannot_forge_records()
     test_main_bom_report_no_leak()

@@ -181,13 +181,19 @@ def check(tex_dir: Path, ledger: Path) -> tuple[list[str], int]:
     # 做一次（旧检查 1 每对×每行重跑逐字符状态机，400 对×20 文件×1000 行实测
     # 43.9s；缓存剥离后两检查都吃剥离好的行）。A9：tf.name 在此消毒 + 压平换行
     # 一次——文件名里的 \n 会在行导向 issue 输出里伪造新行（B5/I6 血统的同一面；
-    # _sanitize 惯例 \t/\n 留，name 进输出前必须单行）。---
+    # _sanitize 惯例 \t/\n 留，name 进输出前必须单行；OSError 兜底行的完整路径
+    # 同理，见 except 分支）。---
     tex_cache: list[tuple[str, list[str]]] = []
     for tf in tex_files:
         try:
             lines = tf.read_text(encoding="utf-8-sig", errors="replace").splitlines()
         except OSError as e:
-            issues.append(f"✗ {tf} 无法读取：{e}")
+            # A9 残余：本兜底行此前插值原始完整路径——不可读的换行名 tex 让
+            # `✗ /…/bad\nFORGED… 无法读取` 带换行存活（缓存路径盖了、这条漏了）。
+            # 路径与 errno 消息都过 _sanitize + 压平换行——issue 恒单行。
+            tf_disp = _sanitize(str(tf)).replace("\n", " ")
+            e_disp = _sanitize(str(e)).replace("\n", " ")
+            issues.append(f"✗ {tf_disp} 无法读取：{e_disp}")
             continue
         tex_cache.append((_sanitize(tf.name).replace("\n", " "),
                           [_strip_comment(l) for l in lines]))

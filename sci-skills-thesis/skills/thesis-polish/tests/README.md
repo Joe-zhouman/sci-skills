@@ -3,7 +3,7 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **机械检查** — `scripts/check_polish.py` (the gate) +
-   `scripts/test_check_polish.py` (31 stdlib cases, run `python3
+   `scripts/test_check_polish.py` (32 stdlib cases, run `python3
    test_check_polish.py`). Exit-code contract: 0 = 一致性通过; 1 =
    有 issue（逐条打印）. Two args: `<tex-dir> <ledger>`, defaults
    `thesis/tex` + `sci-skills/thesis-terminology-ledger.md` (relative to
@@ -18,10 +18,12 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    reported). Bounded output: MAX_ISSUES (200) + an explicit truncation
    line (no silent cap; `check()` returns `(issues, total)` so main()'s
    header and the sentinel line print the SAME true total). tex filenames
-   are sanitized + newline-flattened at cache build (aries A9 — a `\n` in
-   a filename would forge issue lines). Explicit call list in
-   `__main__` (no auto-discovery — the 31 count below is verified against
-   the on-disk functions). All 31 cases, one-by-one:
+   are sanitized + newline-flattened at cache build, and the OSError
+   unreadable-file fallback sanitizes + flattens the full path AND its
+   errno message the same way (aries A9 + round-2 residual — a `\n` in a
+   filename or its error echo would forge issue lines). Explicit call list in
+   `__main__` (no auto-discovery — the 32 count below is verified against
+   the on-disk functions). All 32 cases, one-by-one:
    - `test_passes_on_clean` — passes on a settled ledger + clean chapter
      tex (variant-free, every ref resolves);
    - `test_unused_label_is_not_reported` — P5 pin: the clean fixture
@@ -105,6 +107,12 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      named with an embedded newline produces SINGLE-line issues only: the
      name is sanitized + newline-flattened at cache build (aries A9 —
      `tf.name` was the one interpolation `_sanitize` never touched);
+   - `test_unreadable_newline_named_tex_single_line_issue` — an UNREADABLE
+     (chmod 000) tex named with an embedded newline yields exactly ONE
+     single-line issue: the OSError fallback sanitizes + newline-flattens
+     both the full path and the errno message (aries A9 round-2 residual —
+     the cache-build fix covered readable files, the raw-path error echo
+     still forged lines);
    - `test_missing_tex_dir` — missing tex-dir → explicit 不存在 issue
      (thesis/tex 未建？先跑写作链);
    - `test_empty_tex_dir` — empty tex-dir (zero .tex files) → explicit
@@ -123,14 +131,15 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    stderr (drift signal — including the false-clean shapes below);
    2 = usage.
 
-   - `scripts/parse_paperyy.py` + `test_parse_paperyy.py` (18 stdlib
+   - `scripts/parse_paperyy.py` + `test_parse_paperyy.py` (19 stdlib
      cases, run `python3 test_parse_paperyy.py`). PaperYY = ONE offline
      HTML file; the wenqu-verified shape: `em.high` sentences +
      `p.uncheck` section titles + truncation of the repeated block from
      致谢 on. Parsing is a LINEAR tag-token walk (C2 — the old paired
-     regex was quadratic on unclosed tags; same-name adjacent opens are
-     treated flat, aries A1 — closed same-name nesting was quadratic
-     too). All 18 cases:
+     regex was quadratic on unclosed tags; em/p NESTING is treated flat —
+     same-name adjacent opens, aries A1, AND interleaved
+     `<em>…<p>…</p>…</em>` chains, aries round-2 N1 — both closed
+     nesting shapes were quadratic). All 19 cases:
      - `test_parse_collects_high_with_sections_and_stops_at_zhixie` —
        em.high-only collection (low NOT collected), location = section
        title + `#id`, meta carries PaperYY, collection stops at 致谢
@@ -154,6 +163,12 @@ Test plan (run via skill-creator-plus eval loop before deployment):
        chunk at every level completes < 10s (the old stack re-joined and
        re-handed-up at every close: measured 31s = n²; aries A1 —
        same-name adjacent opens now treated flat, one join total);
+     - `test_hostile_interleaved_nesting_bounded_linear` — depth 32000
+       (~1MB) of WELL-FORMED interleaved `<em>`/`<p>` nesting (every
+       level opens before any close, alternating tags at the top — the
+       same-name-only guard never fired; 16k measured 7.5s = n²)
+       completes < 10s with a single flat record (aries round-2 N1 — ANY
+       em/p open while an em/p is on the stack is now treated flat);
      - `test_parse_html_entities_unescaped` — HTML entities unescaped
        (`A &amp; B &lt;C&gt;` → `A & B <C>`);
      - `test_main_newline_in_sentence_cannot_forge_records` — a payload
@@ -305,7 +320,10 @@ catches the extreme); the paperyy repeated-block stop is 致谢-shaped
 (致谢/致谢辞 exact-prefix, aries A8) — other 致-prefixed mid-thesis
 headings (致读者/致力于…) no longer stop collection, and conversely a
 repeated block introduced by a differently-named heading would not be
-truncated (the heuristic follows the wenqu-verified 致谢 shape);
+truncated (the heuristic follows the wenqu-verified 致谢 shape); the
+paperyy flat self-recovery (A1/N1) silently drops an inner `high` em
+nested inside an outer `low` em (hidden-highs direction; crafted/
+malformed shape only — vendor reports never nest em, aries round-2 N2);
 check_polish's ref scan is per-line — a multi-line `\ref{key`
 with `}` on the next line (legal LaTeX) is silently unchecked
 (false-negative direction, aries A10 known limitation); 知网 parser is

@@ -56,7 +56,8 @@ def parse(html_text: str) -> tuple[list[dict], str]:
 def _walk(html_text: str) -> tuple[list[dict], str, bool]:
     """线性 tag 走查（C2）。em/p 开标签入栈，文本只进最内层缓冲，嵌套 tag
     token 不进缓冲（I4 由此消解——跨行标签是单个 token，不会漏进句子）；闭合
-    时弹到最近同名并处理；同名紧邻开标签不 push（A1 平铺自恢复）。返回
+    时弹到最近同名并处理；栈上已有 em/p 时的 em/p 开标签不 push（A1/N1 平铺
+    自恢复——嵌套是 vendor 不可能形态，内层文本续进外层缓冲）。返回
     (风险句列表, 收集终止点描述, 见过闭合 em 结构)——第三项是 C1+A4 的干净-vs-
     漂移判据：闭合过 ≥1 个 em（任意 class）而零 high = 干净结果；只有 p.uncheck
     章节题、em 载荷全失 = 格式漂移。未闭合标签永不处理——敌意形态线性通过并
@@ -81,10 +82,12 @@ def _walk(html_text: str) -> tuple[list[dict], str, bool]:
         tag, attrs = m.group(1).lower(), m.group(2)
         if not closing:
             if tag in ("em", "p"):
-                # A1：同名紧邻嵌套（vendor 不可能形态）不 push——按平铺自恢复。
-                # 旧实现全 push 后每层闭合 join+extend 全量上缴，CLOSED 同名嵌套
-                # depth 32k/1.1MB 实测 31s（n²）；平铺后全文只进一个缓冲、单次 join。
-                if not (stack and stack[-1][0] == tag):
+                # A1/N1：em/p 嵌套（vendor 不可能形态）不 push——按平铺自恢复。
+                # 旧实现全 push 后每层闭合 join+extend 全量上缴，CLOSED 嵌套二次方
+                # （同名 32k/1.1MB 实测 31s；交错 <em>…<p>…</p>…</em> 16k/482KB
+                # 实测 7.5s——同名守卫只看 stack 顶，交替顶-tag 永不触发）。平铺后
+                # 栈深 ≤1、全文只进一个缓冲、单次 join；内层文本续进外层缓冲。
+                if not stack:
                     stack.append((tag, attrs, []))
             continue
         for k in range(len(stack) - 1, -1, -1):   # 弹到最近同名
