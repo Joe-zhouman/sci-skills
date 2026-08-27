@@ -325,6 +325,199 @@ def test_fails_on_theory_tex_path_traversal():
            f"`..` traversal theory-tex must be rejected, got: {issues}"
     print("test_fails_on_theory_tex_path_traversal: PASS")
 
+def test_fails_on_missing_shared_ref():
+    bad = THEORY_MAP_SETTLED.replace("- shared-ref: Shared 1\n", "")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("shared-ref" in i and "Overlap 1" in i for i in issues), f"expected shared-ref issue, got: {issues}"
+    print("test_fails_on_missing_shared_ref: PASS")
+
+def test_fails_on_dangling_shared_ref():
+    bad = THEORY_MAP_SETTLED.replace("- shared-ref: Shared 1", "- shared-ref: Shared 9")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("Shared 9" in i and ("不在" in i or "悬空" in i) for i in issues), \
+           f"expected dangling shared-ref issue, got: {issues}"
+    print("test_fails_on_dangling_shared_ref: PASS")
+
+def test_fails_on_malformed_shared_ref():
+    bad = THEORY_MAP_SETTLED.replace("- shared-ref: Shared 1", "- shared-ref: 某个组件")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("shared-ref" in i and "无法解析" in i for i in issues), \
+           f"expected malformed shared-ref issue, got: {issues}"
+    print("test_fails_on_malformed_shared_ref: PASS")
+
+def test_fails_on_overlap_chapter_not_in_chapter_map():
+    bad = THEORY_MAP_SETTLED.replace("- chapter-ref: Chapter 1", "- chapter-ref: Chapter 9")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("Chapter 9" in i and ("不在" in i or "悬空" in i) for i in issues), \
+           f"expected dangling chapter-ref issue, got: {issues}"
+    print("test_fails_on_overlap_chapter_not_in_chapter_map: PASS")
+
+def test_fails_on_empty_suggested_disposition():
+    bad = THEORY_MAP_SETTLED.replace(
+        "- suggested-disposition: 章内留 brief recap + cross-ref 第二章",
+        "- suggested-disposition: none")
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("suggested-disposition" in i and "Overlap 1" in i for i in issues), \
+           f"expected empty-disposition issue, got: {issues}"
+    print("test_fails_on_empty_suggested_disposition: PASS")
+
+def test_fails_on_missing_chapter_map():
+    tm, cm, sp, tex_dir = _write_project()
+    cm.unlink()
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("chapter-map" in i.lower() and "不存在" in i for i in issues), \
+           f"expected missing-chapter-map issue, got: {issues}"
+    print("test_fails_on_missing_chapter_map: PASS")
+
+def test_fails_on_unreadable_chapter_map():
+    tm, cm, sp, tex_dir = _write_project()
+    cm.write_bytes(b"\xff\xfe\x00\x01garbage non-utf8")
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("不可读" in i and "cross-ref 跳过" in i for i in issues), \
+           f"expected unreadable-chapter-map issue, got: {issues}"
+    print("test_fails_on_unreadable_chapter_map: PASS")
+
+def test_fails_on_chapter_map_without_entries():
+    tm, cm, sp, tex_dir = _write_project(chapter_map="# chapter-map.md\n> 空 baton\n")
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("无任何 ## Chapter N 条目" in i for i in issues), \
+           f"expected no-entries issue, got: {issues}"
+    print("test_fails_on_chapter_map_without_entries: PASS")
+
+def test_fails_on_missing_spine():
+    """spine.md missing → theory's own hard dependency (unified framework skeleton)."""
+    tm, cm, sp, tex_dir = _write_project()
+    sp.unlink()
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("spine" in i.lower() and "不存在" in i for i in issues), \
+           f"expected missing-spine issue, got: {issues}"
+    print("test_fails_on_missing_spine: PASS")
+
+def test_fails_on_unreadable_spine():
+    tm, cm, sp, tex_dir = _write_project()
+    sp.write_bytes(b"\xff\xfe\x00\x01garbage non-utf8")
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("不可读" in i and "spine 复验跳过" in i for i in issues), \
+           f"expected unreadable-spine issue, got: {issues}"
+    print("test_fails_on_unreadable_spine: PASS")
+
+def test_fails_on_spine_pending_residue():
+    """spine re-opened mid-write (`[pending?` marker) → theory-map may be stale —
+    the T1 mid-write backtrack window this check exists to close."""
+    reopened = SPINE_SETTLED.replace("## Main line (主线)\nX 主线串联各章",
+                                     "## Main line (主线)\n[pending? ] 重新斟酌中的主线")
+    tm, cm, sp, tex_dir = _write_project(spine=reopened)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("[pending?" in i and ("重开" in i or "陈旧" in i) for i in issues), \
+           f"expected spine-reopened issue, got: {issues}"
+    print("test_fails_on_spine_pending_residue: PASS")
+
+def test_fenced_shared_does_not_count():
+    """A `## Shared 1` inside a ``` fence must NOT satisfy the confirmed-mode ≥1
+    requirement → vacuous-pass guard must fire (pins fence-aware inheritance)."""
+    fenced = THEORY_MAP_SETTLED.replace("""## Shared 1
+- component: 统一热力学表征框架 T(x)
+- grounded-in: [Chapter 1 §2 method, Chapter 2 §3 method]
+- instantiates-framework: T(x) 是统一框架 F 的表征层实例化
+- status: confirmed
+
+## Shared 2
+- component: 跨章实验设计协议 P
+- grounded-in: [Chapter 1 §2 method, Chapter 2 §2 method]
+- instantiates-framework: P 是 F 的实验验证层实例化
+- status: confirmed""", """```
+## Shared 1
+- component: fenced fake
+- grounded-in: [Chapter 1 §2, Chapter 2 §3]
+- instantiates-framework: fenced
+- status: confirmed
+```""")
+    tm, cm, sp, tex_dir = _write_project(theory_map=fenced)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("Shared" in i and ("空" in i or "vacuous" in i.lower()) for i in issues), \
+           f"fenced Shared must not count → vacuous guard must fire, got: {issues}"
+    print("test_fenced_shared_does_not_count: PASS")
+
+def test_hr_closes_field_window():
+    """A standalone `---` hr closes the entry's field window (summary R1 lineage):
+    fields after the hr belong to a foreign block and must not substitute the
+    entry's own missing fields."""
+    hr = THEORY_MAP_SETTLED.replace("""## Shared 1
+- component: 统一热力学表征框架 T(x)""", """## Shared 1
+
+---
+
+- component: 统一热力学表征框架 T(x)""")
+    tm, cm, sp, tex_dir = _write_project(theory_map=hr)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("component" in i and "Shared 1" in i for i in issues), \
+           f"hr must close the window → Shared 1 component must be missing, got: {issues}"
+    print("test_hr_closes_field_window: PASS")
+
+def test_foreign_block_fields_do_not_substitute():
+    """A `## 备注` block carrying Shared-shaped fields after Shared 1 must NOT
+    substitute Shared 1's own fields (summary B1 lineage: any-level header closes)."""
+    foreign = THEORY_MAP_SETTLED.replace("""## Shared 1
+- component: 统一热力学表征框架 T(x)
+- grounded-in: [Chapter 1 §2 method, Chapter 2 §3 method]
+- instantiates-framework: T(x) 是统一框架 F 的表征层实例化
+- status: confirmed""", """## Shared 1
+
+## 备注（编辑注记）
+- component: 外来块的组件
+- grounded-in: [Chapter 1 §2, Chapter 2 §3]
+- instantiates-framework: 外来
+- status: confirmed""")
+    tm, cm, sp, tex_dir = _write_project(theory_map=foreign)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("component" in i and "Shared 1" in i for i in issues), \
+           f"foreign-block fields must not substitute, got: {issues}"
+    print("test_foreign_block_fields_do_not_substitute: PASS")
+
+def test_orphan_fence_diagnostic():
+    """Odd number of ``` lines → explicit orphan-fence diagnostic (summary B4 lineage:
+    fail-noisy, not a misleading absence issue)."""
+    orphan = THEORY_MAP_SETTLED + "\n```\n## Shared 3\n- component: swallowed\n"
+    tm, cm, sp, tex_dir = _write_project(theory_map=orphan)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("未闭合 code fence" in i for i in issues), \
+           f"expected orphan-fence diagnostic, got: {issues}"
+    print("test_orphan_fence_diagnostic: PASS")
+
+def test_ansi_sanitized_in_issue_output():
+    """Field values echoed into issue lines must be ANSI/control-stripped
+    (summary B5 lineage — no terminal title rewriting via forged log lines)."""
+    ansi = THEORY_MAP_SETTLED.replace(
+        "- grounded-in: [Chapter 1 §2 method, Chapter 2 §3 method]",
+        "- grounded-in: [\x1b[31mChapter 1 §2\x1b[0m, Chapter 1 §4]")
+    tm, cm, sp, tex_dir = _write_project(theory_map=ansi)
+    issues = check_theory.check(tm, cm, sp, tex_dir)
+    assert any("grounded-in" in i for i in issues), "expected the grounding issue to fire"
+    assert not any("\x1b" in i for i in issues), f"ANSI escape leaked into issue output: {issues}"
+    print("test_ansi_sanitized_in_issue_output: PASS")
+
+def test_bad_theory_tex_value_graceful():
+    """A theory-tex value that breaks stat (overlong name → OSError [Errno 36]) →
+    graceful '值无法检验' issue, never a crash (summary aries B2 stat-fallback
+    lineage). NOTE: the task text's fixture was an embedded NUL — on this Python
+    (3.13) pathlib's is_file() swallows the ValueError internally (returns False),
+    so a NUL value never reaches the stat-fallback branch and the test pinned
+    nothing; the overlong name does raise (mirror test_check_summary.py
+    test_graceful_on_overlong_synthesis_tex)."""
+    bad = THEORY_MAP_SETTLED.replace("theory-tex: chapter1.tex", "theory-tex: " + "a"*5000)
+    tm, cm, sp, tex_dir = _write_project(theory_map=bad)
+    try:
+        issues = check_theory.check(tm, cm, sp, tex_dir)
+        assert any("无法检验" in i for i in issues), f"expected graceful value issue, got: {issues}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} — must be graceful"
+    print("test_bad_theory_tex_value_graceful: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_passes_on_waived_terminal()
@@ -344,4 +537,21 @@ if __name__ == "__main__":
     test_fails_on_missing_theory_tex_field()
     test_fails_on_missing_theory_tex_file()
     test_fails_on_theory_tex_path_traversal()
+    test_fails_on_missing_shared_ref()
+    test_fails_on_dangling_shared_ref()
+    test_fails_on_malformed_shared_ref()
+    test_fails_on_overlap_chapter_not_in_chapter_map()
+    test_fails_on_empty_suggested_disposition()
+    test_fails_on_missing_chapter_map()
+    test_fails_on_unreadable_chapter_map()
+    test_fails_on_chapter_map_without_entries()
+    test_fails_on_missing_spine()
+    test_fails_on_unreadable_spine()
+    test_fails_on_spine_pending_residue()
+    test_fenced_shared_does_not_count()
+    test_hr_closes_field_window()
+    test_foreign_block_fields_do_not_substitute()
+    test_orphan_fence_diagnostic()
+    test_ansi_sanitized_in_issue_output()
+    test_bad_theory_tex_value_graceful()
     print("ALL TESTS PASS")
