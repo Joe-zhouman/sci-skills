@@ -190,7 +190,7 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
             if len(nums) < 2:
                 issues.append(f"✗ {label} grounded-in `{gi}` 解析出 <2 个不同章（跨章共性的定义下限：≥2 章）")
             elif chapter_nums and not nums <= chapter_nums:
-                bad = sorted(nums - chapter_nums)
+                bad = ", ".join(str(x) for x in sorted(nums - chapter_nums))
                 issues.append(f"✗ {label} grounded-in 引用 Chapter {bad} 不在 chapter-map.md 的章列表中（悬空/编造）")
         st = _field_value(body, "status")
         if st is None:

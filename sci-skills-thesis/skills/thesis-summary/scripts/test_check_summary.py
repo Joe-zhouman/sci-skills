@@ -252,6 +252,134 @@ def test_fails_on_synthesis_tex_path_traversal():
            f"`..` traversal synthesis-tex must be rejected, got: {issues}"
     print("test_fails_on_synthesis_tex_path_traversal: PASS")
 
+def test_fails_on_missing_gap_callback():
+    """Gap 2 has NO Callback entry → bijection absence — the lock's core check (缺席检测)."""
+    bad = SUMMARY_MAP_SETTLED.replace("""## Callback 2
+- gap-ref: Gap 2
+- resolved-how: 第 5 章回顾可解释性贡献，收束 Gap 2
+- status: filled
+
+""", "")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Gap 2" in i and "无对应 Callback" in i for i in issues), f"expected bijection-absence issue, got: {issues}"
+    print("test_fails_on_missing_gap_callback: PASS")
+
+def test_fails_on_duplicate_callback_for_same_gap():
+    """Two Callbacks both referencing Gap 1 → 一一对应 broken → issue."""
+    bad = SUMMARY_MAP_SETTLED.replace("- gap-ref: Gap 2", "- gap-ref: Gap 1")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Gap 1" in i and ("一一对应" in i or "duplicate" in i.lower()) for i in issues), \
+           f"expected duplicate-ref issue, got: {issues}"
+    print("test_fails_on_duplicate_callback_for_same_gap: PASS")
+
+def test_fails_on_fabricated_gap_ref():
+    """gap-ref = Gap 9 but gap-map.md only has Gap 1-2 → fabricated/dangling → issue."""
+    bad = SUMMARY_MAP_SETTLED.replace("- gap-ref: Gap 1\n", "- gap-ref: Gap 9\n")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Gap 9" in i and ("不在" in i or "悬空" in i or "编造" in i) for i in issues), \
+           f"expected fabricated-gap-ref issue, got: {issues}"
+    print("test_fails_on_fabricated_gap_ref: PASS")
+
+def test_fails_on_missing_gap_map():
+    """gap-map.md missing → intro not run → issue (the lock's enforce side has no data baton)."""
+    sm, gm, cm, tex_dir = _write_project()
+    gm.unlink()
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("gap-map" in i.lower() and "不存在" in i for i in issues), f"expected missing-gap-map issue, got: {issues}"
+    print("test_fails_on_missing_gap_map: PASS")
+
+def test_fails_on_unreadable_gap_map():
+    """gap-map.md binary/non-utf8 → '对应检查跳过' issue, NOT silent swallow (the lock's data baton —
+    aquarius A2: sm/cm unreadable branches both had tests, this one didn't)."""
+    sm, gm, cm, tex_dir = _write_project()
+    gm.write_bytes(b"\xff\xfe\x00\x01garbage non-utf8")
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("不可读" in i and "gap↔Callback 对应检查跳过" in i for i in issues), \
+           f"expected unreadable-gap-map issue, got: {issues}"
+    print("test_fails_on_unreadable_gap_map: PASS")
+
+def test_fails_on_missing_chapter_map():
+    sm, gm, cm, tex_dir = _write_project()
+    cm.unlink()
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("chapter-map" in i.lower() and "不存在" in i for i in issues), \
+           f"expected missing-chapter-map issue, got: {issues}"
+    print("test_fails_on_missing_chapter_map: PASS")
+
+def test_fails_on_unreadable_chapter_map():
+    """chapter-map.md binary/non-utf8 → 'cross-ref 跳过' issue, NOT silent swallow (mirror intro taurus fix)."""
+    sm, gm, cm, tex_dir = _write_project()
+    cm.write_bytes(b"\xff\xfe\x00\x01garbage non-utf8")
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("不可读" in i and "grounded-in cross-ref 跳过" in i for i in issues), \
+           f"expected unreadable-chapter-map issue, got: {issues}"
+    print("test_fails_on_unreadable_chapter_map: PASS")
+
+def test_fails_on_empty_commonality():
+    bad = SUMMARY_MAP_SETTLED.replace("- commonality: 两章以统一框架 X 的同一实例化方式处理各自对象",
+                                      "- commonality: none")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("commonality" in i and "Commonality 1" in i for i in issues), f"expected empty-commonality issue, got: {issues}"
+    print("test_fails_on_empty_commonality: PASS")
+
+def test_fails_on_commonality_single_chapter_grounding():
+    """grounded-in with only ONE distinct chapter → <2 → not a cross-chapter commonality → issue."""
+    bad = SUMMARY_MAP_SETTLED.replace(
+        "- grounded-in: [Chapter 1 §2 result, Chapter 2 §3 result]",
+        "- grounded-in: [Chapter 1 §2 result, Chapter 1 §4 result]")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("grounded-in" in i and ("2" in i or "两" in i) for i in issues), \
+           f"expected single-chapter grounding issue, got: {issues}"
+    print("test_fails_on_commonality_single_chapter_grounding: PASS")
+
+def test_fails_on_commonality_status_pending():
+    """status=pending = AI candidate not author-settled → must fail (never auto-adopted)."""
+    bad = SUMMARY_MAP_SETTLED.replace("- status: confirmed", "- status: pending")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("status" in i and "Commonality 1" in i for i in issues), f"expected commonality pending issue, got: {issues}"
+    print("test_fails_on_commonality_status_pending: PASS")
+
+def test_fails_on_dangling_grounded_in():
+    """grounded-in references Chapter 9; chapter-map only has ch1-2 → dangling → issue."""
+    bad = SUMMARY_MAP_SETTLED.replace(
+        "- grounded-in: [Chapter 1 §2 result, Chapter 2 §3 result]",
+        "- grounded-in: [Chapter 1 §2 result, Chapter 9 §3 result]")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Chapter 9" in i and ("不在" in i or "悬空" in i) for i in issues), \
+           f"expected dangling grounded-in issue, got: {issues}"
+    print("test_fails_on_dangling_grounded_in: PASS")
+
+def test_ignores_entries_inside_code_fence():
+    """A `## Callback 3` inside a ``` fence must NOT count as covering Gap 3 →
+    bijection must still flag Gap 3 as absent (mirror intro/dissect fence-aware parsing)."""
+    gap3 = GAP_MAP_SETTLED + """
+## Gap 3
+- gap: 缺乏跨材料验证
+- filled-by: Chapter 2
+- callback-anchor: summary 须回扣跨材料验证
+- status: filled
+"""
+    fenced = SUMMARY_MAP_SETTLED + """
+```
+## Callback 3
+- gap-ref: Gap 3
+- resolved-how: (fenced fake)
+- status: filled
+```
+"""
+    sm, gm, cm, tex_dir = _write_project(summary_map=fenced, gap_map=gap3)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Gap 3" in i and "无对应 Callback" in i for i in issues), \
+           f"fenced Callback 3 must NOT count → Gap 3 absence must be flagged, got: {issues}"
+    print("test_ignores_entries_inside_code_fence: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_ref()
@@ -267,4 +395,16 @@ if __name__ == "__main__":
     test_fails_on_missing_synthesis_tex_field()
     test_fails_on_missing_synthesis_tex_file()
     test_fails_on_synthesis_tex_path_traversal()
+    test_fails_on_missing_gap_callback()
+    test_fails_on_duplicate_callback_for_same_gap()
+    test_fails_on_fabricated_gap_ref()
+    test_fails_on_missing_gap_map()
+    test_fails_on_unreadable_gap_map()
+    test_fails_on_missing_chapter_map()
+    test_fails_on_unreadable_chapter_map()
+    test_fails_on_empty_commonality()
+    test_fails_on_commonality_single_chapter_grounding()
+    test_fails_on_commonality_status_pending()
+    test_fails_on_dangling_grounded_in()
+    test_ignores_entries_inside_code_fence()
     print("ALL TESTS PASS")
