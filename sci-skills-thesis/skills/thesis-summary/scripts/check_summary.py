@@ -33,18 +33,21 @@ _NONE_TOKENS = {"none", "（none）", "(none)", "无", "—"}
 
 
 # 任意级别 markdown 标题（`## 备注` / `### 编辑注记` / 异族 entry header 一视同仁）
-# 都终止当前 entry——字段窗口被截断，外来区块的字段行不能顶替本 entry 的缺失字段
-# （aries B1；取代旧的 _ANY_ENTRY_HEADER——那是本规则的 Callback/Commonality 特例）。
-_ANY_HEADING = re.compile(r"^#{1,6}\s")
+# 与单独成行的水平分割线（`---` / `***` / `___`）都终止当前 entry——字段窗口被截断，
+# 外来区块的字段行不能顶替本 entry 的缺失字段（aries B1 + R1；取代旧的
+# _ANY_ENTRY_HEADER——那是本规则的 Callback/Commonality 特例）。hr 须整行只有
+# 分割字符（`-{3,}\s*$` 等）——bullet `- gap-ref` 带后续内容，不满足，不会误伤。
+_SCOPE_TERMINATOR = re.compile(r"^(?:#{1,6}\s|-{3,}\s*$|\*{3,}\s*$|_{3,}\s*$)")
 
 
 def _split_sections(text: str, header_word: str) -> list[tuple[str, str]]:
     """把 baton 按 `## <header_word> N` 切成 [(label, body), ...]，按出现序。
-    entry scoping（aries B1/B3 收紧）：字段窗口 = entry header 起，到**任意级别**的
-    下一个 markdown 标题为止——`## 备注`/`### 编辑注记` 都截断，后续行丢弃到下一个
-    本族 header，scoping 与段序无关（taurus Minor 6 的推广）。fence 内的行（含 ```
-    标记行本身）不进 body——fenced 示例块不是 field material，fence 内的标题也不
-    开 entry（mirror check_intro.py aries #2——fence 内的条目不算）。"""
+    entry scoping（aries B1/B3/R1 收紧）：字段窗口 = entry header 起，到**任意级别**
+    的下一个 markdown 标题或单独成行的水平分割线为止——`## 备注`/`### 编辑注记`/
+    `---` 都截断，后续行丢弃到下一个本族 header，scoping 与段序无关（taurus
+    Minor 6 的推广）。fence 内的行（含 ``` 标记行本身）不进 body——fenced 示例块
+    不是 field material，fence 内的标题也不开 entry（mirror check_intro.py
+    aries #2——fence 内的条目不算）。"""
     sections: list[tuple[str, str]] = []
     current_label: str | None = None
     current_lines: list[str] = []
@@ -63,7 +66,7 @@ def _split_sections(text: str, header_word: str) -> list[tuple[str, str]]:
             current_label = f"{header_word} {m.group(1)}"
             current_lines = []
             continue
-        if _ANY_HEADING.match(line):
+        if _SCOPE_TERMINATOR.match(line):
             if current_label is not None:
                 sections.append((current_label, "\n".join(current_lines)))
                 current_label = None

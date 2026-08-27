@@ -3,9 +3,9 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_summary.py` (the gate) +
-   `scripts/test_check_summary.py` (36 stdlib cases, run `python3 test_check_summary.py`).
+   `scripts/test_check_summary.py` (37 stdlib cases, run `python3 test_check_summary.py`).
    Exit-code contract: 0 = consistency check passes; 1 = consistency issues (each printed).
-   Four args: summary-map / gap-map / chapter-map / tex-dir. All 36 cases, checked
+   Four args: summary-map / gap-map / chapter-map / tex-dir. All 37 cases, checked
    one-by-one against the on-disk test functions:
    - `test_passes_on_settled` — passes on a settled summary-map.md (2 Callbacks
      bijection-complete against gap-map.md + 1 Commonality grounded-in 2 chapters +
@@ -89,12 +89,17 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      (Callback 2 has no `status` of its own; the trailing Commonality carries
      `status: confirmed` — the gate must report Callback 2's honest 缺 status, NOT
      mis-attribute the foreign value; revert-detection oracle for the entry
-     terminator — since aries B1 generalized to any heading (`_ANY_HEADING`),
-     taurus re-review 4);
+     terminator — since aries B1 generalized to any heading, now `_SCOPE_TERMINATOR`
+     with hr lines too, taurus re-review 4);
    - `test_fails_on_field_from_stray_note_block` — fails on a field supplied by a
      stray note block (Callback 1 has no `status`; a later `## 备注` block carries
      `- status: filled` — any markdown heading of ANY level terminates the entry's
      field window, so the note cannot substitute for the missing field; aries B1);
+   - `test_fails_on_field_after_horizontal_rule` — fails on a field supplied after a
+     horizontal rule (Callback 1 has no `status`; a standalone `---` inside the entry
+     followed by `- status: filled` — the rule closes the field window same as a
+     heading, so the stray bullet cannot substitute for the missing field; bullets
+     like `- status: filled` themselves never match the hr pattern; aries R1);
    - `test_ignores_fenced_example_fields` — fenced example fields are not field
      material (Callback 2's real fields are all absent; only a balanced fenced
      example block inside the entry shows them — the gate still reports each

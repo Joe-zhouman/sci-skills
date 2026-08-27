@@ -449,6 +449,25 @@ def test_fails_on_field_from_stray_note_block():
         f"note-block field must not substitute for the entry's own status, got: {issues}"
     print("test_fails_on_field_from_stray_note_block: PASS")
 
+def test_fails_on_field_after_horizontal_rule():
+    """aries R1: a standalone horizontal rule (`---` / `***` / `___`) inside an entry
+    also closes the field window (same bleed class as B1) — a stray `- status: filled`
+    after the rule must NOT substitute for the entry's own missing status."""
+    bad = SUMMARY_MAP_SETTLED.replace("""## Callback 1
+- gap-ref: Gap 1
+- resolved-how: 第 5 章回顾高温条件下的有效性，收束 Gap 1
+- status: filled""", """## Callback 1
+- gap-ref: Gap 1
+- resolved-how: 第 5 章回顾高温条件下的有效性，收束 Gap 1
+
+---
+- status: filled""")
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Callback 1" in i and "缺 status" in i for i in issues), \
+        f"post-hr stray bullet must not satisfy the entry's own status, got: {issues}"
+    print("test_fails_on_field_after_horizontal_rule: PASS")
+
 def test_ignores_fenced_example_fields():
     """aries B3: fields inside a balanced code fence in the entry body are NOT field
     material — a preserved example block must not feed the checks. Callback 2's real
@@ -552,6 +571,7 @@ if __name__ == "__main__":
     test_graceful_on_permission_denied_summary_map()
     test_fails_on_status_bleed_from_foreign_entry()
     test_fails_on_field_from_stray_note_block()
+    test_fails_on_field_after_horizontal_rule()
     test_ignores_fenced_example_fields()
     test_graceful_on_overlong_synthesis_tex()
     test_fails_on_unclosed_fence_diagnostic()
