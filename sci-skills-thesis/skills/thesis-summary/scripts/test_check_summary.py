@@ -398,6 +398,28 @@ def test_graceful_on_permission_denied_summary_map():
         sm.chmod(0o644)  # tmpdir cleanup on some platforms needs read back
     print("test_graceful_on_permission_denied_summary_map: PASS")
 
+def test_fails_on_status_bleed_from_foreign_entry():
+    """Callback 2 lacks status; trailing Commonality carries one → 缺 status must be
+    attributed to Callback 2 itself. Old fold-in behavior mis-reported 'status=confirmed'
+    (foreign value bleeding into the entry body); the _ANY_ENTRY_HEADER terminator reports
+    the honest 缺 status — revert-detection oracle for that branch (taurus re-review 4)."""
+    bad = (SUMMARY_MAP_SETTLED
+           .replace("""## Callback 2
+- gap-ref: Gap 2
+- resolved-how: 第 5 章回顾可解释性贡献，收束 Gap 2
+- status: filled
+
+""", """## Callback 2
+- gap-ref: Gap 2
+- resolved-how: 第 5 章回顾可解释性贡献，收束 Gap 2
+
+"""))
+    sm, gm, cm, tex_dir = _write_project(summary_map=bad)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert any("Callback 2" in i and "缺 status" in i for i in issues), \
+        f"foreign-status bleed mis-attributed, got: {issues}"
+    print("test_fails_on_status_bleed_from_foreign_entry: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_ref()
@@ -429,4 +451,5 @@ if __name__ == "__main__":
     test_fails_on_headerless_chapter_map()
     test_parses_sections_in_any_order()
     test_graceful_on_permission_denied_summary_map()
+    test_fails_on_status_bleed_from_foreign_entry()
     print("ALL TESTS PASS")

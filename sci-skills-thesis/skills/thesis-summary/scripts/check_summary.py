@@ -133,7 +133,7 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
             gm_text = gm_path.read_text(encoding="utf-8-sig")
             gap_nums = _header_numbers(gm_text, "Gap")
             if not gap_nums:
-                issues.append(f"✗ {gm_path} 可读但无任何 ## Gap N 条目 — gap↔Callback 对应检查跳过（taurus I2）")
+                issues.append(f"✗ {gm_path} 可读但无任何 ## Gap N 条目 — gap↔Callback 对应检查跳过")
         except (UnicodeDecodeError, OSError):
             issues.append(f"✗ {gm_path} 不可读（二进制/权限）— gap↔Callback 对应检查跳过")
 
@@ -146,7 +146,7 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
             cm_text = cm_path.read_text(encoding="utf-8-sig")
             chapter_nums = _header_numbers(cm_text, "Chapter")
             if not chapter_nums:
-                issues.append(f"✗ {cm_path} 可读但无任何 ## Chapter N 条目 — grounded-in cross-ref 跳过（taurus I2）")
+                issues.append(f"✗ {cm_path} 可读但无任何 ## Chapter N 条目 — grounded-in cross-ref 跳过")
         except (UnicodeDecodeError, OSError):
             issues.append(f"✗ {cm_path} 不可读（二进制/权限）— grounded-in cross-ref 跳过")
 

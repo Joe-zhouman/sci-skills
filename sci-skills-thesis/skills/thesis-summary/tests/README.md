@@ -3,9 +3,9 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_summary.py` (the gate) +
-   `scripts/test_check_summary.py` (30 stdlib cases, run `python3 test_check_summary.py`).
+   `scripts/test_check_summary.py` (31 stdlib cases, run `python3 test_check_summary.py`).
    Exit-code contract: 0 = consistency check passes; 1 = consistency issues (each printed).
-   Four args: summary-map / gap-map / chapter-map / tex-dir. All 30 cases, checked
+   Four args: summary-map / gap-map / chapter-map / tex-dir. All 31 cases, checked
    one-by-one against the on-disk test functions:
    - `test_passes_on_settled` — passes on a settled summary-map.md (2 Callbacks
      bijection-complete against gap-map.md + 1 Commonality grounded-in 2 chapters +
@@ -84,7 +84,12 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      Minor 6);
    - `test_graceful_on_permission_denied_summary_map` — graceful on a chmod-000
      summary-map.md (the OSError arm, not the UnicodeDecodeError arm the binary
-     fixtures exercise — must not raise, returns a 无法读取 issue; taurus Minor 2).
+     fixtures exercise — must not raise, returns a 无法读取 issue; taurus Minor 2);
+   - `test_fails_on_status_bleed_from_foreign_entry` — fails on foreign-status bleed
+     (Callback 2 has no `status` of its own; the trailing Commonality carries
+     `status: confirmed` — the gate must report Callback 2's honest 缺 status, NOT
+     mis-attribute the foreign value; revert-detection oracle for the
+     `_ANY_ENTRY_HEADER` entry terminator, taurus re-review 4).
 
 2. **the split (spec §⑥, stated honestly)** — check_summary.py is **NEAR-TRIVIAL
    CONSISTENCY, NOT a coverage gate, NOT depth, NOT a post-polish invariant (a
