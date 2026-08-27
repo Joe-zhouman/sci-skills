@@ -3,13 +3,13 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_theory.py` (the gate) +
-   `scripts/test_check_theory.py` (38 stdlib cases, run `python3
+   `scripts/test_check_theory.py` (41 stdlib cases, run `python3
    test_check_theory.py`). Exit-code contract: 0 = consistency 通过; 1 =
    consistency issues (each printed). Four args: theory-map / chapter-map /
    spine / tex-dir. Runner auto-discovers `test_*` functions and prints the
    count (taurus M4: a test defined but never called is impossible — the
    manual call list is gone; execution order is alphabetical, each test builds
-   its own project). All 38 cases, checked one-by-one against the on-disk test
+   its own project). All 41 cases, checked one-by-one against the on-disk test
    functions:
    - `test_passes_on_settled` — passes on a settled theory-map.md
      (extraction-outcome: confirmed — 2 Shared entries each grounded-in 2
@@ -120,7 +120,17 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    - `test_fenced_example_does_not_mask_missing_field` — the inverted variant:
      real `extraction-outcome` deleted, fenced example remains → the
      missing-field issue must fire (without fence-awareness the fence's value
-     satisfies the check — a silent pass).
+     satisfies the check — a silent pass);
+   - `test_graceful_on_overlong_digit_hostile_chapter_map` — `## Chapter
+     <5000 digits>` in chapter-map.md (dissect's product, not theory's own
+     file) must NOT crash check(): bounded `_int` parse → issue list, no
+     traceback (aries B1 — CPython's 4300-digit str→int limit threw ValueError
+     out of check()'s no-raise contract);
+   - `test_graceful_on_overlong_digit_shared_header` — same bounded-parse
+     contract for a `## Shared <5000 digits>` header in theory-map.md itself;
+   - `test_directory_shaped_theory_map_clear_message` — a directory at the
+     theory-map path → the clear 存在但不是常规文件 message, not a misleading
+     不存在 (aries B4 — safe direction, wrong words).
 
    Parsing/scoping rule (summary aries B1/B3/R1 lineage): fields must live
    directly under their entry header until the next heading of ANY level or a
@@ -207,7 +217,17 @@ unrecorded; that is write-then-record discipline + eval territory, not a gate
 property). **Duplicate `## Shared N` headers pass the gate** (a
 verbatim-duplicated entry validates cleanly twice; per-entry validation works
 and the number set dedupes — structurally ambiguous but not gated; a
-family-design question recorded here, taurus M7).
+family-design question recorded here, taurus M7). **Aries-round residuals,
+queued for the family hardening commit (NOT this branch, zero churn):**
+spaced thematic breaks (`* ** *`, `- - -` — CommonMark-valid) do not close the
+field window while strict `***` does (aries B2, LOW — false-pass shape
+demonstrated); duplicate top-level fields are read-first-only (aries B3, LOW);
+`_split_sections`' header pattern keeps unbounded `\d+` so a hostile
+`## Shared <5000 digits>` entry with complete fields now passes silently
+instead of crashing — crash→silent is the right direction, capping the pattern
+to `\d{1,6}` would align it with `_int` (aries re-test residual). The same B1
+bounded-parse shape, the fence-blind `_top_level_field`, and the runner sync
+guard all still live in check_summary.py — same queue.
 
 TODO: scaffold evals.json + run the full eval loop per skill-creator-plus
 before ship (the prose surface).
