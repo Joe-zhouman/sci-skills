@@ -97,6 +97,7 @@ residuals. Seven rules, all load-bearing:
 ```
 <project-root>/
   thesis/
+    template-spec.md                  ← thesis-init produced; this skill reads (synthesis 章命名)
     tex/
       <synthesis>.tex                 ← THIS skill produces (总结展望: ①逐 gap 收束 ②共性提炼 ③展望)
       <intro>.tex                     ← intro produced; this skill reads (gap 措辞对齐)
@@ -110,7 +111,6 @@ residuals. Seven rules, all load-bearing:
       chapter-map.md                  ← dissect produced; this skill reads (②段 grounding 基础 + 定位正文章)
     thesis-spine.md                   ← spine produced; this skill reads (umbrella ①段收束 + Boundary ③段 hook; narrate 不 re-gate)
     thesis-terminology-ledger.md      ← spine seeds; dissect/intro extend; this skill extends (source: thesis-summary)
-    template-spec.md                  ← thesis-init produced; this skill reads (synthesis 章命名)
 ```
 
 Compass-file coupling (罗盘文件) — no skill calls a sibling skill; handoff is via on-disk files.

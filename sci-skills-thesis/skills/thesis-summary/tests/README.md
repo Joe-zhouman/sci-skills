@@ -3,9 +3,9 @@
 Test plan (run via skill-creator-plus eval loop before deployment):
 
 1. **near-trivial consistency gate** — `scripts/check_summary.py` (the gate) +
-   `scripts/test_check_summary.py` (26 stdlib cases, run `python3 test_check_summary.py`).
-   Exit-code contract: 0 = consistency through; 1 = consistency issues (each printed).
-   Four args: summary-map / gap-map / chapter-map / tex-dir. All 26 cases, checked
+   `scripts/test_check_summary.py` (30 stdlib cases, run `python3 test_check_summary.py`).
+   Exit-code contract: 0 = consistency check passes; 1 = consistency issues (each printed).
+   Four args: summary-map / gap-map / chapter-map / tex-dir. All 30 cases, checked
    one-by-one against the on-disk test functions:
    - `test_passes_on_settled` — passes on a settled summary-map.md (2 Callbacks
      bijection-complete against gap-map.md + 1 Commonality grounded-in 2 chapters +
@@ -70,7 +70,21 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      but chapter-map.md only has ch1-2);
    - `test_ignores_entries_inside_code_fence` — **passes-ignore on entries inside a
      code fence**: a fenced `## Callback 3` does NOT count as covering Gap 3, so the
-     bijection still flags Gap 3 as absent (mirror intro/dissect fence-aware parsing).
+     bijection still flags Gap 3 as absent (mirror intro/dissect fence-aware parsing);
+   - `test_fails_on_headerless_gap_map` — fails on a readable-but-headerless gap-map.md
+     (valid UTF-8, zero `## Gap N` entries — the bijection + fabricated-ref checks would
+     otherwise silently skip on the empty-set truthiness guard and print a fake pass;
+     no-silent-skip convention, taurus I2);
+   - `test_fails_on_headerless_chapter_map` — fails on a readable-but-headerless
+     chapter-map.md (zero `## Chapter N` entries — the grounded-in cross-ref would
+     otherwise silently skip; isomorphic to the gap-map case);
+   - `test_parses_sections_in_any_order` — passes with the Commonality section placed
+     BEFORE the Callback sections (entry scoping is order-independent: a foreign entry
+     header terminates the current entry instead of folding into its body — taurus
+     Minor 6);
+   - `test_graceful_on_permission_denied_summary_map` — graceful on a chmod-000
+     summary-map.md (the OSError arm, not the UnicodeDecodeError arm the binary
+     fixtures exercise — must not raise, returns a 无法读取 issue; taurus Minor 2).
 
 2. **the split (spec §⑥, stated honestly)** — check_summary.py is **NEAR-TRIVIAL
    CONSISTENCY, NOT a coverage gate, NOT depth, NOT a post-polish invariant (a
@@ -88,6 +102,9 @@ Test plan (run via skill-creator-plus eval loop before deployment):
    (prose-vs-promise — author + eval), nor a hollow 似是而非 commonality the author
    confirms anyway (attachment blindness — the Load-bearing premise's inherent
    boundary). State this plainly — do NOT overclaim a "coherence guarantee."
+   No-silent-skip convention (taurus Recommendation 1): every conditionally-skipped
+   named check emits an informational issue; 通过 always means all named checks ran
+   (a readable-but-headerless gap-map/chapter-map is reported, not quietly skipped).
 
 3. **prose is NOT script-tested** — the three-section funnel's judgment is evaluated
    via skill-creator-plus's eval loop later, not here. That judgment includes:

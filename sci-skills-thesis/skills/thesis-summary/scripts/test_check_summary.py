@@ -9,7 +9,7 @@ refs / dangling chapter numbers / pending residual / missing synthesis-tex file)
 It does NOT catch depth (an agent can write resolved-how without real prose —
 prose-vs-promise, author + eval).
 """
-import importlib.util, pathlib, sys, tempfile
+import codecs, importlib.util, pathlib, sys, tempfile
 HERE = pathlib.Path(__file__).parent
 spec = importlib.util.spec_from_file_location("check_summary", HERE / "check_summary.py")
 check_summary = importlib.util.module_from_spec(spec)
@@ -119,7 +119,7 @@ def test_fails_on_malformed_gap_ref():
     bad = SUMMARY_MAP_SETTLED.replace("- gap-ref: Gap 1\n", "- gap-ref: some gap\n")
     sm, gm, cm, tex_dir = _write_project(summary_map=bad)
     issues = check_summary.check(sm, gm, cm, tex_dir)
-    assert any("gap-ref" in i and "Callback 1" in i for i in issues), f"expected malformed gap-ref issue, got: {issues}"
+    assert any("无法解析" in i and "Callback 1" in i for i in issues), f"expected malformed gap-ref issue, got: {issues}"
     print("test_fails_on_malformed_gap_ref: PASS")
 
 def test_fails_on_multi_gap_ref():
@@ -156,35 +156,15 @@ def test_fails_on_status_unfilled_callback():
     print("test_fails_on_status_unfilled_callback: PASS")
 
 def test_fails_on_missing_summary_map():
-    root = pathlib.Path(tempfile.mkdtemp())
-    sm = root / "sci-skills" / "thesis-summary" / "summary-map.md"
-    gm = root / "sci-skills" / "thesis-intro" / "gap-map.md"
-    gm.parent.mkdir(parents=True)
-    gm.write_text(GAP_MAP_SETTLED, encoding="utf-8")
-    cm = root / "sci-skills" / "thesis-dissect" / "chapter-map.md"
-    cm.parent.mkdir(parents=True)
-    cm.write_text(CHAPTER_MAP_SETTLED, encoding="utf-8")
-    tex_dir = root / "thesis" / "tex"
-    tex_dir.mkdir(parents=True)
-    (tex_dir / "chapter5.tex").write_text("x", encoding="utf-8")
+    sm, gm, cm, tex_dir = _write_project()
+    sm.unlink()
     issues = check_summary.check(sm, gm, cm, tex_dir)
     assert any("不存在" in i or "not exist" in i.lower() for i in issues), f"expected missing-summary-map issue, got: {issues}"
     print("test_fails_on_missing_summary_map: PASS")
 
 def test_graceful_on_binary_summary_map():
-    root = pathlib.Path(tempfile.mkdtemp())
-    sm = root / "sci-skills" / "thesis-summary" / "summary-map.md"
-    sm.parent.mkdir(parents=True)
+    sm, gm, cm, tex_dir = _write_project()
     sm.write_bytes(b"\xff\xfe\x00\x01garbage non-utf8")
-    gm = root / "sci-skills" / "thesis-intro" / "gap-map.md"
-    gm.parent.mkdir(parents=True)
-    gm.write_text(GAP_MAP_SETTLED, encoding="utf-8")
-    cm = root / "sci-skills" / "thesis-dissect" / "chapter-map.md"
-    cm.parent.mkdir(parents=True)
-    cm.write_text(CHAPTER_MAP_SETTLED, encoding="utf-8")
-    tex_dir = root / "thesis" / "tex"
-    tex_dir.mkdir(parents=True)
-    (tex_dir / "chapter5.tex").write_text("x", encoding="utf-8")
     try:
         issues = check_summary.check(sm, gm, cm, tex_dir)
         assert issues and any("UTF-8" in i or "二进制" in i for i in issues), f"expected graceful, got: {issues}"
@@ -195,20 +175,8 @@ def test_graceful_on_binary_summary_map():
 def test_ignores_utf8_bom_in_summary_map():
     """A UTF-8 BOM (Windows editor) must not drop Callback 1 from checks (mirror intro aries #1).
     Callback 1 has a fabricated gap-ref: Gap 999 — with BOM stripped, it must be caught."""
-    import codecs
-    root = pathlib.Path(tempfile.mkdtemp())
-    sm = root / "sci-skills" / "thesis-summary" / "summary-map.md"
-    sm.parent.mkdir(parents=True)
+    sm, gm, cm, tex_dir = _write_project()
     sm.write_bytes(codecs.BOM_UTF8 + b"## Callback 1\n- gap-ref: Gap 999\n- resolved-how: x\n- status: filled\n")
-    gm = root / "sci-skills" / "thesis-intro" / "gap-map.md"
-    gm.parent.mkdir(parents=True)
-    gm.write_text(GAP_MAP_SETTLED, encoding="utf-8")
-    cm = root / "sci-skills" / "thesis-dissect" / "chapter-map.md"
-    cm.parent.mkdir(parents=True)
-    cm.write_text(CHAPTER_MAP_SETTLED, encoding="utf-8")
-    tex_dir = root / "thesis" / "tex"
-    tex_dir.mkdir(parents=True)
-    (tex_dir / "chapter5.tex").write_text("x", encoding="utf-8")
     issues = check_summary.check(sm, gm, cm, tex_dir)
     assert any("Gap 999" in i for i in issues), f"BOM stripped → fabricated Gap 999 must be caught, got: {issues}"
     print("test_ignores_utf8_bom_in_summary_map: PASS")
@@ -380,6 +348,56 @@ def test_ignores_entries_inside_code_fence():
            f"fenced Callback 3 must NOT count → Gap 3 absence must be flagged, got: {issues}"
     print("test_ignores_entries_inside_code_fence: PASS")
 
+def test_fails_on_headerless_gap_map():
+    """gap-map.md readable but zero ## Gap N entries → bijection + fabricated-ref must NOT
+    silently skip (old code: set() truthiness guard → issues==[] → fake pass) —
+    no-silent-skip convention (taurus I2)."""
+    sm, gm, cm, tex_dir = _write_project(gap_map="# gap-map.md\n> note\n")
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert issues and any("可读但无任何 ## Gap N 条目" in i for i in issues), \
+        f"expected headerless-gap-map issue, got: {issues}"
+    print("test_fails_on_headerless_gap_map: PASS")
+
+def test_fails_on_headerless_chapter_map():
+    """chapter-map.md readable but zero ## Chapter N entries → grounded-in cross-ref must
+    NOT silently skip — no-silent-skip convention, isomorphic to gap-map (taurus I2)."""
+    sm, gm, cm, tex_dir = _write_project(chapter_map="# chapter-map.md\n> note\n")
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert issues and any("可读但无任何 ## Chapter N 条目" in i for i in issues), \
+        f"expected headerless-chapter-map issue, got: {issues}"
+    print("test_fails_on_headerless_chapter_map: PASS")
+
+def test_parses_sections_in_any_order():
+    """Commonality section placed BEFORE the Callback sections (fields complete, bijection
+    complete) → pass — entry scoping is order-independent: a foreign entry header
+    terminates the current entry instead of folding into its body (taurus Minor 6)."""
+    commonality_block = """## Commonality 1
+- commonality: 两章以统一框架 X 的同一实例化方式处理各自对象
+- grounded-in: [Chapter 1 §2 result, Chapter 2 §3 result]
+- status: confirmed
+"""
+    reordered = (SUMMARY_MAP_SETTLED
+                 .replace("\n\n" + commonality_block, "\n")
+                 .replace("## Callback 1", commonality_block + "\n## Callback 1"))
+    sm, gm, cm, tex_dir = _write_project(summary_map=reordered)
+    issues = check_summary.check(sm, gm, cm, tex_dir)
+    assert issues == [], f"order-independent scoping must pass, got: {issues}"
+    print("test_parses_sections_in_any_order: PASS")
+
+def test_graceful_on_permission_denied_summary_map():
+    """chmod 000 summary-map → OSError arm (not UnicodeDecodeError) — no raise, issue emitted
+    (taurus Minor 2: the binary fixtures only ever exercised UnicodeDecodeError)."""
+    sm, gm, cm, tex_dir = _write_project()
+    sm.chmod(0o000)
+    try:
+        issues = check_summary.check(sm, gm, cm, tex_dir)
+        assert issues and any("无法读取" in i for i in issues), f"expected OSError issue, got: {issues}"
+    except Exception as e:
+        assert False, f"check() raised {type(e).__name__} — must be graceful"
+    finally:
+        sm.chmod(0o644)  # tmpdir cleanup on some platforms needs read back
+    print("test_graceful_on_permission_denied_summary_map: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_gap_ref()
@@ -407,4 +425,8 @@ if __name__ == "__main__":
     test_fails_on_commonality_status_pending()
     test_fails_on_dangling_grounded_in()
     test_ignores_entries_inside_code_fence()
+    test_fails_on_headerless_gap_map()
+    test_fails_on_headerless_chapter_map()
+    test_parses_sections_in_any_order()
+    test_graceful_on_permission_denied_summary_map()
     print("ALL TESTS PASS")

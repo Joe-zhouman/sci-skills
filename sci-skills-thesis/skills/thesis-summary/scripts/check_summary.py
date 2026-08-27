@@ -32,9 +32,16 @@ COMMONALITY_SETTLED = "confirmed"
 _NONE_TOKENS = {"none", "（none）", "(none)", "无", "—"}
 
 
+# summary-map.md 的两类条目 header（Callback / Commonality）——任意一族出现即终止
+# 当前 entry，使 scoping 与段序无关（taurus Minor 6）。对 Gap/Chapter 解析不命中。
+_ANY_ENTRY_HEADER = re.compile(r"^##\s+(?:Callback|Commonality)\s+\d+(?:\s+.*)?$", re.IGNORECASE)
+
+
 def _split_sections(text: str, header_word: str) -> list[tuple[str, str]]:
     """把 baton 按 `## <header_word> N` 切成 [(label, body), ...]，按出现序。
-    跳过 ``` 代码块内的标题（mirror check_intro.py aries #2——fence 内的条目不算）。"""
+    跳过 ``` 代码块内的标题（mirror check_intro.py aries #2——fence 内的条目不算）。
+    异族条目 header（Callback↔Commonality）终止当前 entry，后续行丢弃到下一个本族
+    header——body 不吞异族段，scoping 与段序无关（taurus Minor 6）。"""
     sections: list[tuple[str, str]] = []
     current_label: str | None = None
     current_lines: list[str] = []
@@ -53,6 +60,10 @@ def _split_sections(text: str, header_word: str) -> list[tuple[str, str]]:
                     sections.append((current_label, "\n".join(current_lines)))
                 current_label = f"{header_word} {m.group(1)}"
                 current_lines = []
+                continue
+            if current_label is not None and _ANY_ENTRY_HEADER.match(line):
+                sections.append((current_label, "\n".join(current_lines)))
+                current_label = None
                 continue
         if current_label is not None:
             current_lines.append(line)
@@ -83,21 +94,10 @@ def _is_empty(val: str | None) -> bool:
 
 
 def _header_numbers(text: str, word: str) -> set[int]:
-    """从 baton 提取所有 `## <word> N` 的编号（Gap→gap-map；Chapter→chapter-map）。
-    跳过 ``` 代码块内的标题（fence 内不算有效——mirror check_intro.py）。"""
-    nums: set[int] = set()
-    in_fence = False
-    pat = re.compile(rf"^##\s+{word}\s+(\d+)", re.IGNORECASE)
-    for line in text.splitlines():
-        if line.lstrip().startswith("```"):
-            in_fence = not in_fence
-            continue
-        if in_fence:
-            continue
-        m = pat.match(line)
-        if m:
-            nums.add(int(m.group(1)))
-    return nums
+    """从 baton 的条目标题提取编号（Gap→gap-map；Chapter→chapter-map）。
+    派生自 _split_sections 的 labels——单一 parser，无脱钩可能（taurus I1：
+    旧实现的无锚正则与 _split_sections 的全锚正则对 `## Gap 2x` 类行分歧）。"""
+    return {int(label.split()[1]) for label, _ in _split_sections(text, word)}
 
 
 def _single_ref_number(val: str, word: str) -> int | None:
@@ -126,27 +126,29 @@ def check(sm_path: Path, gm_path: Path, cm_path: Path, tex_dir: Path) -> list[st
 
     # 读 gap-map.md 的 Gap 编号集合（bijection + fabricated-ref 用）
     gap_nums: set[int] = set()
-    if gm_path.is_file():
+    if not gm_path.is_file():
+        issues.append(f"✗ {gm_path} 不存在（intro 未产？summary 需 gap-map.md 做 callback lock）")
+    else:
         try:
             gm_text = gm_path.read_text(encoding="utf-8-sig")
             gap_nums = _header_numbers(gm_text, "Gap")
+            if not gap_nums:
+                issues.append(f"✗ {gm_path} 可读但无任何 ## Gap N 条目 — gap↔Callback 对应检查跳过（taurus I2）")
         except (UnicodeDecodeError, OSError):
-            gap_nums = set()
             issues.append(f"✗ {gm_path} 不可读（二进制/权限）— gap↔Callback 对应检查跳过")
-    else:
-        issues.append(f"✗ {gm_path} 不存在（intro 未产？summary 需 gap-map.md 做 callback lock）")
 
     # 读 chapter-map.md 的章号集合（grounded-in cross-ref 用）
     chapter_nums: set[int] = set()
-    if cm_path.is_file():
+    if not cm_path.is_file():
+        issues.append(f"✗ {cm_path} 不存在（dissect 未产？summary 需 chapter-map.md 做 cross-ref）")
+    else:
         try:
             cm_text = cm_path.read_text(encoding="utf-8-sig")
             chapter_nums = _header_numbers(cm_text, "Chapter")
+            if not chapter_nums:
+                issues.append(f"✗ {cm_path} 可读但无任何 ## Chapter N 条目 — grounded-in cross-ref 跳过（taurus I2）")
         except (UnicodeDecodeError, OSError):
-            chapter_nums = set()
             issues.append(f"✗ {cm_path} 不可读（二进制/权限）— grounded-in cross-ref 跳过")
-    else:
-        issues.append(f"✗ {cm_path} 不存在（dissect 未产？summary 需 chapter-map.md 做 cross-ref）")
 
     # --- Callback 条目检查 ---
     seen_gap_refs: dict[int, str] = {}  # gap号 → 首个引用它的 Callback label
