@@ -231,12 +231,17 @@ thesis-theory skill 的**工作笔记区**。写第二章（共用理论方法�
 理论基础和实验方法）时的过程笔记。
 
 ## 有什么用
-- 承载共用理论方法章写作的**过程状态**：如何把各小论文的理论方法统一成一章。
+- 承载共用理论方法章写作的**过程状态**：如何把各正文章的理论方法统一成一章。
 - 各正文章（thesis-dissect 产）共用这一章的理论基础——本目录笔记帮统一化决策。
 
 ## 文件清单（全是 working notes，非正文）
-具体文件名随 thesis-theory skill 设计定（该 skill 后续计划补）。常见类别：
-理论统一、方法共用化、各章理论依赖梳理。
+- `theory-map.md` — **接力棒（写后 baton）**。`extraction-outcome` 字段（confirmed /
+  waived-by-author——候选全否决时作者裁最小章的落盘终态）+ Shared 一条/组件
+  （作者 depth gate 的 confirmed 痕迹，grounded-in ≥2 章正文 + 如何实例化统一框架）
+  + Overlap 一条/(组件×章位置)对（**作者手解清单**：theory 章与各章 method 段的
+  重叠位置 + 建议处置——resolver 是作者，无下游 skill enforce）+ `theory-tex`
+  字段（理论章 tex 文件名，按 `../../thesis/template-spec.md`——init 预留的
+  chapter1 槽位，非硬编码）。theory skill 的 check_theory.py 一致性门读它做 cross-ref。
 
 ## 正文 tex 在哪（不在本目录）
 共用理论方法章 tex **直接写进 `../../thesis/tex/`**（章文件名遵循
@@ -244,11 +249,14 @@ thesis-theory skill 的**工作笔记区**。写第二章（共用理论方法�
 
 ## 产物怎么进来
 - **本 skill 自己产**：working notes，全由 thesis-theory 写。
-- **从 `../thesis-sources.md` 读**（不复制）：读来源 registry 定位各小论文的理论方法。
-- **从 `../thesis-spine.md` 读**（不复制）：读统一框架，确保本章理论与主线一致。
+- **从 `../thesis-spine.md` 读**（不复制）：读统一框架——本章的 organizing skeleton。
+- **从 `../thesis-dissect/chapter-map.md` 读**（不复制）：定位各正文章 + grounded-in
+  章号验证基准。theory 不读来源 registry、不读小论文（材料全在 thesis 内部：
+  spine/chapter-map/正文 tex——dissect 已消化小论文，信息流单向收敛）。
 
 ## 谁读它
-人（读/改 notes）；thesis-dissect（读本章理论方法，写正文章时引用）。
+人（读/改 notes；**手解 theory-map.md 的 overlap 清单**——theory 不跨 skill 改正文章，
+重叠处置是作者的定向小编辑）；thesis-polish / thesis-typeset（感知理论章状态）。
 """,
     "thesis-summary": """# thesis-summary/ — 总结展望章工作笔记（working notes only）
 
