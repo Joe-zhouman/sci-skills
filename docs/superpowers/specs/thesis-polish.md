@@ -1,6 +1,6 @@
 # Spec — thesis-polish（中文润色，四职责：一致性 / AIGC 降率 / 去 AI 味 / 缝合）
 
-> 设计日期：2026-08-27　|　状态：draft（aquarius round-1 审过，8 findings 逐条消解；待用户审）
+> 设计日期：2026-08-27　|　状态：user-approved（aquarius round-1 审过，8 findings 逐条消解；用户已批）
 > 源：brainstorming（本 session；grill 7 问全定 + 设计七节批准）
 > aquarius round-1 审：`docs/superpowers/reviews/thesis-polish-adversarial-plan.md`（8 findings：P1 surface 清单无落盘家→commit message 载体 / P2 resume 论证自破→run-to-completion / P3 Stage A 顺序为纪律 named exception / P4 grounding 颗粒度错位→补读 trace.md / P5 未用 label 是噪声→删 / P6 表格格式与先例不同一→五列 verbatim+header 名匹配 / P7 parser I/O 非镜像事实→标新决定 / P8 类型② commit 落 review 门后→挪前——逐条消解见各 §）
 > **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§后处理工作流 polish 行 + §aquarius #3 张力 + §调研借鉴 wenqu 行）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 罗盘文件耦合 / v1 scope），遇到时指向父 spec。
@@ -85,7 +85,7 @@
 
 **grill 定（Q4）**：`scripts/check_polish.py` 查两项纯机械项：
 1. **ledger enforce**：ledger 表格登记的变体→规范形映射，grep 全部章 tex 查变体残留 → issue 清单（文件+行号+变体+canonical）。
-2. **交叉引用悬空**：`\ref{X}` 指向不存在的 `\label{X}` + 定义了但从未 `\ref` 的 label（双向）。
+2. **交叉引用悬空（单向）**：`\ref{X}` 指向不存在的 `\label{X}`；**不查未用 label**（aquarius P5：`ch:`/`sec:`/`eq:` label 合法地永不被引用，按 issue 报是系统性噪声）。
 
 **不查**：散文质量（depth 层，人工 + eval）；**不重跑写作链门**（check_summary/check_intro/check_theory 等——glossary Intro↔Summary coherence lock 已定"机械门是 write-time check，非 post-polish invariant"；polish 改写 prose 后 baton 位置漂移是已知且接受的，重跑只会误报）；AIGC 分数（无机械面）。
 
@@ -187,7 +187,7 @@
 | `theory-map.md` *(读)* | theory | polish（感知）| overlap 清单：未解决重叠段提醒作者，不擅动 |
 | `template-spec.md` *(读)* | init | polish | 章文件命名 |
 | 检测报告 *(读，external)* | 用户提供 | polish Stage A | PaperPass（报告目录制）/PaperYY 报告（知网未来）；UNTRUSTED |
-| `scripts/check_polish.py` + `parse_paperpass.py` + `parse_paperyy.py` *(polish 自带)* | polish | polish Step 1/4、Stage A | 机械检查 + 报告解析（确定性，stdlib test）|
+| `scripts/check_polish.py` + `parse_paperpass.py` + `parse_paperyy.py` *(polish 自带)* | polish | polish Step 1/5、Stage A | 机械检查 + 报告解析（确定性，stdlib test）|
 
 ### skill 位置 + 脚本 + init 零编辑
 
