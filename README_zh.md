@@ -127,6 +127,29 @@ SKIP_FAMILIES="sci-skills sci-skills-article" bash install.sh
 
 更新：`git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-article" bash ~/sci-skills/install.sh`（在仓库目录内重跑 install.sh）。
 
+### 只要投稿家族（sci-write / sci-submit 等，不装绘图与 XPS）
+
+反过来的轻量装法：只要投稿管线（article 家族：sci-write / sci-story / sci-polish / sci-typeset / sci-export / sci-respond / sci-submit），没有 XPS 数据，用 sparse clone 只下载这一个家族 + 环境文件（~8 MB），核心家族（article-init / sci-draw）、XPS 家族与测试文件一律不落盘：
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://gitcode.com/Joe-zhouman/sci-skills.git ~/sci-skills
+cd ~/sci-skills
+git sparse-checkout set --skip-checks sci-skills-article pyproject.toml uv.lock .python-version install.sh
+SKIP_FAMILIES="sci-skills sci-skills-analysis" bash install.sh
+```
+
+第三行只保留 article 家族 + 环境文件；第四行跳过另外两个家族的注册，仍会 `uv sync` 装共享基础依赖。article 家族脚本全部 stdlib-only，没有 `.venv` 也能跑（脚本找不到 `.venv` 时自动回落到调用方解释器）。绘图也要的话，第三行加上 `sci-skills`、第四行只留 `sci-skills-analysis`。
+
+装完自测（离线查表，不依赖联网）：
+
+```bash
+python3 sci-skills-article/skills/sci-submit/scripts/search-ratings.py "Nature Communications"
+```
+
+应返回 T1/T2 命中。
+
+更新：`git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-analysis" bash ~/sci-skills/install.sh`。
+
 ### XPS 推荐用法
 
 不要指望在别的会话里提到「XPS」就自动触发。按数据集组织：

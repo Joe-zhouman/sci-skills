@@ -180,6 +180,29 @@ Scripts don't care how they're invoked: `scripts/_cli.py` walks up to the repo-r
 
 Update later: `git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-article" bash ~/sci-skills/install.sh` (re-run install.sh from inside the repo).
 
+### Submission family only (sci-write / sci-submit etc. — no figures, no XPS)
+
+The mirror case: all you need is the submission pipeline (the `sci-skills-article` family: sci-write / sci-story / sci-polish / sci-typeset / sci-export / sci-respond / sci-submit) and you have no XPS data. Sparse-clone just that family + env files (~8 MB); the core family (article-init / sci-draw), the XPS family and all test files never touch your disk:
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://gitcode.com/Joe-zhouman/sci-skills.git ~/sci-skills
+cd ~/sci-skills
+git sparse-checkout set --skip-checks sci-skills-article pyproject.toml uv.lock .python-version install.sh
+SKIP_FAMILIES="sci-skills sci-skills-analysis" bash install.sh
+```
+
+The third line keeps only the article family + env files; the fourth line skips the other two families' registration and still runs `uv sync` for the shared base deps. Article-family scripts are stdlib-only — they run even without `.venv` (the launcher falls back to the caller's interpreter when it can't find one). If you also want figures, add `sci-skills` on line three and keep only `sci-skills-analysis` on line four.
+
+Offline self-check after install:
+
+```bash
+python3 sci-skills-article/skills/sci-submit/scripts/search-ratings.py "Nature Communications"
+```
+
+should return T1/T2 hits.
+
+Update later: `git -C ~/sci-skills pull && SKIP_FAMILIES="sci-skills sci-skills-analysis" bash ~/sci-skills/install.sh`.
+
 ### Recommended usage for XPS
 
 Don't rely on the skill auto-triggering from a mention of "XPS" in some unrelated session. Per dataset:
