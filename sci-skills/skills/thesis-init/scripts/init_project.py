@@ -310,10 +310,11 @@ def family_root(project_root: Path) -> Path:
     return project_root / FAMILY_ROOT_NAME
 
 
-# templates/ live at repo root (templates/thesis/), matching article's templates/main/
-# convention — the repo is cloned wholesale, so repo-root templates ship with it. Resolved
-# from this script: scripts → thesis-init → skills → sci-skills (plugin) → repo root (parents[4]).
-REPO_TEMPLATES_DIR = Path(__file__).resolve().parents[4] / "templates" / "thesis"
+# templates/ live inside the family plugin (sci-skills/templates/thesis/), matching
+# article's sci-skills-article/templates/main/ convention — the plugin dir is copied
+# wholesale on marketplace install, so family-local templates ship with it. Resolved
+# from this script: scripts → thesis-init → skills → sci-skills (plugin root, parents[3]).
+REPO_TEMPLATES_DIR = Path(__file__).resolve().parents[3] / "templates" / "thesis"
 
 
 def _resolve_template_pack(args) -> Path | None:
@@ -443,7 +444,7 @@ def cmd_init(args: argparse.Namespace) -> int:
         report.append(f"  - 创建 tex/（补建）")
 
     # 0b. weave the selected template pack into thesis/tex/ (templates ship at repo root
-    #     templates/thesis/, resolved via parents[4] — matching article's templates/main/
+    #     templates/thesis/, resolved via parents[3] — matching article's templates/main/
     #     convention). Idempotent.
     pack = _resolve_template_pack(args)
     if pack:

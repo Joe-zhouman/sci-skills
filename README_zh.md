@@ -41,7 +41,7 @@
 |---|---|---|
 | 执行 skill | 产出一类制品 | sci-draw → 图；sci-write → method/results/conclusion |
 | 文件契约 | 通用交接面 | 每目录一个 `CONTRACT.md`——谁产出、谁消费，只看契约 |
-| 项目经理 | 搭台、翻译、巡检 | sci-skills-init 建骨架、迁外部产物、审计落盘 |
+| 项目经理 | 搭台、翻译、巡检 | article-init 建骨架、迁外部产物、审计落盘 |
 
 ### 人介入在硬门
 
@@ -57,7 +57,7 @@ claim 校准。paper-plan 确认。图义核查。每节确认门。自检后才
 
 ### 不会干的活外包
 
-自己做零件，不做的外包——但要求外包产物落盘符合契约。sci-skills-init 把外部产物翻译成下游能消费的格式。整个家族是科研产物的 CI/CD 层。
+自己做零件，不做的外包——但要求外包产物落盘符合契约。article-init 把外部产物翻译成下游能消费的格式。整个家族是科研产物的 CI/CD 层。
 
 ## 技能清单
 
@@ -101,7 +101,21 @@ claim.md ──────────── 中心契约 (sci-write Step 0)
 | [`v1`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/v1) | **稳定版** — 只修 bug，不破坏现有功能 | `git clone -b v1 git@gitcode.com:Joe-zhouman/sci-skills.git` |
 | [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | 尝鲜版 — 最新功能，可能变动 | `git clone -b master git@gitcode.com:Joe-zhouman/sci-skills.git` |
 
-装好后运行 `bash install.sh`（把三个 skill 家族 symlink 到 `~/.claude/skills/`，并配置 Python 环境）。
+装好后运行 `bash install.sh`（把所有 skill 扁平 symlink 到 `~/.claude/skills/`，有 `~/.zcode` 时也同步一份，并配置 Python 环境。symlink 是活的——改仓库文件即刻生效，无需重装）。
+
+### 以 Claude Code 插件安装（marketplace 方式）
+
+不想用开发 symlink、要走 Claude Code 原生插件体系的话，仓库根的 `.claude-plugin/marketplace.json` 把每个家族暴露成一个插件：
+
+```
+/plugin marketplace add Joe-zhouman/sci-skills
+/plugin install sci-skills@sci-skills            # 脚手架 + sci-draw + 论文模板
+/plugin install sci-skills-article@sci-skills    # 小论文写作链
+/plugin install sci-skills-thesis@sci-skills     # 学位论文写作链
+/plugin install sci-skills-analysis@sci-skills   # xps（可选）
+```
+
+marketplace 安装会把家族目录**拷贝**进 Claude Code 缓存（与你的 checkout 不再联动）。每个家族自包含——模板包随家族走（`sci-skills/templates/thesis/`、`sci-skills-article/templates/main/`）。唯一多出来的一步是 XPS 环境：在装好的 `sci-skills-analysis` 插件目录里 `uv sync`（它自带 `pyproject.toml`），脚本会自动认出那个 `.venv`。更新：`/plugin marketplace update sci-skills` 后 `/plugin update <name>@sci-skills`。
 
 **xps 不是谁都要用的，没需要可以不安装。** 这条规则对所有环境一样，不预设必须是 Claude Code：
 

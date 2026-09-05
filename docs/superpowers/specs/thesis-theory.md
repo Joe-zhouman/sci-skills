@@ -3,8 +3,8 @@
 > 设计日期：2026-08-27　|　状态：draft（aquarius round-1 审过，6 findings 逐条消解；待用户审）
 > 源：brainstorming（本 session；grill 4 问全定 + 方案 A 批准）
 > aquarius round-1 审：`docs/superpowers/reviews/thesis-theory-adversarial-plan.md`（6 findings：T1 check 第 4 参数零消费者 / T2 偏离账本不对称（chapter-map 加宽逃逸）/ T3 候选全否决 fallback 无落盘终态 / T4 "不交叉"集合断言字面假 / T5 验收把覆盖完整性当可验收属性 / T6 测试文件路径与家族布局不符——逐条消解见各 §）
-> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§写作链工作流 theory 行 + §① enforcement split + §Load-bearing premise）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 罗盘文件耦合 / 模板 init 织死 / v1 scope），遇到时指向父 spec。
-> 上游 glossary：`docs/superpowers/glossary.md`（**Overlap 清单**（本 session 新 settle）/ Architecture-level claim / enforcement split 三层 / Compass file / Serves-the-author-first / 拆即写）
+> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§写作链工作流 theory 行 + §① enforcement split + §Load-bearing premise）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 落盘文件耦合 / 模板 init 织死 / v1 scope），遇到时指向父 spec。
+> 上游 glossary：`docs/superpowers/glossary.md`（**Overlap 清单**（本 session 新 settle）/ Architecture-level claim / enforcement split 三层 / 落盘文件 / Serves-the-author-first / 拆即写）
 > 镜像范本：`sci-skills-thesis/skills/thesis-summary/`（spec + SKILL.md——混合协议三段各配门 + 写后 baton 三段式 + check 最硬化版 + aries 修正）+ `thesis-spine/`（depth 人工门协议：pending 候选 + tension-flag questions-not-verdicts + 作者 settle）+ intro spec §④（narrate-非-re-gate 论证，应用于写作段）
 
 ---
@@ -179,7 +179,7 @@ extraction-outcome: confirmed         ← confirmed（Shared 段 ≥1 条，默�
 - **Framing alignment（写作）——confirmation gate + eval**：gate enforce framing（章节结构/组件分配/术语）；prose 是否真 instantiate 框架（prose-vs-structure）是 eval + 作者。
 - **诚实边界（父 spec §Load-bearing premise）**：机械门防**缺席**（组件无 grounding/字段空/悬空/残 pending）+ **官僚 lapse**（编章号/编 Shared 号），**不防** forced/trivial 共用过作者门（attachment 盲点）、编造 § 位置（prose-vs-structure，eval + 作者）、**提升未记录**（agent 提升了材料没随写随记 Overlap entry——缺席条目让作者的手解清单看似完整，恰是 absent 类失败，靠随写随记纪律 + eval，aquarius T5）。write-time 检查非 polish 后不变量（polish 改理论章 prose 后 overlap 位置漂移无人重验——镜像 summary F6 命名）。命名不 overclaim。
 
-### 跨 skill 文件交接（罗盘文件耦合，无 skill 调 skill）
+### 跨 skill 文件交接（落盘文件耦合，无 skill 调 skill）
 
 | 文件 | 产 | 读 | 作用 |
 |---|---|---|---|

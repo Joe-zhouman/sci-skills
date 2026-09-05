@@ -78,7 +78,7 @@ serves the one-sentence argument.
 |---|---|---|
 | Execution skills | Produce one kind of artifact | sci-draw → figures; sci-write → method/results/conclusion |
 | File contracts | The universal handoff surface | `CONTRACT.md` per directory — any producer, any consumer |
-| Project manager | Scaffold, translate, audit | sci-skills-init builds workspace, migrates external outputs |
+| Project manager | Scaffold, translate, audit | article-init builds workspace, migrates external outputs |
 
 ### Human-in-the-loop at hard gates
 
@@ -102,7 +102,7 @@ as its first paragraph — the common denominator across almost all journals.
 ### Outsourcing is by design
 
 We own the parts we do well. We outsource the rest — but require outsourced outputs to
-land on disk conforming to file contracts. sci-skills-init translates external outputs
+land on disk conforming to file contracts. article-init translates external outputs
 (Word→tex, manual figures→warehouse, others' markdown→paper-plan entries) so downstream
 skills can consume them. The family is the CI/CD layer for research outputs.
 
@@ -148,13 +148,27 @@ claim.md ──────────── the central contract (sci-write St
 | [`v1`](https://gitcode.com/Joe-zhouman/sci-skills/-/tree/v1) | **Stable** — bug fixes only, no breaking changes | `git clone -b v1 git@gitcode.com:Joe-zhouman/sci-skills.git` |
 | [`master`](https://gitcode.com/Joe-zhouman/sci-skills) | Bleeding edge — latest features, may shift | `git clone -b master git@gitcode.com:Joe-zhouman/sci-skills.git` |
 
-After cloning, run the installer — it symlinks the three plugin families into `~/.claude/skills/` **and** sets up the Python env:
+After cloning, run the installer — it symlinks every skill flat into `~/.claude/skills/` (and `~/.zcode/skills/` when present) **and** sets up the Python env. The symlinks are live: repo edits show up in every new session immediately.
 
 ```bash
 bash install.sh
 ```
 
 The installer calls `uv sync` to create `.venv/` from the repo-root `pyproject.toml` (shared base: numpy, scipy, matplotlib, pandas, seaborn, python-dateutil, …). Skill scripts self-activate this env via a transparent launcher — agents just run `python scripts/foo.py`, no `uv run` needed. If `uv` isn't installed, the installer warns and skips env setup (install uv: <https://docs.astral.sh/uv/>, then re-run `bash install.sh`).
+
+### Install as Claude Code plugins (marketplace)
+
+Prefer Claude Code's native plugin system over dev symlinks? The repo root carries a `.claude-plugin/marketplace.json` exposing each family as a plugin:
+
+```
+/plugin marketplace add Joe-zhouman/sci-skills
+/plugin install sci-skills@sci-skills            # scaffolding + sci-draw + thesis templates
+/plugin install sci-skills-article@sci-skills    # paper writing chain
+/plugin install sci-skills-thesis@sci-skills     # degree-thesis chain
+/plugin install sci-skills-analysis@sci-skills   # xps (optional)
+```
+
+Marketplace installs **copy** the plugin dir into Claude Code's cache (no live link to your checkout). Each family is self-contained — template packs ship inside their family (`sci-skills/templates/thesis/`, `sci-skills-article/templates/main/`). The one extra step is the XPS env: run `uv sync` inside the installed `sci-skills-analysis` plugin dir (it carries its own `pyproject.toml`); the scripts pick up that `.venv` automatically. Updates: `/plugin marketplace update sci-skills`, then `/plugin update <name>@sci-skills`.
 
 **`xps` is not for everyone — no XPS data, no install.** The rule is the same no matter what agent or setup is doing the install; it does not assume Claude Code:
 

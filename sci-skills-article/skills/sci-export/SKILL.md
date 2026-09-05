@@ -45,15 +45,18 @@ often don't.
   manuscript/vN/tex/         ← SOURCE: finalized tex (read-only for this skill)
   manuscript/vN/tex/template-move/   ← TARGET (Mode A): journal-specific tex copy
   manuscript/vN/manuscript.docx     ← TARGET (Mode B): Word output
-  templates/main/          ← READ-ONLY: our reference tex blueprint
-  sci-skills/sci-typeset/references/latex-layout.md  ← READ: float-strategy reference (export-scope sections)
+  sci-skills-article/templates/main/  ← READ-ONLY: our reference tex blueprint
+                              (plugin-local: skills/sci-export/../../templates/main/,
+                               NOT inside the user project)
+  sci-skills-article/skills/sci-typeset/references/latex-layout.md  ← READ: float-strategy reference (export-scope sections)
 ```
 
 - **Reads `manuscript/vN/tex/` (read-only).** The finalized manuscript is the source; this skill does not edit it.
 - **Writes to a copy, not the source.** Mode A writes to
   `manuscript/vN/tex/template-move/` (or a user-named dir) — never overwrites the
   finalized tex. Mode B writes `manuscript/vN/manuscript.docx`.
-- **Reads `templates/main/`** as our reference blueprint, and the target journal's
+- **Reads the plugin's `templates/main/`** (`sci-skills-article/templates/main/`, two levels
+  above this skill's directory) as our reference blueprint, and the target journal's
   template when the user provides one.
 - **Does not import code. Does not write prose. Does not assemble SI.**
 
@@ -69,7 +72,7 @@ often don't.
    summary, § Float at end, § Traditional inline float placement). The scope
    note at the top of that file partitions which sections are export's.
 4. **For Mode A: which template?** Does the user have the target journal's
-   template, or build from `templates/main/` and adapt?
+   template, or build from the plugin's `templates/main/` and adapt?
 
 ## Mode A: move into a target journal template (optional)
 
@@ -103,7 +106,7 @@ strategy; it drives Step 1.
    - Inline: ensure specifiers match the journal family (e.g. IEEE `[!t]` only).
    - Two-phase: leave inline for now; flag that end-move happens at acceptance.
 3. Swap the preamble/class to the target journal's template if the user provided
-   one; otherwise adapt `templates/main/` preamble.
+   one; otherwise adapt the plugin's `templates/main/` preamble.
 
 ### Step 2 — Compile the copy
 
@@ -189,9 +192,3 @@ Issues → note them in the output to the user.
 |---|---|
 | `references/docx-format.md` | Mode B — how to build/maintain the reference docx, the style rules pandoc defaults don't give us. *(Currently a stub/TODO — the standard docx template is not yet designed.)* |
 | `../sci-typeset/references/latex-layout.md` | Mode A — read the **export-scope** sections only (journal float strategy). The scope note at the top partitions which sections are export's vs typeset's. |
-
-## Privacy
-
-Don't leak private paths or unpublished content in the docx, the template-move
-copy, or user-facing output. The docx is meant for collaborators — scrub any
-private path comments from tex before converting.

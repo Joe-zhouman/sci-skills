@@ -1,6 +1,6 @@
 {
   "name": "sci-skills-thesis",
-  "description": "sci-skills thesis family — turn N published papers into a degree thesis (重组延伸, not from-scratch). The writing chain: spine, dissect, intro, theory, summary, typeset, polish. thesis-init (shared infra) lives in the sci-skills plugin. Claude Code only.",
+  "description": "Thesis family — turn N published papers into a degree thesis (重组延伸, not from-scratch): spine, terms, dissect, intro, theory, summary, polish (thesis-init scaffolding lives in the sci-skills plugin).",
   "version": "0.1.0",
   "author": {
     "name": "Joe-zhouman",

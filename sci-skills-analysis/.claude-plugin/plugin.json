@@ -1,6 +1,6 @@
 {
   "name": "sci-skills-analysis",
-  "description": "sci-skills data-analysis family — processing experimental data (XPS, Raman, etc.) into publication-ready figures and tables. Skeleton; skills forthcoming. Claude Code only.",
+  "description": "Data-analysis family — turn experimental data into publication-ready figures and tables. Bundles xps (XPS peak fitting: calibration, background subtraction, Shirley/Tougaard, chemical-state assignment).",
   "version": "1.0.0",
   "author": {
     "name": "Joe-zhouman",

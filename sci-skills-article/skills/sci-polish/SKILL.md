@@ -307,10 +307,3 @@ This skill does not do these things:
 | Create scientific figures | figure creation — produces publication-quality plots from experimental data |
 | Response to reviewers | Not yet covered |
 | Literature search / Introduction drafting | narrative writing stage; polish here after drafting |
-
-## Privacy
-
-Do not disclose private paths, filenames, or unpublished manuscript content in
-user-facing output, commit messages, or `git diff` commentary. Use generic
-descriptions ("the manuscript tex file"). Reveal exact paths only when the user
-explicitly asks for an audit trail.

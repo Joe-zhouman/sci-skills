@@ -3,8 +3,8 @@
 > 设计日期：2026-08-27　|　状态：draft（aquarius round-1 审过，6 findings 逐条消解；待用户审）
 > 源：brainstorming（本 session；grill 2 问全定 + 方案 1 批准 + A/B 节设计获批）
 > aquarius round-1 审：`docs/superpowers/reviews/thesis-summary-adversarial-plan.md`（6 findings：F1 lock-record overclaim 缺核算 / F2 gate-skip 虚假归属 / F3 `[pending?` 死 grep / F4 real-DOI 边界 / F5 placeholder 越权遮掩 / F6 drift 论证不对称——逐条消解见各 §）
-> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§写作链工作流 summary 行 + §① enforcement split + §Load-bearing premise）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 罗盘文件耦合 / 模板 init 织死 / v1 scope），遇到时指向父 spec。
-> 上游 glossary：`docs/superpowers/glossary.md`（Architecture-level claim 含 common-extraction / Narrative gap / Citation-vs-architecture enforcement split / Compass file / Serves-the-author-first）
+> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§写作链工作流 summary 行 + §① enforcement split + §Load-bearing premise）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 落盘文件耦合 / 模板 init 织死 / v1 scope），遇到时指向父 spec。
+> 上游 glossary：`docs/superpowers/glossary.md`（Architecture-level claim 含 common-extraction / Narrative gap / Citation-vs-architecture enforcement split / 落盘文件 / Serves-the-author-first）
 > 镜像范本：`sci-skills-thesis/skills/thesis-intro/`（spec + SKILL.md——写后 baton + near-trivial consistency 门 + framing gate + untrusted guard + aries 修正全family）+ `thesis-spine/`（depth 人工门协议：pending 候选 + tension-flag questions-not-verdicts + 作者 settle）+ `sci-skills-article/skills/sci-story/SKILL.md`（per-section confirmation gate + fuse-claim-into-opening + Intro-Discussion coherence——升尺度变形见 §⑧）
 
 ---
@@ -74,7 +74,7 @@
 
 #### ④ fallback：callback 不起来 = contract gap，surface 作者裁（mirror dissect fallback-spine）
 
-**grill 定（方案 1 细节）**：某 gap 收不拢（章的结果实际没填上 / anchor 无法诚实 resolve）→ Callback `status=unfilled` → **stop & surface 作者**：要么 thesis 有洞（backtrack：dissect 补章 / intro 砍 gap / spine 修主线——作者裁），要么砍 promise。**summary 不跨 skill 编辑**（compass-file coupling——read neighbors only，mirror dissect 不跨 skill 编辑 spine 的先例）。父 spec summary 行写 "callback 不起来 fallback spine"——本设计细化为 dissect 已落地的 fallback 形态（stop/flag/author-decides），faithful refinement 非 deviation。
+**grill 定（方案 1 细节）**：某 gap 收不拢（章的结果实际没填上 / anchor 无法诚实 resolve）→ Callback `status=unfilled` → **stop & surface 作者**：要么 thesis 有洞（backtrack：dissect 补章 / intro 砍 gap / spine 修主线——作者裁），要么砍 promise。**summary 不跨 skill 编辑**（on-disk file coupling——read neighbors only，mirror dissect 不跨 skill 编辑 spine 的先例）。父 spec summary 行写 "callback 不起来 fallback spine"——本设计细化为 dissect 已落地的 fallback 形态（stop/flag/author-decides），faithful refinement 非 deviation。
 
 #### ⑤ deliberate cut：不读 registry、不深读小论文
 
@@ -112,7 +112,7 @@ summary 的全部材料来自 **thesis 内部**：spine.md（umbrella/Boundary�
 - **全程 write-first 无 pre-gate（dissect 纯镜像）**：拒绝（§③）。共性候选必须 pre-settle（作者否决在 prose churn 前）；①段 framing gate 是 intro 存在的全部理由。write-first 的合法性前提"拆时逻辑最清"（dissect）在 summary 不成立——共性与收束受益于写前对齐，同 intro。
 - **读 registry + 深读小论文**：拒绝（§⑤）。重复摄入；信息流单向收敛。
 - **AI hard-gate 共性 depth**：拒绝（父 spec §① + §Load-bearing premise）。AI 无法诚实审计 depth。
-- **summary 跨 skill 编辑 intro/正文（fallback 时直接改）**：拒绝（§④）。compass-file coupling——read neighbors, don't orchestrate；mirror dissect 先例。
+- **summary 跨 skill 编辑 intro/正文（fallback 时直接改）**：拒绝（§④）。on-disk file coupling——read neighbors, don't orchestrate；mirror dissect 先例。
 
 ---
 
@@ -165,7 +165,7 @@ synthesis-tex: chapter5.tex            ← 总结章 tex 文件名（按 templat
 - **Framing alignment（①③段）——confirmation gate + eval**：gate enforce framing（收哪些 gap 怎么收 / 哪些展望 hook 哪条 Boundary）；narrative depth（收束措辞好不好、展望远不远）是 author-judged residual。
 - **诚实边界（父 spec §Load-bearing premise + §① residual）**：机械门防**缺席**（gap 没 callback 拦）+ **官僚 lapse**（编 Gap 号/悬空章号/残 pending），**不防** depth 空洞（编 resolved-how 而正文没真收束——eval + 作者；似是而非共性过作者门——attachment 盲点，固有边界）。命名不 overclaim。
 
-### 跨 skill 文件交接（罗盘文件耦合，无 skill 调 skill）
+### 跨 skill 文件交接（落盘文件耦合，无 skill 调 skill）
 
 | 文件 | 产 | 读 | 作用 |
 |---|---|---|---|
@@ -232,4 +232,4 @@ synthesis-tex: chapter5.tex            ← 总结章 tex 文件名（按 templat
 - **唯一 foundation 编辑**：init placeholder 补全（明示邀请，mirror intro 先例）。
 - **无 spine/dissect/intro 变更**（summary 加文件 + 1 处 init placeholder 补全）→ 不 churn 已合并 skill。
 
-**glossary 对齐**：无新术语需 settle——本 spec 全部用已 settle 术语（Narrative gap / Architecture-level claim 含 common-extraction / enforcement split / Compass file / 拆即写 的 write-then-record 面）。"coherence LOCK（enforce 端）"是 intro spec §⑦ 已建立的区分（data baton vs lock），本 spec 沿用原词。
+**glossary 对齐**：无新术语需 settle——本 spec 全部用已 settle 术语（Narrative gap / Architecture-level claim 含 common-extraction / enforcement split / 落盘文件 / 拆即写 的 write-then-record 面）。"coherence LOCK（enforce 端）"是 intro spec §⑦ 已建立的区分（data baton vs lock），本 spec 沿用原词。

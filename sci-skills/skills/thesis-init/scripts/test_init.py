@@ -62,9 +62,9 @@ def test_init_weaves_template():
     cwd = pathlib.Path(tempfile.mkdtemp())
     orig = pathlib.Path.cwd()
     # locate the generic-test pack at repo root: test_init.py is at
-    # sci-skills/skills/thesis-init/scripts/ → parents[4] = repo root (where templates/ lives)
-    # templates/thesis/ ships at repo root, matching article's templates/main/ convention.
-    repo_root = pathlib.Path(__file__).resolve().parents[4]
+    # sci-skills/skills/thesis-init/scripts/ → parents[3] = sci-skills (plugin root,
+    # where templates/thesis/ lives — family-local so marketplace installs ship it)
+    repo_root = pathlib.Path(__file__).resolve().parents[3]
     pack = repo_root / "templates" / "thesis" / "generic-test"
     assert pack.is_dir(), f"test pack missing at {pack}"
     os.chdir(cwd)
@@ -87,7 +87,7 @@ def test_init_idempotent():
     import tempfile, shutil
     cwd = pathlib.Path(tempfile.mkdtemp())
     orig = pathlib.Path.cwd()
-    repo_root = pathlib.Path(__file__).resolve().parents[4]  # repo root (same index as test_init_weaves_template)
+    repo_root = pathlib.Path(__file__).resolve().parents[3]  # plugin root (same index as test_init_weaves_template)
     os.chdir(cwd)
     try:
         init_project.main(["init", "--no-git", "--template", "generic-test"])

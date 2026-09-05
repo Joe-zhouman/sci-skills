@@ -64,7 +64,7 @@ _Avoid_: figure analysis (ambiguous — could mean the vision tool's output or t
 
 - A **Family namespace** contains one **Figure warehouse** and one home directory per skill (e.g. `sci-write/`).
 - A **Thesis** is a distinct first-class artifact from a **Manuscript**: organized by chapter (not review round), built by *reading* small papers as intake (not absorbing them), with its own degree-thesis lifecycle. A thesis skill reads `manuscript/vN/` or external papers; it never moves or rewrites them.
-- A thesis family is a **sibling family** to the article family, mirroring its compass-file coupling: its own entry skill (`thesis-init`, the only node knowing all siblings) + execution skills that interconnect via `thesis/` directory contracts, not code imports. An **architecture-level claim** (main line / unified framework / progression / common-extraction) is the thesis's analog of an article's citation-level claim — but one stratum higher, and author-articulated not AI-generated.
+- A thesis family is a **sibling family** to the article family, mirroring its on-disk file coupling: its own entry skill (`thesis-init`, the only node knowing all siblings) + execution skills that interconnect via `thesis/` directory contracts, not code imports. An **architecture-level claim** (main line / unified framework / progression / common-extraction) is the thesis's analog of an article's citation-level claim — but one stratum higher, and author-articulated not AI-generated.
 - A **paper-plan.md** lists many figure entries, each in a **Figure status**; and many section entries, each in a **Section status**.
 - A figure entry's `claim` field ↔ that figure's report `Core conclusion` (plan = intended, report = demonstrated).
 - A **figN-reading.md** references exactly one figure report and is consumed by Results/Discussion drafting.
@@ -72,9 +72,9 @@ _Avoid_: figure analysis (ambiguous — could mean the vision tool's output or t
 - **Read neighbors, don't orchestrate** governs every cross-file/cross-skill interaction in the family.
 - A **Narrative gap** is recorded in `gap-map.md` (intro→summary baton); the **Intro↔Summary coherence lock** is carried by that baton's two sides — `gap-map.md` (data, intro-produced) ↔ `summary-map.md` (enforcement record, summary-produced + mechanically checked).
 
-**Compass file (罗盘文件)**:
+**落盘文件 (on-disk files)**:
 The on-disk artifacts that couple a skill family without code imports: (a) the entry skill's init script carrying `BROTHER_SKILLS` (the routing table of which skills exist) + `SKILL_DIR_CONTRACTS` (the CONTRACT.md text per shared directory) + the first-class artifact's contract; (b) each shared directory's visible `CONTRACT.md` (the interface spec + on-ramp for outside producers); (c) `family-layout.md` (the depth reference for evolving the family). The entry skill is the **only** node that knows about all siblings; every other skill knows only files. This is "read neighbors, don't orchestrate" made concrete.
-_Avoid_: config, index file (too generic), orchestrator (that's a posture, not the file)
+_Avoid_: config, index file (too generic), orchestrator (that's a posture, not the file), 罗盘文件/Compass file（笔误旧名，2026-09 Joe 更正——实指落盘文件）
 
 **拆即写 (dissect-is-write)**:
 The thesis-dissect discipline: when dissecting a small paper into a thesis chapter, the chapter tex is written *in the same pass*, because the logic is already clear at dissection time — separating the two would mean reloading the just-traced logic. Made clean by tex's one-chapter-one-file property. Dissect is not two responsibilities forced together (structure-judgment + writing); they are two faces of one act.

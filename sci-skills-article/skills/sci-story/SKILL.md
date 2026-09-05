@@ -370,10 +370,3 @@ Runs around every section draft. Detail in `references/writing-discipline.md`:
 | Create scientific figures | figure creation — produces plots and figure reports |
 | Submit manuscript / cover letter | submission management |
 | Full systematic lit review | This skill does targeted search for positioning and comparison; a different mode |
-
-## Privacy
-
-Don't disclose private paths, filenames, or unpublished manuscript content in
-user-facing output, generated prose, or commit messages. Use generic descriptions
-("the provided data file"). Reveal exact paths only when the user explicitly asks
-for an audit trail.

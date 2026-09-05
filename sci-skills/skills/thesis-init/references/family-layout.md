@@ -25,7 +25,7 @@ marker**, not a per-project name. Anyone (human, skill, init script) seeing a
 both the article family and the thesis family.
 
 The thesis family shares this workspace with the article family by design: a
-single project may hold its small papers under `manuscript/` (article family's
+single project may hold its journal papers under `manuscript/` (article family's
 first-class artifact) **and** its thesis under `thesis/` (thesis family's
 first-class artifact), both reading/writing the same `sci-skills/`. The two
 families coexist without one knowing the other's code — they share the
@@ -111,11 +111,11 @@ replaceable as long as the directory contract is honored.
 |---|---|---|---|---|
 | `thesis/` | the thesis (first-class, by chapter) | `CONTRACT.md` + `template-spec.md` woven at init | dissect, intro, theory, summary (write tex); polish, typeset (edit in place) | human, all skills (read) |
 | `thesis/tex/` | prose source (template woven here at init) | naming follows `template-spec.md`, not hardcoded | dissect / intro / theory / summary write chapter tex | polish, typeset edit; human compiles |
-| `sci-skills/thesis-sources.md` | source registry (navigation truth) | one entry per small paper: paper_id / paths / data_paths / slug / claim | thesis-init (placeholder) + agent (fills) | all thesis skills |
+| `sci-skills/thesis-sources.md` | source registry (navigation truth) | one entry per journal paper: paper_id / paths / data_paths / slug / claim | thesis-init (placeholder) + agent (fills) | all thesis skills |
 | `sci-skills/thesis-spine.md` | main line + unified framework + chapter progression + thesis claim (接力棒) | placeholder until spine runs | thesis-spine | dissect, intro, summary, theory |
 | `sci-skills/thesis-terminology-ledger.md` | cross-chapter terminology | placeholder until spine builds it | thesis-spine (creates); all chapters + polish (co-write) | polish, all writing skills |
 | `sci-skills/thesis-README.md` | thesis-family routing table | lists shared files + sibling dirs | thesis-init | human, any skill landing in `sci-skills/` |
-| `sci-skills/thesis-dissect/` | working notes per small paper | `chapter-map.md` + `paper-X/` subdirs | thesis-dissect | thesis-spine, thesis-summary (read `chapter-map.md`) |
+| `sci-skills/thesis-dissect/` | working notes per journal paper | `chapter-map.md` + `paper-X/` subdirs | thesis-dissect | thesis-spine, thesis-summary (read `chapter-map.md`) |
 | `sci-skills/thesis-intro/` | intro-chapter working notes | file names settle with thesis-intro design | thesis-intro | thesis-spine |
 | `sci-skills/thesis-theory/` | ch2 shared-theory working notes | file names settle with thesis-theory design | thesis-theory | thesis-dissect (reads shared theory) |
 | `sci-skills/thesis-summary/` | synthesis-chapter working notes | file names settle with thesis-summary design | thesis-summary | thesis-spine |
@@ -144,11 +144,11 @@ orchestrate."
 
 The writing chain reads through files, not calls:
 
-- **thesis-spine** reads `thesis-sources.md` (registry) + each small paper's
+- **thesis-spine** reads `thesis-sources.md` (registry) + each journal paper's
   tex/notes. Produces `thesis-spine.md` (main line + unified framework + chapter
   progression + thesis claim) and creates `thesis-terminology-ledger.md`.
 - **thesis-dissect** reads `thesis-spine.md` + `thesis-sources.md` +
-  `template-spec.md`. For each small paper: dissects and writes the chapter tex
+  `template-spec.md`. For each journal paper: dissects and writes the chapter tex
   **directly into `thesis/tex/`** (拆即写 — dissect-and-write in one pass, no
   separate "split then write" steps). Produces `chapter-map.md` in
   `sci-skills/thesis-dissect/` (the dissect→summary handoff surface).

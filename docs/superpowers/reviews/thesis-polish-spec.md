@@ -1,0 +1,39 @@
+# Spec Compliance Review — thesis-polish
+
+**Reviewed**: BASE 4180bfe → HEAD 77b2171 (branch thesis-polish)
+**Spec**: docs/superpowers/specs/thesis-polish.md
+**Plan**: docs/superpowers/plans/2026-08-27-thesis-polish.md
+**Reviewer**: scorpio
+**Method**: read spec + plan in full; read every implementation file line by line (SKILL.md, 6 references, 3 scripts, 3 test scripts, tests/README); ran all 42 tests; ran the plan's SKILL.md assertion suite; ran the decoupling greps; diffed the full range; cross-checked every path claim against the foundation (`sci-skills/skills/thesis-init/scripts/init_project.py`) and the producer siblings' SKILL.mds (dissect/intro/theory).
+
+## Verdict
+✅ Spec compliant (after round-2 fix commit 77b2171; round-1 verdict was ❌ 3 findings — all resolved, verified below; no new gaps introduced).
+
+Round 1 reviewed 4180bfe..23c5339 and found 3 issues. Round 2 re-read `git show 77b2171` plus the changed files from disk, re-ran 42/42 tests and the SKILL.md assertion suite (both green), re-grepped the shipped tree, and confirmed HEAD = 77b2171 with no uncommitted drift in the reviewed paths.
+
+## Round-2 resolution check (fix commit 77b2171)
+
+- **M1 (trace.md glob) — RESOLVED.** All shipped sites now `thesis-dissect/paper-*/trace.md`: SKILL.md ×6 (rule 3 :77, layout tree :137, 交接表 :153, boundary prose :165, file contracts :181, Step 0 :208) + chapter-guide.md:113 + spec L150/L185 (sync-back of the spec's own internal inconsistency). `grep 'paper-X'` over skill + spec leaves only spec L99's `paper-X/trace.md` — the one-level placeholder form that was always correct and is semantically identical to the glob. The glob now matches the producer's real layout (`sci-skills/thesis-dissect/paper-A/trace.md`, per dissect SKILL.md:67,82,112 and init_project.py:160-161).
+- **E1 (template-spec.md location) — RESOLVED.** SKILL.md layout tree now places `template-spec.md` inside `thesis/` (SKILL.md:131, sibling of `tex/`), matching init_project.py:115-116 ("复制到 `thesis/`（本目录）"). No other SKILL.md/reference site pins the old path (file contracts and Step 0 rows are path-free). Pre-existing sibling defect in dissect's tree noted in round 1 remains dissect's own cleanup, out of this branch's scope.
+- **M2 (spec fence fail-case) — RESOLVED via spec reconciliation (libra-routed option).** Spec 测试验收 (L231) drops "code-fence 内 \label 误计" from the fail list — the remaining fail cases (变体残留 / ledger 无表格 / 悬空 ref / BOM 首行 / 文件不可读) each have an on-disk test (test_check_polish.py:69, 147, 89, 167, 180/190, 260). Spec hardening line (L175) now scopes fence awareness to the ledger side ("ledger 解析 code-fence aware（fence 内表格行不计——fence 感知只在 ledger 侧，tex 侧无 markdown fence）"), matching the implementation exactly (check_polish.py:74-93) and giving the rationale. No code change was needed and none was made.
+
+**No new gaps from the fix commit**: diff touches exactly 3 files / 12 lines — the 9 glob sites, the one layout-tree move, the 2 spec lines (M1 sync-back + M2 reconciliation). The spec edits are confined to the two libra-routed reconciliations; no other requirement, acceptance row, or hardening item was altered. Zero-churn invariant re-checked: no script/sibling/foundation files touched.
+
+## Confirmed correct (verified by reading code / running, not by trusting the report)
+
+Acceptance rows:
+
+1. **一致性收敛** — ledger enforce: `_parse_ledger_pairs` (check_polish.py:96-138) parses variant→canonical pairs by **header-name** matching (`_col` :111-118 — variant/term + canonical required, others tolerated; P6), issue carries file:line + variant + canonical (:196-197); crossref single-direction: `_REF_RE`/`_LABEL_RE` (:149-150) with eqref/autoref/cref/Cref + comma multi-key split (:211-213); **unused labels never reported** (no reverse scan exists — P5 pinned by `test_unused_label_is_not_reported`, test_check_polish.py:61-67); hardening: BOM `utf-8-sig` (:173, :190, :204), fence-aware ledger + orphan-fence diagnostic (:74-93, :174-175), binary ledger/tex graceful (:180-183, `errors="replace"` :190/:204), ANSI strip (:49-52), bounded output MAX_ISSUES=200 + explicit truncation line (:220-225). 25/25 tests pass (re-run at 77b2171).
+2. **AIGC 有据可依** — both parsers emit the stdout neutral manifest `- sentence:/location:/risk:/meta:` matching spec §风险句清单 verbatim (parse_paperyy.py:80-86; parse_paperpass.py:86-93); lever table L1-L6 with **L5 默认不用 / L6 禁用** (aigc-playbook.md:46-53) + per-lever mechanism rationale §④; 回真实材料 flow via thesis-sources.md §③; run-to-completion (SKILL.md:93-95, Stage A :243-244, playbook §⑥); score honesty 再检测是唯一分数真相 (SKILL.md:92, :245-246; playbook :25; tests/README:153, :197); 诚信线 不篡改/不造假 (SKILL.md:88; playbook :24); PaperPass=目录/PaperYY=单文件 input shapes; 知网 = extension slot, no stub (SKILL.md:230-231, tests/README:140-142). 8/8 + 9/9 tests pass (re-run).
+3. **AI 味学术过滤** — chinese-register.md §① calibration (此外/然而/因此/综上所述 are load-bearing connectives, :13; 值得注意的是 split by function, :15), three-judgment test (:17-23), thesis-specific tells §⑦ (:194-216), 翻译腔层 §⑤ (:130-175), keep-list §⑧ (:224-227), provenance naming all three sources + dropped sections with reasons (:5). Eval list in tests/README:161-180 covers 此外-not-killed / 赋能-killed.
+4. **缝合欠账清偿** — chapter-guide.md has 缝合点 for every chapter type (绪论 :40-43, 理论章 :69-72, 正文章 5-item checklist :100-107 + 示例 :108-115, 总结 :154-157, 摘要 :180-182); grounding priority trace→chapter-map→spine (SKILL.md:75-81, :274-275; chapter-guide:113); structure-level → surface into type-① commit message verbatim (SKILL.md:64-68, :266-268; chapter-guide:7, :9); 章职能坏=结构级=surface total discipline (chapter-guide:7).
+5. **中文-only** — scope statement SKILL.md:36-40 (Chinese-thesis ONLY + English abstract out + in-scope English terms for 职责①); chapter-guide 摘要 restates the cut (:161); references contain zero English-polishing content (grepped — only provenance lines and drop-lists, which spec §⑦ requires).
+6. **不越界** — no restructuring (SKILL.md:81-85, :106-107); no write-time gate re-run and **no sibling script names anywhere** (SKILL.md:106-110; greps for check_intro/spine/dissect/summary/theory over scripts/ + SKILL.md + references: zero hits); no front/back-matter edits (:111); Stage A strictly report-gated (:222-224).
+7. **零 churn + 零 foundation 编辑** — full-range diff (4180bfe..77b2171) = 20 skill/doc files, all under `sci-skills-thesis/skills/thesis-polish/**` or `docs/superpowers/**`; init_project.py and every sibling skill untouched; init's own L44-47 comment pre-declares polish 不预建.
+8. **无 skill 调 skill** — every cross-skill mention is a file path or provenance note (grep-verified); Step 5 points to `sci-skills-thesis:thesis-typeset` as a pointer with explicit "Do NOT auto-run" (SKILL.md:317-322), exactly what spec §后处理链位置 requires.
+
+Other spec requirements verified: no `allowed-tools` frontmatter (assertion re-run at 77b2171: ok); scripts 三件 + co-located stdlib tests 三件, tests/ holds only README; references 六件 with provenance lines; ledger 缺失→降级 not hard-stop (check_polish.py:168-170 + SKILL.md Step 0 :202-206); Step 3 before review gate (P8, SKILL.md:295-297); three commit types with message contents (P1, SKILL.md:63-74); Stage A named exception stated at every discipline site (SKILL.md:54-60, polish-strategy §②, chinese-register header, playbook §① table); untrusted guard incl. the detection-report surface with tez-atif-dogrulama rule #7 cite (SKILL.md:360-384); parsers do pure text extraction, never execute report content; tests/README case counts 25+8+9 match the on-disk `__main__` lists exactly.
+
+## Routing
+
+None — all round-1 findings resolved; spec and implementation now mutually consistent. (Out-of-scope family note for a future cleanup, not this branch: dissect's own layout tree carries the same template-spec.md misplacement polish round-1 copied; and spine's ledger-table-template ripple remains BOOKED per spec §④.)

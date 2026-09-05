@@ -3,8 +3,8 @@
 > 设计日期：2026-08-27　|　状态：user-approved（aquarius round-1 审过，8 findings 逐条消解；用户已批）
 > 源：brainstorming（本 session；grill 7 问全定 + 设计七节批准）
 > aquarius round-1 审：`docs/superpowers/reviews/thesis-polish-adversarial-plan.md`（8 findings：P1 surface 清单无落盘家→commit message 载体 / P2 resume 论证自破→run-to-completion / P3 Stage A 顺序为纪律 named exception / P4 grounding 颗粒度错位→补读 trace.md / P5 未用 label 是噪声→删 / P6 表格格式与先例不同一→五列 verbatim+header 名匹配 / P7 parser I/O 非镜像事实→标新决定 / P8 类型② commit 落 review 门后→挪前——逐条消解见各 §）
-> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§后处理工作流 polish 行 + §aquarius #3 张力 + §调研借鉴 wenqu 行）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 罗盘文件耦合 / v1 scope），遇到时指向父 spec。
-> 上游 glossary：`docs/superpowers/glossary.md`（**AIGC 降率** / **去 AI 味** / **缝合**（本 session 新 settle 三条）/ Intro↔Summary coherence lock（write-time 非 post-polish 不变量）/ Serves-the-author-first / Compass file）
+> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§后处理工作流 polish 行 + §aquarius #3 张力 + §调研借鉴 wenqu 行）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 落盘文件耦合 / v1 scope），遇到时指向父 spec。
+> 上游 glossary：`docs/superpowers/glossary.md`（**AIGC 降率** / **去 AI 味** / **缝合**（本 session 新 settle 三条）/ Intro↔Summary coherence lock（write-time 非 post-polish 不变量）/ Serves-the-author-first / 落盘文件）
 > 镜像范本：`sci-skills-article/skills/sci-polish/`（SKILL.md 诊断分层 + references 六件——本 spec 的结构母本）+ `check_theory.py`（家族最硬化 check）+ wenqu-mem AIGC 细节（`_research/thesis-writing-skills/new-since-2026-07.md` §1.1 + N8：aigc-reduce-playbook / parse_paperpass.py / parse_paperyy.py / 杠杆排序 / 交付硬规则）
 > 用户 session 决策（handoff 记录，最高优先）：**polish 先于 typeset 落地**（用户判断 typeset 难搞垫最后）；**中文-only**（本 skill 只做中文学位论文，针对中文润色优化）。
 
@@ -175,7 +175,7 @@
 3. **aries 全套硬化**（从 check_theory.py 家族最硬化版起步）：BOM `utf-8-sig`、ledger 解析 code-fence aware（fence 内表格行不计——fence 感知只在 ledger 侧，tex 侧无 markdown fence）、stat 兜底 try/except、ANSI 消毒、tmpdir atexit、issue 清单不 traceback（bounded、no-raise 契约）。
 - tex/ledger 全 UNTRUSTED。
 
-### 跨 skill 文件交接（罗盘文件耦合，无 skill 调 skill）
+### 跨 skill 文件交接（落盘文件耦合，无 skill 调 skill）
 
 | 文件 | 产 | 读 | 作用 |
 |---|---|---|---|

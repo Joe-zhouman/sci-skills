@@ -266,7 +266,7 @@ sci-respond skill 触发时若 rN 不存在会提示人先建（没有审稿意�
 
 ## 放什么（用户决定具体形式）
 
-常见 LaTeX 项目（仅供参考，**不强制**；仓库 `templates/main/` 有成熟蓝本可复制）：
+常见 LaTeX 项目（仅供参考，**不强制**；sci-skills-article 插件的 `templates/main/` 有成熟蓝本可复制）：
 - `tex/main.tex` — preamble + `\\input` 织起各章节（main.tex 用 `\\input{sections/method}` 织入分章）
 - `tex/sections/*.tex` — 各章节正文（sci-write / sci-story 直接写进这里）
 - `tex/si.tex`（或 `tex/si/`）— Supplementary Information（sci-write 副产品）
@@ -517,7 +517,7 @@ def cmd_checkup(args: argparse.Namespace) -> int:
         if not v1_files:
             issues.append(
                 f"⚠ {MANUSCRIPT_DIR_NAME}/v1/ 还是空的。"
-                "把正文（tex/figures/bib）放进去，或从仓库 templates/main/ 复制蓝本。"
+                "把正文（tex/figures/bib）放进去，或从 sci-skills-article 插件的 templates/main/ 复制蓝本。"
             )
 
     # 0b. 项目根是否有不该在根的内容（浅层信号，深度判断派 Explore）

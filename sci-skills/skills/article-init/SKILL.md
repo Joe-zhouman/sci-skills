@@ -1,9 +1,8 @@
 ---
 name: article-init
 description: >-
-  科研项目初始化 / Research project init — scaffold manuscript/ + sci-skills/ skeleton,
-  write directory contracts, audit layout, migrate legacy files. 纯手动，不自动触发。
-  Manual only. 不画图不写文不投稿 / Does not draw, write, or submit.
+  SCI论文项目初始化
+disable-model-invocation: true
 ---
 
 # article-init
@@ -65,7 +64,7 @@ python scripts/init_project.py init           # skeleton + contracts + .gitignor
 python scripts/init_project.py init --no-git  # skip git init
 ```
 
-Idempotent — re-running skips existing dirs/files, never overwrites. Only builds empty `v1/` and the contracts; it does **not** generate any tex template content (templates are highly customized — the user decides; repo `templates/main/` is a reference blueprint). `r1`/`r2` are not pre-built.
+Idempotent — re-running skips existing dirs/files, never overwrites. Only builds empty `v1/` and the contracts; it does **not** generate any tex template content (templates are highly customized — the user decides; the article plugin's `templates/main/` is a reference blueprint). `r1`/`r2` are not pre-built.
 
 If `manuscript/` or `sci-skills/` already exists, init still fills in any missing `CONTRACT.md` contracts (so an existing project that predates the contracts gets them retroactively without clobbering content).
 
@@ -103,11 +102,10 @@ The script never moves user files. Determinism belongs to the script (init/check
 - **Determinism to the script, judgment to the agent.** init/checkup are mechanical (script); reading content to judge placement is Explore's job; moving user files is agent + human.
 - **Only the output side, never the source side.** It manages the project's `manuscript/` and `sci-skills/`; it never touches the repo's `skills/`.
 - **Does not produce figures, prose, or submissions** — those are other skills. It only scaffolds and audits the workspace.
+- **Privacy = repo locality, not content policing.** The project root must live locally or on a
+  private remote (confirm with the user at setup — this is the ONLY privacy boundary). Skills do
+  not censor content in outputs or add Privacy sections; content self-policing breaks writing.
 
 ## Sibling dirs
 
 Pre-built (design settled, own output dirs): `sci-draw`, `sci-write`, `sci-submit`. Not pre-built: `sci-story`, `sci-polish`, `sci-typeset` (write tex directly into `manuscript/`, zero own output dir), and `sci-export` (reads `manuscript/` read-only, writes a copy — no own output dir).
-
-## Privacy
-
-Don't leak private paths or unpublished content in generated contracts (`CONTRACT.md`) or audit reports. The paths shown in a checkup report are the user's own project paths (visible to them, not exfiltrated).

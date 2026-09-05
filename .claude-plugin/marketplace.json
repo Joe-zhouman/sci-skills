@@ -1,0 +1,54 @@
+{
+  "name": "sci-skills",
+  "description": "Joe's research-writing skill families for Claude Code — paper writing chain, degree-thesis assembly from published papers, figure drawing, and experimental data analysis.",
+  "owner": {
+    "name": "Joe-zhouman",
+    "email": "joe_zm@foxmail.com"
+  },
+  "plugins": [
+    {
+      "name": "sci-skills",
+      "description": "Shared sci-skills utilities — figure drawing (sci-draw) and project scaffolding (article-init, thesis-init).",
+      "author": {
+        "name": "Joe-zhouman",
+        "email": "joe_zm@foxmail.com"
+      },
+      "source": "./sci-skills",
+      "category": "productivity",
+      "homepage": "https://github.com/Joe-zhouman/sci-skills/tree/main/sci-skills"
+    },
+    {
+      "name": "sci-skills-article",
+      "description": "Article family — the paper writing chain: sci-write, sci-story, sci-polish, sci-typeset, sci-respond, sci-export, sci-submit.",
+      "author": {
+        "name": "Joe-zhouman",
+        "email": "joe_zm@foxmail.com"
+      },
+      "source": "./sci-skills-article",
+      "category": "productivity",
+      "homepage": "https://github.com/Joe-zhouman/sci-skills/tree/main/sci-skills-article"
+    },
+    {
+      "name": "sci-skills-thesis",
+      "description": "Thesis family — turn N published papers into a degree thesis (重组延伸, not from-scratch): spine, dissect, intro, theory, summary, polish (thesis-init scaffolding lives in the sci-skills plugin).",
+      "author": {
+        "name": "Joe-zhouman",
+        "email": "joe_zm@foxmail.com"
+      },
+      "source": "./sci-skills-thesis",
+      "category": "productivity",
+      "homepage": "https://github.com/Joe-zhouman/sci-skills/tree/main/sci-skills-thesis"
+    },
+    {
+      "name": "sci-skills-analysis",
+      "description": "Data-analysis family — turn experimental data into publication-ready figures and tables. Bundles xps (XPS peak fitting: calibration, background subtraction, Shirley/Tougaard, chemical-state assignment).",
+      "author": {
+        "name": "Joe-zhouman",
+        "email": "joe_zm@foxmail.com"
+      },
+      "source": "./sci-skills-analysis",
+      "category": "math",
+      "homepage": "https://github.com/Joe-zhouman/sci-skills/tree/main/sci-skills-analysis"
+    }
+  ]
+}

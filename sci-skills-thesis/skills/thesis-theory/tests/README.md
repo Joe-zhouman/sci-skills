@@ -199,7 +199,7 @@ Test plan (run via skill-creator-plus eval loop before deployment):
      `thesis-dissect/` or `thesis-spine/`);
    - theory reads spine's `thesis-spine.md` + dissect's `chapter-map.md` + each
      `thesis/tex/chN.tex` but never writes them, and never reads
-     registry/small papers/intro/summary products (spec §⑤ — thesis-internal
+     registry/journal papers/intro/summary products (spec §⑤ — thesis-internal
      material only).
 
 **Known limitation (honest, mirror summary/spine tests/README practice):** the

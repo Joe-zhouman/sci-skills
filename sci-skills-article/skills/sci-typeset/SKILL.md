@@ -143,10 +143,3 @@ sci-polish's commits) is the layout history.
 | Move tex into a target journal template / convert to docx | `sci-export` |
 | Write more content (a section is too short) | `sci-write` / `sci-story` |
 | Create or regenerate figures at source | `sci-draw` |
-
-## Privacy
-
-Don't disclose private paths, filenames, or unpublished manuscript content in
-user-facing output, commit messages, or `git diff` commentary. Use generic
-descriptions ("the manuscript tex file"). Reveal exact paths only when the user
-explicitly asks for an audit trail.

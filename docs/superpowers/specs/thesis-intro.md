@@ -2,8 +2,8 @@
 
 > 设计日期：2026-08-26　|　状态：draft（aquarius round-1 审 + 用户审）
 > 源：brainstorming（本 session；4 点 grill 全定 + 1 sub-decision）+ aquarius round-1（6 findings 逐条消解——见各 §）
-> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§写作链工作流 intro 行 + §① enforcement split + §Load-bearing premise）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 罗盘文件耦合 / 模板 init 织死 / v1 scope），遇到时指向父 spec。
-> 上游 glossary：`docs/superpowers/glossary.md`（Narrative gap / Architecture-level claim / enforcement split / Compass file / 拆即写）
+> **父 spec（权威源）**：`docs/superpowers/specs/thesis-skill-family.md`（§写作链工作流 intro 行 + §① enforcement split + §Load-bearing premise）— 家族设计 single source of truth。本 spec 不重述家族已定决策（enforcement split 三层 / Load-bearing premise / 落盘文件耦合 / 模板 init 织死 / v1 scope），遇到时指向父 spec。
+> 上游 glossary：`docs/superpowers/glossary.md`（Narrative gap / Architecture-level claim / enforcement split / 落盘文件 / 拆即写）
 > 镜像范本：`sci-skills-thesis/skills/thesis-spine/SKILL.md` + `thesis-dissect/SKILL.md`（coverage 脚本 split + depth 人工门 + untrusted-content guard + 富 baton + 写后记录纪律）+ `sci-skills-article/skills/sci-story/SKILL.md`（per-section confirmation gate + real-DOI + 两阶段漏斗 + gap-fill coherence lock）
 > aquarius round-1 审：`docs/superpowers/reviews/thesis-intro-adversarial-plan.md`（6 findings：load-bearing §①+§⑥ coverage-overclaim / §② false-binary / §③ B3-clean-split / §④ minor overclaim + 2 new §⑦+anchor-in-intro + secondary shrink；round-2 逐条消解）
 
@@ -189,7 +189,7 @@ intro-tex: chapter0.tex              ← the intro tex filename (per template-sp
 - **Framing alignment（confirmation gate + eval，非 depth 人工门 §④）**：confirmation gate enforce framing alignment（这节讲什么、提哪些 gap、哪些章填）；**gap 是断层还是空白、研究现状定位准不准 = depth = 作者 judgment residual**，非 gate enforce。这是 framing enforcement，非 spine 那种分级 depth-gate。
 - **诚实边界（父 spec §Load-bearing premise + §①+§④ residual）**：文件交接 + coverage 门防**缺席**（gap-map.md 不存在 summary 进行不下去）+ **官僚 lapse**（编造章号/悬空/残 pending），**不防 depth-level 空头 gap**（gap 实际没章填但填了章号 → 过 coverage，是 depth failure）+ **不防 framing-accurate-but-hollow 研究现状**（gate 只查 framing alignment 不查 depth）。空洞能过 coverage + confirmation gate（若作者工艺判断失准）。无结构性机制替代作者叙事工艺判断。诚实命名，不 overclaim（对齐父 spec §Load-bearing premise + 镜像 spine §⑤ + dissect §诚实边界）。
 
-### 跨 skill 文件交接（罗盘文件耦合，无 skill 调 skill）
+### 跨 skill 文件交接（落盘文件耦合，无 skill 调 skill）
 
 | 文件 | 产 | 读 | 作用 |
 |---|---|---|---|

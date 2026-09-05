@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
-# install.sh — install the sci-skills plugin families (linux)
+# install.sh — install the sci-skills skills for live development (linux)
 #
 # What this does:
-#   Symlinks each family directory (sci-skills/, sci-skills-article/,
-#   sci-skills-analysis/) into ~/.claude/skills/<family>/, so CC's
-#   @skills-dir mechanism auto-loads each family as a separate plugin
-#   and namespaces its skills (e.g. sci-skills:sci-draw,
-#   sci-skills-article:sci-story).
+#   Symlinks every <family>/skills/<skill>/ directory flat into the user
+#   skills dirs of both harnesses (~/.claude/skills/ and, unless SKIP_ZCODE=1,
+#   ~/.zcode/skills/). Both harnesses scan those dirs flat
+#   (<skills-dir>/<skill>/SKILL.md), and because these are symlinks, edits in
+#   the repo show up in every new session immediately — no reinstall step.
 #
-# Why symlink (not copy): editing the repo updates the plugin immediately.
-# Why one plugin per family (not one for the whole repo): CC's plugin loader
-#   only scans one level under skills/, so each family must be its own plugin
-#   reached via its own symlink. A root-level plugin.json would make the
-#   whole repo one plugin and recursively walk all family subdirs —
-#   deliberately avoided.
+# Dev vs distribution:
+#   - This script = DEV install (live symlinks, plain skill names).
+#   - .claude-plugin/marketplace.json = DISTRIBUTION (frozen copies under
+#     ~/.claude/plugins/cache/, plugin-namespaced names like
+#     sci-skills:sci-draw). Use one or the other for the same skills —
+#     installing both double-loads them.
 #
-# Idempotent: safe to re-run. Repoints existing symlinks, backs up
-# non-symlink conflicts. Run from anywhere; resolves repo root from this
-# script's location.
+# Idempotent: safe to re-run. Repoints existing symlinks, leaves
+# non-symlink conflicts untouched. Run from anywhere; resolves repo root
+# from this script's location.
 
 set -euo pipefail
 
@@ -25,11 +25,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$SCRIPT_DIR"
 
-# --- the three family directories (each is a separate plugin) ---
+# --- the four family directories (each is a separate plugin) ---
 # xps (sci-skills-analysis) 不是谁都要用的：不需要时跳过，只装其余家族：
 #   SKIP_FAMILIES=sci-skills-analysis bash install.sh
 # （空格分隔多个家族名；跳过仍会 uv sync，依赖与其他家族共享）
-FAMILIES=(sci-skills sci-skills-article sci-skills-analysis)
+FAMILIES=(sci-skills sci-skills-article sci-skills-thesis sci-skills-analysis)
 SKIP_FAMILIES="${SKIP_FAMILIES:-}"
 
 # returns 0 (true) if the family is in SKIP_FAMILIES
@@ -55,30 +55,49 @@ fi
 CLAUDE_HOME="${HOME}/.claude"
 SKILLS_DIR="$CLAUDE_HOME/skills"
 
-echo "Installing sci-skills families from: $REPO_ROOT"
+# --- flat per-skill symlinks (dev live-sync install) ---
+# Each skill is symlinked individually into the harness's user skills dir, so
+# repo edits show up immediately in every new session. Both CC and ZCode scan
+# these dirs flat (<skills-dir>/<skill>/SKILL.md). This is the DEV install —
+# the marketplace (.claude-plugin/marketplace.json) is the DISTRIBUTION path
+# (frozen copies, plugin-namespaced); use one or the other, not both, for the
+# same skills.
+link_skills_into() {
+  local dest="$1" label="$2" count=0
+  mkdir -p "$dest"
+  for fam in "${FAMILIES[@]}"; do
+    if skip_fam "$fam"; then continue; fi
+    for skill_dir in "$REPO_ROOT/$fam/skills/"*/; do
+      [[ -f "$skill_dir/SKILL.md" ]] || continue
+      local name LINK
+      name="$(basename "$skill_dir")"
+      LINK="$dest/$name"
+      if [[ -L "$LINK" ]]; then
+        rm "$LINK"    # repoint (repo may have moved)
+      elif [[ -e "$LINK" ]]; then
+        echo "  WARNING: $LINK exists and is not a symlink — left untouched" >&2
+        continue
+      fi
+      ln -s "${skill_dir%/}" "$LINK"
+      count=$((count + 1))
+    done
+  done
+  echo "[$label]  $count skill symlink(s) live in $dest (edits sync immediately)"
+}
+
+echo "Installing sci-skills skills (flat live symlinks) from: $REPO_ROOT"
 echo
 
-mkdir -p "$SKILLS_DIR"
+link_skills_into "$SKILLS_DIR" "claude"
 
-for fam in "${FAMILIES[@]}"; do
-  if skip_fam "$fam"; then
-    echo "[skip]    $fam — in SKIP_FAMILIES"
-    continue
-  fi
-  SRC="$REPO_ROOT/$fam"
-  LINK="$SKILLS_DIR/$fam"
-
-  if [[ -L "$LINK" ]]; then
-    # existing symlink — repoint to current repo (handles repo moved/relocated)
-    rm "$LINK"
-  elif [[ -e "$LINK" ]]; then
-    echo "WARNING: $LINK exists and is not a symlink." >&2
-    echo "         Backing it up to ${LINK}.bak and replacing with symlink." >&2
-    mv "$LINK" "${LINK}.bak"
-  fi
-  ln -s "$SRC" "$LINK"
-  echo "[plugin]  $LINK -> $SRC"
-done
+# --- ZCode side (optional) ---
+# Opt out with SKIP_ZCODE=1 (e.g. if you manage ZCode skills another way).
+ZCODE_SKILLS_DIR="${HOME}/.zcode/skills"
+if [[ "${SKIP_ZCODE:-}" == "1" || ! -d "${HOME}/.zcode" ]]; then
+  echo "[zcode]   skipped (SKIP_ZCODE=1 or no ~/.zcode)"
+else
+  link_skills_into "$ZCODE_SKILLS_DIR" "zcode"
+fi
 
 # --- Python env for bundled scripts (XPS analysis etc.) ---
 # A pyproject.toml at repo root declares the deps the skill scripts run in.
@@ -108,6 +127,12 @@ fi
 echo
 echo "Done. To activate:"
 echo "  1. Start a NEW Claude Code session (skills load at session start)."
-echo "  2. Verify plugins:  /skills   (should list the three families above)"
+echo "  2. Verify plugins:  /skills   (should list the families above)"
 echo
 echo "Update later: git pull && bash install.sh   (re-running repoints symlinks + re-syncs env)"
+echo
+echo "Alternative — install as marketplace plugins instead of dev symlinks:"
+echo "  /plugin marketplace add Joe-zhouman/sci-skills"
+echo "  /plugin install sci-skills@sci-skills        # and the other families as needed"
+echo "  (marketplace installs COPY the plugin dir; for xps deps run 'uv sync'"
+echo "   inside the installed sci-skills-analysis plugin dir)"

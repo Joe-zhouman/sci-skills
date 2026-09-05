@@ -17,37 +17,40 @@ from typing import Any
 def _ensure_uv_env() -> None:
     """Transparent env launcher.
 
-    The skill scripts run in the repo-root uv env (.venv/). An agent invoking
+    The skill scripts run in a uv env (.venv/). An agent invoking
     `python scripts/foo.py` with any interpreter is silently re-execed under
     .venv/bin/python so imports (lmfitxps etc.) resolve — no `uv run` needed,
     no path assumptions (works via symlink or real path). Idempotent via the
     SCI_SKILLS_VENV marker so it never re-exec loops.
 
-    Walks up from this file to find a pyproject.toml; the .venv lives next to
-    it. If no .venv exists, falls through silently (dev/CI may use another env
-    or have deps on PATH).
+    Walks up from this file collecting every pyproject.toml (the plugin dir
+    ships one for standalone installs; a dev checkout also has one at repo
+    root) and uses the first that has a .venv beside it. If none does, falls
+    through silently (standalone install before `uv sync`; dev/CI may use
+    another env or have deps on PATH).
     """
     if os.environ.get("SCI_SKILLS_VENV") == "1":
         return  # already in the managed env (or chose not to); don't loop
 
-    here = os.path.dirname(os.path.abspath(__file__))
-    root = None
+    # realpath (not abspath): when invoked through a user-scope symlink
+    # (~/.claude/skills/... or ~/.zcode/skills/...), only the resolved path
+    # walks up to the checkout that owns pyproject.toml + .venv.
+    here = os.path.dirname(os.path.realpath(__file__))
+    venv_python = None
     cur = here
-    for _ in range(10):  # scripts/ is a few levels under repo root
+    for _ in range(10):  # scripts/ is a few levels under the plugin/repo root
         if os.path.exists(os.path.join(cur, "pyproject.toml")):
-            root = cur
-            break
+            candidate = os.path.join(cur, ".venv", "bin", "python")
+            if os.path.exists(candidate):
+                venv_python = candidate
+                break
         parent = os.path.dirname(cur)
         if parent == cur:
             break
         cur = parent
 
-    if root is None:
-        return  # not running from a checkout; trust whatever env invoked us
-
-    venv_python = os.path.join(root, ".venv", "bin", "python")
-    if not os.path.exists(venv_python):
-        return  # no managed env; trust the caller's interpreter
+    if venv_python is None:
+        return  # no managed env anywhere above; trust the caller's interpreter
 
     if os.path.abspath(sys.executable) == os.path.abspath(venv_python):
         return  # already the right interpreter

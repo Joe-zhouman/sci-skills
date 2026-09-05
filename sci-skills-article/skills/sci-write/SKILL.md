@@ -337,10 +337,3 @@ Detail and the why in `references/neighbor-contract.md`.
 | `references/section-templates.md` | At Steps 4–5 (Method/Results/Conclusion structure + per-paragraph jobs + material source) |
 | `references/sup-discipline.md` | When parking rejected content — figures, method details, overflow tables. Loads sup-list.md. |
 | `references/neighbor-contract.md` | Whenever reading figure-warehouse files (field mapping, contract-gap handling, decoupling self-check) |
-
-## Privacy
-
-Don't disclose private paths, private filenames, or unpublished manuscript content in user-facing replies, generated prose, figure-reading files, or commit messages. Use generic descriptions ("the provided data file"). Reveal exact paths only when the human asks for an audit trail.
-
-
-

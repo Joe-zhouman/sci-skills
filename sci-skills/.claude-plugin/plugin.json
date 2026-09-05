@@ -1,6 +1,6 @@
 {
   "name": "sci-skills",
-  "description": "Shared sci-skills utilities — figure drawing (sci-draw) and project scaffolding (article-init, thesis-init). Claude Code only.",
+  "description": "Shared sci-skills utilities — figure drawing (sci-draw) and project scaffolding (article-init, thesis-init).",
   "version": "1.0.0",
   "author": {
     "name": "Joe-zhouman",

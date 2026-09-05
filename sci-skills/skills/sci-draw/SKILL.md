@@ -487,10 +487,6 @@ See `references/journal_specs.md` end section for font installation.
 
 See `references/task-examples.md` for worked examples of the four most common scenarios: CSV-to-figure, active interception, multi-panel composite, and statistical annotations.
 
-## Privacy rule
-
-Do not disclose private local paths, private filenames, attachment names, internal reference filenames, template identifiers, or provenance of private working materials in user-facing replies, generated code comments, figure legends, reports, or manuscript text. Use generic descriptions like "the provided data file" or "the internal figure contract". Only reveal exact paths when user explicitly asks for audit trail.
-
 ## Figure set planning
 
 When the user describes a research theme, manuscript, or dataset and asks to "plan the figures" or "design Figure 1-4", use this process instead of jumping to individual figure creation.
@@ -544,4 +540,3 @@ A figure plan document with one entry per figure:
 ### After plan approval
 
 For each figure in the plan, execute the full 8-step workflow (contract → explore → select → style → plot → export → review → finalize). Maintain cross-figure consistency: same variable = same color, same error convention, same font size.
-

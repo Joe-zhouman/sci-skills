@@ -29,16 +29,65 @@ SETTLED = """# chapter-map.md
 - status: written
 """
 
-def _write_project(content: str, tex_files: dict[str, str] | None = None) -> tuple[pathlib.Path, pathlib.Path]:
-    """Build a temp project: chapter-map.md + thesis/tex/<files>. Returns (cm_path, tex_dir)."""
+# 合规章 tex：章引（实质引文段）→ 模块（干什么的名词化标题）→ 本章讨论 → 本章小结
+VALID_TEX = r"""\chapter{薄膜的工艺结晶关系研究}
+本章要回答的问题是：哪些工艺参数主导了薄膜的结晶质量。
+上一章的结果表明界面层是制约性能的瓶颈，由此把问题推进到本章；
+围绕这个问题，本章沿两个模块展开：先回答合成侧的配比问题，再回答表征侧的生长问题，
+最后把两块结果放在一起综合讨论，并给出本章的边界。
+\section{薄膜的溶液法合成与生长}
+本模块要回答的问题是：前驱体配比如何影响结晶质量。
+采用溶液法合成……结果显示配比主导晶粒尺寸。
+\section{本章讨论}
+把各模块的结果放在一起看，机制上……与文献对比一致。
+\section{本章小结}
+本章回答了章引的问题：配比主导结晶质量；
+这引出下一章的问题：界面层如何调控。
+"""
+
+# 合规 trace.md（SI 清单 + 讨论素材清单，去向均已落位、无 pending）
+def _valid_trace(slug: str) -> str:
+    return f"""# {slug} trace
+## Claim & main line
+- claim: {slug} 证明了配比主导结晶 / advances main line: 推进主线第一步
+## IMRaD 地图
+- intro → 提问题；methods → 合成与表征；results → 数据；discussion → 机制
+## 章引素材
+- intro 第二段：问题背景 + 为什么值得答
+## SI 清单
+- Fig. S1 XRD 表征 → 模块1
+- Table S2 对照实验 → 本章讨论
+## 讨论素材清单
+- 机制解释一段 → 本章讨论
+- 文献对比一段 → 本章讨论
+"""
+
+def _write_project(
+    content: str,
+    tex_files: dict[str, str] | None = None,
+    traces: dict[str, str] | None = None,
+    write_traces: bool = True,
+) -> tuple[pathlib.Path, pathlib.Path]:
+    """Build a temp project: chapter-map.md + thesis/tex/<files> + paper-X/trace.md.
+    Defaults are fully COMPLIANT with the v2 contract (章形 + 零丢弃), so individual
+    tests break exactly one thing. traces={slug: body} overrides a trace;
+    write_traces=False skips traces entirely. Returns (cm_path, tex_dir)."""
     root = pathlib.Path(tempfile.mkdtemp())
     cm = root / "sci-skills" / "thesis-dissect" / "chapter-map.md"
     cm.parent.mkdir(parents=True)
     cm.write_text(content, encoding="utf-8")
     tex_dir = root / "thesis" / "tex"
     tex_dir.mkdir(parents=True)
-    for name, body in (tex_files or {"ch1.tex": "x", "ch2.tex": "x"}).items():
+    for name, body in (tex_files or {"ch1.tex": VALID_TEX, "ch2.tex": VALID_TEX}).items():
         (tex_dir / name).write_text(body, encoding="utf-8")
+    if write_traces:
+        for slug in ("paper-A", "paper-B"):
+            body = _valid_trace(slug) if traces is None else traces.get(slug, _valid_trace(slug))
+            if body is None:
+                continue
+            d = cm.parent / slug
+            d.mkdir(parents=True, exist_ok=True)
+            (d / "trace.md").write_text(body, encoding="utf-8")
     return cm, tex_dir
 
 def test_passes_on_settled():
@@ -238,6 +287,145 @@ def test_ignores_chapter_headers_inside_code_fence():
     assert issues == [], f"expected pass (2 real chapters, phantom ignored), got: {issues}"
     print("test_ignores_chapter_headers_inside_code_fence: PASS")
 
+# --- v2 防缺席层（章形 + 零丢弃）——本 skill 用户实测三缺陷的机械防线 ---
+
+def test_passes_on_compliant_shape():
+    """v2 合规 fixture（章形齐 + trace 清单去向落位）整体 pass——负向用例的基线。"""
+    cm, tex_dir = _write_project(SETTLED)
+    issues = check_dissect.check(cm, tex_dir)
+    assert issues == [], f"expected pass on compliant fixture, got: {issues}"
+    print("test_passes_on_compliant_shape: PASS")
+
+def test_fails_on_imrad_section_titles():
+    """\\section{方法}+\\section{结果} = 机械拆分 Methods/Results 的 IMRaD 形态 → 必须拦。"""
+    imrad_tex = r"""\chapter{替代章}
+\section{方法}
+做了 A。
+\section{结果}
+显示了 B。
+"""
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch1.tex": imrad_tex, "ch2.tex": VALID_TEX})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("IMRaD" in i and "方法" in i for i in issues), f"expected IMRaD issue for 方法, got: {issues}"
+    assert any("IMRaD" in i and "结果" in i for i in issues), f"expected IMRaD issue for 结果, got: {issues}"
+    print("test_fails_on_imrad_section_titles: PASS")
+
+def test_imrad_check_not_hit_module_titles():
+    """整标题等值匹配（非包含）——'XX 的合成与表征'类模块标题不误伤。"""
+    cm, tex_dir = _write_project(SETTLED)
+    issues = check_dissect.check(cm, tex_dir)
+    assert not any("IMRaD" in i for i in issues), f"module title false positive: {issues}"
+    print("test_imrad_check_not_hit_module_titles: PASS")
+
+def test_fails_on_missing_trace():
+    """paper 的 trace.md 缺失 → 素材未清点，零丢弃无法审计。"""
+    cm, tex_dir = _write_project(SETTLED, traces={"paper-A": None})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("trace.md" in i and "paper-A" in i for i in issues), \
+           f"expected trace-missing issue, got: {issues}"
+    print("test_fails_on_missing_trace: PASS")
+
+def test_fails_on_trace_pending_destination():
+    """清单条目去向仍为 pending → 章收尾后不允许残留（未落位）。"""
+    bad_trace = _valid_trace("paper-A").replace("- Fig. S1 XRD 表征 → 模块1",
+                                                "- Fig. S1 XRD 表征 → pending")
+    cm, tex_dir = _write_project(SETTLED, traces={"paper-A": bad_trace})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("pending" in i and "SI 清单" in i for i in issues), \
+           f"expected pending issue, got: {issues}"
+    print("test_fails_on_trace_pending_destination: PASS")
+
+def test_fails_on_trace_item_without_destination():
+    """清单条目缺去向箭头 → 未落位。"""
+    bad_trace = _valid_trace("paper-A").replace("- 机制解释一段 → 本章讨论", "- 机制解释一段")
+    cm, tex_dir = _write_project(SETTLED, traces={"paper-A": bad_trace})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("讨论素材清单" in i and "缺去向" in i for i in issues), \
+           f"expected no-destination issue, got: {issues}"
+    print("test_fails_on_trace_item_without_destination: PASS")
+
+def test_passes_with_no_si_declaration():
+    """无 SI 的论文：显式'无 SI'声明替代清单 → pass（不是每篇论文都有 SI）。"""
+    trace = _valid_trace("paper-A").replace(
+        "## SI 清单\n- Fig. S1 XRD 表征 → 模块1\n- Table S2 对照实验 → 本章讨论\n", "无 SI\n")
+    cm, tex_dir = _write_project(SETTLED, traces={"paper-A": trace})
+    issues = check_dissect.check(cm, tex_dir)
+    assert not any("SI" in i and "paper-A" in i for i in issues), \
+           f"'无 SI' declaration must pass: {issues}"
+    print("test_passes_with_no_si_declaration: PASS")
+
+def test_fails_on_missing_si_section_and_declaration():
+    """trace 既无 SI 清单节也无'无 SI'声明 → 拦。"""
+    trace = _valid_trace("paper-A").replace(
+        "## SI 清单\n- Fig. S1 XRD 表征 → 模块1\n- Table S2 对照实验 → 本章讨论\n", "")
+    cm, tex_dir = _write_project(SETTLED, traces={"paper-A": trace})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("SI 清单" in i and "paper-A" in i for i in issues), \
+           f"expected missing-SI-section issue, got: {issues}"
+    print("test_fails_on_missing_si_section_and_declaration: PASS")
+
+def test_fails_on_missing_discussion_section():
+    """缺'本章讨论'节 → discussion 精髓丢失，必须拦。"""
+    no_disc = VALID_TEX.replace(
+        r"\section{本章讨论}" + "\n把各模块的结果放在一起看，机制上……与文献对比一致。\n", "")
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch1.tex": no_disc, "ch2.tex": VALID_TEX})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("本章讨论" in i for i in issues), f"expected missing-discussion issue, got: {issues}"
+    print("test_fails_on_missing_discussion_section: PASS")
+
+def test_fails_on_missing_xiaojie_last_section():
+    """末节不是'本章小结' → 拦（收束章问题+递进缺失）。"""
+    no_xj = VALID_TEX.replace(
+        r"\section{本章小结}" + "\n本章回答了章引的问题：配比主导结晶质量；\n这引出下一章的问题：界面层如何调控。\n", "")
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch1.tex": no_xj, "ch2.tex": VALID_TEX})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("本章小结" in i and "Chapter 1" in i for i in issues), \
+           f"expected missing-xiaojie issue, got: {issues}"
+    print("test_fails_on_missing_xiaojie_last_section: PASS")
+
+def test_fails_on_missing_chapter_intro():
+    """\\chapter 直跳 \\section（无章引段、首节非'引言'）→ 拦（提问题缺失）。"""
+    no_intro = r"""\chapter{薄膜的工艺结晶关系研究}
+\section{薄膜的溶液法合成与生长}
+本模块要回答的问题是：前驱体配比如何影响结晶质量。
+\section{本章讨论}
+讨论内容。
+\section{本章小结}
+小结内容。
+"""
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch1.tex": no_intro, "ch2.tex": VALID_TEX})
+    issues = check_dissect.check(cm, tex_dir)
+    assert any("章引" in i and "Chapter 1" in i for i in issues), \
+           f"expected missing-intro issue, got: {issues}"
+    print("test_fails_on_missing_chapter_intro: PASS")
+
+def test_chapter_intro_via_yinyan_section_ok():
+    """模板用 \\section{引言} 开章 → 视为有章引，不拦（章引等价节名逃逸口径）。"""
+    yinyan = r"""\chapter{薄膜的工艺结晶关系研究}
+\section{引言}
+本章要回答的问题是：哪些工艺参数主导了薄膜的结晶质量。
+\section{薄膜的溶液法合成与生长}
+本模块要回答的问题是：前驱体配比如何影响结晶质量。
+\section{本章讨论}
+讨论内容。
+\section{本章小结}
+小结内容。
+"""
+    cm, tex_dir = _write_project(SETTLED, tex_files={"ch1.tex": yinyan, "ch2.tex": VALID_TEX})
+    issues = check_dissect.check(cm, tex_dir)
+    assert not any("章引" in i and "Chapter 1" in i for i in issues), \
+           f"'引言' section must satisfy the intro check: {issues}"
+    print("test_chapter_intro_via_yinyan_section_ok: PASS")
+
+def test_trace_checked_once_for_merged_papers():
+    """非 1:1：同一 paper 出现在两章 → trace 只查一次（issue 不重复计数）。"""
+    merged = SETTLED.replace("- papers: [paper-B]", "- papers: [paper-A]")
+    cm, tex_dir = _write_project(merged, traces={"paper-A": None})
+    issues = check_dissect.check(cm, tex_dir)
+    hits = [i for i in issues if "trace.md" in i and "paper-A" in i]
+    assert len(hits) == 1, f"paper-A trace issue should be reported once, got: {hits}"
+    print("test_trace_checked_once_for_merged_papers: PASS")
+
 if __name__ == "__main__":
     test_passes_on_settled()
     test_fails_on_missing_framework_instantiation()
@@ -258,4 +446,17 @@ if __name__ == "__main__":
     test_fails_on_absolute_tex_file_path()
     test_fails_on_dotdot_tex_file_path()
     test_ignores_chapter_headers_inside_code_fence()
+    test_passes_on_compliant_shape()
+    test_fails_on_imrad_section_titles()
+    test_imrad_check_not_hit_module_titles()
+    test_fails_on_missing_trace()
+    test_fails_on_trace_pending_destination()
+    test_fails_on_trace_item_without_destination()
+    test_passes_with_no_si_declaration()
+    test_fails_on_missing_si_section_and_declaration()
+    test_fails_on_missing_discussion_section()
+    test_fails_on_missing_xiaojie_last_section()
+    test_fails_on_missing_chapter_intro()
+    test_chapter_intro_via_yinyan_section_ok()
+    test_trace_checked_once_for_merged_papers()
     print("ALL TESTS PASS")

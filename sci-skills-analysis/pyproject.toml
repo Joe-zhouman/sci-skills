@@ -1,0 +1,18 @@
+[project]
+name = "sci-skills-analysis"
+version = "1.0.0"
+description = "sci-skills analysis family env — XPS peak-fitting scripts (xps skill). Standalone manifest so a marketplace-installed plugin can build its own env with `uv sync` in the plugin dir; the repo-root env covers dev checkouts."
+requires-python = ">=3.11"
+license = "MIT"
+# Not published to PyPI — application env for the bundled skill scripts.
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "pyarrow",          # read the NIST XPS parquet asset shipped in xps/assets/
+    "lmfit",            # xps peak fitting (fit_peaks.py, find_peaks.py)
+    "lmfitxps",         # xps background models — Shirley/Tougaard (replaces hand-written)
+]
+
+[tool.uv]
+# Managed application env; not packaged for distribution.
+package = false
